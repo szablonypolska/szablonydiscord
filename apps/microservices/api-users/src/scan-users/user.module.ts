@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common';
 import { UserController } from './user.controller';
 import { UserService } from './user.service';
-import { FirebaseModule } from 'src/config/firebase.module';
+import { FirebaseModule } from '@repo/shared';
 import { BullModule } from '@nestjs/bullmq';
 import { UserConsumer } from './user.queue.consumer';
 

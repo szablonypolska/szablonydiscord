@@ -1,24 +1,10 @@
 import { Module } from '@nestjs/common';
-import { ConfigModule } from '@nestjs/config';
-import { TemplateModule } from './templates/template.module';
-import { BullModule } from '@nestjs/bullmq';
-import { UserModule } from './users/user.module';
-import { PrismaModule } from './prisma/prisma.module';
-import { WebsocketGateway } from './websocket/websocket.gateway';
+import { AppController } from './app.controller';
+import { AppService } from './app.service';
 
 @Module({
-  imports: [
-    PrismaModule,
-    ConfigModule.forRoot({ cache: true }),
-    TemplateModule,
-    UserModule,
-    BullModule.forRoot({
-      connection: {
-        host: 'localhost',
-        port: 6379,
-      },
-    }),
-  ],
-  providers: [WebsocketGateway],
+  imports: [],
+  controllers: [AppController],
+  providers: [AppService],
 })
 export class AppModule {}
