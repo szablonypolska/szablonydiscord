@@ -1,3 +1,5 @@
+"use client"
+
 import Image from "next/image"
 import decorationBox from "../../public/decorationElementBox.svg"
 

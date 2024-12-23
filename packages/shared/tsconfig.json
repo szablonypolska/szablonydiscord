@@ -4,6 +4,8 @@
 		"module": "commonjs",
 		"outDir": "./dist",
 		"rootDir": "./src",
+		"experimentalDecorators": true,
+		"emitDecoratorMetadata": true,
 		"esModuleInterop": true,
 		"skipLibCheck": true
 	},

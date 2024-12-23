@@ -4,8 +4,9 @@ import { Job } from 'bullmq';
 import { lastValueFrom } from 'rxjs';
 import * as admin from 'firebase-admin';
 import { Inject } from '@nestjs/common';
+import { WebsocketGateway } from 'src/websocket/websocket.gateway';
 
-@Processor('template-scan', {
+@Processor('scanQueue', {
   limiter: {
     max: 50,
     duration: 1000,
@@ -22,6 +23,7 @@ export class TemplateConsumer extends WorkerHost {
   constructor(
     private readonly httpService: HttpService,
     @Inject('FIREBASE_APP') private readonly admin: admin.app.App,
+    private readonly websocket: WebsocketGateway,
   ) {
     super();
   }
@@ -45,13 +47,16 @@ export class TemplateConsumer extends WorkerHost {
         name: response.data.name,
         usageCount: response.data.usage_count,
       });
+      console.log('skanuje');
 
       console.log(this.batchData.length);
 
-      if (this.batchData.length >= 10) {
-        console.log(this.batchData);
-        this.batchData = [];
-      }
+      this.websocket.server.emit('message', {
+        title: response.data.name,
+        id: job.data.ID,
+        usage: response.data.usage_count,
+        dateCreate: '23.12.2024',
+      });
     } catch (err) {
       if (err.response?.status === 429) {
         throw new Error('Rate limit error');

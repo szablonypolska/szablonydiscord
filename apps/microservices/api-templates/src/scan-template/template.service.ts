@@ -10,7 +10,7 @@ import { PrismaService } from '@repo/shared';
 export class TemplateService {
   constructor(
     @Inject('FIREBASE_APP') private readonly firebaseApp: admin.app.App,
-    @InjectQueue('template-scan') private audioQueue: Queue,
+    @InjectQueue('scanQueue') private queue: Queue,
     private readonly template: TemplateConsumer,
     private readonly prisma: PrismaService,
   ) {}
@@ -23,8 +23,12 @@ export class TemplateService {
 
     const array: DataItem[] = Object.values(templateSnapshot.val());
 
-    for (const element of array) {
-      await this.audioQueue.add('template-scan', element, { delay: 1500 });
+    const lengthQueue = await this.queue.getWaitingCount();
+
+    if (lengthQueue == 0) {
+      for (const element of array) {
+        await this.queue.add('template-scan', element, { delay: 1500 });
+      }
     }
 
     this.template.toggleQueue = true;

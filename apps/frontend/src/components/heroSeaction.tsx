@@ -3,35 +3,36 @@
 import heroDecoration from "../../public/decorationElementHero.svg"
 import Image from "next/image"
 import CountUp from "react-countup"
-import { motion } from "framer-motion"
+import { motion, AnimatePresence } from "framer-motion"
+import useWebSocket from "@/hooks/useWebSocket"
+import { useEffect, useState } from "react"
+import { connectSocket } from "@/socket"
+import LoadScanTemplate from "./server/loadScanTemplate"
 
 export default function HeroSeaction() {
-	const scanTemplate = [
-		{
-			title: "Greek Valorant Community",
-			id: 1734299380313,
-			usage: 0,
-			dateCreate: "15.12.2024",
-		},
-		{
-			title: "giga kokos",
-			id: 1734299380313,
-			usage: 2,
-			dateCreate: "16.12.2024",
-		},
-		{
-			title: "27 Street",
-			id: 1734299380313,
-			usage: 35,
-			dateCreate: "12.12.2024",
-		},
-		{
-			title: "27 Street",
-			id: 1734299380313,
-			usage: 35,
-			dateCreate: "12.12.2024",
-		},
-	]
+	const { message } = useWebSocket()
+
+	// useEffect(() => {
+	// 	if (message) {
+	// 		setElement(prev => {
+	// 			const updateArray = [message, ...prev]
+
+	// 			if (updateArray.length > 5) {
+	// 				return updateArray.slice(0, 5)
+	// 			}
+
+	// 			return updateArray
+	// 		})
+	// 	}
+	// }, [message])
+
+	useEffect(() => {
+		const socket = connectSocket()
+
+		socket.on("message", message => {
+			console.log(message)
+		})
+	}, [])
 
 	return (
 		<>
@@ -94,27 +95,7 @@ export default function HeroSeaction() {
 							alt="decoration element"
 							className="absolute -top-5 left-[21.5rem] z-0 max-md:-top-[6rem]  max-md:left-[10rem]"
 						/>
-						<div className="absolute inset-0 z-10 bg-boxColor rounded-lg border border-borderColor p-5 overflow-hidden max-lg:relative max-md:w-full max-lg:w-full max-md:mb-20">
-							<p className="mt-2">Ostatnie przeskanowane szablony</p>
-							<div className="flex flex-col gap-3 mt-4">
-								{scanTemplate.map((element, index) => (
-									<motion.div
-										initial={{ opacity: 0, y: -50 }}
-										animate={{ opacity: 1, y: 0 }}
-										transition={{ duration: 0.5, delay: index * 0.2 }}
-										className="flex items-center gap-3 bg-altBackgroundColor border border-borderColor py-3 px-5 rounded-2xl"
-										key={index}>
-										<div className="text-gray-300 w-full">
-											<p>{element.title}</p>
-											<div className="w-full flex items-center justify-between">
-												<p className="font-semibold">{element.dateCreate}</p>
-												<p className="font-semibold">{element.usage} użyć</p>
-											</div>
-										</div>
-									</motion.div>
-								))}
-							</div>
-						</div>
+						<LoadScanTemplate />
 					</div>
 				</div>
 			</header>
