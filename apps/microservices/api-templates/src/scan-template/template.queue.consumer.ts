@@ -5,6 +5,7 @@ import { lastValueFrom } from 'rxjs';
 import * as admin from 'firebase-admin';
 import { Inject } from '@nestjs/common';
 import { WebsocketGateway } from 'src/websocket/websocket.gateway';
+import { PrismaService } from '@repo/shared';
 
 @Processor('scanQueue', {
   limiter: {
@@ -14,7 +15,7 @@ import { WebsocketGateway } from 'src/websocket/websocket.gateway';
 })
 export class TemplateConsumer extends WorkerHost {
   private canProcessQueue = false;
-  private batchData = [];
+  private batchTemplate = [];
 
   set toggleQueue(value: boolean) {
     this.canProcessQueue = value;
@@ -24,6 +25,7 @@ export class TemplateConsumer extends WorkerHost {
     private readonly httpService: HttpService,
     @Inject('FIREBASE_APP') private readonly admin: admin.app.App,
     private readonly websocket: WebsocketGateway,
+    private readonly prisma: PrismaService,
   ) {
     super();
   }
@@ -42,14 +44,24 @@ export class TemplateConsumer extends WorkerHost {
 
       await baseRef.update({ usageCount: response.data.usage_count });
 
-      this.batchData.push({
-        id: job.data.ID,
-        name: response.data.name,
-        usageCount: response.data.usage_count,
+      this.batchTemplate.push({
+        templateId: job.data.ID.toString(),
+        title: job.data.title,
+        usage: response.data.usage_count,
+        dateCreate: job.data.dateCreate,
       });
-      console.log('skanuje');
 
-      console.log(this.batchData.length);
+      if (this.batchTemplate.length > 5) {
+        const test = await this.prisma.template.createMany({
+          data: this.batchTemplate,
+        });
+
+        console.log(`zapisano`, test);
+
+        this.batchTemplate = [];
+      }
+
+      console.log('skanuje', job.id);
 
       this.websocket.server.emit('message', {
         title: response.data.name,
@@ -65,6 +77,7 @@ export class TemplateConsumer extends WorkerHost {
       if (err.response?.data.code === 10057) baseRef.remove();
 
       console.log(`X`, job.data.ID, job.data.dateCreate);
+      console.log(err);
     }
   }
 }

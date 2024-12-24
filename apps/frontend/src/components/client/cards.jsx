@@ -1,7 +1,7 @@
 "use client"
 
 import Image from "next/image"
-import decorationBox from "../../public/decorationElementBox.svg"
+import decorationBox from "../../../public/decorationElementBox.svg"
 
 export default function Card() {
 	return (

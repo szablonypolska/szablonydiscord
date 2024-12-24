@@ -2,9 +2,11 @@ import { BullModule } from '@nestjs/bullmq';
 import { Module } from '@nestjs/common';
 import { QueueService } from './queue.service';
 import { QueueController } from './queue.controller';
+import { SharedModule } from '@repo/shared';
 
 @Module({
   imports: [
+    SharedModule,
     BullModule.forRoot({
       connection: {
         host: 'localhost',
