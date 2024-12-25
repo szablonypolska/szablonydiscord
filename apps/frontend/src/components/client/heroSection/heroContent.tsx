@@ -1,14 +1,8 @@
 "use client"
 
-import heroDecoration from "../../../../public/decorationElementHero.svg"
-import Image from "next/image"
-import CountUp from "react-countup"
-
-import useWebSocket from "@/hooks/useWebSocket"
+import { Button } from "@nextui-org/button"
 
 export default function HeroContent() {
-	const { message } = useWebSocket()
-
 	return (
 		<>
 			<div className="max-md:flex max-md:flex-col max-md:items-center max-md:text-center mb-10 max-md:w-full max-lg:w-1/2">
@@ -31,7 +25,7 @@ export default function HeroContent() {
 					pariatur eos fugiat voluptates sit voluptate dolor quisquam accusantium. Ut aspernatur incidunt ducimus
 					dolore.
 				</p>
-				<button className=" bg-primaryColor px-5 py-3 rounded-full">Zacznij przeglądać</button>
+				<Button className=" bg-primaryColor px-5 py-2.5 rounded-full">Zacznij przeglądać</Button>
 			</div>
 		</>
 	)

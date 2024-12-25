@@ -1,6 +1,6 @@
 import { HttpService } from '@nestjs/axios';
-import { Processor, WorkerHost } from '@nestjs/bullmq';
-import { Job } from 'bullmq';
+import { InjectQueue, Processor, WorkerHost } from '@nestjs/bullmq';
+import { Job, Queue } from 'bullmq';
 import { lastValueFrom } from 'rxjs';
 import * as admin from 'firebase-admin';
 import { Inject } from '@nestjs/common';
@@ -24,6 +24,7 @@ export class TemplateConsumer extends WorkerHost {
   constructor(
     private readonly httpService: HttpService,
     @Inject('FIREBASE_APP') private readonly admin: admin.app.App,
+    @InjectQueue('scanQueue') private readonly queue: Queue,
     private readonly websocket: WebsocketGateway,
     private readonly prisma: PrismaService,
   ) {
@@ -43,6 +44,7 @@ export class TemplateConsumer extends WorkerHost {
       );
 
       await baseRef.update({ usageCount: response.data.usage_count });
+      const waitElement = await this.queue.getWaitingCount();
 
       this.batchTemplate.push({
         templateId: job.data.ID.toString(),
@@ -68,6 +70,7 @@ export class TemplateConsumer extends WorkerHost {
         id: job.data.ID,
         usage: response.data.usage_count,
         dateCreate: '23.12.2024',
+        waitElement: waitElement,
       });
     } catch (err) {
       if (err.response?.status === 429) {
@@ -76,7 +79,7 @@ export class TemplateConsumer extends WorkerHost {
 
       if (err.response?.data.code === 10057) baseRef.remove();
 
-      console.log(`X`, job.data.ID, job.data.dateCreate);
+      console.log(`ERROR`, job.data.ID, job.data.dateCreate);
       console.log(err);
     }
   }
