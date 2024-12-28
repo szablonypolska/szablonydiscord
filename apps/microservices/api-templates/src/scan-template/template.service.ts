@@ -33,14 +33,6 @@ export class TemplateService {
 
     this.template.toggleQueue = true;
 
-    const test = await this.prisma.user.create({
-      data: {
-        name: 'huj',
-      },
-    });
-
-    console.log(test);
-
     return 'all items added to queuess';
   }
 }

@@ -58,7 +58,7 @@ export class TemplateConsumer extends WorkerHost {
           data: this.batchTemplate,
         });
 
-        console.log(`zapisano`, test);
+        console.log(`zapisano!`, test);
 
         this.batchTemplate = [];
       }

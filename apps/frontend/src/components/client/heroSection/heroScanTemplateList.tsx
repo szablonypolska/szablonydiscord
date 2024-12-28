@@ -6,6 +6,7 @@ import { useEffect, useState } from "react"
 import heroDecoration from "../../../../public/decorationElementHero.svg"
 import Image from "next/image"
 import CountUp from "react-countup"
+import Modals from "./heroModal"
 
 interface Type {
 	title: string
@@ -24,7 +25,9 @@ interface Props {
 export default function ScanTemplateList({ templates, status }: Props) {
 	const [list, setList] = useState<Type[]>([])
 	const [queueWait, setQueueWait] = useState<number>(0)
+	const [queue, setQueue] = useState<number>(0)
 	const [scanTemplate, setScanTemplate] = useState<number>(0)
+	const [modal, setModal] = useState<boolean>(false)
 	let id = 4
 
 	const addTemplate = (msg: Type) => {
@@ -37,12 +40,31 @@ export default function ScanTemplateList({ templates, status }: Props) {
 
 	useEffect(() => {
 		const socket = connectSocket()
+		let element = 0
+		let id = 0
+
 		setList(templates.slice(0, 4))
 
 		socket.on("message", message => {
 			addTemplate(message)
 			setQueueWait(message.waitElement)
+			element = message.waitElement
+
+			if (id === 2) {
+				setQueue(message.waitElement)
+				id++
+				return
+			}
+			id++
 		})
+
+		const interval = setInterval(() => {
+			setQueue(element)
+		}, 7000)
+
+		return () => {
+			clearInterval(interval)
+		}
 	}, [])
 
 	useEffect(() => {
@@ -66,10 +88,9 @@ export default function ScanTemplateList({ templates, status }: Props) {
 		}
 	}, [])
 
-	console.log(list)
-
 	return (
 		<>
+			<Modals modal={modal} setModal={setModal} status={status} />
 			<div className="w-[27rem] rounded-lg p-5 relative max-md:w-full max-md:p-0 max-lg:w-1/2">
 				<div className="flex gap-3 bg-darknesPrimaryColor py-3 px-5 w-fit rounded-2xl absolute -top-[4rem] -left-[6rem] z-20 max-lg:py-2 max-lg:px-3 max-lg:-top-[2rem]  max-md:hidden">
 					<span className="material-symbols-outlined bg-primaryColor w-12 h-12 flex items-center justify-center rounded-full">
@@ -77,10 +98,13 @@ export default function ScanTemplateList({ templates, status }: Props) {
 					</span>
 					<div>
 						<p className="text-xl tracking-wider max-md:text-lg">
-							<CountUp start={queueWait} end={queueWait} duration={0.3} />
+							<CountUp start={queue} end={queueWait} duration={1.5} />
 						</p>
 						<p className="text-gray-300  max-md:text-sm">
-							W kolejce <button className="underline">szablonów</button>
+							W kolejce{" "}
+							<button className="underline" onClick={() => setModal(!modal)}>
+								szablonów
+							</button>
 						</p>
 					</div>
 				</div>

@@ -3,6 +3,7 @@ import decorationElement from "../../public/decorationElement.svg"
 import Navbar from "@/components/client/navbar"
 import Card from "@/components/client/cards"
 import HeroSection from "@/components/server/heroSection/heroSection"
+import CallToAction from "@/components/client/callToAction"
 
 export default function Home() {
 	return (
@@ -12,6 +13,7 @@ export default function Home() {
 				<Image src={decorationElement} alt="dekoracyjny element" className="absolute top-0 left-0 z-10"></Image>
 				<HeroSection />
 				<Card />
+				<CallToAction />
 			</div>
 		</>
 	)

@@ -2,12 +2,10 @@
 
 import Image from "next/image"
 import decorationBox from "../../../public/decorationElementBox.svg"
-import Modals from "./modal"
 
 export default function Card() {
 	return (
 		<>
-			<Modals />
 			<div className="max-md:w-full">
 				<h2 className="text-3xl">
 					Statystyki <strong className="text-primaryColor">skanowania</strong>
