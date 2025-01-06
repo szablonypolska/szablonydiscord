@@ -9,4 +9,9 @@ export class QueueController {
   getLengthWaitElement(): Promise<boolean> {
     return this.queue.getLengthWaitElement();
   }
+
+  @Get('test')
+  create(): Promise<void> {
+    return this.queue.test();
+  }
 }

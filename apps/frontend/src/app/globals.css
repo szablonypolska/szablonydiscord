@@ -10,6 +10,7 @@
 	--altBackgroundColor: #1c1c1c;
 	--borderColor: #262626;
 	--boxColor: #1a1a1a;
+	--textColor: #b3b3b3;
 }
 
 /* @media (prefers-color-scheme: dark) {
@@ -24,5 +25,3 @@ body {
 	background: var(--background);
 	font-family: Arial, Helvetica, sans-serif;
 }
-
-

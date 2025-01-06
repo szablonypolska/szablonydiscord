@@ -25,3 +25,16 @@ model Template {
   usage Int
   dateCreate String
 }
+
+model Templates {
+  in Int @id @default(autoincrement())
+  templateId String
+  categories String
+  dateCreate String
+  link String
+  title String
+  usageCount Int?
+  clickButtonUse Int?
+  server String?
+  serverLink String?
+}

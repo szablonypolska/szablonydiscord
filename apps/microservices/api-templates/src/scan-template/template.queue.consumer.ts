@@ -9,8 +9,8 @@ import { PrismaService } from '@repo/shared';
 
 @Processor('scanQueue', {
   limiter: {
-    max: 50,
-    duration: 1000,
+    max: 1,
+    duration: 1100,
   },
 })
 export class TemplateConsumer extends WorkerHost {
@@ -54,22 +54,20 @@ export class TemplateConsumer extends WorkerHost {
       });
 
       if (this.batchTemplate.length > 5) {
-        const test = await this.prisma.template.createMany({
+        await this.prisma.template.createMany({
           data: this.batchTemplate,
         });
-
-        console.log(`zapisano!`, test);
 
         this.batchTemplate = [];
       }
 
-      console.log('skanuje', job.id);
+      console.log('scan', job.id);
 
       this.websocket.server.emit('message', {
         title: response.data.name,
         id: job.data.ID,
         usage: response.data.usage_count,
-        dateCreate: '23.12.2024',
+        dateCreate: job.data.dateCreate,
         waitElement: waitElement,
       });
     } catch (err) {

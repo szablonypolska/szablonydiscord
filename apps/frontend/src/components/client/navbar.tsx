@@ -2,7 +2,7 @@ import Image from "next/image"
 import logo from "../../../public/logo.svg"
 import Link from "next/link"
 
-function Logo() {
+export function Logo() {
 	return (
 		<div className="flex items-center gap-2">
 			<Image src={logo} alt="logo" />

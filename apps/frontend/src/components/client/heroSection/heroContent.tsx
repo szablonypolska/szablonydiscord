@@ -10,7 +10,7 @@ export default function HeroContent() {
 					<span className="material-symbols-outlined text-primaryColor">verified</span>
 					<p className="text-gray-300">Szablonydiscord jest w pełni bezpłatne</p>
 				</div>
-				<h2 className="text-4xl font-medium tracking-wide mt-5 max-md:text-2xl max-md:font-black max-lg:text-3xl">
+				<h2 className="text-4xl font-medium tracking-wide mt-5 max-md:text-2xl max-md:font-semibold max-lg:text-3xl">
 					Witaj w SzablonyDiscord
 				</h2>
 				<h3 className="text-4xl font-medium tracking-wide max-md:mt-2 mt-5 max-md:text-2xl max-md:text-wrap max-lg:text-3xl">
@@ -19,7 +19,7 @@ export default function HeroContent() {
 				<h3 className="text-4xl tracking-wide mt-5 text-primaryColor font-semibold max-md:text-2xl max-md:mt-1 max-lg:text-3xl">
 					zaawansowane systemy!
 				</h3>
-				<p className="my-7 w-[45rem] text-sm text-gray-300 max-xl:w-[35rem] max-md:text-xs max-lg:w-full max-md:my-4">
+				<p className="my-7 w-[45rem] text-sm text-textColor max-xl:w-[35rem] max-md:text-xs max-lg:w-full max-md:my-4">
 					Lorem ipsum dolor sit amet consectetur adipisicing elit. Quia necessitatibus, pariatur ratione minus
 					exercitationem eaque omnis autem ipsum dolore excepturi. Tempora, corrupti saepe rem blanditiis exercitationem
 					pariatur eos fugiat voluptates sit voluptate dolor quisquam accusantium. Ut aspernatur incidunt ducimus

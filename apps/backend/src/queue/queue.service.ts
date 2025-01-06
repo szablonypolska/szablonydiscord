@@ -11,12 +11,43 @@ export class QueueService {
   ) {}
 
   async getLengthWaitElement(): Promise<boolean> {
-    const length = await this.queue.getWaitingCount();
+    try {
+      const length = await this.queue.getWaitingCount();
 
-    console.log(length);
+      console.log(length);
 
-    if (length > 0) return false;
+      if (length > 0) return false;
 
-    return true;
+      return true;
+    } catch (err) {
+      console.log(err);
+    }
+  }
+
+  async test(): Promise<void> {
+    const create = await this.prisma.templates.create({
+      data: {
+        templateId: '2345',
+        categories: 'huj',
+        dateCreate: 'huj',
+        link: 'huj',
+        title: 'hjuj',
+      },
+    });
+
+    console.log(create);
   }
 }
+
+// model Templates {
+//   in Int @id @default(autoincrement())
+//   templateId String
+//   categories String
+//   dateCreate String
+//   Link String
+//   title String
+//   usageCount Int?
+//   clickButtonUse Int?
+//   server String?
+//   serverLink String?
+// }

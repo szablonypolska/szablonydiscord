@@ -64,6 +64,7 @@ export default function ScanTemplateList({ templates, status }: Props) {
 
 		return () => {
 			clearInterval(interval)
+			socket.disconnect()
 		}
 	}, [])
 
@@ -91,8 +92,8 @@ export default function ScanTemplateList({ templates, status }: Props) {
 	return (
 		<>
 			<Modals modal={modal} setModal={setModal} status={status} />
-			<div className="w-[27rem] rounded-lg p-5 relative max-md:w-full max-md:p-0 max-lg:w-1/2">
-				<div className="flex gap-3 bg-darknesPrimaryColor py-3 px-5 w-fit rounded-2xl absolute -top-[4rem] -left-[6rem] z-20 max-lg:py-2 max-lg:px-3 max-lg:-top-[2rem]  max-md:hidden">
+			<div className="w-[27rem] rounded-lg p-5 relative max-md:w-full max-md:p-0 max-lg:w-1/2 max-md:mt-10 max-md:px-2">
+				<div className="flex gap-3 bg-darknesPrimaryColor py-3 px-5 w-fit rounded-2xl absolute -top-[4rem] -left-[6rem] z-20 max-lg:py-2 max-lg:px-3 max-lg:-top-[2rem] max-md:-left-2 max-md:-top-12">
 					<span className="material-symbols-outlined bg-primaryColor w-12 h-12 flex items-center justify-center rounded-full">
 						add
 					</span>
@@ -108,7 +109,7 @@ export default function ScanTemplateList({ templates, status }: Props) {
 						</p>
 					</div>
 				</div>
-				<div className="absolute -bottom-20 -right-12 bg-darknesPrimaryColor p-1 z-20 flex gap-2 items-center rounded-full px-2 pl-5 max-lg:-right-2 max-md:bottom-0 max-md:right-1/2 max-md:translate-x-1/2 max-lg:-bottom-10">
+				<div className="absolute -bottom-20 -right-12 bg-darknesPrimaryColor p-1 z-20 flex gap-2 items-center rounded-full px-2 pl-5 max-lg:-right-2 max-md:bottom-5  ">
 					<p>Wspieramy:</p>
 					<div className="flex  bg-boxColor px-1 rounded-full">
 						<span className="material-symbols-outlined bg-borderColor w-8 h-8 flex items-center justify-center rounded-full m-1 text-primaryColor text-lg">
@@ -130,7 +131,7 @@ export default function ScanTemplateList({ templates, status }: Props) {
 					alt="decoration element"
 					className="absolute -top-5 left-[21.5rem] z-0 max-md:-top-[6rem]  max-md:left-[10rem]"
 				/>
-				<div className="absolute inset-0 z-10 bg-boxColor rounded-lg border border-borderColor p-5 overflow-hidden max-lg:relative max-md:w-full max-lg:w-full max-md:mb-20">
+				<div className="absolute inset-0 z-10 bg-boxColor rounded-lg border border-borderColor p-5 overflow-hidden max-lg:relative max-lg:w-full max-md:mb-20 max-md:mx-auto max-md:px-2">
 					<div className="flex items-center gap-1 mt-2">
 						<p className="">Ostatnie przeskanowane szablony</p>
 						<p className="font-semibold">({scanTemplate})</p>
