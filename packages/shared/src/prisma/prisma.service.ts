@@ -1,13 +1,17 @@
-import { PrismaClient } from "@repo/db"
-import { OnModuleInit, OnModuleDestroy, Injectable } from "@nestjs/common"
+import { prisma } from "@repo/db"
+import { Injectable, OnModuleInit, OnModuleDestroy, Scope } from "@nestjs/common"
 
-@Injectable()
-export class PrismaService extends PrismaClient implements OnModuleInit, OnModuleDestroy {
+@Injectable({ scope: Scope.DEFAULT })
+export class PrismaService implements OnModuleInit, OnModuleDestroy {
 	async onModuleInit() {
-		await this.$connect()
+		await prisma.$connect()
 	}
 
 	async onModuleDestroy() {
-		await this.$disconnect()
+		await prisma.$disconnect()
+	}
+
+	get client() {
+		return prisma
 	}
 }

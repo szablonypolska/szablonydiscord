@@ -4,8 +4,8 @@ import { Job, Queue } from 'bullmq';
 import { lastValueFrom } from 'rxjs';
 import * as admin from 'firebase-admin';
 import { Inject } from '@nestjs/common';
-import { WebsocketGateway } from 'src/websocket/websocket.gateway';
 import { PrismaService } from '@repo/shared';
+import { WebsocketGateway } from 'src/websocket/websocket.gateway';
 
 @Processor('scanQueue', {
   limiter: {
@@ -54,7 +54,7 @@ export class TemplateConsumer extends WorkerHost {
       });
 
       if (this.batchTemplate.length > 5) {
-        await this.prisma.template.createMany({
+        await this.prisma.client.template.createMany({
           data: this.batchTemplate,
         });
 

@@ -1,16 +1,29 @@
 "use client"
+import { connectSocketBackend } from "@/socket"
 import { useEffect } from "react"
 import { Toaster, toast } from "sonner"
 
 export default function GlobalToaster() {
+	const socket = connectSocketBackend()
+
 	useEffect(() => {
-		const interval = setInterval(() => {
-			toast.message("Został dodany nowy szablon serwera", {
-				description: "ID: 7549385734985, Data: 06.01.2024",
-				className: "bg-boxColor border border-borderColor text-white",
-			})
-		}, 3000)
+		socket.on("info", message => {
+			console.log(message)
+			if (message.action == "create") {
+				toast.message("Szablon serwera został dodany", {
+					description: `ID szablony: ${message.templateId}, ${message.dateCreate}`,
+					className: "bg-boxColor border border-borderColor text-white",
+				})
+			}
+
+			if (message.action == "delete") {
+				toast.info("Szablon serwera został usunięty z naszej bazy.", {
+					className: "bg-boxColor border border-borderColor text-white",
+				})
+			}
+		})
 	}, [])
+
 	return (
 		<>
 			<Toaster />
