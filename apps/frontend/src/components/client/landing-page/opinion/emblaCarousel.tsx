@@ -5,7 +5,7 @@ import { EmblaOptionsType } from "embla-carousel"
 import { PrevButton, NextButton, usePrevNextButtons } from "./emblaCarouselArrowButtons"
 import useEmblaCarousel from "embla-carousel-react"
 import Image from "next/image"
-import icon from "../../../../public/Icon.svg"
+import icon from "../../../../../public/Icon.svg"
 import { Button } from "@nextui-org/button"
 
 type PropType = {

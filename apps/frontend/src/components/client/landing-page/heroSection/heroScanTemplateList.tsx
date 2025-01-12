@@ -3,7 +3,7 @@
 import { motion, AnimatePresence } from "framer-motion"
 import { connectSocket } from "@/socket"
 import { useEffect, useState } from "react"
-import heroDecoration from "../../../../public/decorationElementHero.svg"
+import heroDecoration from "../../../../../public/decorationElementHero.svg"
 import Image from "next/image"
 import CountUp from "react-countup"
 import Modals from "./heroModal"
@@ -94,9 +94,7 @@ export default function ScanTemplateList({ templates, status }: Props) {
 			<Modals modal={modal} setModal={setModal} status={status} />
 			<div className="w-[27rem] rounded-lg p-5 relative max-md:w-full max-md:p-0 max-lg:w-1/2 max-md:mt-10 max-md:px-2">
 				<div className="flex gap-3 bg-darknesPrimaryColor py-3 px-5 w-fit rounded-2xl absolute -top-[4rem] -left-[6rem] z-20 max-lg:py-2 max-lg:px-3 max-lg:-top-[2rem] max-md:-left-2 max-md:-top-12">
-					<span className="material-symbols-outlined bg-primaryColor w-12 h-12 flex items-center justify-center rounded-full">
-						add
-					</span>
+					<span className="material-symbols-outlined bg-primaryColor w-12 h-12 flex items-center justify-center rounded-full">add</span>
 					<div>
 						<p className="text-xl tracking-wider max-md:text-lg">
 							<CountUp start={queue} end={queueWait} duration={1.5} />
@@ -112,25 +110,13 @@ export default function ScanTemplateList({ templates, status }: Props) {
 				<div className="absolute -bottom-20 -right-12 bg-darknesPrimaryColor p-1 z-20 flex gap-2 items-center rounded-full px-2 pl-5 max-lg:-right-2 max-md:bottom-5  ">
 					<p>Wspieramy:</p>
 					<div className="flex  bg-boxColor px-1 rounded-full">
-						<span className="material-symbols-outlined bg-borderColor w-8 h-8 flex items-center justify-center rounded-full m-1 text-primaryColor text-lg">
-							api
-						</span>
-						<span className="material-symbols-outlined bg-borderColor w-8 h-8 flex items-center justify-center rounded-full m-1 text-primaryColor text-lg">
-							data_object
-						</span>
-						<span className="material-symbols-outlined bg-borderColor w-8 h-8 flex items-center justify-center rounded-full m-1 text-primaryColor text-lg">
-							code
-						</span>
-						<span className="material-symbols-outlined bg-borderColor w-8 h-8 flex items-center justify-center rounded-full m-1 text-primaryColor text-lg">
-							vpn_key
-						</span>
+						<span className="material-symbols-outlined bg-borderColor w-8 h-8 flex items-center justify-center rounded-full m-1 text-primaryColor text-lg">api</span>
+						<span className="material-symbols-outlined bg-borderColor w-8 h-8 flex items-center justify-center rounded-full m-1 text-primaryColor text-lg">data_object</span>
+						<span className="material-symbols-outlined bg-borderColor w-8 h-8 flex items-center justify-center rounded-full m-1 text-primaryColor text-lg">code</span>
+						<span className="material-symbols-outlined bg-borderColor w-8 h-8 flex items-center justify-center rounded-full m-1 text-primaryColor text-lg">vpn_key</span>
 					</div>
 				</div>
-				<Image
-					src={heroDecoration}
-					alt="decoration element"
-					className="absolute -top-5 left-[21.5rem] z-0 max-md:-top-[6rem]  max-md:left-[10rem]"
-				/>
+				<Image src={heroDecoration} alt="decoration element" className="absolute -top-5 left-[21.5rem] z-0 max-md:-top-[6rem]  max-md:left-[10rem]" />
 				<div className="absolute inset-0 z-10 bg-boxColor rounded-lg border border-borderColor p-5 overflow-hidden max-lg:relative max-lg:w-full max-md:mb-20 max-md:mx-auto max-md:px-2">
 					<div className="flex items-center gap-1 mt-2">
 						<p className="">Ostatnie przeskanowane szablony</p>

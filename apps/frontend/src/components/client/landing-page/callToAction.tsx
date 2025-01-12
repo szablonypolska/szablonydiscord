@@ -1,5 +1,5 @@
 import Image from "next/image"
-import decorationElementCallToAction from "../../../public/decorationElementCallToAction.svg"
+import decorationElementCallToAction from "../../../../public/decorationElementCallToAction.svg"
 import { Button } from "@nextui-org/button"
 
 export default function CallToAction() {

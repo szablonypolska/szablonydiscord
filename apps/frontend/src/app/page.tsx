@@ -1,12 +1,12 @@
 import Image from "next/image"
-import decorationElement from "../../public/decorationElement.svg"
+import decorationElement from "../../public/templatesDecoration.svg"
 import Navbar from "@/components/client/navbar"
-import HeroSection from "@/components/server/heroSection/heroSection"
-import CallToAction from "@/components/client/callToAction"
-import EmblaCarousel from "@/components/client/opinion/emblaCarousel"
+import HeroSection from "@/components/server/landing-page/heroSection/heroSection"
+import CallToAction from "@/components/client/landing-page/callToAction"
+import EmblaCarousel from "@/components/client/landing-page/opinion/emblaCarousel"
 import Footer from "@/components/client/footer"
-import Statistics from "@/components/client/statistics"
-import GlobalToaster from "@/components/client/globalToaster"
+import Statistics from "@/components/client/landing-page/statistics"
+import GlobalToaster from "@/components/client/landing-page/globalToaster"
 
 export default function Home() {
 	return (

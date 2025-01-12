@@ -13,10 +13,6 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model User {
-  id Int @id @default(autoincrement())
-  name String?
-}
 
 model Template {
   id Int @id @default(autoincrement())
@@ -26,6 +22,14 @@ model Template {
   dateCreate String
 }
 
+model User {
+  id Int @id @default(autoincrement())
+  avatar String 
+  userId String @unique
+  username String
+  template Templates[]
+}
+
 model Templates {
   in Int @id @default(autoincrement())
   templateId String
@@ -33,8 +37,11 @@ model Templates {
   dateCreate String
   link String
   title String
-  usageCount Int?
+  description String?
+  usageCount Int
   clickButtonUse Int?
   server String?
   serverLink String?
+  authorId String
+  author User @relation(fields: [authorId], references: [userId])
 }

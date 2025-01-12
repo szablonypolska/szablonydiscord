@@ -2,7 +2,7 @@
 
 import { Button } from "@nextui-org/button"
 import Image from "next/image"
-import decorationBox from "../../../public/decorationElementBox.svg"
+import decorationBox from "../../../../public/decorationElementBox.svg"
 import { useInView } from "react-intersection-observer"
 import CountUp from "react-countup"
 
