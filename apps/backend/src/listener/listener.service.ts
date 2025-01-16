@@ -10,7 +10,7 @@ export class ListenerService implements OnModuleInit {
   ) {}
 
   async onModuleInit(): Promise<void> {
-    this.startListening();
+    // this.startListening();
   }
 
   private async startListening(): Promise<void> {
@@ -20,6 +20,7 @@ export class ListenerService implements OnModuleInit {
       });
 
       for await (const event of stream) {
+        console.log(event);
         if (event.action == 'create') {
           this.websocket.server.emit('info', {
             action: 'create',

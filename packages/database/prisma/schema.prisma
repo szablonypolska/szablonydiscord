@@ -24,24 +24,51 @@ model Template {
 
 model User {
   id Int @id @default(autoincrement())
-  avatar String 
   userId String @unique
   username String
+  avatar String? 
+  dateCreateAccount DateTime?
+  register Boolean @default(false)
+  reports Int @default(0)
+  warnings Int @default(0)
+  limitApiKey Int @default(2)
+  trustScore Int @default(100)
+  emailVerified Boolean @default(false)
   template Templates[]
+  api Api[]
+}
+
+model Api {
+  id Int @id @default(autoincrement())
+  name String
+  dateCreate DateTime @default(now())
+  status Boolean @default(true)
+  secretKey String
+  reqCount Int @default(0)
+  successCount Int @default(0)
+  errorCount Int @default(0)
+  lastUsed DateTime
+  montlyUsage Int @default(20000)
+  userId String
+  user User @relation(fields: [userId], references: [userId])
 }
 
 model Templates {
   in Int @id @default(autoincrement())
-  templateId String
+  templateId String @unique
+  link String @unique
   categories String
   dateCreate String
-  link String
+  dateCreateSystem DateTime @default(now())
   title String
   description String?
   usageCount Int
   clickButtonUse Int?
   server String?
   serverLink String?
-  authorId String
-  author User @relation(fields: [authorId], references: [userId])
+  authorId String?
+  author User? @relation(fields: [authorId], references: [userId])
+
+  @@index([usageCount])
+  @@index([dateCreateSystem])
 }

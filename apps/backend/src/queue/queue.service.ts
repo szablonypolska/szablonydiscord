@@ -21,23 +21,6 @@ export class QueueService {
       console.log(err);
     }
   }
-
-  async test(): Promise<void> {
-    try {
-      await this.prisma.client.templates.create({
-        data: {
-          templateId: '7435634534',
-          categories: 'huj',
-          dateCreate: '07.01.2025',
-          link: 'huj',
-          title: 'hjuj',
-        },
-      });
-      console.log(`dodano`);
-    } catch (err) {
-      console.log(err);
-    }
-  }
 }
 
 // model Templates {

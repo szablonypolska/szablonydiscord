@@ -33,8 +33,8 @@ export default async function HeroSection() {
 	)
 }
 
-// import HeroContent from "@/components/client/heroSection/heroContent"
-// import ScanTemplateList from "@/components/client/heroSection/heroScanTemplateList"
+// import HeroContent from "@/components/client/landing-page/heroSection/heroContent"
+// import ScanTemplateList from "@/components/client/landing-page/heroSection/heroScanTemplateList"
 // import { prisma } from "@repo/db"
 
 // export default async function HeroSection() {

@@ -82,7 +82,7 @@ export default function ScanTemplateList({ templates, status }: Props) {
 				setScanTemplate(prev => prev + 1)
 				return [template, ...prev].slice(0, 5)
 			})
-		}, 1000)
+		}, 2000)
 
 		return () => {
 			clearInterval(interval)

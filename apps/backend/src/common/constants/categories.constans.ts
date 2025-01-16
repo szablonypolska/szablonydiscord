@@ -1,9 +1,9 @@
 export const categoriesTemplate = [
   'Wszystkie',
-  'Społecznościowe',
+  'Społeczny',
   'Roleplay',
   'Tematyczne',
-  'Programistyczne',
+  'Devowe',
   'Angielskie',
   'NSFW',
   'Grupy-ludzi',

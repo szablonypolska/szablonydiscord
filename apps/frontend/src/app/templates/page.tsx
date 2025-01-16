@@ -2,8 +2,8 @@ import Navbar from "@/components/client/navbar"
 import HeaderTemplates from "@/components/client/templates/header"
 import decorationElement from "../../../public/templatesDecoration.svg"
 import Image from "next/image"
-import TemplateList from "@/components/client/templates/templatesList"
 import Footer from "@/components/client/footer"
+import LoadTemplates from "@/components/server/templates/loadTemplates"
 
 export default function Templates() {
 	return (
@@ -12,7 +12,7 @@ export default function Templates() {
 				<Image src={decorationElement} alt="dekoracyjny element" className="absolute top-0 left-0"></Image>
 				<Navbar />
 				<HeaderTemplates />
-				<TemplateList />
+				<LoadTemplates />
 			</div>
 			<Footer />
 		</>

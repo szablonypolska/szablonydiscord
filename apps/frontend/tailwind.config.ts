@@ -14,6 +14,12 @@ export default {
 				boxColor: "var(--boxColor)",
 				textColor: "var(--textColor)",
 				textSpecial: "var(--textSpecial)",
+				adviceBot: "var(--advicebot)",
+				channelColor: "var(--channelColor)",
+				sidebarColor: "var(--sidebarColor)",
+				silverColor: "var(--silverColor)",
+				boxColorDashboard: "var(--boxColorDashboard)",
+				warningColor: "var(--warningColor)",
 			},
 			backgroundImage: {
 				darkTealFade: "radial-gradient(circle, rgba(23,128,119,0.1) 10%, rgba(23,128,119,0) 100%)",

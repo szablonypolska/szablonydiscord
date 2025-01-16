@@ -9,7 +9,7 @@ import { WebsocketGateway } from 'src/websocket/websocket.gateway';
 
 @Processor('scanQueue', {
   limiter: {
-    max: 1,
+    max: 10,
     duration: 1100,
   },
 })
@@ -43,7 +43,12 @@ export class TemplateConsumer extends WorkerHost {
         ),
       );
 
-      await baseRef.update({ usageCount: response.data.usage_count });
+      await baseRef.update({
+        usageCount: response.data.usage_count,
+        userId: response.data.creator.id,
+        avatar: response.data.creator.avatar,
+        username: response.data.creator.username,
+      });
       const waitElement = await this.queue.getWaitingCount();
 
       this.batchTemplate.push({
@@ -53,6 +58,12 @@ export class TemplateConsumer extends WorkerHost {
         dateCreate: job.data.dateCreate,
       });
 
+      console.log(
+        response.data.creator.id,
+        response.data.creator.avatar,
+        response.data.creator.username,
+      );
+
       if (this.batchTemplate.length > 5) {
         await this.prisma.client.template.createMany({
           data: this.batchTemplate,
@@ -61,7 +72,7 @@ export class TemplateConsumer extends WorkerHost {
         this.batchTemplate = [];
       }
 
-      console.log('scan', job.id);
+      console.log('scan', job.id, waitElement);
 
       this.websocket.server.emit('message', {
         title: response.data.name,

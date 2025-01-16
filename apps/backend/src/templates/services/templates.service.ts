@@ -5,9 +5,9 @@ import { HttpService } from '@nestjs/axios';
 import { lastValueFrom } from 'rxjs';
 import { Response } from 'express';
 import { GoogleGenerativeAI } from '@google/generative-ai';
-import { prompt } from './instructions/ai-prompt.json';
+import { prompt } from '../instructions/ai-prompt.json';
 import { categoriesTemplate } from 'src/common/constants/categories.constans';
-import { DetailsTemplates } from './interfaces/templates.interface';
+import { DetailsTemplates } from '../interfaces/templates.interface';
 
 @Injectable()
 export class TemplatesService {

@@ -41,7 +41,7 @@ export default function Navbar() {
 				</div>
 				<div className="">
 					<Link href="https://szablonydiscord.pl/register">Zarejestruj się</Link>
-					<Link href="https://szablonydiscord.pl/login" className="ml-5 bg-primaryColor py-3 px-5 rounded-full">
+					<Link href="/login" className="ml-5 bg-primaryColor py-3 px-5 rounded-full">
 						Logowanie
 					</Link>
 				</div>
