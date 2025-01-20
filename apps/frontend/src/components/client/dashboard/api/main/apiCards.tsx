@@ -1,9 +1,10 @@
+import { useDashboardContext } from "@/context/DashboardContext"
 import { Button } from "@nextui-org/button"
 import { Plus, CircleCheck, CircleGauge, Clock, Shield, LockKeyhole, CircleHelp, MessageCircle, Mail, FileCode, BookOpen, Code2, RefreshCcw, FileText } from "lucide-react"
 
 export default function ApiCard() {
 	return (
-		<div className="flex items-center gap-5 mt-5 max-2xl:grid max-2xl:grid-cols-2">
+		<div className="flex items-center gap-5 mt-5 max-2xl:grid max-2xl:grid-cols-2 max-sm:grid-cols-1">
 			<div className="bg-altBackgroundColor border border-borderColor p-5 rounded-xl flex-grow  ">
 				<div className="flex items-center gap-3">
 					<Clock size="40" className="bg-borderColor p-2 rounded-xl text-primaryColor" />

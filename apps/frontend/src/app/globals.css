@@ -6,7 +6,7 @@
 	--background: #191919;
 	--foreground: #ffffff;
 	--primary-color: #00796b;
-	--darknesPrimaryColor: #234946;
+	--darknesPrimaryColor: #18302d;
 	--altBackgroundColor: #1c1c1c;
 	--borderColor: #262626;
 	--boxColor: #1a1a1a;
@@ -18,6 +18,9 @@
 	--silverColor: #9ca3af;
 	--boxColorDashboard: #1e1e1e;
 	--warningColor: #f97316;
+	--disabledButton: #6b7280;
+	--errorColor: #ef4444;
+	--darknesErrorColor: #401e1e;
 }
 
 /* @media (prefers-color-scheme: dark) {

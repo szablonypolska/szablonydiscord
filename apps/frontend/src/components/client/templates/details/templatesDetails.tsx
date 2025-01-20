@@ -1,5 +1,5 @@
 import { Button } from "@nextui-org/button"
-import { DiscordTemplate, BaseInforamtion } from "../../interfaces/common"
+import { DiscordTemplate, BaseInforamtion } from "../../../interfaces/common"
 import Image from "next/image"
 
 interface Props {
@@ -44,7 +44,7 @@ function Visualization({ data }: any) {
 
 	const channelStyles: { [key: number]: string } = {
 		0: "flex items-center pl-4 mb-1  font-medium text-channelColor text-lg w-72  hover:bg-borderColor truncate rounded-lg", // Tekstowy
-		2: "flex items-center gap-2 pl-4 mb-1 text-channelColor text-lg", // Głosowy
+		2: "flex items-center gap-2 pl-4 mb-1 text-channelColor text-lg  w-72  hover:bg-borderColor truncate rounded-lg", // Głosowy
 		4: "flex items-center gap-1 font-bold text-lg mt-2  text-textColor hover:text-white", // Kategoria
 	}
 
@@ -77,7 +77,7 @@ function Visualization({ data }: any) {
 								console.log(hexColor)
 
 								return (
-									<div style={{ borderColor: hexColor }} className="flex items-center gap-2 border-2 py-1 px-4 rounded-full" key={el.id}>
+									<div style={{ borderColor: hexColor }} className="flex items-center gap-2 border-2 py-1 px-4 rounded-full whitespace-nowrap overflow-hidden" key={el.id}>
 										<div style={{ backgroundColor: hexColor }} className="w-4 h-4 rounded-full"></div>
 										<h2>{el.name}</h2>
 									</div>
@@ -92,8 +92,6 @@ function Visualization({ data }: any) {
 }
 
 export default function TemplatesDetails({ data, base }: Props) {
-	let test = 0
-
 	return (
 		<>
 			<main className="flex flex-col items-center my-32">

@@ -40,15 +40,16 @@ model User {
 
 model Api {
   id Int @id @default(autoincrement())
+  apiKeyId String @unique
+  secretKey String @unique
   name String
   dateCreate DateTime @default(now())
   status Boolean @default(true)
-  secretKey String
   reqCount Int @default(0)
   successCount Int @default(0)
   errorCount Int @default(0)
-  lastUsed DateTime
-  montlyUsage Int @default(20000)
+  lastUsed DateTime?
+  monthlyUsage Int @default(20000)
   userId String
   user User @relation(fields: [userId], references: [userId])
 }

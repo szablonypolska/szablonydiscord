@@ -1,5 +1,5 @@
 import { prisma } from "@repo/db"
-import TemplatesDetails from "@/components/client/templates/templatesDetails"
+import TemplatesDetails from "@/components/client/templates/details/templatesDetails"
 
 interface Params {
 	params: string

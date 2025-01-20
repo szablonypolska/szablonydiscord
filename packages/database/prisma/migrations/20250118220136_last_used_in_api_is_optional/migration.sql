@@ -1,0 +1,2 @@
+-- AlterTable
+ALTER TABLE "Api" ALTER COLUMN "lastUsed" DROP NOT NULL;

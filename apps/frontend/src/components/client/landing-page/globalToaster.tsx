@@ -1,5 +1,5 @@
 "use client"
-import { connectSocketBackend } from "@/socket"
+import { connectSocketBackend } from "@/app/lib/socket"
 import { useEffect } from "react"
 import { Toaster, toast } from "sonner"
 

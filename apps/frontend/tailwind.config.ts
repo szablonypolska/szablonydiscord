@@ -20,6 +20,9 @@ export default {
 				silverColor: "var(--silverColor)",
 				boxColorDashboard: "var(--boxColorDashboard)",
 				warningColor: "var(--warningColor)",
+				disabledButton: "var(--disabledButton)",
+				errorColor: "var(--errorColor)",
+				darknesErrorColor: "var(--darknesErrorColor)",
 			},
 			backgroundImage: {
 				darkTealFade: "radial-gradient(circle, rgba(23,128,119,0.1) 10%, rgba(23,128,119,0) 100%)",

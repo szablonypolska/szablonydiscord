@@ -1,6 +1,6 @@
 import { Button } from "@nextui-org/button"
-import decorationTemplatesElement from "../../../../public/templatesDecorationSearch.svg"
-import searchDecoration from "../../../../public/searchDecoration.svg"
+import decorationTemplatesElement from "../../../../../public/templatesDecorationSearch.svg"
+import searchDecoration from "../../../../../public/searchDecoration.svg"
 import Image from "next/image"
 
 export default function HeaderTemplates() {

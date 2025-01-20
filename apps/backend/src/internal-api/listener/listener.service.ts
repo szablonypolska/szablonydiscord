@@ -10,13 +10,13 @@ export class ListenerService implements OnModuleInit {
   ) {}
 
   async onModuleInit(): Promise<void> {
-    // this.startListening();
+    this.startListening();
   }
 
   private async startListening(): Promise<void> {
     try {
       const stream = await this.prisma.client.templates.stream({
-        name: 'test',
+        name: 'templates',
       });
 
       for await (const event of stream) {

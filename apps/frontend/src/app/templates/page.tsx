@@ -1,5 +1,5 @@
 import Navbar from "@/components/client/navbar"
-import HeaderTemplates from "@/components/client/templates/header"
+import HeaderTemplates from "@/components/client/templates/main/header"
 import decorationElement from "../../../public/templatesDecoration.svg"
 import Image from "next/image"
 import Footer from "@/components/client/footer"

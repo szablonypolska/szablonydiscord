@@ -6,45 +6,39 @@ import { usePathname } from "next/navigation"
 import Image from "next/image"
 import { useSession, signOut } from "next-auth/react"
 import DiscordUserAvatar from "../../../../public/discordUserAvatar.jpg"
-import { DashboardContext } from "@/context/DashboardContext"
-import { useContext } from "react"
+import { useDashboardContext } from "@/context/DashboardContext"
 
 export default function TopSidebar() {
 	const pathname = usePathname()
 	const { data: session } = useSession()
-	const context = useContext(DashboardContext)
-
-	if (!context) {
-		throw new Error("")
-	}
-
-	const { toggleView } = context
+	const { toggleView } = useDashboardContext()
 
 	return (
 		<>
-			<div className="flex items-center justify-between px-10 bg-sidebarColor h-16">
-				<div className="flex items-center gap-5  h-full">
+			<div className="flex items-center justify-between px-10 bg-sidebarColor h-16 max-xl:px-5">
+				<div className="flex items-center gap-5  h-full max-xl:gap-2">
 					<div className="flex items-center">
 						<Button className="hover:bg-borderColor hover:text-primaryColor px-2 rounded-lg" onPress={toggleView}>
 							<ChevronLeft size="25" />
 						</Button>
 					</div>
-					<div className="flex items-center gap-4 ml-4 mr-3">
+					<div className="flex items-center gap-4 ml-4 mr-3 max-lg:hidden">
 						<Home size="16" color="#9ca3af" />
 						<ChevronRight size="14" color="#9ca3af" />
 						<p className="font-medium text-lg">{pathname.split("/dashboard")[1] === "" ? "Home" : pathname.split("/dashboard")[1]}</p>
 					</div>
-					<div className="h-3/6 w-0.5 bg-borderColor"></div>
-					<div className="flex items-center gap-3 p-2 px-3 bg-altBackgroundColor border border-borderColor rounded-lg hover:border-primaryColor transition-all ml-3">
+					<div className="h-3/6 w-0.5 bg-borderColor max-lg:hidden"></div>
+					<div className="flex items-center gap-3 p-2 px-3 bg-altBackgroundColor border border-borderColor rounded-lg hover:border-primaryColor transition-all ml-3 max-lg:hidden">
 						<div className="relative">
 							<div className="absolute inset-0 animate-ping w-3 h-3 bg-primaryColor opacity-75 rounded-full"></div>
 							<div className="relative w-3 h-3 bg-primaryColor rounded-full"></div>
 						</div>
-						<p className="text-sm">Wszystkie systemy dzialaja</p>
+						<p className="text-sm max-xl:hidden">Wszystkie systemy dzialaja</p>
+						<p className="text-sm xl:hidden">Aktywne</p>
 					</div>
 				</div>
 				<div className="flex items-center gap-3 h-16">
-					<div className="flex items-center gap-3 bg-altBackgroundColor border border-borderColor p-2 px-3 rounded-lg hover:border-primaryColor group">
+					<div className="flex items-center gap-3 bg-altBackgroundColor border border-borderColor p-2 px-3 rounded-lg hover:border-primaryColor group max-lg:hidden">
 						<UsersRound className="text-white group-hover:text-primaryColor transition-colors duration-200" size="20" />
 						<div className="flex items-center gap-2">
 							<p className="text-sm max-2xl:hidden">Użytkownicy online:</p>
@@ -57,7 +51,7 @@ export default function TopSidebar() {
 					<Button className="hover:bg-borderColor px-2 rounded-lg">
 						<Settings />
 					</Button>
-					<div className="h-3/6 w-0.5 bg-borderColor"></div>
+					<div className="h-3/6 w-0.5 bg-borderColor max-lg:hidden"></div>
 					<div className="flex items-center gap-3 pl-2">
 						<div className="relative">
 							<Image src={session?.user.image || DiscordUserAvatar} width={0} height={0} alt="user avatar" className="w-10 h-10 rounded-full" />

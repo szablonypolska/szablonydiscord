@@ -1,8 +1,8 @@
 import { Button } from "@nextui-org/button"
-import recommendIcon from "../../../../public/recomendIcon.svg"
-import addIcon from "../../../../public/addIcon.svg"
+import recommendIcon from "../../../../../public/recomendIcon.svg"
+import addIcon from "../../../../../public/addIcon.svg"
 import Image from "next/image"
-import { TemplatesProps } from "../../interfaces/common"
+import { TemplatesProps } from "../../../interfaces/common"
 import Link from "next/link"
 
 interface TemplateListProps {

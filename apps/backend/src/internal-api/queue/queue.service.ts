@@ -22,16 +22,3 @@ export class QueueService {
     }
   }
 }
-
-// model Templates {
-//   in Int @id @default(autoincrement())
-//   templateId String
-//   categories String
-//   dateCreate String
-//   Link String
-//   title String
-//   usageCount Int?
-//   clickButtonUse Int?
-//   server String?
-//   serverLink String?
-// }

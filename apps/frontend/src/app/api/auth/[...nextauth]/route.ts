@@ -1,8 +1,8 @@
-import NextAuth from "next-auth"
+import NextAuth, { AuthOptions } from "next-auth"
 import DiscordProvider from "next-auth/providers/discord"
 import { prisma } from "@repo/db"
 
-const handler = NextAuth({
+export const authOptions: AuthOptions = {
 	providers: [
 		DiscordProvider({
 			clientId: process.env.DISCORD_CLIENT_ID!,
@@ -57,6 +57,8 @@ const handler = NextAuth({
 			return session
 		},
 	},
-})
+}
+
+const handler = NextAuth(authOptions)
 
 export { handler as GET, handler as POST }

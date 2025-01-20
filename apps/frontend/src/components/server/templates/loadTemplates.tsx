@@ -1,4 +1,4 @@
-import TemplateList from "@/components/client/templates/templatesList"
+import TemplateList from "@/components/client/templates/main/templatesList"
 import { prisma } from "@repo/db"
 import { TemplatesProps } from "../../interfaces/common"
 
