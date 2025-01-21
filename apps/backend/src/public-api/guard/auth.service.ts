@@ -14,7 +14,6 @@ export class AuthService {
       if (!apiKey) return;
 
       const apiKeyRedis = `api_key:${apiKey}`;
-
       const value = await this.cacheManager.get(apiKeyRedis);
 
       console.log(`zwracaaa`, value);
@@ -26,7 +25,7 @@ export class AuthService {
 
         if (!valueDatabase) return false;
 
-        await this.cacheManager.set(apiKeyRedis, valueDatabase, 900);
+        await this.cacheManager.set(apiKeyRedis, valueDatabase);
       }
 
       return true;

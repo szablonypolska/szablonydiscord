@@ -12,9 +12,7 @@ export const RedisOptions: CacheModuleAsyncOptions = {
         port: '6379',
       },
     });
-    return {
-      store: () => store,
-    };
+    return { stores: [store], ttl: 900000 };
   },
   inject: [ConfigService],
 };
