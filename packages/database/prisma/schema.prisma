@@ -49,7 +49,10 @@ model Api {
   successCount Int @default(0)
   errorCount Int @default(0)
   lastUsed DateTime?
+  monthlyCount Int @default(0)
   monthlyUsage Int @default(20000)
+  dailyCount Int @default(0)
+  dailyUsage Int @default(500)
   userId String
   user User @relation(fields: [userId], references: [userId])
 }

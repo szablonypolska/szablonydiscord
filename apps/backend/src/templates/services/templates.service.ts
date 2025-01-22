@@ -82,6 +82,8 @@ export class TemplatesService {
       const text = result.response.text();
       const category = this.determinateCategory(text);
 
+      console.log(category);
+
       const checkUserIsExists = await this.prisma.client.user.findUnique({
         where: {
           userId: fetchTemplates.data.creator.id,

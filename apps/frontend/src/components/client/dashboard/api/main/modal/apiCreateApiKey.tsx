@@ -36,6 +36,8 @@ export function CreateApiKey({ setModal, user, updateUser }: CreateApiKeyProps) 
 				api: [...user.api, newApiKey],
 			}
 
+			setName("")
+			setOption(10000)
 			updateUser(userUpdate)
 			setModal(false)
 			setLoader(false)
@@ -59,6 +61,7 @@ export function CreateApiKey({ setModal, user, updateUser }: CreateApiKeyProps) 
 				<input
 					id="name"
 					type="text"
+					value={name}
 					className={`w-full p-2 bg-boxColor rounded-lg focus:ring-1 focus:ring-primaryColor focus:outline-none border mt-1 ${error ? "border-errorColor" : "border-borderColor"}`}
 					placeholder="np. Production API Key"
 					onChange={e => setName(e.target.value)}

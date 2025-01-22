@@ -16,15 +16,18 @@ export interface TemplatesProps {
 interface ApiKey {
 	id: number
 	apiKeyId: string
+	secretKey: string
 	name: string
 	dateCreate: Date
 	status: boolean
-	secretKey: string
 	reqCount: number
 	successCount: number
 	errorCount: number
-	lastUsed?: Date
+	lastUsed?: Date | undefined
+	monthlyCount: number
 	monthlyUsage: number
+	dailyCount: number
+	dailyUsage: number
 	userId: string
 }
 

@@ -29,7 +29,7 @@ function NoExistsApiKey({ modal, setModal }: Type) {
 
 export default function ApiMenagament() {
 	const [modal, setModal] = useState<boolean>(false)
-	const { user } = useDashboardContext()
+	const { user, updateUser } = useDashboardContext()
 
 	return (
 		<>
@@ -44,7 +44,7 @@ export default function ApiMenagament() {
 						</Button>
 					)}
 				</div>
-				{user.api.length > 0 ? <ApiDetails user={user} /> : <NoExistsApiKey modal={modal} setModal={setModal} />}
+				{user.api.length > 0 ? <ApiDetails user={user} updateUser={updateUser} /> : <NoExistsApiKey modal={modal} setModal={setModal} />}
 			</div>
 		</>
 	)

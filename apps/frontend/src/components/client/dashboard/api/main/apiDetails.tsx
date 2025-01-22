@@ -6,12 +6,15 @@ import { Button } from "@nextui-org/button"
 import { useState } from "react"
 import { toast } from "sonner"
 import Link from "next/link"
+import { formatData } from "@/utils/formatedData"
+import updateApiKey from "@/app/lib/api/updateApiKeyService"
 
 interface CreateApiKeyProps {
 	user: User
+	updateUser: (user: User) => void
 }
 
-export default function ApiDetails({ user }: CreateApiKeyProps) {
+export default function ApiDetails({ user, updateUser }: CreateApiKeyProps) {
 	const [visible, setVisible] = useState<boolean>(false)
 
 	const copySecretKey = (secretKey: string) => {
@@ -23,20 +26,46 @@ export default function ApiDetails({ user }: CreateApiKeyProps) {
 		}
 	}
 
+	const handlerUpdate = async (userId: string, apiKeyId: string, typeAction: "update" | "delete") => {
+		try {
+			const updateApi = await updateApiKey({
+				userId,
+				apiKeyId,
+				type: typeAction,
+			})
+
+			if (typeAction === "update") {
+				const updateUserData = {
+					...user,
+					api: user.api.map(el => (el.apiKeyId === updateApi.apiKeyId ? { ...el, status: updateApi.status } : el)),
+				}
+
+				updateUser(updateUserData)
+				toast.success(`Twój klucz api został ${updateApi.status ? "włączony" : "wyłączony"}`)
+			}
+
+			if (typeAction === "delete") {
+				const updateUserData = {
+					...user,
+					api: user.api.filter(el => el.apiKeyId !== updateApi.apiKeyId),
+				}
+
+				updateUser(updateUserData)
+			}
+		} catch (err) {
+			console.log(err)
+			toast.error("Wystąpił wewnętrzny błąd serwera")
+		}
+	}
+
 	return (
 		<>
 			{user.api.map(el => {
 				const succesRate = (el.successCount / el.reqCount) * 100
 				const errorRate = (el.errorCount / el.reqCount) * 100
-				const percentUsage = (el.reqCount / el.monthlyUsage) * 100
-				const date = new Date(el.dateCreate)
-				const formattedDate = date.toLocaleDateString("pl-PL", {
-					day: "2-digit",
-					month: "2-digit",
-					year: "numeric",
-				})
-
-				console.log(el.dateCreate)
+				const monthlyUsage = (el.monthlyCount / el.monthlyUsage) * 100
+				const dateCreateApi = formatData(el.dateCreate)
+				const lastUsedApi = formatData(el.lastUsed as Date)
 
 				return (
 					<div className="flex flex-col  w-full bg-altBackgroundColor border border-borderColor mt-7 rounded-xl p-10 max-xl:p-5" key={el.id}>
@@ -44,9 +73,11 @@ export default function ApiDetails({ user }: CreateApiKeyProps) {
 							<div>
 								<div className="flex items-center gap-5">
 									<h3 className="text-xl font-semibold">{el.name}</h3>
-									<span className="px-3 py-1 bg-darknesPrimaryColor text-primaryColor rounded-full">Aktywny</span>
+									<span className={`px-3 py-1 ${el.status ? "bg-darknesPrimaryColor text-primaryColor" : "bg-darknesErrorColor text-errorColor"} rounded-full`}>
+										{el.status ? "Aktywny" : "Wyłączony"}
+									</span>
 								</div>
-								<p className="text-silverColor text-md">Stworzony: {formattedDate}</p>
+								<p className="text-silverColor text-md">Stworzony: {dateCreateApi}</p>
 							</div>
 							<div className="flex items-center gap-2 max-md:flex-col max-md:mt-4">
 								<Link href={`dashboard/api/${el.apiKeyId}`}>
@@ -55,8 +86,12 @@ export default function ApiDetails({ user }: CreateApiKeyProps) {
 										Konfiguruj
 									</Button>
 								</Link>
-								<Button className="flex items-center bg-borderColor rounded-xl py-6 px-5 max-md:w-full">Wyłącz</Button>
-								<Button className="flex items-center hover:bg-borderColor py-6 px-3 rounded-xl max-md:w-full">
+								<Button
+									className={`flex items-center ${el.status ? "bg-borderColor" : "bg-primaryColor"} rounded-xl py-6 px-5 max-md:w-full`}
+									onPress={() => handlerUpdate(el.userId, el.apiKeyId, "update")}>
+									{el.status ? "Wyłącz" : "Włącz"}
+								</Button>
+								<Button className="flex items-center hover:bg-borderColor py-6 px-3 rounded-xl max-md:w-full" onPress={() => handlerUpdate(el.userId, el.apiKeyId, "delete")}>
 									<Trash2 className="text-red-500" />
 								</Button>
 							</div>
@@ -88,7 +123,7 @@ export default function ApiDetails({ user }: CreateApiKeyProps) {
 							</div>
 							<div className="bg-sidebarColor p-4 rounded-xl flex-grow">
 								<p className="text-silverColor">Ostatnie zapytanie</p>
-								<p className="text-2xl mt-1">brak</p>
+								<p className="text-2xl mt-1">{lastUsedApi === "01.01.1970" ? "Brak" : lastUsedApi}</p>
 								<p className="text-primaryColor text-xs mt-1">↑ 0,0% w tym miesiącu</p>
 							</div>
 							<div className="bg-sidebarColor p-4 rounded-xl flex-grow">
@@ -105,7 +140,7 @@ export default function ApiDetails({ user }: CreateApiKeyProps) {
 								</p>
 							</div>
 							<div className="w-full h-2 bg-sidebarColor rounded-full">
-								<div className="h-full bg-primaryColor rounded-full" style={{ width: `${percentUsage}%` }}></div>
+								<div className="h-full bg-primaryColor rounded-full" style={{ width: `${monthlyUsage}%` }}></div>
 							</div>
 						</div>
 					</div>

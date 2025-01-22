@@ -1,7 +1,8 @@
 "use client"
-import React, { createContext, useContext, useEffect, useState } from "react"
+import React, { createContext, use, useContext, useEffect, useState } from "react"
 import { User } from "@/components/interfaces/common"
 import useWindowSize from "@/hooks/useWindowSize"
+import { connectSocketBackend } from "@/app/lib/socket"
 
 interface DashboardContextType {
 	toggleView: () => void
@@ -16,6 +17,20 @@ export const DashboardProvider = ({ children, user: initialUser }: { children: R
 	const [showSidebar, setShowSidebar] = useState<boolean>(true)
 	const [user, setUser] = useState<User>(initialUser)
 	const { width } = useWindowSize()
+	const socket = connectSocketBackend()
+
+	socket.on("apikey", message => {
+		if (user.userId === message.userId) {
+			const updateUser = {
+				...user,
+				api: user.api.map(el =>
+					el.apiKeyId === message.apiKeyId ? { ...el, reqCount: message.reqCount, successCount: message.successCount, errorCount: message.errorCount, lastUsed: message.lastUsed } : el
+				),
+			}
+
+			setUser(updateUser)
+		}
+	})
 
 	useEffect(() => {
 		if (width && width <= 1024) {
