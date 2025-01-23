@@ -34,26 +34,21 @@ export default function ApiDetails({ user, updateUser }: CreateApiKeyProps) {
 				type: typeAction,
 			})
 
+			let updatedApi = [...user.api]
+
 			if (typeAction === "update") {
-				const updateUserData = {
-					...user,
-					api: user.api.map(el => (el.apiKeyId === updateApi.apiKeyId ? { ...el, status: updateApi.status } : el)),
-				}
-
-				updateUser(updateUserData)
-				toast.success(`Twój klucz api został ${updateApi.status ? "włączony" : "wyłączony"}`)
+				updatedApi = updatedApi.map(el => (el.apiKeyId === updateApi.apiKeyId ? { ...el, status: updateApi.status } : el))
+				toast.success(`Twój klucz API został ${updateApi.status ? "włączony" : "wyłączony"}`)
+			} else {
+				updatedApi = updatedApi.filter(el => el.apiKeyId !== updateApi.apiKeyId)
 			}
 
-			if (typeAction === "delete") {
-				const updateUserData = {
-					...user,
-					api: user.api.filter(el => el.apiKeyId !== updateApi.apiKeyId),
-				}
-
-				updateUser(updateUserData)
-			}
+			updateUser({
+				...user,
+				api: updatedApi,
+			})
 		} catch (err) {
-			console.log(err)
+			console.error(err)
 			toast.error("Wystąpił wewnętrzny błąd serwera")
 		}
 	}
@@ -63,7 +58,7 @@ export default function ApiDetails({ user, updateUser }: CreateApiKeyProps) {
 			{user.api.map(el => {
 				const succesRate = (el.successCount / el.reqCount) * 100
 				const errorRate = (el.errorCount / el.reqCount) * 100
-				const monthlyUsage = (el.monthlyCount / el.monthlyUsage) * 100
+				const monthlyUsage = (el.monthlyCount / el.monthlyLimit) * 100
 				const dateCreateApi = formatData(el.dateCreate)
 				const lastUsedApi = formatData(el.lastUsed as Date)
 
@@ -136,7 +131,7 @@ export default function ApiDetails({ user, updateUser }: CreateApiKeyProps) {
 							<div className="flex items-center justify-between mb-2">
 								<p className="text-silverColor">Miesięczny limit</p>
 								<p className="text-silverColor">
-									{el.reqCount}/{el.monthlyUsage}
+									{el.monthlyCount}/{el.monthlyLimit}
 								</p>
 							</div>
 							<div className="w-full h-2 bg-sidebarColor rounded-full">

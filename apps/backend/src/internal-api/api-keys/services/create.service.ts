@@ -16,7 +16,7 @@ export class CreateApiKeysService {
           apiKeyId: this.uid.rnd(),
           name: createApiBody.name,
           secretKey: uuidv4(),
-          monthlyUsage: createApiBody.requestCount,
+          monthlyLimit: createApiBody.requestCount,
           userId: createApiBody.userId,
         },
       });

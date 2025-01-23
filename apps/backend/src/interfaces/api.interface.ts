@@ -10,8 +10,8 @@ export interface Api {
   errorCount: number;
   lastUsed?: Date;
   monthlyCount: number;
-  monthlyUsage: number;
+  monthlyLimit: number;
   dailyCount: number;
-  dailyUsage: number;
+  dailyLimit: number;
   userId: String;
 }

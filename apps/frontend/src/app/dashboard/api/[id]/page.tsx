@@ -1,4 +1,5 @@
-import ApiSettingsNotifications from "@/components/client/dashboard/api/settings/apiNotifications"
+import ApiSettingsLimit from "@/components/client/dashboard/api/settings/limit/apiLimit"
+import ApiSettingsNotifications from "@/components/client/dashboard/api/settings/notification/apiNotifications"
 
 interface TypeProps {
 	id: string
@@ -7,7 +8,8 @@ interface TypeProps {
 export default function ApiSettings({ params }: { params: TypeProps }) {
 	return (
 		<>
-			<div className="p-10  mx-auto">
+			<div className="p-10  max-xl:p-5">
+				<ApiSettingsLimit />
 				<ApiSettingsNotifications />
 			</div>
 		</>

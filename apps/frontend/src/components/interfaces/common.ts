@@ -25,9 +25,9 @@ interface ApiKey {
 	errorCount: number
 	lastUsed?: Date | undefined
 	monthlyCount: number
-	monthlyUsage: number
+	monthlyLimit: number
 	dailyCount: number
-	dailyUsage: number
+	dailyLimit: number
 	userId: string
 }
 

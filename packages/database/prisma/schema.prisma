@@ -33,6 +33,7 @@ model User {
   warnings Int @default(0)
   limitApiKey Int @default(2)
   trustScore Int @default(100)
+  notificationApi Boolean @default(false)
   emailVerified Boolean @default(false)
   template Templates[]
   api Api[]
@@ -50,9 +51,9 @@ model Api {
   errorCount Int @default(0)
   lastUsed DateTime?
   monthlyCount Int @default(0)
-  monthlyUsage Int @default(20000)
+  monthlyLimit Int @default(20000)
   dailyCount Int @default(0)
-  dailyUsage Int @default(500)
+  dailyLimit Int @default(500)
   userId String
   user User @relation(fields: [userId], references: [userId])
 }

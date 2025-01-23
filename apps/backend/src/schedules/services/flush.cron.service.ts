@@ -35,6 +35,8 @@ export class FlushRedisToPrisma {
           successCount: value.successCount,
           errorCount: value.errorCount,
           lastUsed: value.lastUsed,
+          dailyCount: value.dailyCount,
+          monthlyCount: value.monthlyCount,
           userId: value.userId,
         });
 
@@ -45,6 +47,8 @@ export class FlushRedisToPrisma {
             successCount: value.successCount,
             errorCount: value.errorCount,
             lastUsed: value.lastUsed,
+            dailyCount: value.dailyCount,
+            monthlyCount: value.monthlyCount,
           },
         });
       }

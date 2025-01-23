@@ -24,7 +24,17 @@ export const DashboardProvider = ({ children, user: initialUser }: { children: R
 			const updateUser = {
 				...user,
 				api: user.api.map(el =>
-					el.apiKeyId === message.apiKeyId ? { ...el, reqCount: message.reqCount, successCount: message.successCount, errorCount: message.errorCount, lastUsed: message.lastUsed } : el
+					el.apiKeyId === message.apiKeyId
+						? {
+								...el,
+								reqCount: message.reqCount,
+								successCount: message.successCount,
+								errorCount: message.errorCount,
+								lastUsed: message.lastUsed,
+								monthlyCount: message.monthlyCount,
+								dailyCount: message.dailyCount,
+							}
+						: el
 				),
 			}
 

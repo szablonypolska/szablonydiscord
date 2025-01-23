@@ -47,8 +47,11 @@ export class AuthService {
     await this.cacheManager.set(apiKeyRedis, value);
   };
 
-  private checkLimit = async (value: Api) => {
-    if (value.monthlyCount > value.monthlyUsage) {
+  private checkAvailability = async (value: Api) => {
+    if (!value.status)
+      throw new ForbiddenException('Api key is off, turn on in settings');
+
+    if (value.monthlyCount > value.monthlyLimit) {
       value.errorCount += 1;
       await this.updateErrorCounter(value.secretKey);
       throw new ForbiddenException(
@@ -77,7 +80,7 @@ export class AuthService {
 
       const value = await this.createRedisApi(apiKey);
 
-      await this.checkLimit(value);
+      await this.checkAvailability(value);
 
       await this.counterIncrement(value);
 
