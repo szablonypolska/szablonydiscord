@@ -1,7 +1,7 @@
 "use client"
 
 import { motion, AnimatePresence } from "framer-motion"
-import { connectSocket } from "@/app/lib/socket"
+import { connectSocket } from "@/lib/socket"
 import { useEffect, useState } from "react"
 import heroDecoration from "../../../../../public/decorationElementHero.svg"
 import Image from "next/image"

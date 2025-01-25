@@ -23,6 +23,6 @@
 			"@repo/db": ["../../packages/database"]
 		}
 	},
-	"include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "src/app/lib/api/createApiKeyService.ts"],
+	"include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "src/lib/api/createApiKeyService.ts"],
 	"exclude": ["node_modules"]
 }

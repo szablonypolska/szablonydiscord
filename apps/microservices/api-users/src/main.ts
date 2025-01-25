@@ -28,8 +28,8 @@ async function bootstrap() {
     },
   });
 
-  client.send('add_scan_user_to_queue', {}).subscribe((response) => {
-    console.log(response);
-  });
+  // client.send('add_scan_user_to_queue', {}).subscribe((response) => {
+  //   console.log(response);
+  // });
 }
 bootstrap();

@@ -2,7 +2,7 @@
 import React, { createContext, use, useContext, useEffect, useState } from "react"
 import { User } from "@/components/interfaces/common"
 import useWindowSize from "@/hooks/useWindowSize"
-import { connectSocketBackend } from "@/app/lib/socket"
+import { connectSocketBackend } from "@/lib/socket"
 
 interface DashboardContextType {
 	toggleView: () => void

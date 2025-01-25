@@ -15,8 +15,8 @@ export default function ApiSettingsLimit() {
 					<Zap className="text-primaryColor" />
 					<h2 className="text-lg font-medium">Limity zapytań</h2>
 				</div>
-				<div className="flex flex-col gap-5 mt-5">
-					<div className="bg-boxColor p-5 rounded-xl">
+				<div className="flex items-center gap-5 mt-5">
+					<div className="bg-boxColor p-5 rounded-xl flex-grow">
 						<div className="flex justify-between">
 							<div className="flex items-center gap-3">
 								<Clock className="text-silverColor" />
@@ -28,17 +28,27 @@ export default function ApiSettingsLimit() {
 								<option value="null">Bez limitu</option>
 							</select>
 						</div>
-						<div className="mt-1">
-							<div className="bg-borderColor w-full h-2 rounded-xl">
-								<div className="w-11/12 h-full bg-primaryColor rounded-xl"></div>
+						<div className="bg-borderColor w-full h-2 rounded-xl mt-2">
+							<div className="w-11/12 h-full bg-primaryColor rounded-xl"></div>
+						</div>
+						<div className="flex items-center justify-between mt-5">
+							<div className="mt-2">
+								<p className="text-silverColor">Wykorzystano</p>
+								<p className="text-2xl my-1 font-medium">45</p>
+								<p className="text-silverColor text-sm">z 60 zapytań</p>
 							</div>
-							<div className="flex items-center justify-between mt-2">
-								<p className="text-silverColor">45/60 zapytań</p>
-								<p className="text-primaryColor">75% wykorzystano</p>
+							<div className="mt-2">
+								<p className="text-2xl font-medium text-primaryColor text-right">75%</p>
+								<p className="text-silverColor text-sm">Wykorzystano</p>
 							</div>
 						</div>
+						<div className="w-full h-0.5 bg-borderColor my-3"></div>
+						<div className="flex items-center justify-between text-silverColor text-md">
+							<p>Resetuje się za:</p>
+							<p>32 sekundy</p>
+						</div>
 					</div>
-					<div className="bg-boxColor p-5  rounded-xl">
+					<div className="bg-boxColor p-5  rounded-xl flex-grow">
 						<div className="flex justify-between">
 							<div className="flex items-center gap-3">
 								<BarChart2 className="text-silverColor" />
@@ -50,14 +60,24 @@ export default function ApiSettingsLimit() {
 								<option value="null">Bez limitu</option>
 							</select>
 						</div>
-						<div className="mt-1">
-							<div className="bg-borderColor w-full h-2 rounded-xl">
-								<div className="w-11/12 h-full bg-primaryColor rounded-xl"></div>
+						<div className="bg-borderColor w-full h-2 rounded-xl mt-2">
+							<div className="w-11/12 h-full bg-primaryColor rounded-xl"></div>
+						</div>
+						<div className="flex items-center justify-between mt-5">
+							<div className="mt-2">
+								<p className="text-silverColor">Wykorzystano</p>
+								<p className="text-2xl my-1 font-medium">45</p>
+								<p className="text-silverColor text-sm">z 60 zapytań</p>
 							</div>
-							<div className="flex items-center justify-between mt-2">
-								<p className="text-silverColor">45/60 zapytań</p>
-								<p className="text-primaryColor">75% wykorzystano</p>
+							<div className="mt-2">
+								<p className="text-2xl font-medium text-primaryColor text-right">75%</p>
+								<p className="text-silverColor text-sm">Wykorzystano</p>
 							</div>
+						</div>
+						<div className="w-full h-0.5 bg-borderColor my-3"></div>
+						<div className="flex items-center justify-between text-silverColor text-md">
+							<p>Resetuje się za:</p>
+							<p>32 sekundy</p>
 						</div>
 					</div>
 				</div>

@@ -6,7 +6,7 @@ import { CircleAlert } from "lucide-react"
 import { LoaderCircle } from "lucide-react"
 import { User } from "@/components/interfaces/common"
 import { toast } from "sonner"
-import createApiKey from "@/app/lib/api/createApiKeyService"
+import createApiKey from "@/lib/api/createApiKeyService"
 
 interface CreateApiKeyProps {
 	setModal: React.Dispatch<React.SetStateAction<boolean>>
