@@ -26,7 +26,7 @@ export class NotificationTestService {
       monthlyCount: api.monthlyCount,
       dailyLimit: api.dailyLimit,
       monthlyLimit: api.monthlyLimit,
-      usageDailyPercent: (api.dailyCount / api.dailyLimit) * 100,
+      usageDailyPercent: ((api.dailyCount / api.dailyLimit) * 100).toFixed(2),
     };
 
     return description.replace(/\$\{([^}]+)\}/g, (match, key) => {
@@ -34,8 +34,9 @@ export class NotificationTestService {
     });
   };
 
-  async testNotification(testBody: TestNotificationData): Promise<string> {
+  async testNotification(testBody: TestNotificationData): Promise<object> {
     try {
+      console.log(testBody);
       const searchApi = await this.prisma.client.api.findUnique({
         where: { apiKeyId: testBody.apiKeyId },
       });
@@ -65,7 +66,7 @@ export class NotificationTestService {
       };
 
       await firstValueFrom(this.httpService.post(testBody.webhookUrl, embed));
-      return 'elo';
+      return { message: 'elo' };
     } catch (err) {
       console.log(err);
       throw err;

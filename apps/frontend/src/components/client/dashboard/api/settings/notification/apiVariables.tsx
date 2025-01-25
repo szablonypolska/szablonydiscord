@@ -1,4 +1,4 @@
-export default function ApiSettingsVariables() {
+export default function ApiSettingsNotificationVariables() {
 	return (
 		<>
 			<div className="bg-sidebarColor border border-borderColor p-5 rounded-xl mt-5">

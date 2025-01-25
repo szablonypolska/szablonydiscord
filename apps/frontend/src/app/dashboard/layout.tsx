@@ -8,7 +8,6 @@ import { prisma } from "@repo/db"
 import { redirect } from "next/navigation"
 import { Toaster } from "sonner"
 import { CircleCheckBig, CircleAlert } from "lucide-react"
-import { error } from "console"
 
 export default async function Layout({ children }: { children: React.ReactNode }) {
 	const session = await getServerSession(authOptions)

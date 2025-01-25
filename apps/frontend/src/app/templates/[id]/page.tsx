@@ -9,7 +9,7 @@ interface Params {
 }
 
 export default async function Templates({ params }: { params: Params }) {
-	const { id } = params
+	const { id } = await params
 
 	return (
 		<>

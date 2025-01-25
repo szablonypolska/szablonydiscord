@@ -6,7 +6,6 @@ import { UpdateService } from './services/update.service';
 import { TestNotificationDto } from './dto/test-notification';
 import { NotificationTestService } from './services/test-notification.service';
 
-
 @Controller('/api/internal')
 export class ApiKeysController {
   constructor(
@@ -28,7 +27,7 @@ export class ApiKeysController {
 
   @Post('/notification/test')
   @HttpCode(200)
-  testNotification(@Body() testApiBody: TestNotificationDto): Promise<string> {
+  testNotification(@Body() testApiBody: TestNotificationDto): Promise<object> {
     return this.test.testNotification(testApiBody);
   }
 }
