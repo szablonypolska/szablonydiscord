@@ -4,6 +4,7 @@ import Image from "next/image"
 import Footer from "@/components/client/footer"
 import { prisma } from "@repo/db"
 import UserProfle from "@/components/client/user/userProfile"
+import type { User } from "@/components/interfaces/common"
 
 interface Params {
 	id: string
@@ -12,7 +13,7 @@ interface Params {
 export default async function User({ params }: { params: Params }) {
 	const { id } = params
 
-	const searchUser = await prisma.user.findUnique({
+	const searchUser: User = await prisma.user.findUnique({
 		where: { userId: id },
 		include: {
 			template: true,
