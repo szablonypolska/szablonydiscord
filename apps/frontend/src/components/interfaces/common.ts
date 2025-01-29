@@ -31,7 +31,7 @@ interface ApiKey {
 	userId: string
 }
 
-interface Template {
+export interface Template {
 	in: number
 	templateId: string
 	link: string

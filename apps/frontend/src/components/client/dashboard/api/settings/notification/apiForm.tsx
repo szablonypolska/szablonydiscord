@@ -5,7 +5,6 @@ import { CircleAlert } from "lucide-react"
 import ApiSettingsNotificationVariables from "./apiVariables"
 import testNotification from "@/lib/api/settings/testNotificationDiscord"
 import { toast } from "sonner"
-import { useState } from "react"
 import { useDashboardContext } from "@/context/DashboardContext"
 
 export interface TypeStateProps {

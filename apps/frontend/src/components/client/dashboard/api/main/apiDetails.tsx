@@ -22,6 +22,7 @@ export default function ApiDetails({ user, updateUser }: CreateApiKeyProps) {
 			navigator.clipboard.writeText(secretKey)
 			toast.success("skopiowano klucz do schowka")
 		} catch (err) {
+			console.log(err)
 			toast.error("Wystąpił błąd ze skopiowaniem")
 		}
 	}

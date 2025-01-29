@@ -6,8 +6,8 @@
 	--background: #191919;
 	--foreground: #ffffff;
 	--primary-color: #00796b;
-	--primary-dark: #0C3532;
-	--primary-light: #31E2D3;
+	--primary-dark: #0c3532;
+	--primary-light: #31e2d3;
 	--darknesPrimaryColor: #18302d;
 	--altBackgroundColor: #1c1c1c;
 	--borderColor: #262626;
@@ -23,6 +23,7 @@
 	--disabledButton: #6b7280;
 	--errorColor: #ef4444;
 	--darknesErrorColor: #401e1e;
+	--darkGray: #808080;
 }
 
 /* @media (prefers-color-scheme: dark) {

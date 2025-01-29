@@ -3,7 +3,8 @@ import recommendIcon from "../../../../../public/recomendIcon.svg"
 import addIcon from "../../../../../public/addIcon.svg"
 import Image from "next/image"
 import { TemplatesProps } from "../../../interfaces/common"
-import Cards from "@/components/client/templates/main/card"
+import Cards from "@/components/client/card"
+import Link from "next/link"
 
 interface TemplateListProps {
 	loadTemplates: TemplatesProps[]
@@ -23,12 +24,14 @@ export default function TemplateList({ loadTemplates, loadTemplatesData }: Templ
 						</div>
 					</div>
 					<div className="grid grid-cols-3 max-xl:grid-cols-2 max-md:grid-cols-1 gap-10 max-lg:gap-5 mt-5">
-						{loadTemplates.map((el, index) => (
+						{loadTemplates.map(el => (
 							<Cards key={el.in} title={el.title} description={el.description} usageCount={el.usageCount} categories={el.categories} templateId={el.templateId} />
 						))}
 					</div>
 					<div className="flex justify-center mt-5">
-						<Button className="bg-altBackgroundColor px-10 border-borderColor rounded-lg">Zobacz więcej</Button>
+						<Link href="/search?sort=popularity">
+							<Button className="bg-altBackgroundColor px-10 border-borderColor rounded-lg">Zobacz więcej</Button>
+						</Link>
 					</div>
 				</div>
 				<div className="mt-32">
@@ -40,12 +43,14 @@ export default function TemplateList({ loadTemplates, loadTemplatesData }: Templ
 						</div>
 					</div>
 					<div className="grid grid-cols-3 max-xl:grid-cols-2 max-md:grid-cols-1 gap-10 max-lg:gap-5 mt-5">
-						{loadTemplatesData.map((el, index) => (
+						{loadTemplatesData.map(el => (
 							<Cards key={el.in} title={el.title} description={el.description} usageCount={el.usageCount} categories={el.categories} templateId={el.templateId} />
 						))}
 					</div>
 					<div className="flex justify-center mt-5">
-						<Button className="bg-altBackgroundColor px-10 border-borderColor rounded-lg">Zobacz więcej</Button>
+						<Link href="/search?sort=createdAt">
+							<Button className="bg-altBackgroundColor px-10 border-borderColor rounded-lg">Zobacz więcej</Button>
+						</Link>
 					</div>
 				</div>
 			</div>

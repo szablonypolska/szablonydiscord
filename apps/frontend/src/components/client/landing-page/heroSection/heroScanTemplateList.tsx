@@ -66,7 +66,7 @@ export default function ScanTemplateList({ templates, status }: Props) {
 			clearInterval(interval)
 			socket.disconnect()
 		}
-	}, [])
+	}, [templates])
 
 	useEffect(() => {
 		if (id === 49 || !status || queueWait !== 0) return
@@ -87,7 +87,7 @@ export default function ScanTemplateList({ templates, status }: Props) {
 		return () => {
 			clearInterval(interval)
 		}
-	}, [])
+	}, [id, queueWait, status, templates])
 
 	return (
 		<>
@@ -123,7 +123,7 @@ export default function ScanTemplateList({ templates, status }: Props) {
 						<p className="font-semibold">({scanTemplate})</p>
 					</div>
 					<div className="flex flex-col gap-[0.80rem] mt-4">
-						{list.map((element, index) => (
+						{list.map(element => (
 							<motion.div
 								key={`source1-${element.id}` || element.templateId}
 								initial={{ opacity: 0, y: -50 }}

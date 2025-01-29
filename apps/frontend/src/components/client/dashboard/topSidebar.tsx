@@ -4,7 +4,7 @@ import { Button } from "@nextui-org/button"
 import { Home, ChevronRight, ChevronLeft, UsersRound, Bell, Settings } from "lucide-react"
 import { usePathname } from "next/navigation"
 import Image from "next/image"
-import { useSession, signOut } from "next-auth/react"
+import { useSession } from "next-auth/react"
 import DiscordUserAvatar from "../../../../public/discordUserAvatar.jpg"
 import { useDashboardContext } from "@/context/DashboardContext"
 

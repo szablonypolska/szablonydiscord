@@ -11,7 +11,7 @@ interface CardProps {
 
 export default function Cards({ title, description, usageCount, categories, templateId }: CardProps) {
 	return (
-		<div className="flex flex-col bg-background border border-borderColor p-5 rounded-lg">
+		<div className="flex flex-col bg-background border border-borderColor p-5 rounded-lg" key={templateId}>
 			<h3 className="text-xl">{title}</h3>
 			<p className="mt-3 text-textColor">{description}</p>
 			<div className="flex-grow"></div>

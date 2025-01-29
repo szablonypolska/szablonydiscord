@@ -35,6 +35,7 @@ function UserCreator({ id, avatar, username }: PropsCreator) {
 }
 
 export default function TemplatesDetails({ data, base }: Props) {
+	console.log(base)
 	const numbers = data.serialized_source_guild.channels.reduce(
 		(acc, value) => {
 			if (value.type === 0) acc.channels++

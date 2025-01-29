@@ -1,11 +1,10 @@
 "use client"
 
 import { Button } from "@nextui-org/button"
-import { Key, Plus, Trash2, Eye, Copy } from "lucide-react"
+import { Key, Plus } from "lucide-react"
 import { useState } from "react"
 import ApiModal from "./modal/apiModal"
 import { useDashboardContext } from "@/context/DashboardContext"
-import { User } from "@/components/interfaces/common"
 import ApiDetails from "./apiDetails"
 
 interface Type {

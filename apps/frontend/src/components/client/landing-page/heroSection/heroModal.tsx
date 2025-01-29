@@ -1,7 +1,6 @@
 "use client"
 
 import { Button } from "@nextui-org/button"
-import { p } from "framer-motion/client"
 import React, { useEffect, useRef, useState } from "react"
 
 interface Type {
@@ -77,10 +76,7 @@ export default function Modals({ modal, setModal, status }: Type) {
 					</Button>
 				</div>
 				<div className="mt-5">
-					<p>
-						Skanowanie szablonów odbywa się codziennie w godzinach nocnych (00:00) i trwa tyle aż wszystkie szablony
-						zostaną przeskanowane (około 1/2 godziny).
-					</p>
+					<p>Skanowanie szablonów odbywa się codziennie w godzinach nocnych (00:00) i trwa tyle aż wszystkie szablony zostaną przeskanowane (około 1/2 godziny).</p>
 					<div className="mt-4">
 						<p className="font-semibold">Aktualne skanowanie</p>
 						{!status && <p>Aktualne skanowanie szablonów trwa.</p>}

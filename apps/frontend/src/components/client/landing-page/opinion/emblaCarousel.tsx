@@ -2,7 +2,7 @@
 
 import React, { useCallback, useEffect, useState } from "react"
 import { EmblaOptionsType } from "embla-carousel"
-import { PrevButton, NextButton, usePrevNextButtons } from "./emblaCarouselArrowButtons"
+import { usePrevNextButtons } from "./emblaCarouselArrowButtons"
 import useEmblaCarousel from "embla-carousel-react"
 import Image from "next/image"
 import icon from "../../../../../public/Icon.svg"
@@ -37,9 +37,7 @@ const EmblaCarousel: React.FC<PropType> = props => {
 			<div className="flex justify-between items-center">
 				<div className="">
 					<h2 className="text-3xl text-primaryColor font-semibold">Opinie naszej strony</h2>
-					<p className=" text-textColor mt-2">
-						Lorem ipsum dolor sit amet consectetur, adipisicing elit. Qui porro quo eius aliquid ratione pariatur?
-					</p>
+					<p className=" text-textColor mt-2">Lorem ipsum dolor sit amet consectetur, adipisicing elit. Qui porro quo eius aliquid ratione pariatur?</p>
 				</div>
 				<Button className="px-6 py-2 rounded-full bg-primaryColor">Dodaj opinię</Button>
 			</div>
@@ -63,11 +61,9 @@ const EmblaCarousel: React.FC<PropType> = props => {
 									</div>
 									<div className="mt-5">
 										<p className="text-center text-gray-300">
-											Lorem ipsum dolor sit amet consectetur adipisicing elit. Temporibus dicta aspernatur possimus
-											incidunt quos, eligendi repellendus voluptates reprehenderit aut iure at consequatur debitis
-											facere a commodi dolor voluptatem enim maxime illo! Enim sunt libero autem quidem minus
-											cupiditate, quam vero esse sapiente qui voluptatum consequatur est aliquid nam corrupti porro
-											perferendis adipisci sequi facere cum omnis. Odio vel qui modi?
+											Lorem ipsum dolor sit amet consectetur adipisicing elit. Temporibus dicta aspernatur possimus incidunt quos, eligendi repellendus voluptates reprehenderit aut iure at consequatur
+											debitis facere a commodi dolor voluptatem enim maxime illo! Enim sunt libero autem quidem minus cupiditate, quam vero esse sapiente qui voluptatum consequatur est aliquid nam
+											corrupti porro perferendis adipisci sequi facere cum omnis. Odio vel qui modi?
 										</p>
 										<p className="mt-5 text-center text-primaryColor font-semibold">TheProShizer</p>
 									</div>

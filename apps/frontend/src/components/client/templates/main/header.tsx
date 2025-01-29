@@ -1,9 +1,14 @@
+"use client"
+
 import { Button } from "@nextui-org/button"
 import decorationTemplatesElement from "../../../../../public/templatesDecorationSearch.svg"
 import searchDecoration from "../../../../../public/searchDecoration.svg"
 import Image from "next/image"
+import { useState } from "react"
+import Link from "next/link"
 
 export default function HeaderTemplates() {
+	const [text, setText] = useState<string>("")
 	return (
 		<>
 			<header className="flex items-center max-lg:gap-5 max-lg:mt-32  my-20  relative px-10">
@@ -13,10 +18,19 @@ export default function HeaderTemplates() {
 					</h1>
 					<div className="flex items-center gap-3 mt-5  w-9/12 max-xl:w-11/12 z-50 relative">
 						<div className="flex-grow relative">
-							<input type="text" className="w-full bg-[#212121] border border-borderColor pl-12 py-2 rounded-xl placeholder:text-textColor" placeholder="Wyszukaj szablonu..." />
+							<input
+								type="text"
+								className="w-full bg-[#212121] border border-borderColor pl-12 py-2 rounded-xl placeholder:text-textColor focus:ring-1 focus:ring-borderColor focus:outline-none"
+								onChange={e => setText(e.target.value)}
+								placeholder="Wyszukaj szablonu..."
+							/>
 							<span className="material-symbols-outlined absolute left-7 top-1/2 -translate-y-1/2 -translate-x-1/2">search</span>
 						</div>
-						<Button className="uppercase bg-primaryColor rounded-xl text-sm font-[550] px-6">znajdź</Button>
+						<Link href={`${`/search?name=${text}`}`}>
+							<Button className="uppercase bg-primaryColor rounded-xl text-sm font-[550] px-6" disabled={!text}>
+								znajdź
+							</Button>
+						</Link>
 					</div>
 					<div className="flex items-center gap-3 mt-3">
 						<p className="text-textSpecial">Popularne kategorie:</p>

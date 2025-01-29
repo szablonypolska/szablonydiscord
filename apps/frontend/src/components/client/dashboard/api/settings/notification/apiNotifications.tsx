@@ -1,6 +1,6 @@
 "use client"
 import { useEffect, useState } from "react"
-import { useDashboardContext } from "@/context/DashboardContext"
+
 import ApiSettingsNotificationTopBar from "./apiToBar"
 import ApiSettingsNotificationHeader from "./apiHeader"
 import ApiSettingsNotificationForm from "./apiForm"
@@ -17,6 +17,8 @@ export default function ApiSettingsNotifications(params: { params: string }) {
 		color: "#00796b",
 		visible: false,
 	})
+
+	console.log(isChange)
 
 	const handleChange = (key: keyof TypeState) => (value: string | boolean) => {
 		setFormData(prev => ({ ...prev, [key]: value }))
@@ -36,7 +38,7 @@ export default function ApiSettingsNotifications(params: { params: string }) {
 		}
 
 		setChange(true)
-	}, [formData])
+	}, [formData, isInitialLoad])
 
 	return (
 		<>

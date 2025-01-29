@@ -15,8 +15,8 @@ export default function ApiSettingsLimit() {
 					<Zap className="text-primaryColor" />
 					<h2 className="text-lg font-medium">Limity zapytań</h2>
 				</div>
-				<div className="flex items-center gap-5 mt-5">
-					<div className="bg-boxColor p-5 rounded-xl flex-grow">
+				<div className="flex items-center gap-5 mt-5 max-lg:flex-col">
+					<div className="bg-boxColor p-5 rounded-xl flex-grow max-lg:w-full">
 						<div className="flex justify-between">
 							<div className="flex items-center gap-3">
 								<Clock className="text-silverColor" />
@@ -48,7 +48,7 @@ export default function ApiSettingsLimit() {
 							<p>32 sekundy</p>
 						</div>
 					</div>
-					<div className="bg-boxColor p-5  rounded-xl flex-grow">
+					<div className="bg-boxColor p-5  rounded-xl flex-grow max-lg:w-full">
 						<div className="flex justify-between">
 							<div className="flex items-center gap-3">
 								<BarChart2 className="text-silverColor" />

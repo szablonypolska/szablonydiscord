@@ -10,6 +10,12 @@ export default async function LoadTemplatesData({ params }: Params) {
 		where: {
 			templateId: params,
 		},
+		select: {
+			title: true,
+			description: true,
+			categories: true,
+			link: true,
+		},
 	})
 	const discordTemplateCode = getTemplateData.link.split("https://discord.new/")[1]
 
