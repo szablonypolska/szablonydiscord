@@ -1,7 +1,35 @@
+"use client"
 import { Button } from "@nextui-org/button"
 import { Search as SearchItem } from "lucide-react"
+import { useRouter, useSearchParams } from "next/navigation"
+import { useEffect, useState } from "react"
 
 export default function Search() {
+	const [name, setName] = useState<string>("")
+	const [initialize, setInitialize] = useState(false)
+	const router = useRouter()
+	const searchParams = useSearchParams()
+	const nameParams = searchParams.get("name")
+
+	const handleSearch = () => {
+		const params = new URLSearchParams(searchParams.toString())
+
+		params.set("name", name)
+		params.delete("sort")
+		params.delete("category")
+
+		router.push(`/search?${params.toString()}`)
+	}
+
+	useEffect(() => {
+		if (initialize) return
+		setInitialize(true)
+
+		if (nameParams) {
+			setName(nameParams)
+		}
+	}, [nameParams, name])
+
 	return (
 		<>
 			<div className="w-full bg-boxColor p-5 border border-borderColor rounded-xl px-8">
@@ -12,10 +40,13 @@ export default function Search() {
 				<div className="flex items-center gap-3 relative mt-5">
 					<input
 						type="text"
-						className="bg-altBackgroundColor border border-borderColor w-full p-3.5 rounded-xl focus:ring-2 focus:ring-primaryDark focus:outline-none"
+						className="bg-altBackgroundColor border border-borderColor w-full p-3.5 rounded-xl focus:ring-2 focus:ring-primaryDark focus:outline-none "
 						placeholder="Wyszukaj szablon..."
+						defaultValue={name}
+						onChange={e => setName(e.target.value)}
 					/>
-					<Button className="flex items-center gap-2 bg-primaryDark text-primaryLight rounded-xl px-6 py-7 text-sm transition-colors disabled:opacity-50">
+
+					<Button className="flex items-center gap-2 bg-primaryDark text-primaryLight rounded-xl px-6 py-7 text-sm transition-colors disabled:opacity-50" onPress={handleSearch}>
 						<SearchItem size="37" />
 						Wyszukaj
 					</Button>

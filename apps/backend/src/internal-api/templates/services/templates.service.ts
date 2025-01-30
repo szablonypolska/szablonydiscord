@@ -1,9 +1,13 @@
-import { Injectable } from '@nestjs/common';
+import {
+  BadRequestException,
+  ConflictException,
+  Injectable,
+  InternalServerErrorException,
+} from '@nestjs/common';
 import ShortUniqueId from 'short-unique-id';
 import { PrismaService } from '@repo/shared';
 import { HttpService } from '@nestjs/axios';
 import { lastValueFrom } from 'rxjs';
-import { Response } from 'express';
 import { GoogleGenerativeAI } from '@google/generative-ai';
 import { prompt } from '../instructions/ai-prompt.json';
 import { categoriesTemplate } from 'src/common/constants/categories.constans';
@@ -46,7 +50,7 @@ export class TemplatesService {
     if (firstCategoryVaild && secondCategoryVaild) return details;
   }
 
-  async addTemplate(id: string, res: Response): Promise<void> {
+  async addTemplate(id: string): Promise<{ message: string }> {
     const link = `https://discord.com/api/v9/guilds/templates/${id}`;
     const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
     const model = genAI.getGenerativeModel({ model: 'gemini-2.0-flash-exp' });
@@ -64,13 +68,11 @@ export class TemplatesService {
       );
 
       if (templateRepeat || templateRepeatName) {
-        res.status(409).json({ message: 'Template already exists' });
-        return;
+        throw new ConflictException('Template already exists');
       }
 
       if (roles < 15 && channels < 10) {
-        res.status(400).json({ message: 'does not meet the requirements' });
-        return;
+        throw new BadRequestException('does not meet the requirements');
       }
 
       this.channelName = channels.map((el) => el.name);
@@ -113,10 +115,9 @@ export class TemplatesService {
         },
       });
 
-      res.status(201).json({ message: 'Template created successfully' });
+      return { message: 'Templates is created' };
     } catch (err) {
-      console.error(err);
-      res.status(500).json({ message: 'Error fetching template' });
+      throw err;
     }
   }
 }

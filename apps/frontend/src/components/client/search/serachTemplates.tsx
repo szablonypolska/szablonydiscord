@@ -8,6 +8,7 @@ import { Template } from "../../interfaces/common"
 import { useSearchParams, useRouter } from "next/navigation"
 import SearchTopBar from "./searchTopBar"
 import useWindowSize from "@/hooks/useWindowSize"
+import SearchError from "./searchError"
 
 interface Props {
 	templates: {
@@ -36,6 +37,8 @@ export default function SearchTemplate({ templates }: Props) {
 
 		router.push(`/search?${params.toString()}`)
 	}
+
+	console.log(templates)
 
 	const renderItem = ({ ref, key, value, isActive, onNext, onPrevious, setPage, className }: PaginationItemRenderProps) => {
 		if (value === PaginationItemType.NEXT) {
@@ -75,6 +78,7 @@ export default function SearchTemplate({ templates }: Props) {
 	return (
 		<div className="flex flex-col w-full">
 			<SearchTopBar count={templates.count} typeView={typeView} setTypeView={setTypeView} />
+			{!templates.count && <SearchError />}
 			<div className="w-full">
 				<div className={`grid ${typeView === "grid" ? "grid-cols-2" : "grid-cols-1"} gap-5 mt-5 max-md:gap-2`}>
 					{templates.templates &&
@@ -82,18 +86,20 @@ export default function SearchTemplate({ templates }: Props) {
 							<Cards title={el.title} description={el.description as string} usageCount={el.usageCount} categories={el.categories} templateId={el.templateId} key={el.templateId} />
 						))}
 				</div>
-				<Pagination
-					key={currentPage}
-					disableCursorAnimation
-					showControls
-					isDisabled={pageLength == 1}
-					className="flex justify-center mt-5 gap-4"
-					initialPage={parseInt(currentPage)}
-					renderItem={renderItem}
-					total={templates.count}
-					variant="light"
-					onChange={handlePageChange}
-				/>
+				{templates.count > 0 && (
+					<Pagination
+						key={currentPage}
+						disableCursorAnimation
+						showControls
+						isDisabled={pageLength == 1}
+						className="flex justify-center mt-5 gap-4"
+						initialPage={parseInt(currentPage)}
+						renderItem={renderItem}
+						total={templates.count}
+						variant="light"
+						onChange={handlePageChange}
+					/>
+				)}
 			</div>
 		</div>
 	)

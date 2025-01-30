@@ -4,10 +4,11 @@ import { TemplateController } from './templates.controller';
 import { SharedModule, FirebaseModule } from '@repo/shared';
 import { HttpModule } from '@nestjs/axios';
 import { MigrationService } from './services/migration.service';
+import { SearchService } from './services/search.service';
 
 @Module({
   imports: [SharedModule, FirebaseModule, HttpModule],
-  providers: [TemplatesService, MigrationService],
+  providers: [TemplatesService, MigrationService, SearchService],
   controllers: [TemplateController],
 })
 export class TemplateModule {}

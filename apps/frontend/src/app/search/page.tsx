@@ -5,16 +5,26 @@ import Footer from "@/components/client/footer"
 import { prisma } from "@repo/db"
 import Search from "@/components/client/search/search"
 import SearchCategories from "@/components/client/search/searchCategories"
-import SearchTopBar from "@/components/client/search/searchTopBar"
 import SearchTemplate from "@/components/client/search/serachTemplates"
 import { TypeCategory } from "@/components/interfaces/search/common"
+import getTemplateByCategory from "../../lib/search/by/getTemplateCategory"
+import getTemplateBySort from "../../lib/search/by/getTemplateBySort"
+import getTemplateByDefault from "@/lib/search/by/getTemplateDefault"
+import getTemplateByName from "@/lib/search/by/getTemplateByName"
+import { Template } from "@/components/interfaces/common"
 
 interface Type {
 	searchParams: {
 		category: string
 		sort: string
 		page: string
+		name: string
 	}
+}
+
+interface TypeTemplates {
+	templates: Template[]
+	count: number
 }
 
 export default async function SearchTemplates({ searchParams }: Type) {
@@ -22,51 +32,22 @@ export default async function SearchTemplates({ searchParams }: Type) {
 	const page = parseInt(params.page) || 1
 	const take = 6
 	const skip = (page - 1) * take
-	let templates = { templates: [], count: 0 }
+	let templates: TypeTemplates = { templates: [], count: 0 }
 
 	const groupBy: TypeCategory[] = await prisma.templates.groupBy({
 		by: ["categories"],
-		_count: {
-			categories: true,
-		},
+		_count: { categories: true },
 	})
 
-	if (params.category) {
-		const searchCategory = groupBy.find(el => el.categories === params.category)
-		const numberPages = Math.ceil((searchCategory?._count.categories || 0) / 6)
-		const templateCategory = await prisma.templates.findMany({
-			where: { categories: params.category },
-			skip: skip,
-			take: take,
-		})
+	if (params.category) templates = await getTemplateByCategory(skip, take)
 
-		templates = { templates: templateCategory, count: numberPages || 0 }
-	}
+	if (params.sort === "popularity") templates = await getTemplateBySort(skip, take, "usageCount")
 
-	if (params.sort === "popularity") {
-		const count = await prisma.templates.count()
-		const numberPages = Math.ceil(count / 6)
-		const templateSort = await prisma.templates.findMany({
-			orderBy: {
-				usageCount: "desc",
-			},
-			skip: skip,
-			take: take,
-		})
-		templates = { templates: templateSort, count: numberPages || 0 }
-	}
-	if (params.sort === "createdAt") {
-		const count = await prisma.templates.count()
-		const numberPages = Math.ceil(count / 6)
-		const templateSort = await prisma.templates.findMany({
-			orderBy: {
-				dateCreateSystem: "desc",
-			},
-			skip: skip,
-			take: take,
-		})
-		templates = { templates: templateSort, count: numberPages || 0 }
-	}
+	if (params.sort === "createdAt") templates = await getTemplateBySort(skip, take, "dateCreateSystem")
+
+	if (params.name) templates = await getTemplateByName(params.name)
+
+	if (!params.sort && !params.name && !params.category) templates = await getTemplateByDefault(skip, take)
 
 	return (
 		<>
