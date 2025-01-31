@@ -19,7 +19,9 @@ export class SearchService {
     },
   };
 
-  async searchTemplate(name: string): Promise<{ templates: Template[] }> {
+  async searchTemplate(
+    name: string,
+  ): Promise<{ templates: Template[]; type: string }> {
     try {
       if (!name) {
         throw new BadGatewayException('name is required');
@@ -38,7 +40,7 @@ export class SearchService {
         .slice(0, 50)
         .map((result) => result.item);
 
-      return { templates: searchTemplates };
+      return { templates: searchTemplates, type: 'search' };
     } catch (err) {
       console.log(err);
       throw err;

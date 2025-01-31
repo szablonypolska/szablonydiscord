@@ -1,6 +1,6 @@
 "use client"
 
-import { useEffect, useState } from "react"
+import { useState } from "react"
 import { ArrowDown, ArrowUp } from "lucide-react"
 import { Button } from "@nextui-org/button"
 import { useSearchParams } from "next/navigation"

@@ -6,5 +6,5 @@ export default async function getTemplateByName(name: string) {
 
 	console.log(searchTemplate.templates, searchTemplate.templates.length)
 
-	return { templates: searchTemplate.templates, count: numberPages || 0 }
+	return { templates: searchTemplate.templates, count: numberPages || 0, type: searchTemplate.type }
 }

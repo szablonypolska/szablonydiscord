@@ -1,5 +1,4 @@
 import { prisma } from "@repo/db"
-import { TypeCategory } from "@/components/interfaces/search/common"
 
 export default async function getTemplateBySort(skip: number, take: number, type: "dateCreateSystem" | "usageCount") {
 	const count = await prisma.templates.count()

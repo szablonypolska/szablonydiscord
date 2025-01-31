@@ -3,7 +3,7 @@ import recommendIcon from "../../../../../public/recomendIcon.svg"
 import addIcon from "../../../../../public/addIcon.svg"
 import Image from "next/image"
 import { TemplatesProps } from "../../../interfaces/common"
-import Cards from "@/components/client/card"
+import Cards from "@/components/client/cards/card"
 import Link from "next/link"
 
 interface TemplateListProps {

@@ -26,7 +26,7 @@ export class TemplateController {
   @Post('/search')
   searchTemplate(
     @Body('name') name: string,
-  ): Promise<{ templates: Template[] }> {
+  ): Promise<{ templates: Template[]; type: string }> {
     return this.search.searchTemplate(name);
   }
 }

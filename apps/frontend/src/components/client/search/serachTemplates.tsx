@@ -1,6 +1,6 @@
 "use client"
 
-import Cards from "../card"
+import Cards from "../cards/card"
 import { cn, Pagination, PaginationItemType, PaginationItemRenderProps } from "@heroui/react"
 import { ArrowRight, ArrowLeft } from "lucide-react"
 import { useEffect, useState } from "react"
@@ -14,6 +14,7 @@ interface Props {
 	templates: {
 		templates: Template[]
 		count: number
+		type?: string
 	}
 }
 
@@ -37,8 +38,6 @@ export default function SearchTemplate({ templates }: Props) {
 
 		router.push(`/search?${params.toString()}`)
 	}
-
-	console.log(templates)
 
 	const renderItem = ({ ref, key, value, isActive, onNext, onPrevious, setPage, className }: PaginationItemRenderProps) => {
 		if (value === PaginationItemType.NEXT) {

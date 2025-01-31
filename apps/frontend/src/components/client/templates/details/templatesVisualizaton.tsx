@@ -1,18 +1,11 @@
-interface Channel {
-	name: string
-	type: number
-	postition: number
-	id: number
+import { Channel, Roles } from "@/components/interfaces/templates/common"
+
+interface Type {
+	filtredChannel: Channel[]
+	filtredRoles: Roles[]
 }
 
-interface Roles {
-	name: string
-	color: number
-	id: number
-}
-
-export default function TemplatesVisuzalization({ data }: any) {
-	console.log(data)
+export default function TemplatesVisuzalization({ filtredChannel, filtredRoles }: Type) {
 	const channelStyles: { [key: number]: string } = {
 		0: "flex items-center pl-4 mb-1  font-medium text-channelColor text-lg w-96  hover:bg-borderColor truncate rounded-lg", // Tekstowy
 		2: "flex items-center gap-2 pl-4 mb-1 text-channelColor text-lg  w-96  hover:bg-borderColor truncate rounded-lg", // Głosowy
@@ -34,7 +27,7 @@ export default function TemplatesVisuzalization({ data }: any) {
 			<section className="flex flex-col items-center mt-5 max-xl:w-11/12">
 				<div className="flex w-[70rem] max-xl:w-full gap-5 rounded-xl">
 					<article className="bg-altBackgroundColor border border-borderColor rounded-xl w-1/2 p-8">
-						{data.channels.map((el: Channel) => (
+						{filtredChannel.map((el: Channel) => (
 							<p key={el.id} className={channelStyles[el.type]}>
 								<span className={`text-2xl text-channelColor material-symbols-outlined font-black ${channelIconsStyle[el.type]}`}>{channelIcons[el.type]}</span> {el.name}
 							</p>
@@ -42,7 +35,7 @@ export default function TemplatesVisuzalization({ data }: any) {
 					</article>
 					<article className="bg-altBackgroundColor border border-borderColor rounded-xl w-1/2 p-8">
 						<div className="flex flex-wrap gap-2">
-							{data.roles.map((el: Roles) => {
+							{filtredRoles.map((el: Roles) => {
 								const hexColor = `#${el.color.toString(16).padStart(6, "0")}`
 
 								return (

@@ -5,49 +5,19 @@ import Footer from "@/components/client/footer"
 import { prisma } from "@repo/db"
 import Search from "@/components/client/search/search"
 import SearchCategories from "@/components/client/search/searchCategories"
-import SearchTemplate from "@/components/client/search/serachTemplates"
 import { TypeCategory } from "@/components/interfaces/search/common"
-import getTemplateByCategory from "../../lib/search/by/getTemplateCategory"
-import getTemplateBySort from "../../lib/search/by/getTemplateBySort"
-import getTemplateByDefault from "@/lib/search/by/getTemplateDefault"
-import getTemplateByName from "@/lib/search/by/getTemplateByName"
-import { Template } from "@/components/interfaces/common"
+import { Suspense } from "react"
+import { TypeSearchParams } from "@/components/interfaces/search/common"
+import AsyncSearchTemplate from "@/components/server/search/asyncSearchTemplate"
+import SearchTemplatesLoadingSkeleton from "@/components/client/search/loading/searchTemplatesLoadingSkeleton"
 
-interface Type {
-	searchParams: {
-		category: string
-		sort: string
-		page: string
-		name: string
-	}
-}
-
-interface TypeTemplates {
-	templates: Template[]
-	count: number
-}
-
-export default async function SearchTemplates({ searchParams }: Type) {
+export default async function SearchTemplates({ searchParams }: TypeSearchParams) {
 	const params = await searchParams
-	const page = parseInt(params.page) || 1
-	const take = 6
-	const skip = (page - 1) * take
-	let templates: TypeTemplates = { templates: [], count: 0 }
 
 	const groupBy: TypeCategory[] = await prisma.templates.groupBy({
 		by: ["categories"],
 		_count: { categories: true },
 	})
-
-	if (params.category) templates = await getTemplateByCategory(skip, take)
-
-	if (params.sort === "popularity") templates = await getTemplateBySort(skip, take, "usageCount")
-
-	if (params.sort === "createdAt") templates = await getTemplateBySort(skip, take, "dateCreateSystem")
-
-	if (params.name) templates = await getTemplateByName(params.name)
-
-	if (!params.sort && !params.name && !params.category) templates = await getTemplateByDefault(skip, take)
 
 	return (
 		<>
@@ -58,7 +28,9 @@ export default async function SearchTemplates({ searchParams }: Type) {
 					<Search />
 					<div className="flex items-start gap-5 mt-8 max-lg:flex-col">
 						<SearchCategories categories={groupBy} />
-						<SearchTemplate templates={templates} />
+						<Suspense fallback={<SearchTemplatesLoadingSkeleton />}>
+							<AsyncSearchTemplate searchParams={params} />
+						</Suspense>
 					</div>
 				</div>
 			</div>

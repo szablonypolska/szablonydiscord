@@ -1,5 +1,4 @@
 import { prisma } from "@repo/db"
-import { TypeCategory } from "@/components/interfaces/search/common"
 
 export default async function getTemplateByCategory(skip: number, take: number) {
 	const count = await prisma.templates.count()

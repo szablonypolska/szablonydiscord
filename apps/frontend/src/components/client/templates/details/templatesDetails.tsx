@@ -2,10 +2,11 @@
 
 import { motion } from "framer-motion"
 import { Button } from "@nextui-org/button"
-import { DiscordTemplate, BaseInforamtion } from "../../../interfaces/common"
+import { DiscordTemplate, BaseInforamtion } from "../../../interfaces/templates/common"
 import Image from "next/image"
 import TemplatesVisuzalization from "./templatesVisualizaton"
 import Link from "next/link"
+import { Channel, Roles } from "@/components/interfaces/templates/common"
 
 interface Props {
 	data: DiscordTemplate
@@ -35,7 +36,6 @@ function UserCreator({ id, avatar, username }: PropsCreator) {
 }
 
 export default function TemplatesDetails({ data, base }: Props) {
-	console.log(base)
 	const numbers = data.serialized_source_guild.channels.reduce(
 		(acc, value) => {
 			if (value.type === 0) acc.channels++
@@ -44,6 +44,17 @@ export default function TemplatesDetails({ data, base }: Props) {
 		},
 		{ channels: 0, voice: 0 }
 	)
+	const { channels, roles } = data.serialized_source_guild
+	const filtredChannel: Channel[] = channels.map(el => ({
+		name: el.name,
+		type: el.type,
+		id: el.id,
+	}))
+	const filtredRoles: Roles[] = roles.map(el => ({
+		name: el.name,
+		color: el.color,
+		id: el.id,
+	}))
 
 	const containerVariants = {
 		hidden: { opacity: 0, y: 50 },
@@ -99,7 +110,7 @@ export default function TemplatesDetails({ data, base }: Props) {
 					</Button>
 				</section>
 			</motion.section>
-			<TemplatesVisuzalization data={data.serialized_source_guild} />
+			<TemplatesVisuzalization filtredChannel={filtredChannel} filtredRoles={filtredRoles} />
 		</motion.main>
 	)
 }

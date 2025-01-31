@@ -27,7 +27,7 @@ export default function HeaderTemplates() {
 							<span className="material-symbols-outlined absolute left-7 top-1/2 -translate-y-1/2 -translate-x-1/2">search</span>
 						</div>
 						<Link href={`${`/search?name=${text}`}`}>
-							<Button className="uppercase bg-primaryColor rounded-xl text-sm font-[550] px-6" disabled={!text}>
+							<Button className="uppercase bg-primaryColor rounded-xl text-sm font-[550] px-6 disabled:opacity-80" disabled={!text}>
 								znajdź
 							</Button>
 						</Link>
