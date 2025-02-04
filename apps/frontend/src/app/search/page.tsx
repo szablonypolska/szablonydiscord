@@ -12,7 +12,7 @@ import AsyncSearchTemplate from "@/components/server/search/asyncSearchTemplate"
 import SearchTemplatesLoadingSkeleton from "@/components/client/search/loading/searchTemplatesLoadingSkeleton"
 
 export default async function SearchTemplates({ searchParams }: { searchParams: Promise<TypeSearchParams> }) {
-	const params = (await searchParams).searchParams
+	const params = await searchParams
 
 	const groupBy: TypeCategory[] = await prisma.templates.groupBy({
 		by: ["categories"],
@@ -29,7 +29,7 @@ export default async function SearchTemplates({ searchParams }: { searchParams: 
 					<div className="flex items-start gap-5 mt-8 max-lg:flex-col">
 						<SearchCategories categories={groupBy} />
 						<Suspense fallback={<SearchTemplatesLoadingSkeleton />}>
-							<AsyncSearchTemplate searchParams={params} />
+							<AsyncSearchTemplate params={params} />
 						</Suspense>
 					</div>
 				</div>

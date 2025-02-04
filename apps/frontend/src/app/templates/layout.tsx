@@ -1,16 +1,10 @@
 import type { Metadata } from "next"
-import { Inter } from "next/font/google"
 import "../globals.css"
 import "../globalicons.css"
 import Navbar from "@/components/client/navbar"
 import decorationElement from "../../../public/templatesDecoration.svg"
 import Image from "next/image"
 import Footer from "@/components/client/footer"
-
-const inter = Inter({
-	subsets: ["latin"],
-	variable: "--font-inter",
-})
 
 export const metadata: Metadata = {
 	title: "Create Next App",
@@ -20,7 +14,7 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
 	return (
 		<html lang="pl">
-			<body className={inter.className}>
+			<body>
 				<div className="max-w-screen-2xl mx-auto w-full py-4 p-2">
 					<Image src={decorationElement} alt="dekoracyjny element" className="absolute top-0 left-0" />
 					<Navbar />

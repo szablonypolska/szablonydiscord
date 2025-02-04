@@ -12,10 +12,14 @@ interface TypeTemplates {
 	type?: string
 }
 
-export default async function AsyncSearchTemplate({ searchParams }: TypeSearchParams) {
+interface Props {
+	params: TypeSearchParams
+}
+
+export default async function AsyncSearchTemplate({ params }: Props) {
 	let templates: TypeTemplates = { templates: [], count: 0 }
-	const params = await searchParams
-	const page = parseInt(params.page) || 1
+
+	const page = parseInt(params.page || "1")
 	const take = 6
 	const skip = (page - 1) * take
 

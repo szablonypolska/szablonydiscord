@@ -6,10 +6,8 @@ export interface TypeCategory {
 }
 
 export interface TypeSearchParams {
-	searchParams: {
-		category: string
-		sort: string
-		page: string
-		name: string
-	}
+	category?: string
+	sort?: string
+	page?: string
+	name?: string
 }
