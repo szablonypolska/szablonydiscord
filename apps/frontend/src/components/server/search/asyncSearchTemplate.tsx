@@ -19,7 +19,7 @@ export default async function AsyncSearchTemplate({ searchParams }: TypeSearchPa
 	const take = 6
 	const skip = (page - 1) * take
 
-	if (params.category) templates = await getTemplateByCategory(skip, take)
+	if (params.category) templates = await getTemplateByCategory(skip, take, params.category)
 
 	if (params.sort === "popularity") templates = await getTemplateBySort(skip, take, "usageCount")
 

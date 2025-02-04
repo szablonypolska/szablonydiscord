@@ -31,6 +31,8 @@ export function CreateApiKey({ setModal, user, updateUser }: CreateApiKeyProps) 
 				requestCount: option,
 			})
 
+			console.log(newApiKey)
+
 			const userUpdate = {
 				...user,
 				api: [...user.api, newApiKey],

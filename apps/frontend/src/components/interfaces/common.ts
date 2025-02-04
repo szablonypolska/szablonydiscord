@@ -45,6 +45,14 @@ export interface Template {
 	authorId: string
 }
 
+export interface Notification {
+	id: number
+	type: "error" | "success" | "warning"
+	title: string
+	description: string
+	userId: string
+}
+
 export interface User {
 	avatar: string
 	username: string
@@ -59,5 +67,5 @@ export interface User {
 	warnings: number
 	api: ApiKey[]
 	template: Template[]
+	notification: Notification[]
 }
-

@@ -3,10 +3,13 @@ import React, { createContext, useContext, useEffect, useState } from "react"
 import { User } from "@/components/interfaces/common"
 import useWindowSize from "@/hooks/useWindowSize"
 import { connectSocketBackend } from "@/lib/socket"
+import { toast } from "sonner"
 
 interface DashboardContextType {
 	toggleView: () => void
+	toggleViewNotification: () => void
 	showSidebar: boolean
+	notification: boolean
 	user: User
 	updateUser: (newUser: User) => void
 }
@@ -15,6 +18,7 @@ export const DashboardContext = createContext<DashboardContextType | null>(null)
 
 export const DashboardProvider = ({ children, user: initialUser }: { children: React.ReactNode; user: User }) => {
 	const [showSidebar, setShowSidebar] = useState<boolean>(true)
+	const [notification, setNotification] = useState<boolean>(false)
 	const [user, setUser] = useState<User>(initialUser)
 	const { width } = useWindowSize()
 	const socket = connectSocketBackend()
@@ -37,9 +41,25 @@ export const DashboardProvider = ({ children, user: initialUser }: { children: R
 						: el
 				),
 			}
+			setUser(updateUser)
+		}
+	})
+
+	socket.on("notification", message => {
+		if (message.data.userId === user.userId) {
+			const updateUser = {
+				...user,
+				notification: [message.data, ...user.notification],
+			}
+
+			console.log(updateUser)
 
 			setUser(updateUser)
 		}
+
+		toast.success("Nowe powiadomienie", {
+			description: message.data.title,
+		})
 	})
 
 	useEffect(() => {
@@ -54,11 +74,15 @@ export const DashboardProvider = ({ children, user: initialUser }: { children: R
 		setShowSidebar(!showSidebar)
 	}
 
+	const toggleViewNotification = (): void => {
+		setNotification(!notification)
+	}
+
 	const updateUser = (data: User) => {
 		setUser(data)
 	}
 
-	return <DashboardContext.Provider value={{ showSidebar, toggleView, user, updateUser }}>{children}</DashboardContext.Provider>
+	return <DashboardContext.Provider value={{ showSidebar, toggleView, user, updateUser, notification, toggleViewNotification }}>{children}</DashboardContext.Provider>
 }
 
 export function useDashboardContext() {

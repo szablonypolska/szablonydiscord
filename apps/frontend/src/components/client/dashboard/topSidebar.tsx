@@ -11,7 +11,7 @@ import { useDashboardContext } from "@/context/DashboardContext"
 export default function TopSidebar() {
 	const pathname = usePathname()
 	const { data: session } = useSession()
-	const { toggleView } = useDashboardContext()
+	const { user, toggleView, toggleViewNotification, showSidebar } = useDashboardContext()
 
 	return (
 		<>
@@ -19,7 +19,7 @@ export default function TopSidebar() {
 				<div className="flex items-center gap-5  h-full max-xl:gap-2">
 					<div className="flex items-center">
 						<Button className="hover:bg-borderColor hover:text-primaryColor px-2 rounded-lg" onPress={toggleView}>
-							<ChevronLeft size="25" />
+							{showSidebar ? <ChevronLeft size="25" /> : <ChevronRight size="25" />}
 						</Button>
 					</div>
 					<div className="flex items-center gap-4 ml-4 mr-3 max-lg:hidden">
@@ -45,9 +45,12 @@ export default function TopSidebar() {
 							<p className="text-sm ">542</p>
 						</div>
 					</div>
-					<Button className="hover:bg-borderColor px-2 rounded-lg">
-						<Bell />
-					</Button>
+					<div className="relative">
+						<Button className="hover:bg-borderColor px-2 rounded-lg" onPress={toggleViewNotification}>
+							<Bell />
+						</Button>
+						{user.notification.length > 0 && <div className="absolute top-1 right-0.5 w-2.5 h-2.5 bg-primaryColor rounded-full"></div>}
+					</div>
 					<Button className="hover:bg-borderColor px-2 rounded-lg">
 						<Settings />
 					</Button>

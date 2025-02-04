@@ -1,7 +1,20 @@
+"use client"
+
+import { useDashboardContext } from "@/context/DashboardContext"
 import { ChevronLeft, Zap, Clock, BarChart2 } from "lucide-react"
 import Link from "next/link"
 
-export default function ApiSettingsLimit() {
+export default function ApiSettingsLimit({ params }: { params: string }) {
+	const { user } = useDashboardContext()
+	const findApiKey = user.api.find(el => el.apiKeyId === params)
+	const dailyCount = findApiKey?.dailyCount ?? 0
+	const dailyLimit = findApiKey?.dailyLimit ?? 0
+	const monthlyCount = findApiKey?.monthlyCount ?? 0
+	const monthlyLimit = findApiKey?.monthlyLimit ?? 0
+	const percentUsageDay = ((dailyCount / dailyLimit) * 100).toFixed(1)
+	const percentUsageMonthly = ((monthlyCount / monthlyLimit) * 100).toFixed(1)
+	console.log(user)
+
 	return (
 		<>
 			<div className="flex items-center gap-3">
@@ -34,11 +47,11 @@ export default function ApiSettingsLimit() {
 						<div className="flex items-center justify-between mt-5">
 							<div className="mt-2">
 								<p className="text-silverColor">Wykorzystano</p>
-								<p className="text-2xl my-1 font-medium">45</p>
-								<p className="text-silverColor text-sm">z 60 zapytań</p>
+								<p className="text-2xl my-1 font-medium">{dailyCount}</p>
+								<p className="text-silverColor text-sm">z {dailyLimit} zapytań</p>
 							</div>
 							<div className="mt-2">
-								<p className="text-2xl font-medium text-primaryColor text-right">75%</p>
+								<p className="text-2xl font-medium text-primaryColor text-right">{percentUsageDay}%</p>
 								<p className="text-silverColor text-sm">Wykorzystano</p>
 							</div>
 						</div>
@@ -66,11 +79,11 @@ export default function ApiSettingsLimit() {
 						<div className="flex items-center justify-between mt-5">
 							<div className="mt-2">
 								<p className="text-silverColor">Wykorzystano</p>
-								<p className="text-2xl my-1 font-medium">45</p>
-								<p className="text-silverColor text-sm">z 60 zapytań</p>
+								<p className="text-2xl my-1 font-medium">{monthlyCount}</p>
+								<p className="text-silverColor text-sm">z {monthlyLimit} zapytań</p>
 							</div>
 							<div className="mt-2">
-								<p className="text-2xl font-medium text-primaryColor text-right">75%</p>
+								<p className="text-2xl font-medium text-primaryColor text-right">{percentUsageMonthly}%</p>
 								<p className="text-silverColor text-sm">Wykorzystano</p>
 							</div>
 						</div>

@@ -8,6 +8,7 @@ import { PublicModule } from './public-api/public.module';
 import { RedisOptions } from './common/constants/app-options.constants';
 import { CacheModule } from '@nestjs/cache-manager';
 import { SchedulesModule } from './schedules/schedules.module';
+import { NotificationsModule } from './notifications/notifications.module';
 
 @Module({
   imports: [
@@ -19,6 +20,7 @@ import { SchedulesModule } from './schedules/schedules.module';
     ListenerModule,
     TemplateModule,
     ApiKeysModule,
+    NotificationsModule,
   ],
 })
 export class AppModule {}

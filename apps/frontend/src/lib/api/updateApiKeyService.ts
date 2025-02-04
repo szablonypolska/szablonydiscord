@@ -18,9 +18,16 @@ export default async function updateApiKey(params: CreateApiKeyParams) {
 			}),
 		})
 
+		if (!fetchData.ok) {
+			if (fetchData.status === 400) {
+				throw new Error("you cannot remove the token because it has reached the allowable limit")
+			}
+			throw new Error(`Error while response`)
+		}
+
 		return await fetchData.json()
 	} catch (err) {
 		console.log(err)
-		throw new Error("server error")
+		throw err
 	}
 }

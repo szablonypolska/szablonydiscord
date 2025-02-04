@@ -35,7 +35,7 @@ export default function SearchCategories({ categories }: TypeProps) {
 		if (category === categories) {
 			router.push(`/search`)
 		} else {
-			router.push(`/search?${params.toString()}&page=0`)
+			router.push(`/search?${params.toString()}&page=1`)
 		}
 	}
 

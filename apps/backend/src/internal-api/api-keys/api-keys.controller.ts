@@ -14,8 +14,9 @@ export class ApiKeysController {
     private test: NotificationTestService,
   ) {}
 
-  @Post('create')
-  createApi(@Body() createApiBody: CreateApiDto): Promise<string> {
+  @Post('generate')
+  @HttpCode(200)
+  createApi(@Body() createApiBody: CreateApiDto): Promise<object> {
     return this.service.createApi(createApiBody);
   }
 
@@ -27,7 +28,9 @@ export class ApiKeysController {
 
   @Post('/notification/test')
   @HttpCode(200)
-  testNotification(@Body() testApiBody: TestNotificationDto): Promise<object> {
-    return this.test.testNotification(testApiBody);
+  async testNotification(
+    @Body() testApiBody: TestNotificationDto,
+  ): Promise<void> {
+    await this.test.testNotification(testApiBody);
   }
 }

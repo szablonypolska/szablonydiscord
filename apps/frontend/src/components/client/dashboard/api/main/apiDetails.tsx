@@ -49,8 +49,8 @@ export default function ApiDetails({ user, updateUser }: CreateApiKeyProps) {
 				api: updatedApi,
 			})
 		} catch (err) {
-			console.error(err)
-			toast.error("Wystąpił wewnętrzny błąd serwera")
+			const errorMessage = err instanceof Error ? "Nie można usunąć klucza bo przekroczył max liczbe dozwolonych żądań (500)" : "Wystąpił wewnętrzny błąd serwera"
+			toast.error(errorMessage)
 		}
 	}
 
@@ -76,7 +76,7 @@ export default function ApiDetails({ user, updateUser }: CreateApiKeyProps) {
 								<p className="text-silverColor text-md">Stworzony: {dateCreateApi}</p>
 							</div>
 							<div className="flex items-center gap-2 max-md:flex-col max-md:mt-4">
-								<Link href={`dashboard/api/${el.apiKeyId}`}>
+								<Link href={`dashboard/api/${el.apiKeyId}`} className="max-md:w-full">
 									<Button className="flex items-center gap-1 bg-borderColor rounded-xl py-6 px-5 max-md:w-full">
 										<Settings />
 										Konfiguruj
@@ -106,7 +106,7 @@ export default function ApiDetails({ user, updateUser }: CreateApiKeyProps) {
 							</div>
 							<input type={`${visible ? "text" : "password"}`} value={el.secretKey} className="bg-boxColor rounded-xl w-full p-3 outline-none" readOnly />
 						</div>
-						<div className="flex items-center gap-5 mt-5 max-lg:grid max-lg:grid-cols-2">
+						<div className="flex items-center gap-5 mt-5 max-lg:grid max-lg:grid-cols-2 max-sm:grid-cols-1">
 							<div className="bg-sidebarColor p-4 rounded-xl flex-grow">
 								<p className="text-silverColor">Wszystkie zapytania</p>
 								<p className="text-2xl mt-1">{el.reqCount}</p>

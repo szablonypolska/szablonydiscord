@@ -34,7 +34,7 @@ export class NotificationTestService {
     });
   };
 
-  async testNotification(testBody: TestNotificationData): Promise<object> {
+  async testNotification(testBody: TestNotificationData): Promise<void> {
     try {
       console.log(testBody);
       const searchApi = await this.prisma.client.api.findUnique({
@@ -66,7 +66,6 @@ export class NotificationTestService {
       };
 
       await firstValueFrom(this.httpService.post(testBody.webhookUrl, embed));
-      return { message: 'elo' };
     } catch (err) {
       console.log(err);
       throw err;

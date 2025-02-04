@@ -4,14 +4,13 @@ interface Params {
 	id: string
 }
 
-export default async function Templates({ params }: { params: Params }) {
+export default async function Templates(props: { params: Promise<Params> }) {
+	const params = await props.params
 	const { id } = await params
 
 	return (
 		<>
-			<>
-				<LoadTemplatesData params={id} />
-			</>
+			<LoadTemplatesData params={id} />
 		</>
 	)
 }

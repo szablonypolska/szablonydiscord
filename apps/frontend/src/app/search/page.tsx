@@ -11,8 +11,8 @@ import { TypeSearchParams } from "@/components/interfaces/search/common"
 import AsyncSearchTemplate from "@/components/server/search/asyncSearchTemplate"
 import SearchTemplatesLoadingSkeleton from "@/components/client/search/loading/searchTemplatesLoadingSkeleton"
 
-export default async function SearchTemplates({ searchParams }: TypeSearchParams) {
-	const params = await searchParams
+export default async function SearchTemplates({ searchParams }: { searchParams: Promise<TypeSearchParams> }) {
+	const params = (await searchParams).searchParams
 
 	const groupBy: TypeCategory[] = await prisma.templates.groupBy({
 		by: ["categories"],

@@ -1,7 +1,7 @@
 "use client"
 import { useEffect, useState } from "react"
 
-import ApiSettingsNotificationTopBar from "./apiToBar"
+import ApiSettingsNotificationTopBar from "./apiTopBar"
 import ApiSettingsNotificationHeader from "./apiHeader"
 import ApiSettingsNotificationForm from "./apiForm"
 import { TypeState } from "../../../../../interfaces/api/common"
@@ -18,10 +18,11 @@ export default function ApiSettingsNotifications(params: { params: string }) {
 		visible: false,
 	})
 
-	console.log(isChange)
+	console.log(params.params)
 
 	const handleChange = (key: keyof TypeState) => (value: string | boolean) => {
 		setFormData(prev => ({ ...prev, [key]: value }))
+		setChange(true)
 	}
 
 	useEffect(() => {
@@ -32,13 +33,12 @@ export default function ApiSettingsNotifications(params: { params: string }) {
 
 		if (!formData.webhookUrl.includes("https://discord.com/api/webhooks/") && formData.webhookUrl !== "") {
 			setError(true)
-			setChange(false)
 		} else {
 			setError(false)
 		}
-
-		setChange(true)
 	}, [formData, isInitialLoad])
+
+	console.log(isChange)
 
 	return (
 		<>

@@ -21,8 +21,8 @@ interface PropsCreator {
 
 function UserCreator({ id, avatar, username }: PropsCreator) {
 	return (
-		<Link href={`/user/${id}`}>
-			<Button className="px-3 h-12 bg-borderColor w-fit rounded-xl">
+		<Link href={`/user/${id}`} className="max-sm:w-full">
+			<Button className="px-3 h-12 bg-borderColor w-fit rounded-xl max-sm:w-full">
 				<div className="flex items-center gap-2 h-full">
 					<Image src={`https://cdn.discordapp.com/avatars/${id}/${avatar}.jpg`} width={0} height={0} alt="discord user avatar" className="w-7 h-7 rounded-full" />
 					<div className="flex items-center gap-2">
@@ -63,48 +63,54 @@ export default function TemplatesDetails({ data, base }: Props) {
 
 	return (
 		<motion.main className="flex flex-col items-center my-32" initial="hidden" animate="visible" variants={containerVariants}>
-			<motion.section className="bg-altBackgroundColor w-[70rem] max-xl:w-11/12 p-8 rounded-xl border border-borderColor" variants={containerVariants}>
+			<motion.section className="bg-altBackgroundColor w-[70rem] max-xl:w-11/12 p-8 rounded-xl border border-borderColor max-lg:p-5" variants={containerVariants}>
 				<header>
 					<div className="flex items-center justify-between">
 						<div className="flex items-center gap-4">
 							<h1 className="text-2xl">{base.title}</h1>
-							<div className="flex gap-1">
+							<div className="flex gap-1 max-sm:hidden">
 								<span className="px-4 py-1 bg-borderColor w-fit text-sm rounded-full">{base.categories}</span>
 								<span className="px-4 py-1 bg-borderColor w-fit text-sm rounded-full">Gamingowy</span>
 							</div>
 						</div>
-						<div className="flex items-center gap-1 px-3 py-1 bg-borderColor w-fit rounded-xl">
+						<div className="flex items-center gap-1 px-3 py-1 bg-borderColor w-fit rounded-xl max-md:hidden">
 							<span className="material-symbols-outlined text-3xl">download</span>
 							<p className="text-2xl">{data.usage_count}</p>
 						</div>
 					</div>
-					<p className="text-textColor text-lg w-9/12">{base.description}</p>
+					<p className="text-textColor text-lg md:w-9/12 max-md:w-full">{base.description}</p>
+					<div className="max-sm:flex hidden mt-3 gap-2">
+						<span className="px-4 py-1 bg-borderColor  text-sm rounded-full w-full  text-center">{base.categories}</span>
+						<span className="px-4 py-1 bg-borderColor  text-sm rounded-full w-full text-center">Gamingowy</span>
+					</div>
 				</header>
 
-				<section className="flex items-center gap-2 mt-5">
+				<section className="flex items-center gap-2 mt-5 max-sm:flex-col">
 					<UserCreator id={data.creator.id} avatar={data.creator.avatar} username={data.creator.username} />
-					<div className="flex items-center gap-1 px-3 h-12 bg-borderColor w-fit rounded-xl">
-						<span className="text-2xl">#</span>
-						<p className="text-xl">{numbers.channels}</p>
-					</div>
-					<div className="flex items-center gap-1 px-3 h-12 bg-borderColor w-fit rounded-xl">
-						<span className="material-symbols-outlined text-2xl">volume_up</span>
-						<p className="text-xl">{numbers.voice}</p>
-					</div>
-					<div className="flex items-center gap-1 px-3 h-12 bg-borderColor w-fit rounded-xl">
-						<span className="material-symbols-outlined text-2xl">people</span>
-						<p className="text-xl">{data.serialized_source_guild.roles.length}</p>
+					<div className="flex gap-2 max-sm:mt-2 max-sm:w-full">
+						<div className="flex items-center gap-1 px-3 h-12 bg-borderColor w-fit rounded-xl max-sm:flex-grow max-sm:justify-center">
+							<span className="text-2xl">#</span>
+							<p className="text-xl">{numbers.channels}</p>
+						</div>
+						<div className="flex items-center gap-1 px-3 h-12 bg-borderColor w-fit rounded-xl max-sm:flex-grow max-sm:justify-center">
+							<span className="material-symbols-outlined text-2xl">volume_up</span>
+							<p className="text-xl">{numbers.voice}</p>
+						</div>
+						<div className="flex items-center gap-1 px-3 h-12 bg-borderColor w-fit rounded-xl max-sm:flex-grow max-sm:justify-center">
+							<span className="material-symbols-outlined text-2xl">people</span>
+							<p className="text-xl">{data.serialized_source_guild.roles.length}</p>
+						</div>
 					</div>
 				</section>
 
-				<section className="flex items-center gap-3 mt-10">
-					<Link href={base.link}>
-						<Button className="flex items-center bg-primaryColor px-8 py-6 rounded-xl">
+				<section className="flex items-center gap-3 mt-10 max-sm:flex-col max-sm:w-full max-sm:mt-5">
+					<Link href={base.link} className="max-sm:w-full">
+						<Button className="flex items-center bg-primaryColor px-8 py-6 rounded-xl max-sm:w-full">
 							<span className="material-symbols-outlined text-2xl">add</span>
 							Użyj szablonu
 						</Button>
 					</Link>
-					<Button className="flex items-center bg-adviceBot px-8 py-6 rounded-xl">
+					<Button className="flex items-center bg-adviceBot px-8 py-6 rounded-xl max-sm:w-full">
 						<span className="material-symbols-outlined text-2xl">smart_toy</span>
 						Stwórz za pomocą AdviceBot
 					</Button>

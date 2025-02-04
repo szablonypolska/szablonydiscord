@@ -8,6 +8,7 @@ import { prisma } from "@repo/db"
 import { redirect } from "next/navigation"
 import { Toaster } from "sonner"
 import { CircleCheckBig, CircleAlert } from "lucide-react"
+import NotificationsSidebar from "@/components/client/dashboard/notifications-ui/notificationsSidebar"
 
 export default async function Layout({ children }: { children: React.ReactNode }) {
 	const session = await getServerSession(authOptions)
@@ -20,6 +21,7 @@ export default async function Layout({ children }: { children: React.ReactNode }
 		where: { userId: session?.user.id },
 		include: {
 			api: true,
+			notification: true,
 		},
 	})
 
@@ -35,6 +37,7 @@ export default async function Layout({ children }: { children: React.ReactNode }
 						error: <CircleAlert size="35" className="bg-darknesErrorColor text-errorColor p-1.5 rounded-lg" />,
 					}}
 				/>
+				<NotificationsSidebar />
 
 				<div className="flex w-full h-screen">
 					<div className="flex-shrink-0">
@@ -43,7 +46,6 @@ export default async function Layout({ children }: { children: React.ReactNode }
 
 					<div className="flex flex-col w-full">
 						<TopSidebar />
-
 						<div className="overflow-y-auto">{children}</div>
 					</div>
 				</div>

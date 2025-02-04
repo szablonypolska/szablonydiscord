@@ -10,7 +10,8 @@ interface Params {
 	id: string
 }
 
-export default async function User({ params }: { params: Params }) {
+export default async function User(props: { params: Promise<Params> }) {
+	const params = await props.params
 	const { id } = params
 
 	const searchUser: User = await prisma.user.findUnique({
@@ -21,7 +22,11 @@ export default async function User({ params }: { params: Params }) {
 	})
 
 	if (!searchUser) {
-		return <div>tutaj cos kiedys bedzie</div>
+		return (
+			<div>
+				<p>tutaj cos kiedys bedzie</p>
+			</div>
+		)
 	}
 
 	return (

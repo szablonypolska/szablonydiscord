@@ -18,9 +18,13 @@ export default async function createApiKey(params: CreateApiKeyParams) {
 			}),
 		})
 
+		if (!fetchData.ok) {
+			throw new Error(`Error while response`)
+		}
+
 		return await fetchData.json()
 	} catch (err) {
 		console.log(err)
-		throw new Error("server error")
+		throw err
 	}
 }

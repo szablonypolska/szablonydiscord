@@ -21,7 +21,7 @@ export default function ApiSettingsNotificationForm({ formData, error, setError,
 	const handleTestNotification = async () => {
 		try {
 			if (!formData.webhookUrl || error) return setError(true)
-			const test = await testNotification({
+			await testNotification({
 				userId: user.userId,
 				apiKeyId: id,
 				color: "10145064",
@@ -30,7 +30,6 @@ export default function ApiSettingsNotificationForm({ formData, error, setError,
 				description: formData.description,
 			})
 
-			console.log(test)
 			setError(false)
 			toast.success("Test api przebiegl pomyslnie")
 		} catch (err) {

@@ -36,7 +36,18 @@ model User {
   notificationApi Boolean @default(false)
   emailVerified Boolean @default(false)
   template Templates[]
+  notification Notification[]
   api Api[]
+}
+
+model Notification {
+  id Int @id @default(autoincrement())
+  type String
+  title String
+  description String
+  dateAdd DateTime @default(now())
+  userId String
+  user User @relation(fields: [userId], references: [userId])
 }
 
 model Api {
@@ -55,7 +66,19 @@ model Api {
   dailyCount Int @default(0)
   dailyLimit Int @default(500)
   userId String
+  webhook Webhook[]
   user User @relation(fields: [userId], references: [userId])
+}
+
+model Webhook {
+  id Int @id @default(autoincrement())
+  webhookUrl String
+  type String
+  color Int
+  title String
+  description String
+  apiKeyId String
+  api Api @relation(fields: [apiKeyId], references: [apiKeyId])
 }
 
 model Templates {

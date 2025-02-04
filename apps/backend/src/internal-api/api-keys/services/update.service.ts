@@ -39,6 +39,10 @@ export class UpdateService {
       }
 
       if (updateApi.type === 'delete') {
+        if (checkApi.reqCount > 500)
+          throw new BadRequestException(
+            'you cannot remove the token because it has reached the allowable limit',
+          );
         status = await this.prisma.client.api.delete({
           where: { apiKeyId: updateApi.apiKeyId },
         });
