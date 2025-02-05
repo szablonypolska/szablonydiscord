@@ -7,19 +7,19 @@ import {
 } from '@nestjs/common';
 import { PrismaService } from '@repo/shared';
 import { Api } from '../../interfaces/api.interface';
+import { NotificationsService } from 'src/notifications/notifications.service';
 
 @Injectable()
 export class AuthService {
   constructor(
     @Inject(CACHE_MANAGER) private cacheManager: Cache,
     private readonly prisma: PrismaService,
+    private readonly notification: NotificationsService,
   ) {}
 
   private createRedisApi = async (apiKey: string) => {
     const apiKeyRedis = `api_key:${apiKey}`;
     let value: Api = await this.cacheManager.get(apiKeyRedis);
-
-    console.log(value);
 
     if (!value) {
       value = await this.prisma.client.api.findUnique({
@@ -58,7 +58,31 @@ export class AuthService {
         "you have reached your monthly query limit'",
       );
     }
+
     return true;
+  };
+
+  private sendNotification = async (value: Api) => {
+    const percentUsageMonthly = (value.monthlyCount / value.monthlyLimit) * 100;
+
+    if (value.monthlyCount >= value.monthlyLimit) {
+      this.notification.sendNotification({
+        type: 'error',
+        title: 'Miesięczny limit wykorzystany',
+        description: `Twoje API "${value.name}" wykorzystało miesięczny limit`,
+        userId: value.userId,
+      });
+      return;
+    }
+
+    if (percentUsageMonthly > 10) {
+      this.notification.sendNotification({
+        type: 'warning',
+        title: 'Wykorzystano 75% limitu API!',
+        description: `Twoje API "${value.name}" osiągnęło limit 75% użyć na miesiąc!`,
+        userId: value.userId,
+      });
+    }
   };
 
   private updateErrorCounter = async (apiKey: string) => {
@@ -79,6 +103,8 @@ export class AuthService {
       }
 
       const value = await this.createRedisApi(apiKey);
+
+      await this.sendNotification(value);
 
       await this.checkAvailability(value);
 

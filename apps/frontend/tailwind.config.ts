@@ -20,6 +20,7 @@ export default {
 				silverColor: "var(--silverColor)",
 				boxColorDashboard: "var(--boxColorDashboard)",
 				warningColor: "var(--warningColor)",
+				darknesWarningColor: "var(--darknesWarningColor)",
 				disabledButton: "var(--disabledButton)",
 				errorColor: "var(--errorColor)",
 				darknesErrorColor: "var(--darknesErrorColor)",

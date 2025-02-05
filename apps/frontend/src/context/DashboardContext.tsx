@@ -47,19 +47,19 @@ export const DashboardProvider = ({ children, user: initialUser }: { children: R
 
 	socket.on("notification", message => {
 		if (message.data.userId === user.userId) {
+			const type = message.data.type === "success" ? "success" : "error"
+
 			const updateUser = {
 				...user,
 				notification: [message.data, ...user.notification],
 			}
 
-			console.log(updateUser)
+			toast[type]("Nowe powiadomienie", {
+				description: message.data.title,
+			})
 
 			setUser(updateUser)
 		}
-
-		toast.success("Nowe powiadomienie", {
-			description: message.data.title,
-		})
 	})
 
 	useEffect(() => {
