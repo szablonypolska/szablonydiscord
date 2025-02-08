@@ -51,7 +51,7 @@ export interface Notification {
 	title: string
 	description: string
 	userId: string
-	dateAdd: Date
+	dateAdd: string
 }
 
 export interface User {

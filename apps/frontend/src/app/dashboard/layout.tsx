@@ -21,7 +21,12 @@ export default async function Layout({ children }: { children: React.ReactNode }
 		where: { userId: session?.user.id },
 		include: {
 			api: true,
-			notification: true,
+			notification: {
+				take: 4,
+				orderBy: {
+					dateAdd: "desc",
+				},
+			},
 		},
 	})
 

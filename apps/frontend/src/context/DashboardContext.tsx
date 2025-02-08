@@ -48,10 +48,11 @@ export const DashboardProvider = ({ children, user: initialUser }: { children: R
 	socket.on("notification", message => {
 		if (message.data.userId === user.userId) {
 			const type = message.data.type === "success" ? "success" : "error"
+			const newNotifications = [message.data, ...user.notification]
 
 			const updateUser = {
 				...user,
-				notification: [message.data, ...user.notification],
+				notification: newNotifications.splice(0, 4),
 			}
 
 			toast[type]("Nowe powiadomienie", {
