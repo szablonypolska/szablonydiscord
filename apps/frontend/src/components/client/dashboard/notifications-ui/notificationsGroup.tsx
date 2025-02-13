@@ -2,7 +2,7 @@ import ErrorCard from "./cards/error"
 import WarningCard from "./cards/warning"
 import SuccessCard from "./cards/success"
 
-import { Notification } from "../../../../components/interfaces/common"
+import { Notification } from "../../../interfaces/common"
 
 interface NotificationGroupProps {
 	title: string

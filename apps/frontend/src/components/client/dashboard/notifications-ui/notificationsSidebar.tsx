@@ -4,7 +4,7 @@ import { useDashboardContext } from "@/context/DashboardContext"
 import { Button } from "@nextui-org/button"
 import { X } from "lucide-react"
 import { isToday, isYesterday } from "date-fns"
-import { Notification } from "../../../../components/interfaces/common"
+import { Notification } from "../../../interfaces/common"
 import NotificationGroup from "./notificationsGroup"
 import NotificationsError from "./notificationsError"
 

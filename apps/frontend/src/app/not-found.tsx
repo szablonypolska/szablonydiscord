@@ -1,13 +1,15 @@
-"use client"
-
-import Link from "next/link"
+import Footer from "@/components/client/footer"
+import Navbar from "@/components/client/navbar"
+import NotFoundWeb from "@/components/client/notFound"
 
 export default function NotFound() {
 	return (
-		<div>
-			<h2>Not Found</h2>
-			<p>Could not find requested resource111</p>
-			<Link href="/">Return Home</Link>
-		</div>
+		<>
+			<div className="max-w-screen-2xl mx-auto w-full py-4 p-2">
+				<Navbar />
+				<NotFoundWeb />
+			</div>
+			<Footer />
+		</>
 	)
 }

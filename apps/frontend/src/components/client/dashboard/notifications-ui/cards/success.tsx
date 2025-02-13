@@ -1,5 +1,5 @@
 import { CircleCheckBig } from "lucide-react"
-import { Notification } from "../../../../../components/interfaces/common"
+import { Notification } from "../../../../interfaces/common"
 import { formatDistanceToNow } from "date-fns"
 import { pl } from "date-fns/locale"
 
