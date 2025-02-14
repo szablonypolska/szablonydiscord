@@ -4,16 +4,19 @@ import { Button } from "@nextui-org/button"
 import { RefreshCcw, Terminal, Code2, ChevronDown, ChevronUp, ServerCrash, TriangleAlert } from "lucide-react"
 import { usePathname } from "next/navigation"
 import { useState } from "react"
+import Link from "next/link"
 
 interface ErrorProps {
-	error: Error
-	reset: () => void
+	error: string
+	reset?: () => void
 }
 
 export default function ErrorWeb({ error, reset }: ErrorProps) {
 	const pathname = usePathname()
 	const [visible, setVisible] = useState<boolean>(false)
 	const date = Date.now()
+
+	console.log(`zwraca`, error)
 
 	return (
 		<div className="flex flex-col justify-center   w-full my-32">
@@ -41,10 +44,20 @@ export default function ErrorWeb({ error, reset }: ErrorProps) {
 				</div>
 
 				<div className="flex gap-3 max-sm:flex-col max-sm:gap-5 mt-8">
-					<Button className="bg-errorColor rounded-xl p-5  h-12" onPress={() => reset}>
-						<RefreshCcw />
-						Spróbuj ponownie
-					</Button>
+					{reset && (
+						<Button className="bg-errorColor rounded-xl p-5  h-12" onPress={() => reset()}>
+							<RefreshCcw />
+							Spróbuj ponownie
+						</Button>
+					)}
+					{!reset && (
+						<Link href={pathname}>
+							<Button className="bg-errorColor rounded-xl p-5  h-12">
+								<RefreshCcw />
+								Spróbuj ponownie
+							</Button>
+						</Link>
+					)}
 					<Button className="bg-borderColor rounded-xl p-5  h-12" onPress={() => setVisible(!visible)}>
 						{visible ? <ChevronUp /> : <ChevronDown />}
 						Pokaż szczegóły
@@ -65,7 +78,7 @@ export default function ErrorWeb({ error, reset }: ErrorProps) {
 						</div>
 						<div className="flex items-start gap-2  bg-borderColor mt-5 p-3 rounded-xl">
 							<Code2 size={20} className="text-darkGray shrink-0 mt-1" />
-							<pre className="text-silverColor overflow-auto">{error.stack}</pre>
+							<pre className="text-silverColor overflow-auto">{error}</pre>
 						</div>
 						<div className="flex gap-5 w-full mt-5">
 							<div className="bg-borderColor p-3 w-1/2 rounded-xl">

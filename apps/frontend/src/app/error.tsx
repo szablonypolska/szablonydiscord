@@ -5,8 +5,8 @@ import Navbar from "@/components/client/navbar"
 import ErrordWeb from "@/components/client/error"
 
 interface ErrorProps {
-	error: Error
-	reset: () => void
+	error: string
+	reset?: () => void
 }
 
 export default function Error({ error, reset }: ErrorProps) {
