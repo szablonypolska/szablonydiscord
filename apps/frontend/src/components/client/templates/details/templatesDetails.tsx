@@ -19,9 +19,9 @@ interface PropsCreator {
 	username: string
 }
 
-function UserCreator({ id, avatar, username }: PropsCreator) {
+function UserCreator({ avatar, username, id }: PropsCreator) {
 	return (
-		<Link href={`/user/${id}`} className="max-sm:w-full">
+		<Link href={`/user/${username}`} className="max-sm:w-full">
 			<Button className="px-3 h-12 bg-borderColor w-fit rounded-xl max-sm:w-full">
 				<div className="flex items-center gap-2 h-full">
 					<Image src={`https://cdn.discordapp.com/avatars/${id}/${avatar}.jpg`} width={0} height={0} alt="discord user avatar" className="w-7 h-7 rounded-full" />
@@ -58,8 +58,10 @@ export default function TemplatesDetails({ data, base }: Props) {
 
 	const containerVariants = {
 		hidden: { opacity: 0, y: 50 },
-		visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: "easeOut" } },
+		visible: { opacity: 1, y: 0, transition: { duration: 0.3, ease: "easeOut" } },
 	}
+
+	console.log(base)
 
 	return (
 		<motion.main className="flex flex-col items-center my-32" initial="hidden" animate="visible" variants={containerVariants}>
@@ -70,7 +72,6 @@ export default function TemplatesDetails({ data, base }: Props) {
 							<h1 className="text-2xl">{base.title}</h1>
 							<div className="flex gap-1 max-sm:hidden">
 								<span className="px-4 py-1 bg-borderColor w-fit text-sm rounded-full">{base.categories}</span>
-								<span className="px-4 py-1 bg-borderColor w-fit text-sm rounded-full">Gamingowy</span>
 							</div>
 						</div>
 						<div className="flex items-center gap-1 px-3 py-1 bg-borderColor w-fit rounded-xl max-md:hidden">
@@ -86,7 +87,7 @@ export default function TemplatesDetails({ data, base }: Props) {
 				</header>
 
 				<section className="flex items-center gap-2 mt-5 max-sm:flex-col">
-					<UserCreator id={data.creator.id} avatar={data.creator.avatar} username={data.creator.username} />
+					<UserCreator avatar={data.creator.avatar} username={data.creator.username} id={data.creator.id} />
 					<div className="flex gap-2 max-sm:mt-2 max-sm:w-full">
 						<div className="flex items-center gap-1 px-3 h-12 bg-borderColor w-fit rounded-xl max-sm:flex-grow max-sm:justify-center">
 							<span className="text-2xl">#</span>

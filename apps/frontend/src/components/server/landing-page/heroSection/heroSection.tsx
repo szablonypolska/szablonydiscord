@@ -17,9 +17,8 @@ export default async function HeroSection() {
 	// 	},
 	// ]
 
-	let templates = []
-
-	templates = await prisma.template.findMany({
+	const templates = await prisma.templates.findMany({
+		orderBy: { dateCreateSystem: "desc" },
 		take: 50,
 	})
 

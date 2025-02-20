@@ -12,7 +12,7 @@ export default async function User(props: { params: Promise<Params> }) {
 	const { id } = params
 
 	const searchUser: User = await prisma.user.findUnique({
-		where: { userId: id },
+		where: { slugUrl: id },
 		include: {
 			template: true,
 		},

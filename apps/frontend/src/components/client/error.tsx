@@ -77,7 +77,7 @@ export default function ErrorWeb({ error, reset }: ErrorProps) {
 							</div>
 						</div>
 						<div className="flex items-start gap-2  bg-borderColor mt-5 p-3 rounded-xl">
-							<Code2 size={20} className="text-darkGray shrink-0 mt-1" />
+							<Code2 size={20} className="text-darkGray shrink-0" />
 							<pre className="text-silverColor overflow-auto">{error}</pre>
 						</div>
 						<div className="flex gap-5 w-full mt-5">

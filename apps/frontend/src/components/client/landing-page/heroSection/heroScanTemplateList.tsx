@@ -11,7 +11,7 @@ import Modals from "./heroModal"
 interface Type {
 	title: string
 	id: number
-	usage: number
+	usageCount: number
 	dateCreate: string
 	templateId: string
 	waitElement?: number
@@ -131,13 +131,13 @@ export default function ScanTemplateList({ templates, status }: Props) {
 								exit={{ opacity: 0, y: -50 }}
 								transition={{ duration: 0.5 }}
 								layout
-								className={`flex items-center gap-3 bg-altBackgroundColor border border-borderColor py-3 px-5 rounded-2xl ${!element.title ? "hidden" : "block"}`}>
+								className={`flex items-center gap-3 bg-altBackgroundColor border border-borderColor py-3 px-5 rounded-2xl  ${!element.title ? "hidden" : "block"}`}>
 								<AnimatePresence>
 									<div className="text-gray-300 w-full">
-										<p>{element.title}</p>
+										<p className="truncate w-11/12">{element.title}</p>
 										<div className="w-full flex items-center justify-between">
 											<p className="font-semibold">{element.dateCreate}</p>
-											<p className="font-semibold">{element.usage} użyć</p>
+											<p className="font-semibold">{element.usageCount} użyć</p>
 										</div>
 									</div>
 								</AnimatePresence>

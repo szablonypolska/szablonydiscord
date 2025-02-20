@@ -1,4 +1,6 @@
 import { Channel, Roles } from "@/components/interfaces/templates/common"
+import { Tooltip } from "@heroui/react"
+import { Button } from "@nextui-org/button"
 
 interface Type {
 	filtredChannel: Channel[]
@@ -22,6 +24,10 @@ export default function TemplatesVisuzalization({ filtredChannel, filtredRoles }
 		0: "text-2xl pr-2",
 	}
 
+	const copyLink = (hex: string) => {
+		navigator.clipboard.writeText(hex)
+	}
+
 	return (
 		<>
 			<section className="items-center mt-5 max-xl:w-11/12">
@@ -40,7 +46,9 @@ export default function TemplatesVisuzalization({ filtredChannel, filtredRoles }
 
 								return (
 									<div style={{ borderColor: hexColor }} className="flex items-center gap-2 border-2 py-1 px-4 rounded-full whitespace-nowrap overflow-hidden" key={el.id}>
-										<div style={{ backgroundColor: hexColor }} className="w-4 h-4 rounded-full"></div>
+										<Tooltip content="Skopiuj hex color" className="bg-boxColor border border-borderColor p-1 px-5 rounded-xl" delay={500}>
+											<Button style={{ backgroundColor: hexColor }} className="w-4 h-4 px-0 rounded-full" onPress={() => copyLink(hexColor)}></Button>
+										</Tooltip>
 										<h2>{el.name}</h2>
 									</div>
 								)

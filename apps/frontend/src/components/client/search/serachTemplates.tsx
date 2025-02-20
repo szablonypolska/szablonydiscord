@@ -82,7 +82,15 @@ export default function SearchTemplate({ templates }: Props) {
 				<div className={`grid ${typeView === "grid" ? "grid-cols-2" : "grid-cols-1"} gap-5 mt-5 max-md:gap-2`}>
 					{templates.templates &&
 						templates.templates.map(el => (
-							<Cards title={el.title} description={el.description as string} usageCount={el.usageCount} categories={el.categories} templateId={el.templateId} key={el.templateId} />
+							<Cards
+								title={el.title}
+								description={el.description as string}
+								usageCount={el.usageCount}
+								categories={el.categories}
+								templateId={el.templateId}
+								key={el.templateId}
+								slugUrl={el.slugUrl}
+							/>
 						))}
 				</div>
 				{templates.count > 0 && (

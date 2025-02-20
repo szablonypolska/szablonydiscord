@@ -10,7 +10,7 @@ export default async function LoadTemplatesData({ params }: Params) {
 	try {
 		const getTemplateData = await prisma.templates.findUnique({
 			where: {
-				templateId: params,
+				slugUrl: params,
 			},
 			select: {
 				title: true,
@@ -20,14 +20,14 @@ export default async function LoadTemplatesData({ params }: Params) {
 			},
 		})
 
-		if (!getTemplateData) throw new Error("such template does not exist in the database")
+		if (!getTemplateData) throw new Error(JSON.stringify({ message: "such template does not exist in the database", code: "500" }))
 
 		const discordTemplateCode = getTemplateData.link.split("https://discord.new/")[1]
 
 		const getTemplateDiscordData = await fetch(`https://discord.com/api/v9/guilds/templates/${discordTemplateCode}`)
 		const templateDiscordJson = await getTemplateDiscordData.json()
 
-		if (!getTemplateDiscordData.ok) throw new Error(templateDiscordJson.message)
+		if (!getTemplateDiscordData.ok) throw new Error(JSON.stringify(templateDiscordJson))
 
 		return <TemplatesDetails data={templateDiscordJson} base={getTemplateData} />
 	} catch (err: unknown) {

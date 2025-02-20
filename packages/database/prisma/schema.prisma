@@ -14,17 +14,10 @@ datasource db {
 }
 
 
-model Template {
-  id Int @id @default(autoincrement())
-  templateId String
-  title String
-  usage Int
-  dateCreate String
-}
-
 model User {
   id Int @id @default(autoincrement())
   userId String @unique
+  slugUrl String @unique
   username String
   avatar String? 
   dateCreateAccount DateTime?
@@ -82,9 +75,10 @@ model Webhook {
 }
 
 model Templates {
-  in Int @id @default(autoincrement())
+  id Int @id @default(autoincrement())
   templateId String @unique
   link String @unique
+  slugUrl String @unique
   categories String
   dateCreate String
   dateCreateSystem DateTime @default(now())

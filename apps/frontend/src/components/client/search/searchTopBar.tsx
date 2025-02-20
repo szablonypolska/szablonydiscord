@@ -3,9 +3,9 @@ import { Button } from "@nextui-org/button"
 import { ArrowDown, ArrowUp, ArrowUpDown, Check, ChevronDown, Grid, List } from "lucide-react"
 import Link from "next/link"
 import { useSearchParams } from "next/navigation"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 
-type SortOption = "newest" | "popular" | "name"
+type SortOption = "newest" | "popular" | "lack"
 
 interface Props {
 	count: number
@@ -16,13 +16,21 @@ interface Props {
 export default function SearchTopBar({ count, typeView, setTypeView }: Props) {
 	const [showSortDropdown, setShowSortDropdown] = useState<boolean>(false)
 	const [sortBy, setSortBy] = useState<SortOption>("newest")
-	const params = useSearchParams()
-	const currentPage = params.get("page") as string
+	const searchParams = useSearchParams()
+	const currentPage = searchParams.get("page") as string
 	const page = parseInt(currentPage)
+
+	useEffect(() => {
+		if (searchParams.get("sort") === "popularity") return setSortBy("popular")
+		if (searchParams.get("sort") === "createdAt") return setSortBy("newest")
+		setSortBy("lack")
+	}, [searchParams])
+
+	console.log(searchParams.get("sort"))
 
 	const sortOptions = [
 		{
-			id: "name",
+			id: "lack",
 			label: "Brak",
 			icon: ArrowUp,
 			link: "/search",

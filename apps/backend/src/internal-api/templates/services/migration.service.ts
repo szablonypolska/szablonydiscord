@@ -38,7 +38,7 @@ export class MigrationService {
         const link = `https://discord.com/api/v9/guilds/templates/${el.link.split('https://discord.new/')[1]}`;
 
         if (!check) {
-          await this.sleep(1000);
+          await this.sleep(500);
           let fetchTemplates;
 
           try {
@@ -50,23 +50,53 @@ export class MigrationService {
 
           if (!fetchTemplates.data) continue;
 
-          const checkUser = await this.prisma.client.user.findUnique({
+          let user = await this.prisma.client.user.findUnique({
             where: { userId: fetchTemplates.data.creator.id },
           });
 
-          if (!checkUser) {
-            await this.prisma.client.user.create({
+          if (!user) {
+            const checkUsername = await this.prisma.client.user.findUnique({
+              where: { slugUrl: fetchTemplates.data.creator.username },
+            });
+
+            user = await this.prisma.client.user.create({
               data: {
                 userId: fetchTemplates.data.creator.id,
-                username: fetchTemplates.data.creator.username,
+                slugUrl: fetchTemplates.data.creator.username.toLowerCase(),
+                username: checkUsername
+                  ? fetchTemplates.data.creator.id
+                  : fetchTemplates.data.creator.username,
                 avatar: fetchTemplates.data.creator.avatar,
               },
             });
           }
 
+          const title = el.title
+            .normalize('NFKC')
+            .replace(/\p{Emoji_Presentation}/gu, '')
+            .replace(/[^\p{L}\p{N}\s]/gu, '');
+
+          console.log(`zwraca userId ${el.userId}`);
+          console.log(`Zwraca this.userId ${this.userId}`);
+
+          const checkUniqueSlug = await this.prisma.client.templates.findUnique(
+            {
+              where: {
+                slugUrl: title
+                  .normalize('NFKC')
+                  .split(' ')
+                  .join('-')
+                  .toLowerCase(),
+              },
+            },
+          );
+
           const create = await this.prisma.client.templates.create({
             data: {
               templateId: this.uid.rnd(),
+              slugUrl: checkUniqueSlug
+                ? this.uid.rnd()
+                : title.normalize('NFKC').split(' ').join('-').toLowerCase(),
               categories: el.categories,
               dateCreate: el.dateCreate,
               link: el.link,
@@ -74,11 +104,11 @@ export class MigrationService {
               description: el.description,
               usageCount: el.usageCount || 0,
               clickButtonUse: el.clickButtonUse,
-              authorId: el.userId ? el.userId : this.userId,
+              authorId: user.userId,
             },
           });
 
-          console.log(create);
+          console.log(user);
         }
       }
       return 'przeskanowano';

@@ -1,8 +1,8 @@
 import { authOptions } from "../../../../lib/authOptions"
-import ApiSettingsLimit from "@/components/client/dashboard/api/settings/limit/apiLimit"
 import ApiSettingsNotifications from "@/components/client/dashboard/api/settings/notification/apiNotifications"
 import { getServerSession } from "next-auth/next"
 import { prisma } from "@repo/db"
+import ApiSettingsLimit from "@/components/client/dashboard/api/settings/limit/apiLimit"
 
 interface TypeProps {
 	id: string

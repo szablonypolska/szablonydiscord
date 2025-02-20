@@ -1,10 +1,11 @@
 export interface TemplatesProps {
 	authorId: string
 	categories: string
+	slugUrl: string
 	clickButtonUse?: number
 	dateCreate: string
 	description: string
-	in: number
+	id: number
 	link: string
 	server?: string
 	serverLink?: string
@@ -32,8 +33,9 @@ interface ApiKey {
 }
 
 export interface Template {
-	in: number
+	id: number
 	templateId: string
+	slugUrl: string
 	link: string
 	categories: string
 	dateCreate: string
@@ -58,6 +60,7 @@ export interface User {
 	avatar: string
 	username: string
 	dateCreateAccount: Date
+	slugUrl: string
 	emailVerified: boolean
 	id: number
 	limitApiKey: number

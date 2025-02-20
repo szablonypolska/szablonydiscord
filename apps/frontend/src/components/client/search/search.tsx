@@ -42,7 +42,7 @@ export default function Search() {
 				<input
 					type="text"
 					className="bg-altBackgroundColor border border-borderColor w-full p-3.5 rounded-xl focus:ring-2 focus:ring-primaryDark focus:outline-none"
-					placeholder="Wyszukaj szablon..."
+					placeholder="Wpisz po nazwie lub id..."
 					defaultValue={name}
 					onChange={e => setName(e.target.value)}
 				/>

@@ -23,6 +23,7 @@ export class TemplatesService {
   private uid = new ShortUniqueId({ length: 15 });
   private channelName: string[] = [];
   private rolesName: string[] = [];
+  private slugUrl: string = null;
   private todayDate = new Intl.DateTimeFormat('pl-PL', {
     month: '2-digit',
     year: 'numeric',
@@ -30,25 +31,27 @@ export class TemplatesService {
   }).format(new Date());
 
   private determinateCategory(text: string) {
-    const [firstCategory, secondCategory, description] = text
-      .split(',')
-      .map((el) => el.trim());
+    console.log(text);
+    const [firstCategory, description] = text.split(',').map((el) => el.trim());
 
     const firstCategoryVaild = categoriesTemplate.includes(firstCategory);
-    const secondCategoryVaild = categoriesTemplate.includes(secondCategory);
-    const categories = [firstCategory, secondCategory];
+
+    const categories = [firstCategory];
 
     const details: DetailsTemplates = {
       category: categories.join(','),
       description: description ? description : 'Brak opisu szablonu',
     };
 
-    if (!firstCategoryVaild || !secondCategoryVaild) {
+    if (!firstCategoryVaild) {
       details.category = 'Wszystkie';
       return details;
     }
-    if (firstCategoryVaild && secondCategoryVaild) return details;
+    if (firstCategoryVaild) return details;
   }
+
+  private isPolishOnly = (text: string) =>
+    /^[a-zA-ZąćęłńóśźżĄĆĘŁŃÓŚŹŻ0-9\s.,!?()-]+$/u.test(text);
 
   async addTemplate(id: string): Promise<{ message: string }> {
     const link = `https://discord.com/api/v9/guilds/templates/${id}`;
@@ -84,8 +87,6 @@ export class TemplatesService {
       const text = result.response.text();
       const category = this.determinateCategory(text);
 
-      console.log(category);
-
       const checkUserIsExists = await this.prisma.client.user.findUnique({
         where: {
           userId: fetchTemplates.data.creator.id,
@@ -96,10 +97,20 @@ export class TemplatesService {
         await this.prisma.client.user.create({
           data: {
             avatar: fetchTemplates.data.creator.avatar,
+            slugUrl: fetchTemplates.data.creator.username.toLowerCase(),
             userId: fetchTemplates.data.creator.id,
             username: fetchTemplates.data.creator.username,
           },
         });
+      }
+
+      if (!this.isPolishOnly(fetchTemplates.data.name)) {
+        this.slugUrl = this.uid.rnd();
+      } else {
+        this.slugUrl = fetchTemplates.data.name
+          .toLowerCase()
+          .split(' ')
+          .join('-');
       }
 
       await this.prisma.client.templates.create({
@@ -108,6 +119,7 @@ export class TemplatesService {
           categories: category.category,
           dateCreate: this.todayDate,
           link: `https://discord.new/${id}`,
+          slugUrl: this.slugUrl,
           title: fetchTemplates.data.name,
           description: category.description,
           usageCount: fetchTemplates.data.usage_count,
