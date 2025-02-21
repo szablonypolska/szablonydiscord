@@ -83,6 +83,7 @@ model Templates {
   dateCreate String
   dateCreateSystem DateTime @default(now())
   title String
+  sourceServerId String?
   description String?
   usageCount Int
   clickButtonUse Int?

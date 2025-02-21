@@ -13,8 +13,8 @@ export default function CardProfile({ title, description, usageCount, categories
 	return (
 		<div className="flex flex-col  border border-borderColor rounded-xl overflow-hidden">
 			<div className="bg-altBackgroundColor p-5">
-				<p className="font-medium text-lg">{title}</p>
-				<p className="text-silverColor mt-3">{description}</p>
+				<p className="font-medium text-lg w-11/12 truncate">{title}</p>
+				<p className="text-silverColor mt-3 w-11/12 truncate">{description}</p>
 			</div>
 			<div className="flex items-center justify-between bg-background  p-5">
 				<div className="flex items-center gap-3">

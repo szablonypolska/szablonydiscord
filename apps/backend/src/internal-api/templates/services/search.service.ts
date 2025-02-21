@@ -10,7 +10,7 @@ export class SearchService {
   private fuseOptions = {
     includeScore: true,
     threshold: 0.3,
-    keys: ['title', 'description'],
+    keys: ['title', 'description', 'sourceServerId'],
     getFn: (obj: Template, path: string) => {
       if (path === 'description' && obj.description === 'Brak opisu szablonu') {
         return '';

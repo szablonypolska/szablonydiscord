@@ -21,7 +21,7 @@ interface PropsCreator {
 
 function UserCreator({ avatar, username, id }: PropsCreator) {
 	return (
-		<Link href={`/user/${username}`} className="max-sm:w-full">
+		<Link href={`/profile/${id}`} className="max-sm:w-full">
 			<Button className="px-3 h-12 bg-borderColor w-fit rounded-xl max-sm:w-full">
 				<div className="flex items-center gap-2 h-full">
 					<Image src={`https://cdn.discordapp.com/avatars/${id}/${avatar}.jpg`} width={0} height={0} alt="discord user avatar" className="w-7 h-7 rounded-full" />
@@ -60,8 +60,6 @@ export default function TemplatesDetails({ data, base }: Props) {
 		hidden: { opacity: 0, y: 50 },
 		visible: { opacity: 1, y: 0, transition: { duration: 0.3, ease: "easeOut" } },
 	}
-
-	console.log(base)
 
 	return (
 		<motion.main className="flex flex-col items-center my-32" initial="hidden" animate="visible" variants={containerVariants}>
