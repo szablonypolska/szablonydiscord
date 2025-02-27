@@ -11,7 +11,9 @@ import { useDashboardContext } from "@/context/DashboardContext"
 export default function TopSidebar() {
 	const pathname = usePathname()
 	const { data: session } = useSession()
-	const { user, toggleView, toggleViewNotification, showSidebar } = useDashboardContext()
+	const { user, toggleView, toggleViewNotification, showSidebar, numberPeopleOnline } = useDashboardContext()
+
+	console.log(user.status)
 
 	return (
 		<>
@@ -42,7 +44,7 @@ export default function TopSidebar() {
 						<UsersRound className="text-white group-hover:text-primaryColor transition-colors duration-200" size="20" />
 						<div className="flex items-center gap-2">
 							<p className="text-sm max-2xl:hidden">Użytkownicy online:</p>
-							<p className="text-sm ">542</p>
+							<p className="text-sm ">{numberPeopleOnline}</p>
 						</div>
 					</div>
 					<div className="relative">
@@ -58,11 +60,11 @@ export default function TopSidebar() {
 					<div className="flex items-center gap-3 pl-2">
 						<div className="relative">
 							<Image src={session?.user.image || DiscordUserAvatar} width={0} height={0} alt="user avatar" className="w-10 h-10 rounded-full" />
-							<div className="absolute left-7 bottom-0.5 w-2 h-2 bg-green-500 rounded-full outline outline-3 outline-black"></div>
+							<div className={`absolute left-7 bottom-0.5 w-2 h-2 ${user.status ? "bg-green-500" : "bg-errorColor"} rounded-full outline outline-3 outline-black`}></div>
 						</div>
 						<div className="flex flex-col">
 							<p>{session?.user.name}</p>
-							<span className="text-sm text-silverColor">Aktywny</span>
+							<span className="text-sm text-silverColor">{user.status ? "Aktywny" : "Nieaktywny"}</span>
 						</div>
 					</div>
 				</div>

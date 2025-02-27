@@ -11,6 +11,7 @@ interface DashboardContextType {
 	showSidebar: boolean
 	notification: boolean
 	user: User
+	numberPeopleOnline: number
 	updateUser: (newUser: User) => void
 }
 
@@ -20,6 +21,7 @@ export const DashboardProvider = ({ children, user: initialUser }: { children: R
 	const [showSidebar, setShowSidebar] = useState<boolean>(true)
 	const [notification, setNotification] = useState<boolean>(false)
 	const [user, setUser] = useState<User>(initialUser)
+	const [numberPeopleOnline, setNumberPeopleOnline] = useState<number>(0)
 	const { width } = useWindowSize()
 	const socket = connectSocketBackend()
 
@@ -63,6 +65,23 @@ export const DashboardProvider = ({ children, user: initialUser }: { children: R
 		}
 	})
 
+	socket.on("online", message => {
+		if (message.userId === user.userId) {
+			const updateUser = {
+				...user,
+				status: true,
+			}
+
+			setUser(updateUser)
+		}
+		setNumberPeopleOnline(message.numberOnline)
+	})
+
+	socket.on("offline", message => {
+		console.log(message)
+		setNumberPeopleOnline(message.numberOnline)
+	})
+
 	useEffect(() => {
 		if (width && width <= 1024) {
 			setShowSidebar(false)
@@ -70,6 +89,15 @@ export const DashboardProvider = ({ children, user: initialUser }: { children: R
 			setShowSidebar(true)
 		}
 	}, [width])
+
+	useEffect(() => {
+		socket.emit("online", { userId: user.userId })
+
+		return () => {
+			socket.emit("offline", { userId: user.userId })
+			socket.disconnect()
+		}
+	}, [user.userId, socket])
 
 	const toggleView = (): void => {
 		setShowSidebar(!showSidebar)
@@ -83,7 +111,7 @@ export const DashboardProvider = ({ children, user: initialUser }: { children: R
 		setUser(data)
 	}
 
-	return <DashboardContext.Provider value={{ showSidebar, toggleView, user, updateUser, notification, toggleViewNotification }}>{children}</DashboardContext.Provider>
+	return <DashboardContext.Provider value={{ showSidebar, toggleView, user, updateUser, notification, toggleViewNotification, numberPeopleOnline }}>{children}</DashboardContext.Provider>
 }
 
 export function useDashboardContext() {

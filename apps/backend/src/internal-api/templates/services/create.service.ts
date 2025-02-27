@@ -2,7 +2,6 @@ import {
   BadRequestException,
   ConflictException,
   Injectable,
-  InternalServerErrorException,
 } from '@nestjs/common';
 import ShortUniqueId from 'short-unique-id';
 import { PrismaService } from '@repo/shared';
@@ -12,6 +11,9 @@ import { GoogleGenerativeAI } from '@google/generative-ai';
 import { prompt } from '../instructions/ai-prompt.json';
 import { categoriesTemplate } from 'src/common/constants/categories.constans';
 import { DetailsTemplates } from '../interfaces/templates.interface';
+import { differenceInDays, format } from 'date-fns';
+import { pl } from 'date-fns/locale';
+import { isPolishOnly } from 'src/common/utils/validationPolishChar.util';
 
 @Injectable()
 export class TemplatesService {
@@ -24,14 +26,9 @@ export class TemplatesService {
   private channelName: string[] = [];
   private rolesName: string[] = [];
   private slugUrl: string = null;
-  private todayDate = new Intl.DateTimeFormat('pl-PL', {
-    month: '2-digit',
-    year: 'numeric',
-    day: '2-digit',
-  }).format(new Date());
+  private todayDate = format(new Date(), 'dd.MM.yyyy', { locale: pl });
 
   private determinateCategory(text: string) {
-    console.log(text);
     const [firstCategory, description] = text.split(',').map((el) => el.trim());
 
     const firstCategoryVaild = categoriesTemplate.includes(firstCategory);
@@ -50,9 +47,6 @@ export class TemplatesService {
     if (firstCategoryVaild) return details;
   }
 
-  private isPolishOnly = (text: string) =>
-    /^[a-zA-ZąćęłńóśźżĄĆĘŁŃÓŚŹŻ0-9\s.,!?()-]+$/u.test(text);
-
   async addTemplate(id: string): Promise<{ message: string }> {
     const link = `https://discord.com/api/v9/guilds/templates/${id}`;
     const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
@@ -61,20 +55,30 @@ export class TemplatesService {
     try {
       const fetchTemplates = await lastValueFrom(this.httpService.get(link));
       const templates = await this.prisma.client.templates.findMany();
+      const differenceDays = differenceInDays(
+        new Date(),
+        new Date(fetchTemplates.data.created_at),
+      );
       const { roles, channels } = fetchTemplates.data.serialized_source_guild;
 
-      const templateRepeat = templates.some(
-        (repeat: any) => repeat.link === `http://discord.new/${id}`,
+      const templateRepeat = templates.find(
+        (repeat: any) => repeat.link === `https://discord.new/${id}`,
       );
-      const templateRepeatName = templates.some(
+      const templateRepeatName = templates.find(
         (repeat: any) => repeat.title === fetchTemplates.data.name,
       );
 
-      if (templateRepeat || templateRepeatName) {
+      if (templateRepeat) {
         throw new ConflictException('Template already exists');
       }
 
-      if (roles < 15 && channels < 10) {
+      if (differenceDays <= 30) {
+        if (templateRepeatName) {
+          throw new ConflictException('Template already exists1');
+        }
+      }
+
+      if (roles.length < 15 && channels.length < 10) {
         throw new BadRequestException('does not meet the requirements');
       }
 
@@ -104,7 +108,7 @@ export class TemplatesService {
         });
       }
 
-      if (!this.isPolishOnly(fetchTemplates.data.name)) {
+      if (!isPolishOnly(fetchTemplates.data.name)) {
         this.slugUrl = this.uid.rnd();
       } else {
         this.slugUrl = fetchTemplates.data.name

@@ -1,5 +1,5 @@
 import { Body, Controller, Post, Get, HttpCode } from '@nestjs/common';
-import { TemplatesService } from './services/templates.service';
+import { TemplatesService } from './services/create.service';
 import { MigrationService } from './services/migration.service';
 import { SearchService } from './services/search.service';
 import { Template } from '../../interfaces/template.interface';

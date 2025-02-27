@@ -37,6 +37,7 @@ export const authOptions: AuthOptions = {
 					data: {
 						userId: profile.id,
 						username: profile.username,
+						slugUrl: profile.username,
 						avatar: profile.avatar,
 						register: true,
 						dateCreateAccount: new Date(),

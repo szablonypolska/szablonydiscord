@@ -122,7 +122,7 @@ export default function ScanTemplateList({ templates, status }: Props) {
 						<p className="">Ostatnie przeskanowane szablony</p>
 						<p className="font-semibold">({scanTemplate})</p>
 					</div>
-					<div className="flex flex-col gap-[0.80rem] mt-4">
+					<div className="flex flex-col gap-3 mt-4">
 						{list.map(element => (
 							<motion.div
 								key={`source1-${element.id}` || element.templateId}

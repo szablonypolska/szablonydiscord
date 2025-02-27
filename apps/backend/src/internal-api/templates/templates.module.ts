@@ -1,5 +1,5 @@
 import { Module } from '@nestjs/common';
-import { TemplatesService } from './services/templates.service';
+import { TemplatesService } from './services/create.service';
 import { TemplateController } from './templates.controller';
 import { SharedModule, FirebaseModule } from '@repo/shared';
 import { HttpModule } from '@nestjs/axios';

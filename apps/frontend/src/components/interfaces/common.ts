@@ -69,6 +69,7 @@ export interface User {
 	trustScore: number
 	userId: string
 	warnings: number
+	status?: boolean
 	api: ApiKey[]
 	template: Template[]
 	notification: Notification[]
