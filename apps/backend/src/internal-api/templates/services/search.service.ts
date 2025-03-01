@@ -27,7 +27,14 @@ export class SearchService {
         throw new BadGatewayException('name is required');
       }
 
-      console.log(name);
+      const getSearchHistory = await this.prisma.client.searchHistory.findMany({
+        orderBy: { dateSearch: 'desc' },
+        take: 5,
+      });
+
+      const checkIfSearchedToday = getSearchHistory.some(
+        (el: any) => el.title === name,
+      );
 
       const templates = await this.prisma.client.templates.findMany({
         orderBy: { usageCount: 'desc' },
@@ -39,6 +46,17 @@ export class SearchService {
         .search(name)
         .slice(0, 50)
         .map((result) => result.item);
+
+      console.log(searchTemplates.length);
+
+      if (!checkIfSearchedToday && searchTemplates.length > 0) {
+        console.log('wykonuje sie');
+        await this.prisma.client.searchHistory.create({
+          data: {
+            title: name,
+          },
+        });
+      }
 
       return { templates: searchTemplates, type: 'search' };
     } catch (err) {

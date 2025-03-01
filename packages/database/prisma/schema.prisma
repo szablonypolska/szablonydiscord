@@ -95,3 +95,9 @@ model Templates {
   @@index([usageCount])
   @@index([dateCreateSystem])
 }
+
+model SearchHistory {
+  id Int @id @default(autoincrement())
+  title String
+  dateSearch DateTime @default(now())
+}

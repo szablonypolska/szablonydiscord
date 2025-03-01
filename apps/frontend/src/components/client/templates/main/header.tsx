@@ -6,9 +6,23 @@ import searchDecoration from "../../../../../public/searchDecoration.svg"
 import Image from "next/image"
 import { useState } from "react"
 import Link from "next/link"
+import { PlaceholdersAndVanishInput } from "@/components/ui/placeholders-and-vanish-input"
+import { Search } from "lucide-react"
 
-export default function HeaderTemplates() {
+export default function HeaderTemplates({ searchHistory }: { searchHistory: string[] }) {
 	const [text, setText] = useState<string>("")
+	const placeholders = ["Roleplay francja ", "szablony serwerów discord", "wojskowe garnizon", "szablon d.o.c", "Szablon dla strazy pozarnej"]
+
+	console.log(searchHistory)
+
+	const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+		console.log(handleChange)
+		setText(e.target.value)
+	}
+	const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+		e.preventDefault()
+	}
+
 	return (
 		<>
 			<header className="flex items-center max-lg:gap-5 max-lg:mt-32  my-20  relative px-10">
@@ -18,13 +32,12 @@ export default function HeaderTemplates() {
 					</h1>
 					<div className="flex items-center gap-3 mt-5  w-9/12 max-xl:w-11/12 z-50 relative">
 						<div className="flex-grow relative">
-							<input
-								type="text"
-								className="w-full bg-[#212121] border border-borderColor pl-12 py-2 rounded-xl placeholder:text-textColor focus:ring-1 focus:ring-borderColor focus:outline-none"
-								onChange={e => setText(e.target.value)}
-								placeholder="Wyszukaj szablonu..."
-							/>
-							<span className="material-symbols-outlined absolute left-7 top-1/2 -translate-y-1/2 -translate-x-1/2">search</span>
+							<div className="relative flex flex-col justify-center  items-center">
+								<PlaceholdersAndVanishInput placeholders={searchHistory} onChange={handleChange} onSubmit={onSubmit} />
+								<span className="material-symbols-outlined absolute left-7 top-1/2 -translate-y-1/2 -translate-x-1/2">
+									<Search size={20} />
+								</span>
+							</div>
 						</div>
 						<Link href={`${`/search?name=${text}`}`}>
 							<Button className="uppercase bg-primaryColor rounded-xl text-sm font-[550] px-6 disabled:opacity-80" disabled={!text}>

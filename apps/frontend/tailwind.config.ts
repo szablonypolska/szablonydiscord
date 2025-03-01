@@ -1,6 +1,7 @@
 import type { Config } from "tailwindcss"
 
 export default {
+	darkMode: ["class"],
 	content: ["./src/pages/**/*.{js,ts,jsx,tsx,mdx}", "./src/components/**/*.{js,ts,jsx,tsx,mdx}", "./src/app/**/*.{js,ts,jsx,tsx,mdx}"],
 	theme: {
 		extend: {
@@ -28,8 +29,18 @@ export default {
 				primaryLight: "var(--primary-light)",
 				darkGray: "var(--darkGray)",
 			},
-			backgroundImage: {
-				darkTealFade: "radial-gradient(circle, rgba(23,128,119,0.1) 10%, rgba(23,128,119,0) 100%)",
+			animation: {
+				"shiny-text": "shiny-text 10s infinite",
+			},
+			keyframes: {
+				"shiny-text": {
+					"0%, 90%, 100%": {
+						"background-position": "calc(-100% - var(--shiny-width)) 0",
+					},
+					"30%, 60%": {
+						"background-position": "calc(100% + var(--shiny-width)) 0",
+					},
+				},
 			},
 		},
 	},
