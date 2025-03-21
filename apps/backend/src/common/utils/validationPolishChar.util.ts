@@ -1,3 +1,3 @@
 export const isPolishOnly = (text: string) => {
-  return /^[a-zA-ZąćęłńóśźżĄĆĘŁŃÓŚŹŻ0-9\s.,!?()-]+$/u.test(text);
+  return /^[a-zA-Z0-9\-_~.]+$/.test(text);
 };

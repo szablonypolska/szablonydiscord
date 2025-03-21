@@ -14,7 +14,10 @@ export default function TemplatesLoading() {
 									<span className="bg-borderColor w-28 h-7 rounded-full"></span>
 								</div>
 							</div>
-							<div className="flex items-center gap-1 px-3 py-1 bg-borderColor w-16 h-10 rounded-xl max-md:hidden"></div>
+							<div className="flex items-center gap-2">
+								<div className="flex items-center gap-1 px-3 py-1 bg-borderColor w-14 h-10 rounded-xl max-md:hidden"></div>
+								<div className="flex items-center gap-1 px-3 py-1 bg-borderColor w-16 h-10 rounded-xl max-md:hidden"></div>
+							</div>
 						</div>
 						<p className="w-80 h-6 bg-borderColor rounded-full max-sm:w-full max-md:mt-3 mt-2"></p>
 						<div className="max-sm:flex hidden mt-3 gap-2">

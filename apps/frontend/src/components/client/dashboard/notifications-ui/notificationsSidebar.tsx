@@ -40,7 +40,8 @@ export default function NotificationsSidebar() {
 				}`}
 			/>
 
-			<div className={`fixed top-0 right-0 h-full bg-sidebarColor border-l-2 border-l-borderColor transition-all ${isNotificationVisible ? "w-[28rem]" : "w-0"} overflow-hidden flex flex-col z-50`}>
+			<div
+				className={`fixed top-0 right-0 h-full bg-sidebarColor border-l-2 border-l-borderColor transition-all ${isNotificationVisible ? "w-[28rem] max-md:w-11/12" : "w-0"} overflow-hidden flex flex-col z-50`}>
 				<div className="flex items-center justify-between p-5">
 					<div>
 						<h2 className="text-xl">Powiadomienia</h2>

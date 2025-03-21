@@ -7,6 +7,8 @@ import Image from "next/image"
 import TemplatesVisuzalization from "./templatesVisualizaton"
 import Link from "next/link"
 import { Channel, Roles } from "@/components/interfaces/templates/common"
+import { Download, Eye } from "lucide-react"
+import { Tooltip } from "@heroui/react"
 
 interface Props {
 	data: DiscordTemplate
@@ -66,15 +68,21 @@ export default function TemplatesDetails({ data, base }: Props) {
 			<motion.section className="bg-altBackgroundColor w-[70rem] max-xl:w-11/12 p-8 rounded-xl border border-borderColor max-lg:p-5" variants={containerVariants}>
 				<header>
 					<div className="flex items-center justify-between">
-						<div className="flex items-center gap-4">
-							<h1 className="text-2xl">{base.title}</h1>
+						<div className="flex items-center gap-4 w-full">
+							<h1 className="text-2xl max-w-[30rem] truncate max-lg:max-w-96">{base.title}</h1>
 							<div className="flex gap-1 max-sm:hidden">
 								<span className="px-4 py-1 bg-borderColor w-fit text-sm rounded-full">{base.categories}</span>
 							</div>
 						</div>
-						<div className="flex items-center gap-1 px-3 py-1 bg-borderColor w-fit rounded-xl max-md:hidden">
-							<span className="material-symbols-outlined text-3xl">download</span>
-							<p className="text-2xl">{data.usage_count}</p>
+						<div className="flex items-center gap-2">
+							<div className="flex items-center gap-1 px-3 py-1 bg-borderColor w-fit rounded-xl max-md:hidden">
+								<Eye className="font-black" />
+								<p className="text-2xl ml-0.2">{base.historyLength}</p>
+							</div>
+							<div className="flex items-center gap-1 px-3 py-1 bg-borderColor w-fit rounded-xl max-md:hidden">
+								<Download />
+								<p className="text-2xl ml-0.2">{data.usage_count}</p>
+							</div>
 						</div>
 					</div>
 					<p className="text-textColor text-lg md:w-9/12 max-md:w-full">{base.description}</p>
@@ -109,10 +117,12 @@ export default function TemplatesDetails({ data, base }: Props) {
 							Użyj szablonu
 						</Button>
 					</Link>
-					<Button className="flex items-center bg-adviceBot px-8 py-6 rounded-xl max-sm:w-full">
-						<span className="material-symbols-outlined text-2xl">smart_toy</span>
-						Stwórz za pomocą AdviceBot
-					</Button>
+					<Tooltip content="Opcja aktualnie niedostępna." className="bg-background p-1 px-5 rounded-xl">
+						<Button className="flex items-center bg-adviceBot px-8 py-6 rounded-xl max-sm:w-full cursor-not-allowed">
+							<span className="material-symbols-outlined text-2xl">smart_toy</span>
+							Stwórz za pomocą AdviceBot
+						</Button>
+					</Tooltip>
 				</section>
 			</motion.section>
 			<TemplatesVisuzalization filtredChannel={filtredChannel} filtredRoles={filtredRoles} />

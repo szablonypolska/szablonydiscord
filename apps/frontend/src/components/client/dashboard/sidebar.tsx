@@ -29,7 +29,7 @@ export default function Sidebar() {
 				<div className={`flex flex-col ${!showSidebar && "items-center max-lg:items-start"}  gap-3 mt-5 flex-grow w-full px-3`}>
 					<p className="px-2 text-silverColor uppercase text-sm truncate w-11/12">wszystko</p>
 					<div className="w-full">
-						<Link href="dashboard/api">
+						<Link href="/dashboard">
 							<div
 								className={`${pathname === "/dashboard" ? "bg-primaryColor text-white" : "text-silverColor hover:bg-borderColor"} px-2 w-full rounded-lg py-2 flex ${!showSidebar && "justify-center max-lg:justify-start"}  items-center gap-4 text-lg`}>
 								<Key size={showSidebar ? "25" : "30"} />
@@ -57,9 +57,9 @@ export default function Sidebar() {
 					</div>
 					<p className={`px-2 text-silverColor uppercase text-sm mt-5 ${!showSidebar && "text-center px-0 max-lg:text-start"}`}>admin</p>
 					<div className="">
-						<Link href="/dashboard/templates">
+						<Link href="/dashboard/admin">
 							<div
-								className={`${pathname === "/dashboard/templates" ? "bg-primaryColor text-white" : "text-silverColor hover:bg-borderColor"} px-2 w-full rounded-lg py-2 flex ${!showSidebar && "justify-center"}  items-center gap-4 text-lg`}>
+								className={`${pathname === "/dashboard/admin" ? "bg-primaryColor text-white" : "text-silverColor hover:bg-borderColor"} px-2 w-full rounded-lg py-2 flex ${!showSidebar && "justify-center"}  items-center gap-4 text-lg`}>
 								<Shield size={showSidebar ? "25" : "30"} />
 								<p className={`${showSidebar ? "block" : "hidden max-lg:block"}`}>Admin Panel</p>
 							</div>
@@ -79,7 +79,7 @@ export default function Sidebar() {
 							</div>
 						)}
 						<Button className="hover:bg-borderColor rounded-lg px-2" onPress={() => signOut({ callbackUrl: "/login" })}>
-							<LogOut color="#9ca3af" />
+							<LogOut className="text-silverColor" />
 						</Button>
 					</div>
 				</div>

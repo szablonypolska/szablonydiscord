@@ -5,6 +5,7 @@ import { CreateApiKey } from "./apiCreateApiKey"
 import { Button } from "@nextui-org/button"
 import { useDashboardContext } from "@/context/DashboardContext"
 import ApiCreateError from "./apiCreateError"
+import { X } from "lucide-react"
 
 interface ModalProps {
 	modal: boolean
@@ -44,8 +45,8 @@ export default function ApiModal({ modal, setModal }: ModalProps) {
 				{user.api.length !== user.limitApiKey && (
 					<div className="flex items-center justify-between">
 						<p className="text-lg font-semibold">Utwórz nowy klucz API</p>
-						<Button className="material-symbols-outlined p-1 rounded-full" onPress={() => setModal(false)}>
-							close
+						<Button className=" p-1 rounded-full" onPress={() => setModal(false)}>
+							<X />
 						</Button>
 					</div>
 				)}

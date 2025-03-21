@@ -86,15 +86,24 @@ model Templates {
   sourceServerId String?
   description String?
   usageCount Int
-  clickButtonUse Int?
-  server String?
-  serverLink String?
   authorId String?
+  visitHistory VisitTemplateHistory[]
   author User? @relation(fields: [authorId], references: [userId])
 
   @@index([usageCount])
   @@index([dateCreateSystem])
 }
+
+model VisitTemplateHistory {
+  id Int @id @default(autoincrement())
+  uuid String 
+  slugUrl String
+  date DateTime @default(now())
+  url Templates @relation(fields: [slugUrl], references: [slugUrl])
+
+  @@index([slugUrl])
+}
+
 
 model SearchHistory {
   id Int @id @default(autoincrement())

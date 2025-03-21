@@ -8,10 +8,10 @@ import { useState } from "react"
 import Link from "next/link"
 import { PlaceholdersAndVanishInput } from "@/components/ui/placeholders-and-vanish-input"
 import { Search } from "lucide-react"
+import { BlurFade } from "@/components/ui/blur-fade"
 
 export default function HeaderTemplates({ searchHistory }: { searchHistory: string[] }) {
 	const [text, setText] = useState<string>("")
-	const placeholders = ["Roleplay francja ", "szablony serwerów discord", "wojskowe garnizon", "szablon d.o.c", "Szablon dla strazy pozarnej"]
 
 	console.log(searchHistory)
 
@@ -27,10 +27,15 @@ export default function HeaderTemplates({ searchHistory }: { searchHistory: stri
 		<>
 			<header className="flex items-center max-lg:gap-5 max-lg:mt-32  my-20  relative px-10">
 				<div className="relative w-1/2 max-lg:w-full">
-					<h1 className="text-[2.8rem] leading-[50px] font-bold uppercase w-full tracking-wider">
-						znajdź <span className="text-primaryColor">szablon</span> dla <span className="text-primaryColor">twojego serwera</span>
-					</h1>
-					<div className="flex items-center gap-3 mt-5  w-9/12 max-xl:w-11/12 z-50 relative">
+					<BlurFade delay={0.02} inView>
+						<h1 className="text-[2.8rem] leading-[55px] font-bold uppercase w-full tracking-wider">
+							znajdź <span className="text-primaryColor">szablon</span> dla{" "}
+							<BlurFade delay={0.02 * 2} inView>
+								<span className="text-primaryColor">twojego serwera</span>
+							</BlurFade>
+						</h1>
+					</BlurFade>
+					<div className="flex items-center gap-3  w-9/12 max-xl:w-11/12 z-50 relative">
 						<div className="flex-grow relative">
 							<div className="relative flex flex-col justify-center  items-center">
 								<PlaceholdersAndVanishInput placeholders={searchHistory} onChange={handleChange} onSubmit={onSubmit} />

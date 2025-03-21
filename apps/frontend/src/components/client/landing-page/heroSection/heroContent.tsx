@@ -1,13 +1,14 @@
 "use client"
 
 import { Button } from "@nextui-org/button"
+import { BadgeCheck } from "lucide-react"
 
 export default function HeroContent() {
 	return (
 		<>
 			<div className="max-md:flex max-md:flex-col max-md:items-center max-md:text-center mb-10 max-md:w-full max-lg:w-1/2">
 				<div className="flex items-center gap-2 bg-borderColor w-fit px-2 py-1 rounded-full">
-					<span className="material-symbols-outlined text-primaryColor">verified</span>
+					<BadgeCheck className="text-primaryColor w-5 h-5" />
 					<p className="text-gray-300">Szablonydiscord jest w pełni bezpłatne</p>
 				</div>
 				<h2 className="text-4xl font-medium tracking-wide mt-5 max-md:text-2xl max-md:font-semibold max-lg:text-3xl">Witaj w SzablonyDiscord</h2>

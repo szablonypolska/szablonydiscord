@@ -28,4 +28,5 @@ export interface BaseInforamtion {
 	description: string
 	categories: string
 	link: string
+	historyLength: number
 }

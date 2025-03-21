@@ -16,8 +16,8 @@ interface Type {
 export default function TemplatesVisuzalization({ filtredChannel, filtredRoles }: Type) {
 	const [copied, setCopied] = useState<boolean>(false)
 	const channelStyles: { [key: number]: string } = {
-		0: "flex items-center pl-4 mb-1  font-medium text-channelColor text-lg w-96 max-md:w-full  hover:bg-borderColor truncate rounded-lg", // Tekstowy
-		2: "flex items-center gap-2 pl-4 mb-1 text-channelColor text-lg  w-96 max-md:w-full hover:bg-borderColor truncate rounded-lg", // Głosowy
+		0: "flex items-center pl-4 my-1  font-medium text-channelColor text-lg w-96 max-md:w-full  hover:bg-borderColor truncate rounded-lg", // Tekstowy
+		2: "flex items-center gap-2 pl-4 my-1 text-channelColor text-lg  w-96 max-md:w-full hover:bg-borderColor truncate rounded-lg", // Głosowy
 		4: "flex items-center gap-1 font-bold text-lg mt-2  text-textColor hover:text-white w-96 max-md:w-full", // Kategoria
 	}
 
@@ -41,7 +41,7 @@ export default function TemplatesVisuzalization({ filtredChannel, filtredRoles }
 			setCopied(true)
 			setTimeout(() => setCopied(false), 1500)
 		} catch (err) {
-			console.error("Failed to copy text: ", err)
+			console.error(err)
 		}
 	}
 

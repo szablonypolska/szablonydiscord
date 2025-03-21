@@ -4,6 +4,7 @@ import Image from "next/image"
 import logo from "../../../public/logo.svg"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
+import { Menu } from "lucide-react"
 
 export function Logo() {
 	return (
@@ -47,7 +48,8 @@ export default function Navbar() {
 			<div className="max-lg:block lg:hidden">
 				<div className="flex items-center justify-between">
 					<Logo />
-					<button className="material-symbols-outlined text-4xl">menu</button>
+
+					<Menu className="w-8 h-8" />
 				</div>
 			</div>
 		</nav>

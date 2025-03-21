@@ -5,6 +5,7 @@ import { lastValueFrom } from 'rxjs';
 import { PrismaService } from '@repo/shared';
 import ShortUniqueId from 'short-unique-id';
 import { HttpService } from '@nestjs/axios';
+import { isPolishOnly } from 'src/common/utils/validationPolishChar.util';
 
 @Injectable()
 export class MigrationService {
@@ -14,7 +15,7 @@ export class MigrationService {
     private readonly httpService: HttpService,
   ) {}
 
-  private number: number = 0;
+  private slugUrl: string = null;
   private uid = new ShortUniqueId({ length: 15 });
   private userId: string = null;
   private sleep(ms: number): Promise<void> {
@@ -71,39 +72,38 @@ export class MigrationService {
             });
           }
 
-          const title = el.title
-            .normalize('NFKC')
-            .replace(/\p{Emoji_Presentation}/gu, '')
-            .replace(/[^\p{L}\p{N}\s]/gu, '');
-
-          console.log(`zwraca userId ${el.userId}`);
-          console.log(`Zwraca this.userId ${this.userId}`);
+          if (isPolishOnly(fetchTemplates.data.name)) {
+            this.slugUrl = this.uid.rnd();
+          } else {
+            this.slugUrl = fetchTemplates.data.name
+              .normalize('NFD')
+              .replace(/[\u0300-\u036f]/g, '')
+              .replace(/[^\w\s-]/g, '')
+              .replace(/\s+/g, '-')
+              .replace(/-{2,}/g, '-')
+              .replace(/^-+|-+$/g, '')
+              .toLowerCase();
+          }
 
           const checkUniqueSlug = await this.prisma.client.templates.findUnique(
-            {
-              where: {
-                slugUrl: title
-                  .normalize('NFKC')
-                  .split(' ')
-                  .join('-')
-                  .toLowerCase(),
-              },
-            },
+            { where: { slugUrl: this.slugUrl } },
           );
 
-          const create = await this.prisma.client.templates.create({
+          if (checkUniqueSlug) {
+            this.slugUrl = this.uid.rnd();
+          }
+
+          await this.prisma.client.templates.create({
             data: {
               templateId: this.uid.rnd(),
-              slugUrl: checkUniqueSlug
-                ? this.uid.rnd()
-                : title.normalize('NFKC').split(' ').join('-').toLowerCase(),
+              slugUrl: this.slugUrl,
               categories: el.categories,
               dateCreate: el.dateCreate,
               link: el.link,
-              title: el.title,
+              title: fetchTemplates.data.name,
               description: el.description,
+              sourceServerId: el.sourceServerId ? el.sourceServerId : null,
               usageCount: el.usageCount || 0,
-              clickButtonUse: el.clickButtonUse,
               authorId: user.userId,
             },
           });

@@ -45,6 +45,14 @@ export interface Template {
 	usageCount: number
 	clickButtonUse?: number
 	authorId: string
+	visitHistory: HistoryVisitTemplate[]
+}
+
+export interface HistoryVisitTemplate {
+	id: number
+	uuid: string
+	slugUrl: string
+	date: Date
 }
 
 export interface Notification {

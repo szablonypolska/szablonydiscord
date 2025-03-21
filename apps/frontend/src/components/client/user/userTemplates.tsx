@@ -58,7 +58,7 @@ export default function TemplatesProfile({ data }: Props) {
 				<div className="w-full h-[1px] bg-borderColor"></div>
 				<div className="grid grid-cols-2 max-lg:grid-cols-1   gap-5 mt-6 w-full px-7">
 					{data.template.slice(startIndex, endIndex).map((el, index) => (
-						<CardProfile key={index} title={el.title} description={el.description as string} usageCount={el.usageCount} categories={el.categories} templateId={el.templateId} />
+						<CardProfile key={index} title={el.title} description={el.description as string} usageCount={el.usageCount} categories={el.categories} slugUrl={el.slugUrl} />
 					))}
 				</div>
 				<Pagination

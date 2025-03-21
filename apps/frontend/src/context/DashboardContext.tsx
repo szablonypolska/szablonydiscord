@@ -2,8 +2,7 @@
 import React, { createContext, useContext, useEffect, useState } from "react"
 import { User } from "@/components/interfaces/common"
 import useWindowSize from "@/hooks/useWindowSize"
-import { connectSocketBackend } from "@/lib/socket"
-import { toast } from "sonner"
+import useSocketListener from "@/hooks/useSocketListener"
 
 interface DashboardContextType {
 	toggleView: () => void
@@ -23,64 +22,8 @@ export const DashboardProvider = ({ children, user: initialUser }: { children: R
 	const [user, setUser] = useState<User>(initialUser)
 	const [numberPeopleOnline, setNumberPeopleOnline] = useState<number>(0)
 	const { width } = useWindowSize()
-	const socket = connectSocketBackend()
 
-	socket.on("apikey", message => {
-		if (user.userId === message.userId) {
-			const updateUser = {
-				...user,
-				api: user.api.map(el =>
-					el.apiKeyId === message.apiKeyId
-						? {
-								...el,
-								reqCount: message.reqCount,
-								successCount: message.successCount,
-								errorCount: message.errorCount,
-								lastUsed: message.lastUsed,
-								monthlyCount: message.monthlyCount,
-								dailyCount: message.dailyCount,
-							}
-						: el
-				),
-			}
-			setUser(updateUser)
-		}
-	})
-
-	socket.on("notification", message => {
-		if (message.data.userId === user.userId) {
-			const type = message.data.type === "success" ? "success" : "error"
-			const newNotifications = [message.data, ...user.notification]
-
-			const updateUser = {
-				...user,
-				notification: newNotifications.splice(0, 4),
-			}
-
-			toast[type]("Nowe powiadomienie", {
-				description: message.data.title,
-			})
-
-			setUser(updateUser)
-		}
-	})
-
-	socket.on("online", message => {
-		if (message.userId === user.userId) {
-			const updateUser = {
-				...user,
-				status: true,
-			}
-
-			setUser(updateUser)
-		}
-		setNumberPeopleOnline(message.numberOnline)
-	})
-
-	socket.on("offline", message => {
-		console.log(message)
-		setNumberPeopleOnline(message.numberOnline)
-	})
+	useSocketListener({ user, setUser, setNumberPeopleOnline })
 
 	useEffect(() => {
 		if (width && width <= 1024) {
@@ -89,15 +32,6 @@ export const DashboardProvider = ({ children, user: initialUser }: { children: R
 			setShowSidebar(true)
 		}
 	}, [width])
-
-	useEffect(() => {
-		socket.emit("online", { userId: user.userId })
-
-		return () => {
-			socket.emit("offline", { userId: user.userId })
-			socket.disconnect()
-		}
-	}, [user.userId, socket])
 
 	const toggleView = (): void => {
 		setShowSidebar(!showSidebar)

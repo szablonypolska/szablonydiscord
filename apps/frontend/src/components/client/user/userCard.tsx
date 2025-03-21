@@ -6,10 +6,10 @@ interface CardProps {
 	description: string
 	usageCount: number
 	categories: string
-	templateId: string
+	slugUrl: string
 }
 
-export default function CardProfile({ title, description, usageCount, categories, templateId }: CardProps) {
+export default function CardProfile({ title, description, usageCount, categories, slugUrl }: CardProps) {
 	return (
 		<div className="flex flex-col  border border-borderColor rounded-xl overflow-hidden">
 			<div className="bg-altBackgroundColor p-5">
@@ -23,7 +23,7 @@ export default function CardProfile({ title, description, usageCount, categories
 					</p>
 					<p>{categories}</p>
 				</div>
-				<Link href={`/templates/${templateId}`}>
+				<Link href={`/templates/${slugUrl}`}>
 					<Button className="bg-primaryDark text-primaryLight px-5 rounded-full">Pokaż</Button>
 				</Link>
 			</div>

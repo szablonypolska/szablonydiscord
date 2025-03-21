@@ -108,7 +108,7 @@ export class TemplatesService {
         });
       }
 
-      if (!isPolishOnly(fetchTemplates.data.name)) {
+      if (isPolishOnly(fetchTemplates.data.name)) {
         this.slugUrl = this.uid.rnd();
       } else {
         this.slugUrl = fetchTemplates.data.name
