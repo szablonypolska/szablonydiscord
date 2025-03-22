@@ -38,6 +38,7 @@ function UserCreator({ avatar, username, id }: PropsCreator) {
 }
 
 export default function TemplatesDetails({ data, base }: Props) {
+	const idTemplate = base.link.split("https://discord.new/")[1]
 	const numbers = data.serialized_source_guild.channels.reduce(
 		(acc, value) => {
 			if (value.type === 0) acc.channels++
@@ -75,14 +76,18 @@ export default function TemplatesDetails({ data, base }: Props) {
 							</div>
 						</div>
 						<div className="flex items-center gap-2">
-							<div className="flex items-center gap-1 px-3 py-1 bg-borderColor w-fit rounded-xl max-md:hidden">
-								<Eye className="font-black" />
-								<p className="text-2xl ml-0.2">{base.historyLength}</p>
-							</div>
-							<div className="flex items-center gap-1 px-3 py-1 bg-borderColor w-fit rounded-xl max-md:hidden">
-								<Download />
-								<p className="text-2xl ml-0.2">{data.usage_count}</p>
-							</div>
+							<Tooltip content="Odsłony szablonu" className="p-1 px-3 bg-borderColor rounded-xl" delay={300}>
+								<div className="flex items-center gap-1 px-3 py-1 bg-borderColor w-fit rounded-xl max-md:hidden">
+									<Eye className="font-black" />
+									<p className="text-2xl ml-0.2">{base.historyLength}</p>
+								</div>
+							</Tooltip>
+							<Tooltip content="Użycia szablonu" className="p-1 px-3 bg-borderColor rounded-xl" delay={300}>
+								<div className="flex items-center gap-1 px-3 py-1 bg-borderColor w-fit rounded-xl max-md:hidden">
+									<Download />
+									<p className="text-2xl ml-0.2">{data.usage_count}</p>
+								</div>
+							</Tooltip>
 						</div>
 					</div>
 					<p className="text-textColor text-lg md:w-9/12 max-md:w-full">{base.description}</p>
@@ -95,18 +100,24 @@ export default function TemplatesDetails({ data, base }: Props) {
 				<section className="flex items-center gap-2 mt-5 max-sm:flex-col">
 					<UserCreator avatar={data.creator.avatar} username={data.creator.username} id={data.creator.id} />
 					<div className="flex gap-2 max-sm:mt-2 max-sm:w-full">
-						<div className="flex items-center gap-1 px-3 h-12 bg-borderColor w-fit rounded-xl max-sm:flex-grow max-sm:justify-center">
-							<span className="text-2xl">#</span>
-							<p className="text-xl">{numbers.channels}</p>
-						</div>
-						<div className="flex items-center gap-1 px-3 h-12 bg-borderColor w-fit rounded-xl max-sm:flex-grow max-sm:justify-center">
-							<span className="material-symbols-outlined text-2xl">volume_up</span>
-							<p className="text-xl">{numbers.voice}</p>
-						</div>
-						<div className="flex items-center gap-1 px-3 h-12 bg-borderColor w-fit rounded-xl max-sm:flex-grow max-sm:justify-center">
-							<span className="material-symbols-outlined text-2xl">people</span>
-							<p className="text-xl">{data.serialized_source_guild.roles.length}</p>
-						</div>
+						<Tooltip content="Kanały tekstowe" className="p-1 px-3 bg-borderColor rounded-xl" delay={300}>
+							<div className="flex items-center gap-1 px-3 h-12 bg-borderColor w-fit rounded-xl max-sm:flex-grow max-sm:justify-center">
+								<span className="text-2xl">#</span>
+								<p className="text-xl">{numbers.channels}</p>
+							</div>
+						</Tooltip>
+						<Tooltip content="Kanały głosowe" className="p-1 px-3 bg-borderColor rounded-xl" delay={300}>
+							<div className="flex items-center gap-1 px-3 h-12 bg-borderColor w-fit rounded-xl max-sm:flex-grow max-sm:justify-center">
+								<span className="material-symbols-outlined text-2xl">volume_up</span>
+								<p className="text-xl">{numbers.voice}</p>
+							</div>
+						</Tooltip>
+						<Tooltip content="role" className="p-1 px-3 bg-borderColor rounded-xl" delay={300}>
+							<div className="flex items-center gap-1 px-3 h-12 bg-borderColor w-fit rounded-xl max-sm:flex-grow max-sm:justify-center">
+								<span className="material-symbols-outlined text-2xl">people</span>
+								<p className="text-xl">{data.serialized_source_guild.roles.length}</p>
+							</div>
+						</Tooltip>
 					</div>
 				</section>
 
@@ -117,12 +128,12 @@ export default function TemplatesDetails({ data, base }: Props) {
 							Użyj szablonu
 						</Button>
 					</Link>
-					<Tooltip content="Opcja aktualnie niedostępna." className="bg-background p-1 px-5 rounded-xl">
-						<Button className="flex items-center bg-adviceBot px-8 py-6 rounded-xl max-sm:w-full cursor-not-allowed">
+					<Link href={`/preview/${idTemplate}`} className="max-sm:w-full">
+						<Button className="flex items-center bg-adviceBot px-8 py-6 rounded-xl max-sm:w-full">
 							<span className="material-symbols-outlined text-2xl">smart_toy</span>
-							Stwórz za pomocą AdviceBot
+							Przejdź do podglądu szablonu
 						</Button>
-					</Tooltip>
+					</Link>
 				</section>
 			</motion.section>
 			<TemplatesVisuzalization filtredChannel={filtredChannel} filtredRoles={filtredRoles} />

@@ -102,7 +102,7 @@ export class MigrationService {
               link: el.link,
               title: fetchTemplates.data.name,
               description: el.description,
-              sourceServerId: el.sourceServerId ? el.sourceServerId : null,
+              sourceServerId: el.serverOutputId ? el.serverOutputId : null,
               usageCount: el.usageCount || 0,
               authorId: user.userId,
             },

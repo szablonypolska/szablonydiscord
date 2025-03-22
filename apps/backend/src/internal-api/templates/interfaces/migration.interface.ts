@@ -8,7 +8,7 @@ export interface DataItem {
   userId: string;
   avatar: string;
   username: string;
-  sourceServerId?: string;
+  serverOutputId?: string;
   idChat?: number;
   link: string;
   title: string;
