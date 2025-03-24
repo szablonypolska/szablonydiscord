@@ -1,12 +1,49 @@
-import { Mic, Headphones, Settings, ChevronDown } from "lucide-react"
+import { Mic, Headphones, Settings, ChevronDown, Hash, Volume2, Plus } from "lucide-react"
+import { DiscordTemplate } from "../../interfaces/templates/common"
+import { ChannelPermission } from "./visualization/channelPermissions"
+import { Channel } from "@/components/interfaces/templates/common"
+import Link from "next/link"
 
-export default function ChannelList() {
+export default function ChannelList({ dataTemplate, slugUrl }: { dataTemplate: DiscordTemplate; slugUrl: string }) {
+	const channelStyles: { [key: number]: string } = {
+		0: "flex items-center pl-2 my-2  font-medium text-channelColor    hover:bg-borderColor  rounded-lg w-11/12 truncate", // Tekstowy
+		2: "flex items-center  pl-2 my-2 text-channelColor    hover:bg-borderColor  rounded-lg w-11/12 truncate", // Głosowy
+		4: "flex items-center gap-1 font-bold text-sm uppercase mt-2  text-textColor hover:text-white w-11/12 truncate", // Kategoria
+	}
+
+	const channelIcons: { [key: number]: React.ReactNode } = {
+		0: <Hash className="text-channelColor w-5 h-5 mr-1" />,
+		2: <Volume2 className="text-channelColor w-5 h-5  mr-1" />,
+		4: <ChevronDown className="text-channelColor w-3 h-3 mr-0.5" />,
+		5: <ChannelPermission sizeHash={5} sizeLock={2} />,
+	}
+
 	return (
 		<>
-			<div className="flex flex-col bg-altBackgroundColor h-screen w-72 flex-shrink-0">
-				<div className="flex items-center justify-between p-3 h-16 border-b border-borderColor">
-					<p className="text-lg">Gaming community</p>
-					<ChevronDown className="text-gray-300" />
+			<div className="flex flex-col bg-altBackgroundColor h-screen w-[19rem] flex-shrink-0 transition-all max-lg:w-0 overflow-hidden">
+				<Link href={`/templates/${slugUrl}`}>
+					<div className="flex items-center justify-between p-3 h-16 border-b border-borderColor">
+						<p className="text-lg w-11/12 truncate">{dataTemplate.serialized_source_guild.name}</p>
+						<ChevronDown className="text-gray-300" />
+					</div>
+				</Link>
+				<div className="p-3 w-full overflow-hidden hover:overflow-auto">
+					{dataTemplate.serialized_source_guild.channels.map((el: Channel) => (
+						<div className={`flex items-center   ${el.type !== 4 && "hover:bg-borderColor"}  rounded-lg group w-full`} key={el.id}>
+							<div className={`w-full ${channelStyles[el.type]}`} key={el.id}>
+								<span className="text-2xl text-channelColor material-symbols-outlined font-black">
+									{el.type === 0 && el.permission_overwrites.length > 0 ? channelIcons[5] : channelIcons[el.type]}
+								</span>
+								{el.type === 4 && (
+									<div className="flex items-center justify-between w-full">
+										<p>{el.name}</p>
+										<Plus className="w-4 h-4" />
+									</div>
+								)}
+								{el.type !== 4 && <p>{el.name}</p>}
+							</div>
+						</div>
+					))}
 				</div>
 				<div className=" flex-grow"></div>
 				<div className="flex justify-between bg-boxColor p-3 border-t border-borderColor">

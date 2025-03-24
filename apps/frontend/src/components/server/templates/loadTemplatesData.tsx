@@ -24,6 +24,7 @@ export default async function LoadTemplatesData({ params }: Params) {
 					description: true,
 					categories: true,
 					link: true,
+					slugUrl: true,
 				},
 			}),
 		])

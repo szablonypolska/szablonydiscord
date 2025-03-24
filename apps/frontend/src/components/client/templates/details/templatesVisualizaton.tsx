@@ -7,6 +7,8 @@ import { cn } from "@/lib/utils"
 import { Button as ButtonCopy } from "@/components/ui/button"
 import { Check, Copy } from "lucide-react"
 import { useState } from "react"
+import { ChevronDown, Hash, Volume2 } from "lucide-react"
+import { ChannelPermission } from "../../preview/visualization/channelPermissions"
 
 interface Type {
 	filtredChannel: Channel[]
@@ -16,19 +18,16 @@ interface Type {
 export default function TemplatesVisuzalization({ filtredChannel, filtredRoles }: Type) {
 	const [copied, setCopied] = useState<boolean>(false)
 	const channelStyles: { [key: number]: string } = {
-		0: "flex items-center pl-4 my-1  font-medium text-channelColor text-lg w-96 max-md:w-full  hover:bg-borderColor truncate rounded-lg", // Tekstowy
-		2: "flex items-center gap-2 pl-4 my-1 text-channelColor text-lg  w-96 max-md:w-full hover:bg-borderColor truncate rounded-lg", // Głosowy
+		0: "flex items-center gap-1 pl-4 my-1  font-medium text-channelColor text-lg w-96 max-md:w-full  hover:bg-borderColor truncate rounded-lg", // Tekstowy
+		2: "flex items-center gap-1 pl-4 my-1 text-channelColor text-lg  w-96 max-md:w-full hover:bg-borderColor truncate rounded-lg", // Głosowy
 		4: "flex items-center gap-1 font-bold text-lg mt-2  text-textColor hover:text-white w-96 max-md:w-full", // Kategoria
 	}
 
-	const channelIcons: { [key: number]: string } = {
-		0: "tag",
-		2: "volume_up",
-		4: "keyboard_arrow_down",
-	}
-
-	const channelIconsStyle: { [key: number]: string } = {
-		0: "text-2xl pr-2",
+	const channelIcons: { [key: number]: React.ReactNode } = {
+		0: <Hash className="text-channelColor w-6 h-6 mr-2" />,
+		2: <Volume2 className="text-channelColor w-6 h-6  mr-2" />,
+		4: <ChevronDown className="text-channelColor w-4 h-4 mr-0.5" />,
+		5: <ChannelPermission sizeHash={6} sizeLock={2.5} />,
 	}
 
 	const copyLink = (hex: string) => {
@@ -52,9 +51,12 @@ export default function TemplatesVisuzalization({ filtredChannel, filtredRoles }
 					<article className="bg-altBackgroundColor border border-borderColor rounded-xl w-1/2 p-8 max-lg:w-full">
 						{filtredChannel.map((el: Channel) => (
 							<div className={`flex items-center w-96 max-md:w-full ${el.type !== 4 && "hover:bg-borderColor"} truncate rounded-lg group`} key={el.id}>
-								<p className={channelStyles[el.type]}>
-									<span className={`text-2xl text-channelColor material-symbols-outlined font-black ${channelIconsStyle[el.type]}`}>{channelIcons[el.type]}</span> {el.name}
-								</p>
+								<div className={`flex items-center   ${el.type !== 4 && "hover:bg-borderColor"}  rounded-lg group w-full`} key={el.id}>
+									<div className={`w-full ${channelStyles[el.type]}`} key={el.id}>
+										<span className="text-2xl text-channelColor  font-black">{el.type === 0 && el.permission_overwrites.length > 0 ? channelIcons[5] : channelIcons[el.type]}</span>
+										<p>{el.name}</p>
+									</div>
+								</div>
 
 								{el.type !== 4 && (
 									<ButtonCopy

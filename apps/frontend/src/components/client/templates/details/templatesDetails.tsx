@@ -38,7 +38,6 @@ function UserCreator({ avatar, username, id }: PropsCreator) {
 }
 
 export default function TemplatesDetails({ data, base }: Props) {
-	const idTemplate = base.link.split("https://discord.new/")[1]
 	const numbers = data.serialized_source_guild.channels.reduce(
 		(acc, value) => {
 			if (value.type === 0) acc.channels++
@@ -48,11 +47,11 @@ export default function TemplatesDetails({ data, base }: Props) {
 		{ channels: 0, voice: 0 }
 	)
 	const { channels, roles } = data.serialized_source_guild
-	const filtredChannel: Channel[] = channels.map(el => ({
-		name: el.name,
-		type: el.type,
-		id: el.id,
-	}))
+	// const filtredChannel: Channel[] = channels.map(el => ({
+	// 	name: el.name,
+	// 	type: el.type,
+	// 	id: el.id,
+	// }))
 	const filtredRoles: Roles[] = roles.map(el => ({
 		name: el.name,
 		color: el.color,
@@ -128,7 +127,7 @@ export default function TemplatesDetails({ data, base }: Props) {
 							Użyj szablonu
 						</Button>
 					</Link>
-					<Link href={`/preview/${idTemplate}`} className="max-sm:w-full">
+					<Link href={`/preview/${base.slugUrl}`} className="max-sm:w-full">
 						<Button className="flex items-center bg-adviceBot px-8 py-6 rounded-xl max-sm:w-full">
 							<span className="material-symbols-outlined text-2xl">smart_toy</span>
 							Przejdź do podglądu szablonu
@@ -136,7 +135,7 @@ export default function TemplatesDetails({ data, base }: Props) {
 					</Link>
 				</section>
 			</motion.section>
-			<TemplatesVisuzalization filtredChannel={filtredChannel} filtredRoles={filtredRoles} />
+			<TemplatesVisuzalization filtredChannel={channels} filtredRoles={filtredRoles} />
 		</motion.main>
 	)
 }
