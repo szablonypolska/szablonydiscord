@@ -50,7 +50,6 @@ export class SearchService {
       console.log(searchTemplates.length);
 
       if (!checkIfSearchedToday && searchTemplates.length > 0) {
-        console.log('wykonuje sie');
         await this.prisma.client.searchHistory.create({
           data: {
             title: name,

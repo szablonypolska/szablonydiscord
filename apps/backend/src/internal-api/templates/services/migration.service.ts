@@ -17,7 +17,6 @@ export class MigrationService {
 
   private slugUrl: string = null;
   private uid = new ShortUniqueId({ length: 15 });
-  private userId: string = null;
   private sleep(ms: number): Promise<void> {
     console.log('czekam..');
     return new Promise((resolve) => setTimeout(resolve, ms));

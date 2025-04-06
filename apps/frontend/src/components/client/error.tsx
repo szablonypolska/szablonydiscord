@@ -16,7 +16,7 @@ export default function ErrorWeb({ error, reset }: ErrorProps) {
 	const [visible, setVisible] = useState<boolean>(false)
 	const date = Date.now()
 
-	console.log(`zwraca`, error)
+	const errorText = error ? error : "Wystąpił niezidentyfikowany błąd serwera.."
 
 	return (
 		<div className="flex flex-col justify-center   w-full my-32">
@@ -78,7 +78,7 @@ export default function ErrorWeb({ error, reset }: ErrorProps) {
 						</div>
 						<div className="flex items-start gap-2  bg-borderColor mt-5 p-3 rounded-xl">
 							<Code2 size={20} className="text-darkGray shrink-0" />
-							<pre className="text-silverColor overflow-auto">{error}</pre>
+							<pre className="text-silverColor overflow-auto">{errorText}</pre>
 						</div>
 						<div className="flex gap-5 w-full mt-5">
 							<div className="bg-borderColor p-3 w-1/2 rounded-xl">

@@ -27,14 +27,12 @@ export function PlaceholdersAndVanishInput({ placeholders, onChange, onSubmit }:
 	const [currentPlaceholder, setCurrentPlaceholder] = useState(0)
 	const intervalRef = useRef<NodeJS.Timeout | null>(null)
 
-	// Funkcja startAnimation z użyciem useCallback
 	const startAnimation = useCallback(() => {
 		intervalRef.current = setInterval(() => {
 			setCurrentPlaceholder(prev => (prev + 1) % placeholders.length)
 		}, 3000)
 	}, [placeholders.length])
 
-	// Funkcja reagująca na zmianę widoczności zakładki
 	const handleVisibilityChange = useCallback(() => {
 		if (document.visibilityState !== "visible" && intervalRef.current) {
 			clearInterval(intervalRef.current)
@@ -44,7 +42,6 @@ export function PlaceholdersAndVanishInput({ placeholders, onChange, onSubmit }:
 		}
 	}, [startAnimation])
 
-	// useEffect z poprawioną tablicą zależności
 	useEffect(() => {
 		startAnimation()
 		document.addEventListener("visibilitychange", handleVisibilityChange)
@@ -62,7 +59,6 @@ export function PlaceholdersAndVanishInput({ placeholders, onChange, onSubmit }:
 	const [value, setValue] = useState("")
 	const [animating, setAnimating] = useState(false)
 
-	// Rysowanie punktów na canvas
 	const draw = useCallback(() => {
 		if (!inputRef.current) return
 		const canvas = canvasRef.current
@@ -86,9 +82,9 @@ export function PlaceholdersAndVanishInput({ placeholders, onChange, onSubmit }:
 		const newData: PixelData[] = []
 
 		for (let t = 0; t < 800; t++) {
-			const i = 4 * t * 800 // używamy const
+			const i = 4 * t * 800
 			for (let n = 0; n < 800; n++) {
-				const e = i + 4 * n // używamy const
+				const e = i + 4 * n
 				if (pixelData[e] !== 0 && pixelData[e + 1] !== 0 && pixelData[e + 2] !== 0) {
 					newData.push({
 						x: n,
@@ -111,7 +107,6 @@ export function PlaceholdersAndVanishInput({ placeholders, onChange, onSubmit }:
 		draw()
 	}, [value, draw])
 
-	// Funkcja animująca znikanie liter
 	const animate = useCallback((start: number) => {
 		const animateFrame = (pos = 0) => {
 			requestAnimationFrame(() => {
@@ -157,7 +152,6 @@ export function PlaceholdersAndVanishInput({ placeholders, onChange, onSubmit }:
 		animateFrame(start)
 	}, [])
 
-	// Funkcja spinająca rysowanie i animowanie
 	const vanishAndSubmit = useCallback(() => {
 		setAnimating(true)
 		draw()
@@ -178,11 +172,10 @@ export function PlaceholdersAndVanishInput({ placeholders, onChange, onSubmit }:
 		[animating, vanishAndSubmit]
 	)
 
-	// Obsługa submitu formularza
 	const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
 		e.preventDefault()
 		vanishAndSubmit()
-		onSubmit?.(e) // unikamy no-unused-expressions
+		onSubmit?.(e)
 	}
 
 	return (
@@ -200,7 +193,7 @@ export function PlaceholdersAndVanishInput({ placeholders, onChange, onSubmit }:
 				onChange={e => {
 					if (!animating) {
 						setValue(e.target.value)
-						onChange?.(e) // zamiast onChange && onChange(e)
+						onChange?.(e)
 					}
 				}}
 				onKeyDown={handleKeyDown}
@@ -208,7 +201,7 @@ export function PlaceholdersAndVanishInput({ placeholders, onChange, onSubmit }:
 				value={value}
 				type="text"
 				className={cn(
-					"w-full relative text-sm sm:text-base z-50 border-none bg-transparent text-white h-full rounded-full focus:outline-none focus:ring-0 pl-4 sm:pl-10 pr-20",
+					"w-full relative text-sm sm:text-base z-50 border-none bg-transparent text-white h-full rounded-full focus:outline-none focus:ring-0  pl-10 pr-20",
 					animating && "text-transparent dark:text-transparent"
 				)}
 			/>
@@ -222,7 +215,7 @@ export function PlaceholdersAndVanishInput({ placeholders, onChange, onSubmit }:
 							animate={{ y: 0, opacity: 1 }}
 							exit={{ y: -15, opacity: 0 }}
 							transition={{ duration: 0.3, ease: "linear" }}
-							className="text-sm sm:text-base font-normal text-textColor pl-4 sm:pl-12 text-left w-[calc(100%-2rem)] truncate">
+							className="text-sm sm:text-base font-normal text-textColor  pl-12 text-left w-[calc(100%-2rem)] truncate">
 							{placeholders[currentPlaceholder]}
 						</motion.p>
 					)}

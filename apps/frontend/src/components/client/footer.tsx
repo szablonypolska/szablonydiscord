@@ -2,6 +2,7 @@ import Link from "next/link"
 import Image from "next/image"
 import { Logo } from "./navbar"
 import Discord from "../../../public/discord-white-icon.webp"
+import { MapPin, Mail } from "lucide-react"
 
 export default function Footer() {
 	return (
@@ -24,13 +25,13 @@ export default function Footer() {
 
 				<div className="w-full mt-5 ">
 					<div className="w-full h-0.5 bg-borderColor"></div>
-					<div className="flex justify-center gap-5 my-6">
+					<div className="flex justify-center gap-5 my-6 max-sm:flex-col max-sm:items-center">
 						<div className="flex items-center gap-2">
-							<span className="material-symbols-outlined text-primaryColor">mail</span>
+							<Mail className="w-5 h-5 text-primaryColor" />
 							<p className="text-gray-300">szablonydiscord@gmail.com</p>
 						</div>
 						<div className="flex items-center gap-2">
-							<span className="material-symbols-outlined text-primaryColor">location_on</span>
+							<MapPin className="w-5 h-5 text-primaryColor" />
 							<p className="text-gray-300">Polska</p>
 						</div>
 					</div>
@@ -49,7 +50,7 @@ export default function Footer() {
 							<Image src={Discord} alt="discord logo" className="w-5 max-md:w-6" />
 						</div>
 					</div>
-					<p className="text-textColor max-md:mt-10">SzablonyDiscord wszystkie prawa zastrzeżone</p>
+					<p className="text-textColor max-md:mt-10 text-center">SzablonyDiscord wszystkie prawa zastrzeżone</p>
 					<div className="flex items-center gap-3 text-textColor max-md:mt-5">
 						<Link href="https://szablonydiscord/api/docs">API docs</Link>
 						<p>|</p>
