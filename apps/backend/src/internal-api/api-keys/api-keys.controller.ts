@@ -6,7 +6,7 @@ import { UpdateService } from './services/update.service';
 import { TestNotificationDto } from './dto/test-notification';
 import { NotificationTestService } from './services/test-notification.service';
 
-@Controller('/api/internal')
+@Controller('/api/internal/api-keys/')
 export class ApiKeysController {
   constructor(
     private service: CreateApiKeysService,
@@ -14,7 +14,7 @@ export class ApiKeysController {
     private test: NotificationTestService,
   ) {}
 
-  @Post('generate')
+  @Post('create')
   @HttpCode(200)
   createApi(@Body() createApiBody: CreateApiDto): Promise<object> {
     return this.service.createApi(createApiBody);

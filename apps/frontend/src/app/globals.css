@@ -25,6 +25,7 @@
 	--darknesErrorColor: #401e1e;
 	--darkGray: #808080;
 	--darknesWarningColor: #302319;
+	--placeholderTextColor: #666666;
 }
 
 /* @media (prefers-color-scheme: dark) {

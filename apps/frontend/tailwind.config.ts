@@ -28,6 +28,7 @@ export default {
 				primaryDark: "var(--primary-dark)",
 				primaryLight: "var(--primary-light)",
 				darkGray: "var(--darkGray)",
+				placeHolderTextColor: "var(--placeholderTextColor)",
 			},
 			animation: {
 				"shiny-text": "shiny-text 10s infinite",

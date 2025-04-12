@@ -34,7 +34,7 @@ export default function Navbar() {
 							<Link href="https://szablonydiscord.pl/api/docs">API</Link>
 						</li>
 						<li>
-							<Link href="https://szablonydiscord.pl">Home</Link>
+							<Link href="/offers">Oferta</Link>
 						</li>
 					</ul>
 				</div>

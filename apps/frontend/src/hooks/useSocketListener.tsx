@@ -12,45 +12,65 @@ interface Type {
 export default function useSocketListener({ user, setUser, setNumberPeopleOnline }: Type) {
 	const socket = connectSocketBackend()
 
-	socket.on("apikey", message => {
-		if (user.userId === message.userId) {
-			const updateUser = {
-				...user,
-				api: user.api.map(el =>
-					el.apiKeyId === message.apiKeyId
-						? {
-								...el,
-								reqCount: message.reqCount,
-								successCount: message.successCount,
-								errorCount: message.errorCount,
-								lastUsed: message.lastUsed,
-								monthlyCount: message.monthlyCount,
-								dailyCount: message.dailyCount,
-							}
-						: el
-				),
+	useEffect(() => {
+		socket.on("apikey", message => {
+			if (user.userId === message.userId) {
+				const updateUser = {
+					...user,
+					api: user.api.map(el =>
+						el.apiKeyId === message.apiKeyId
+							? {
+									...el,
+									reqCount: message.reqCount,
+									successCount: message.successCount,
+									errorCount: message.errorCount,
+									lastUsed: message.lastUsed,
+									monthlyCount: message.monthlyCount,
+									dailyCount: message.dailyCount,
+								}
+							: el
+					),
+				}
+				setUser(updateUser)
 			}
-			setUser(updateUser)
+		})
+
+		return () => {
+			socket.off("apiKey")
 		}
-	})
+	}, [])
 
-	socket.on("notification", message => {
-		if (message.data.userId === user.userId) {
-			const type = message.data.type === "success" ? "success" : "error"
-			const newNotifications = [message.data, ...user.notification]
+	useEffect(() => {
+		socket.on("notification", message => {
+			if (message.data.userId === user.userId) {
+				const type = message.data.type === "success" ? "success" : "error"
+				const newNotifications = [message.data, ...user.notification]
 
-			const updateUser = {
-				...user,
-				notification: newNotifications.splice(0, 4),
+				const updateUser = {
+					...user,
+					notification: newNotifications.splice(0, 4),
+				}
+
+				toast[type]("Nowe powiadomienie", {
+					description: message.data.title,
+				})
+
+				console.log(updateUser)
+
+				setUser(prevUser => {
+					const newNotifications = [message.data, ...prevUser.notification]
+					return {
+						...prevUser,
+						notification: newNotifications.splice(0, 4),
+					}
+				})
 			}
+		})
 
-			toast[type]("Nowe powiadomienie", {
-				description: message.data.title,
-			})
-
-			setUser(updateUser)
+		return () => {
+			socket.off("notification")
 		}
-	})
+	}, [])
 
 	socket.on("online", message => {
 		if (message.userId === user.userId) {

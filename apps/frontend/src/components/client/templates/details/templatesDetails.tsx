@@ -6,7 +6,7 @@ import { DiscordTemplate, BaseInforamtion } from "../../../interfaces/templates/
 import Image from "next/image"
 import TemplatesVisuzalization from "./templatesVisualizaton"
 import Link from "next/link"
-import { Channel, Roles } from "@/components/interfaces/templates/common"
+import { Roles } from "@/components/interfaces/templates/common"
 import { Download, Eye } from "lucide-react"
 import { Tooltip } from "@heroui/react"
 
