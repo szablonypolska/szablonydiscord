@@ -1,23 +1,44 @@
 "use client"
-import React, { createContext, useContext, useState, Dispatch, SetStateAction, useEffect } from "react"
-
+import React, { createContext, useContext, useEffect, useReducer } from "react"
 import { OrderType } from "../types/order"
+import { AppState } from "@/components/interfaces/order/common"
+
+const initialState: AppState = {
+	price: 0,
+	offers: "basic",
+	discount: 0,
+	blocked: false,
+	serverLink: "",
+	serverName: "",
+	serverId: "",
+}
+
+type Action = { type: "price"; payload: number } | { type: "offers"; payload: OrderType } | { type: "discount"; payload: number } | { type: "blocked"; payload: boolean }
+
+const reducer = (state: AppState, action: Action): AppState => {
+	switch (action.type) {
+		case "price":
+			return { ...state, price: action.payload }
+		case "offers":
+			return { ...state, offers: action.payload }
+		case "discount":
+			return { ...state, discount: action.payload }
+		case "blocked":
+			return { ...state, blocked: action.payload }
+		default:
+			return state
+	}
+}
 
 interface OrderContextType {
-	price: number
-	setPrice: Dispatch<SetStateAction<number>>
-	offers: OrderType
-	setOffers: Dispatch<SetStateAction<OrderType>>
-	discount: number
-	setDiscount: Dispatch<SetStateAction<number>>
+	dispatch: React.Dispatch<Action>
+	state: AppState
 }
 
 export const OrderContext = createContext<OrderContextType | null>(null)
 
 export const OrderProvider = ({ children }: { children: React.ReactNode }) => {
-	const [price, setPrice] = useState<number>(0)
-	const [offers, setOffers] = useState<OrderType>("basic")
-	const [discount, setDiscount] = useState<number>(0)
+	const [state, dispatch] = useReducer(reducer, initialState)
 
 	useEffect(() => {
 		const prices: Record<OrderType, number> = {
@@ -26,10 +47,10 @@ export const OrderProvider = ({ children }: { children: React.ReactNode }) => {
 			advanced: 20.5,
 		}
 
-		setPrice(prices[offers])
-	}, [offers])
+		dispatch({ type: "price", payload: prices[state.offers] })
+	}, [state.offers])
 
-	return <OrderContext.Provider value={{ price, setPrice, offers, setOffers, discount, setDiscount }}>{children}</OrderContext.Provider>
+	return <OrderContext.Provider value={{ dispatch, state }}>{children}</OrderContext.Provider>
 }
 
 export function useOrderContext() {

@@ -51,9 +51,9 @@ export default function OfferList() {
 					Wybierz poziom ochrony, który najlepiej odpowiada Twoim potrzebom. Każdy pakiet zawiera różne metody weryfikacji i czasy realizacji.
 				</p>
 			</div>
-			<div className="flex items-center gap-5 mt-14">
+			<div className="flex items-center gap-5 mt-14 max-lg:grid max-lg:grid-cols-2 max-md:grid-cols-1">
 				{packages.map(el => (
-					<div className={`flex flex-col w-96 h-[31rem] border  p-8 rounded-2xl relative ${el.popular ? "border-primaryColor" : "border-borderColor"}`} key={el.id}>
+					<div className={`flex flex-col  h-[31rem] border xl:w-96 max-xl:flex-grow  p-8 rounded-2xl relative ${el.popular ? "border-primaryColor" : "border-borderColor "}`} key={el.id}>
 						<div className={`absolute -top-4 left-1/2 -translate-x-1/2  px-5 rounded-full py-1.5 w-fit ${el.popular ? "bg-primaryColor" : "bg-borderColor"}`}>
 							<p className="uppercase text-sm">{el.label}</p>
 						</div>

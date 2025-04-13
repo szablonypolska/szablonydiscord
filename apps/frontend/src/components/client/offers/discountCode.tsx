@@ -5,10 +5,8 @@ export default function DiscountCode() {
 	return (
 		<>
 			<div className="bg-boxColor border border-borderColor rounded-lg w-full mt-5">
-				<div className="flex items-center gap-2 p-5">
-					<Tag className="text-primaryColor w-5 h-5" />
-					<p className="font-semibold">Kod promocyjny</p>
-				</div>
+				<p className="font-semibold p-5">Kod promocyjny</p>
+
 				<div className="w-full h-[1px] bg-borderColor"></div>
 				<div className="flex items-center gap-3   p-5">
 					<input

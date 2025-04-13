@@ -7,10 +7,10 @@ import { Server, ShieldCheckIcon } from "lucide-react"
 import DiscountCode from "../../discountCode"
 
 export default function OfferBasic() {
-	const { setOffers, price } = useOrderContext()
+	const { state, dispatch } = useOrderContext()
 
 	useEffect(() => {
-		setOffers("basic")
+		dispatch({ type: "offers", payload: "basic" })
 	}, [])
 
 	return (
@@ -23,16 +23,13 @@ export default function OfferBasic() {
 						</div>
 						<div className="">
 							<p className="font-semibold">Podstawowa ochrona</p>
-							<span className="text-sm text-textColor">{price}zł / serwer</span>
+							<span className="text-sm text-textColor">{state.price}zł / serwer</span>
 						</div>
 					</div>
 					<div className="bg-primaryColor px-3 py-1 rounded-full text-sm">Wybrany pakiet</div>
 				</div>
 				<div className="bg-boxColor border border-borderColor  rounded-lg w-full mt-5">
-					<div className="flex items-center gap-2 p-5">
-						<Server className="text-primaryColor w-5 h-5" />
-						<p className="font-semibold">Dane serwera</p>
-					</div>
+					<p className="font-semibold p-5">Dane serwera</p>
 					<div className="w-full h-[1px] bg-borderColor"></div>
 					<div className="p-5">
 						<div className="flex flex-col">
