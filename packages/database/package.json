@@ -1,17 +1,18 @@
 {
-	"name": "@repo/db",
-	"version": "1.0.0",
-	"main": "dist/index.js",
-	"types": "dist/index.d.ts",
-	"scripts": {
-		"db:generate": "prisma generate",
-		"db:push": "prisma db push --skip-generate"
-	},
-	"dependencies": {
-		"@prisma/client": "^6.1.0",
-		"@prisma/extension-pulse": "^1.2.0"
-	},
-	"devDependencies": {
-		"prisma": "^6.0.1"
-	}
+    "name": "@repo/db",
+    "version": "1.0.0",
+    "main": "dist/index.js",
+    "types": "dist/index.d.ts",
+    "scripts": {
+        "db:generate": "prisma generate",
+        "db:push": "prisma db push --skip-generate",
+        "db:build": "tsc --build"
+    },
+    "dependencies": {
+        "@prisma/client": "^6.1.0",
+        "@prisma/extension-pulse": "^1.2.0"
+    },
+    "devDependencies": {
+        "prisma": "^6.0.1"
+    }
 }
