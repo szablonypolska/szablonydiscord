@@ -13,7 +13,12 @@ const initialState: AppState = {
 	serverId: "",
 }
 
-type Action = { type: "price"; payload: number } | { type: "offers"; payload: OrderType } | { type: "discount"; payload: number } | { type: "blocked"; payload: boolean }
+type Action =
+	| { type: "price"; payload: number }
+	| { type: "offers"; payload: OrderType }
+	| { type: "discount"; payload: number }
+	| { type: "blocked"; payload: boolean }
+	| { type: "serverLink"; payload: string }
 
 const reducer = (state: AppState, action: Action): AppState => {
 	switch (action.type) {
@@ -23,6 +28,8 @@ const reducer = (state: AppState, action: Action): AppState => {
 			return { ...state, offers: action.payload }
 		case "discount":
 			return { ...state, discount: action.payload }
+		case "serverLink":
+			return { ...state, serverLink: action.payload }
 		case "blocked":
 			return { ...state, blocked: action.payload }
 		default:

@@ -24,7 +24,7 @@ export default function SummaryOrder() {
 				<span>Suma</span>
 				<p className="text-2xl font-semibold">{state.price} zł</p>
 			</div>
-			<Button className="mt-5 h-14 bg-borderColor rounded-xl w-full text-gray-200">
+			<Button className={`mt-5 h-14 transition-all  rounded-xl w-full text-gray-200 ${state.blocked ? "bg-primaryColor" : "bg-borderColor"}`}>
 				<Lock className="w-5 h-5" /> <span>Zamów teraz</span>
 			</Button>
 			<div className="flex gap-2 items-center justify-center mt-2 text-textColor">
