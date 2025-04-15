@@ -1,12 +1,12 @@
 "use client"
 import React, { createContext, useContext, useEffect, useReducer } from "react"
 import { OrderType } from "../types/order"
-import { AppState } from "@/components/interfaces/order/common"
+import { AppState, PromoCodeDetails } from "@/components/interfaces/order/common"
 
 const initialState: AppState = {
 	price: 0,
 	offers: "basic",
-	discount: 0,
+	discountDetails: { differencePrice: 0, newPrice: 0, percentDiscount: 0, discount: false },
 	blocked: false,
 	serverLink: "",
 	serverName: "",
@@ -16,7 +16,7 @@ const initialState: AppState = {
 type Action =
 	| { type: "price"; payload: number }
 	| { type: "offers"; payload: OrderType }
-	| { type: "discount"; payload: number }
+	| { type: "discountDetails"; payload: PromoCodeDetails }
 	| { type: "blocked"; payload: boolean }
 	| { type: "serverLink"; payload: string }
 
@@ -26,8 +26,8 @@ const reducer = (state: AppState, action: Action): AppState => {
 			return { ...state, price: action.payload }
 		case "offers":
 			return { ...state, offers: action.payload }
-		case "discount":
-			return { ...state, discount: action.payload }
+		case "discountDetails":
+			return { ...state, discountDetails: action.payload }
 		case "serverLink":
 			return { ...state, serverLink: action.payload }
 		case "blocked":

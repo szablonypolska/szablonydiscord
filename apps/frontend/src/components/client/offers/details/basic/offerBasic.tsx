@@ -12,7 +12,7 @@ export default function OfferBasic() {
 	const [error, setError] = useState<string>("")
 
 	useEffect(() => {
-		dispatch({ type: "offers", payload: "basic" })
+		dispatch({ type: "offers", payload: "advanced" })
 	}, [])
 
 	useEffect(() => {
@@ -38,7 +38,7 @@ export default function OfferBasic() {
 						</div>
 						<div className="">
 							<p className="font-semibold">Podstawowa ochrona</p>
-							<span className="text-sm text-textColor">{state.price}zł / serwer</span>
+							<span className="text-sm text-textColor">{state.price.toFixed(2)}zł / serwer</span>
 						</div>
 					</div>
 					<div className="bg-primaryColor px-3 py-1 rounded-full text-sm">Wybrany pakiet</div>

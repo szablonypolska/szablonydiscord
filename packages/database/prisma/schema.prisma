@@ -28,6 +28,7 @@ model User {
   trustScore Int @default(100)
   notificationApi Boolean @default(false)
   emailVerified Boolean @default(false)
+  permission String @default("user")
   template Templates[]
   notification Notification[]
   api Api[]
@@ -109,4 +110,12 @@ model SearchHistory {
   id Int @id @default(autoincrement())
   title String
   dateSearch DateTime @default(now())
+}
+
+model PromoCode {
+  id Int @id @default(autoincrement())
+  code String @unique
+  usageCount Int 
+  value Int
+  expiredDate DateTime
 }

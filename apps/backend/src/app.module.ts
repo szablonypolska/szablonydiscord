@@ -9,6 +9,7 @@ import { RedisOptions } from './common/constants/app-options.constants';
 import { CacheModule } from '@nestjs/cache-manager';
 import { SchedulesModule } from './schedules/schedules.module';
 import { NotificationsModule } from './notifications/notifications.module';
+import { ModulePayments } from './internal-api/payments/payments.module';
 
 @Module({
   imports: [
@@ -16,6 +17,7 @@ import { NotificationsModule } from './notifications/notifications.module';
     CacheModule.registerAsync(RedisOptions),
     PublicModule,
     SchedulesModule,
+    ModulePayments,
     // QueueModule,
     ListenerModule,
     TemplateModule,
