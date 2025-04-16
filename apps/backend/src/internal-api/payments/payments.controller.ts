@@ -2,6 +2,7 @@ import { Body, Controller, HttpCode, Post } from '@nestjs/common';
 import { CreatePayments } from './services/create-payments.service';
 import { VerifyPromoCodeService } from './services/verify-promo-code.service';
 import { VerifyPromoCodeDto } from './dto/verify-promo-code.dto';
+import { CreatePaymentsDto } from './dto/create-payments.dto';
 
 @Controller('api/payments')
 export class PaymentsController {
@@ -12,8 +13,8 @@ export class PaymentsController {
 
   @Post('/create')
   @HttpCode(200)
-  createPayments() {
-    return this.servicePayment.createPayments();
+  createPayments(@Body() create: CreatePaymentsDto) {
+    return this.servicePayment.createPayments(create);
   }
 
   @Post('/verify')

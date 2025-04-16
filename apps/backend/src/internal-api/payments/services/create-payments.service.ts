@@ -1,18 +1,43 @@
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import Stripe from 'stripe';
+import { CreatePaymentsDto } from '../dto/create-payments.dto';
+import { offerList } from 'src/common/constants/offerList.constans';
+import { PrismaService } from '@repo/shared';
 
 @Injectable()
 export class CreatePayments {
-  constructor(private configService: ConfigService) {}
+  constructor(
+    private configService: ConfigService,
+    private prisma: PrismaService,
+  ) {}
   private stripe = new Stripe(
     this.configService.get<string>('SECRET_API_KEY_STRIPE'),
   );
 
-  async createPayments() {
+  private priceAfterPrototion: number = null;
+
+  async createPayments(create: CreatePaymentsDto) {
     try {
+      const checkOffer = offerList(create.offer);
+
+      if (!checkOffer) throw new BadRequestException('There is not such offer');
+      if (create.code) {
+        const checkCode = await this.prisma.client.promoCode.findUnique({
+          where: { code: create.code },
+        });
+
+        if (!checkCode)
+          throw new BadRequestException('This promocode no exists');
+
+        this.priceAfterPrototion =
+          checkOffer.price - (checkOffer.price * checkCode.value) / 100;
+      }
+
       const price = await this.stripe.prices.create({
-        unit_amount: 200,
+        unit_amount: this.priceAfterPrototion
+          ? this.priceAfterPrototion * 100
+          : checkOffer.price * 100,
         currency: 'pln',
         product: 'prod_S8ABOWqGVSN6MD',
       });
@@ -29,9 +54,10 @@ export class CreatePayments {
         cancel_url: `https://szablonydiscord.pl/cancel`,
       });
 
-      console.log(createSession);
+      return { paymentLink: createSession.url };
     } catch (err) {
       console.log(err);
+      throw err;
     }
   }
 }

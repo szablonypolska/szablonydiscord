@@ -3,20 +3,24 @@
 import { useEffect, useState } from "react"
 import SummaryOrder from "../summaryOrder"
 import { useOrderContext } from "@/context/OrderContext"
-import { CircleAlert, Server, ShieldCheckIcon } from "lucide-react"
+import { CircleAlert, ShieldCheckIcon } from "lucide-react"
 import DiscountCode from "../../discountCode"
 
-export default function OfferBasic() {
+export default function OfferPremium() {
 	const { state, dispatch } = useOrderContext()
 	const [link, setLink] = useState<string>("")
 	const [error, setError] = useState<string>("")
+	const [errorName, setErrorName] = useState<string>("")
 
 	useEffect(() => {
-		dispatch({ type: "offers", payload: "basic" })
+		dispatch({ type: "offers", payload: "premium" })
 	}, [])
+
+	useEffect(() => {}, [])
 
 	useEffect(() => {
 		if (!link) return setError("")
+		if (!errorName) return setErrorName("Nazwa serwera nie może być pusta")
 
 		if (link.includes("https")) {
 			dispatch({ type: "serverLink", payload: link })
@@ -26,7 +30,7 @@ export default function OfferBasic() {
 			dispatch({ type: "blocked", payload: false })
 			setError("Link do szablonu jest niepoprawny")
 		}
-	}, [link, state.serverLink])
+	}, [link])
 
 	return (
 		<div className="flex items-start gap-5 w-full mt-5">
@@ -37,7 +41,7 @@ export default function OfferBasic() {
 							<ShieldCheckIcon className="w-7 h-7 text-primaryColor" />
 						</div>
 						<div className="">
-							<p className="font-semibold">Podstawowa ochrona</p>
+							<p className="font-semibold">Premium ochrona</p>
 							<span className="text-sm text-textColor">{state.price.toFixed(2)}zł / serwer</span>
 						</div>
 					</div>
@@ -62,6 +66,24 @@ export default function OfferBasic() {
 							<div className={`flex items-center gap-2 text-errorColor transition-all text-sm mt-1 ${error ? "h-5" : "h-0"}  overflow-hidden `}>
 								<CircleAlert className="w-4 h-4" />
 								<p>{error}</p>
+							</div>
+						</div>
+						<div className="flex flex-col mt-5">
+							<label htmlFor="link" className="text-sm">
+								Nazwa serwera discord
+							</label>
+
+							<input
+								type="text"
+								id="link"
+								className={`bg-altBackgroundColor border ${error ? "border-errorColor focus:ring-errorColor" : "border-borderColor focus:ring-primaryColor"} w-full p-3 rounded-xl mt-2 focus:outline-none placeholder:text-placeHolderTextColor focus:ring-1 
+`}
+								placeholder="np. szablony serwerów discord"
+								onChange={e => setLink(e.target.value)}
+							/>
+							<div className={`flex items-center gap-2 text-errorColor transition-all text-sm mt-1 ${errorName ? "h-5" : "h-0"}  overflow-hidden `}>
+								<CircleAlert className="w-4 h-4" />
+								<p>{errorName}</p>
 							</div>
 						</div>
 					</div>

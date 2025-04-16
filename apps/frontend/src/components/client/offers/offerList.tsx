@@ -35,7 +35,7 @@ export default function OfferList() {
 			features: ["Usunięcie szablonów ze strony", "Blokada po nazwie serwera", "Potwierdzenie email", "Natychmiastowa realizacja"],
 			popular: false,
 			label: "premium",
-			link: "/offers/basic",
+			link: "/offers/premium",
 		},
 	]
 

@@ -1,4 +1,5 @@
 import OfferBasic from "@/components/client/offers/details/basic/offerBasic"
+import OfferPremium from "@/components/client/offers/details/basic/offerPremium"
 import FinalizationOrder from "@/components/client/offers/details/finalizationOrder"
 import { OrderType } from "@/types/order"
 
@@ -15,7 +16,8 @@ export default async function OfferType(props: { params: Promise<Params> }) {
 			<div className="max-w-screen-lg mx-auto mt-20">
 				<div className="flex flex-col items-center justify-center  ">
 					<FinalizationOrder />
-					<OfferBasic />
+					{params.id === "basic" && <OfferBasic />}
+					{params.id === "premium" && <OfferPremium />}
 				</div>
 			</div>
 		</>

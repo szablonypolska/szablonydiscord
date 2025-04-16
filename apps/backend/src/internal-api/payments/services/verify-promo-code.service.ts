@@ -26,6 +26,12 @@ export class VerifyPromoCodeService {
 
       const newPrice = offer.price - (offer.price * checkPromocode.value) / 100;
 
+      if (checkPromocode.value !== 100 && newPrice < 2.5)
+        throw new BadGatewayException({
+          message: "'Minimal price is 2.00 PLN'",
+          type: 'lowPrice',
+        });
+
       return {
         newPrice,
         differencePrice: Math.abs(offer.price - newPrice).toFixed(2),

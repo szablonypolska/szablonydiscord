@@ -2,7 +2,7 @@
 
 import { Button } from "@nextui-org/button"
 import { CircleAlert, Loader2, Check, Tag } from "lucide-react"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import vetifyDiscountCode from "@/lib/payments/verifyPromoCode"
 import { useOrderContext } from "@/context/OrderContext"
 
@@ -13,8 +13,13 @@ export default function DiscountCode() {
 	const [success, setSuccess] = useState<boolean>(false)
 	const { state, dispatch } = useOrderContext()
 
+	useEffect(() => {
+		if (code !== "") return setError("")
+	}, [code])
+
 	const applyCode = async () => {
 		try {
+			if (!code) return setError("Pole nie może być puste")
 			setLoader(true)
 			setSuccess(false)
 			setError("")
@@ -23,6 +28,13 @@ export default function DiscountCode() {
 			if (checkCode.statusCode === 404) {
 				dispatch({ type: "discountDetails", payload: { differencePrice: 0, newPrice: 0, percentDiscount: 0, discount: false } })
 				setError("Wpisany kod promocyjny nie istnieje")
+				setLoader(false)
+				return
+			}
+
+			if (checkCode.type === "lowPrice") {
+				dispatch({ type: "discountDetails", payload: { differencePrice: 0, newPrice: 0, percentDiscount: 0, discount: false } })
+				setError("Kwota zamówienia nie moze byc nizsza niz 2.50 zł")
 				setLoader(false)
 				return
 			}

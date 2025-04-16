@@ -7,6 +7,10 @@ import { Lock, Timer } from "lucide-react"
 export default function SummaryOrder() {
 	const { state } = useOrderContext()
 
+	const buy = () => {
+		console.log(state.serverLink, state.offers, state.discountDetails)
+	}
+
 	return (
 		<div className="sticky top-0 left-0 bg-boxColor border border-borderColor p-5 rounded-xl w-[22rem] flex-shrink-0">
 			<h2 className="font-semibold">Podsumowanie</h2>
@@ -34,7 +38,10 @@ export default function SummaryOrder() {
 					<p className="text-2xl font-semibold">{state.discountDetails.discount ? state.discountDetails.newPrice.toFixed(2) : state.price.toFixed(2)} zł</p>
 				</div>
 			</div>
-			<Button className={`mt-5 h-14 transition-all  rounded-xl w-full text-gray-200 ${state.blocked ? "bg-primaryColor" : "bg-borderColor"}`}>
+			<Button
+				className={`mt-5 h-14 transition-all  rounded-xl w-full text-gray-200 disabled:cursor-not-allowed ${state.blocked ? "bg-primaryColor" : "bg-borderColor"}`}
+				disabled={!state.blocked}
+				onPress={buy}>
 				<Lock className="w-5 h-5" /> <span>Zamów teraz</span>
 			</Button>
 			<div className="flex gap-2 items-center justify-center mt-2 text-textColor">
