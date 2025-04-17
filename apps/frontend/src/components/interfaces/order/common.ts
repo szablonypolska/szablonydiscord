@@ -5,6 +5,7 @@ export interface PromoCodeDetails {
 	newPrice: number
 	percentDiscount: number
 	discount: boolean
+	code: string
 }
 
 export interface AppState {

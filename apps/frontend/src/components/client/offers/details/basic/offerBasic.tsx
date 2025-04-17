@@ -12,7 +12,7 @@ export default function OfferBasic() {
 	const [error, setError] = useState<string>("")
 
 	useEffect(() => {
-		dispatch({ type: "offers", payload: "basic" })
+		dispatch({ type: "offers", payload: "advanced" })
 	}, [])
 
 	useEffect(() => {
@@ -54,6 +54,7 @@ export default function OfferBasic() {
 							<input
 								type="text"
 								id="link"
+								defaultValue={state.serverLink}
 								className={`bg-altBackgroundColor border ${error ? "border-errorColor focus:ring-errorColor" : "border-borderColor focus:ring-primaryColor"} w-full p-3 rounded-xl mt-2 focus:outline-none placeholder:text-placeHolderTextColor focus:ring-1 
 `}
 								placeholder="https://szablonydiscord.pl/templates/"

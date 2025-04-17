@@ -1,14 +1,32 @@
 "use client"
 
 import { useOrderContext } from "@/context/OrderContext"
+import createPayments from "@/lib/payments/createPayments"
 import { Button } from "@nextui-org/button"
-import { Lock, Timer } from "lucide-react"
+import { Lock, Timer, Loader2, ShoppingBag } from "lucide-react"
+import { useSession } from "next-auth/react"
+import Link from "next/link"
+import { useRouter } from "next/navigation"
+import { useState } from "react"
 
 export default function SummaryOrder() {
 	const { state } = useOrderContext()
+	const [loader, setLoader] = useState<boolean>(false)
+	const router = useRouter()
+	const { data: session } = useSession()
 
-	const buy = () => {
-		console.log(state.serverLink, state.offers, state.discountDetails)
+	const buy = async () => {
+		try {
+			if (!state.blocked) return
+			setLoader(true)
+			const data = await createPayments(state.offers, session?.user.id || "", state.discountDetails?.code)
+
+			setLoader(false)
+			router.push(data.paymentLink)
+			console.log(data)
+		} catch (err) {
+			console.log(err)
+		}
 	}
 
 	return (
@@ -38,12 +56,30 @@ export default function SummaryOrder() {
 					<p className="text-2xl font-semibold">{state.discountDetails.discount ? state.discountDetails.newPrice.toFixed(2) : state.price.toFixed(2)} zł</p>
 				</div>
 			</div>
-			<Button
-				className={`mt-5 h-14 transition-all  rounded-xl w-full text-gray-200 disabled:cursor-not-allowed ${state.blocked ? "bg-primaryColor" : "bg-borderColor"}`}
-				disabled={!state.blocked}
-				onPress={buy}>
-				<Lock className="w-5 h-5" /> <span>Zamów teraz</span>
-			</Button>
+			{session && (
+				<Button
+					className={`mt-5 h-14 transition-all  rounded-xl w-full  disabled:cursor-not-allowed  ${!state.blocked || loader ? "bg-borderColor" : " bg-primaryColor"}`}
+					disabled={!state.blocked}
+					onPress={buy}>
+					{loader && (
+						<div className="flex items-center gap-3 text-gray-200">
+							<Loader2 className="w-5 h-5 animate-spin" /> <span>Trwa sprawdzanie</span>
+						</div>
+					)}
+					{!loader && (
+						<div className="flex items-center gap-3 text-gray-200">
+							<ShoppingBag className="w-5 h-5 " /> <span>Zamów teraz</span>
+						</div>
+					)}
+				</Button>
+			)}
+			{!session && (
+				<Link href="/login">
+					<Button className="mt-5 h-14 transition-all  rounded-xl w-full  disabled:cursor-not-allowed bg-borderColor ">
+						<Lock className="w-5 h-5 " /> <span>Musisz się zalogować</span>
+					</Button>
+				</Link>
+			)}
 			<div className="flex gap-2 items-center justify-center mt-2 text-textColor">
 				<Timer className="w-4 h-4" />
 				<p className="text-sm">Realizacja: natychmiastowa</p>

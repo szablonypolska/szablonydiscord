@@ -26,20 +26,23 @@ export default function DiscountCode() {
 			const checkCode = await vetifyDiscountCode(state.offers, code)
 
 			if (checkCode.statusCode === 404) {
-				dispatch({ type: "discountDetails", payload: { differencePrice: 0, newPrice: 0, percentDiscount: 0, discount: false } })
+				dispatch({ type: "discountDetails", payload: { differencePrice: 0, newPrice: 0, percentDiscount: 0, code: "", discount: false } })
 				setError("Wpisany kod promocyjny nie istnieje")
 				setLoader(false)
 				return
 			}
 
 			if (checkCode.type === "lowPrice") {
-				dispatch({ type: "discountDetails", payload: { differencePrice: 0, newPrice: 0, percentDiscount: 0, discount: false } })
+				dispatch({ type: "discountDetails", payload: { differencePrice: 0, newPrice: 0, percentDiscount: 0, code: "", discount: false } })
 				setError("Kwota zamówienia nie moze byc nizsza niz 2.50 zł")
 				setLoader(false)
 				return
 			}
 
-			dispatch({ type: "discountDetails", payload: { differencePrice: checkCode.differencePrice, newPrice: checkCode.newPrice, percentDiscount: checkCode.percentDiscount, discount: true } })
+			dispatch({
+				type: "discountDetails",
+				payload: { differencePrice: checkCode.differencePrice, newPrice: checkCode.newPrice, code: checkCode.code, percentDiscount: checkCode.percentDiscount, discount: true },
+			})
 			setError("")
 			setLoader(false)
 			setSuccess(true)
@@ -63,6 +66,7 @@ export default function DiscountCode() {
 							<input
 								type="text"
 								id="link"
+								defaultValue={state.discountDetails.code || code}
 								className={`bg-altBackgroundColor border  w-full p-3 h-12 rounded-xl focus:outline-none placeholder:text-placeHolderTextColor focus:ring-1  ${error ? "border-errorColor focus:ring-errorColor" : "border-borderColor focus:ring-primaryColor"}
   `}
 								placeholder="Wpisz kod promocyjny"

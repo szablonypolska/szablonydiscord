@@ -8,6 +8,9 @@ export class CreatePaymentsDto {
 
   @IsString()
   @IsNotEmpty()
+  userId: string;
+
+  @IsString()
   @IsOptional()
   code: string;
 }

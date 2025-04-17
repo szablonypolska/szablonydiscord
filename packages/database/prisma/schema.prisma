@@ -32,6 +32,7 @@ model User {
   template Templates[]
   notification Notification[]
   api Api[]
+  order Order[]
 }
 
 model Notification {
@@ -61,6 +62,17 @@ model Api {
   dailyLimit Int @default(500)
   userId String
   webhook Webhook[]
+  user User @relation(fields: [userId], references: [userId])
+}
+
+model Order {
+  Id Int @id @default(autoincrement())
+  orderCode String @unique
+  dateCreate DateTime @default(now())
+  status String @default("NEW")
+  offer String
+  userId String
+  orderAmount Int @default(0)
   user User @relation(fields: [userId], references: [userId])
 }
 
@@ -115,7 +127,8 @@ model SearchHistory {
 model PromoCode {
   id Int @id @default(autoincrement())
   code String @unique
-  usageCount Int 
-  value Int
+  usageCount Int @default(0)
+  maxUsageCount Int @default(1)
+  discount Int @default(0)
   expiredDate DateTime
 }

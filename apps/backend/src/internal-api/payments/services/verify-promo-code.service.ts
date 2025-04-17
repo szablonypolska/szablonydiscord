@@ -24,9 +24,10 @@ export class VerifyPromoCodeService {
       if (!checkPromocode)
         throw new NotFoundException('This promocode is not avaiable');
 
-      const newPrice = offer.price - (offer.price * checkPromocode.value) / 100;
+      const newPrice =
+        offer.price - (offer.price * checkPromocode.discount) / 100;
 
-      if (checkPromocode.value !== 100 && newPrice < 2.5)
+      if (checkPromocode.discount !== 100 && newPrice < 2.5)
         throw new BadGatewayException({
           message: "'Minimal price is 2.00 PLN'",
           type: 'lowPrice',
@@ -35,7 +36,7 @@ export class VerifyPromoCodeService {
       return {
         newPrice,
         differencePrice: Math.abs(offer.price - newPrice).toFixed(2),
-        percentDiscount: checkPromocode.value,
+        percentDiscount: checkPromocode.discount,
       };
     } catch (err) {
       console.log(err);
