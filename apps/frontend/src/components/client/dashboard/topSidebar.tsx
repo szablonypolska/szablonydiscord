@@ -1,7 +1,7 @@
 "use client"
 
 import { Button } from "@nextui-org/button"
-import { Home, ChevronRight, ChevronLeft, UsersRound, Bell, Settings } from "lucide-react"
+import { Home, ChevronRight, ChevronLeft, UsersRound, Bell, Settings, WalletCards } from "lucide-react"
 import { usePathname } from "next/navigation"
 import Image from "next/image"
 import { useSession } from "next-auth/react"
@@ -31,12 +31,11 @@ export default function TopSidebar() {
 					</div>
 					<div className="h-3/6 w-0.5 bg-borderColor max-lg:hidden"></div>
 					<div className="flex items-center gap-3 p-2 px-3 bg-altBackgroundColor border border-borderColor rounded-lg hover:border-primaryColor transition-all ml-3 max-lg:hidden">
-						<div className="relative">
-							<div className="absolute inset-0 animate-ping w-3 h-3 bg-primaryColor opacity-75 rounded-full"></div>
-							<div className="relative w-3 h-3 bg-primaryColor rounded-full"></div>
-						</div>
-						<p className="text-sm max-xl:hidden">Wszystkie systemy dzialaja</p>
-						<p className="text-sm xl:hidden">Aktywne</p>
+						<WalletCards className="w-5 h-5 text-primaryColor" />
+						<p className="text-sm max-xl:hidden">
+							Stan portfela: <span>0,00 zł</span>
+						</p>
+						<p className="text-sm xl:hidden">Portfel: 0,00 zł</p>
 					</div>
 				</div>
 				<div className="flex items-center gap-3 h-16">

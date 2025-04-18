@@ -1,7 +1,7 @@
 import type { Metadata } from "next"
-import "../globals.css"
+
 import Navbar from "@/components/client/navbar"
-import decorationElement from "../../../public/templatesDecoration.svg"
+import decorationElement from "../../../../public/templatesDecoration.svg"
 import Image from "next/image"
 import Footer from "@/components/client/footer"
 

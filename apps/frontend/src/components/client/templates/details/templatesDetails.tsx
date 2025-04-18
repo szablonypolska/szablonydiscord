@@ -7,7 +7,7 @@ import Image from "next/image"
 import TemplatesVisuzalization from "./templatesVisualizaton"
 import Link from "next/link"
 import { Roles } from "@/components/interfaces/templates/common"
-import { Download, Eye } from "lucide-react"
+import { Download, Eye, Plus, Bot, Volume2, Users } from "lucide-react"
 import { Tooltip } from "@heroui/react"
 
 interface Props {
@@ -107,13 +107,13 @@ export default function TemplatesDetails({ data, base }: Props) {
 						</Tooltip>
 						<Tooltip content="Kanały głosowe" className="p-1 px-3 bg-borderColor rounded-xl" delay={300}>
 							<div className="flex items-center gap-1 px-3 h-12 bg-borderColor w-fit rounded-xl max-sm:flex-grow max-sm:justify-center">
-								<span className="material-symbols-outlined text-2xl">volume_up</span>
+								<Volume2 />
 								<p className="text-xl">{numbers.voice}</p>
 							</div>
 						</Tooltip>
 						<Tooltip content="role" className="p-1 px-3 bg-borderColor rounded-xl" delay={300}>
 							<div className="flex items-center gap-1 px-3 h-12 bg-borderColor w-fit rounded-xl max-sm:flex-grow max-sm:justify-center">
-								<span className="material-symbols-outlined text-2xl">people</span>
+								<Users />
 								<p className="text-xl">{data.serialized_source_guild.roles.length}</p>
 							</div>
 						</Tooltip>
@@ -123,13 +123,13 @@ export default function TemplatesDetails({ data, base }: Props) {
 				<section className="flex items-center gap-3 mt-10 max-sm:flex-col max-sm:w-full max-sm:mt-5">
 					<Link href={base.link} className="max-sm:w-full">
 						<Button className="flex items-center bg-primaryColor px-8 py-6 rounded-xl max-sm:w-full">
-							<span className="material-symbols-outlined text-2xl">add</span>
+							<Plus />
 							Użyj szablonu
 						</Button>
 					</Link>
 					<Link href={`/preview/${base.slugUrl}`} className="max-sm:w-full">
 						<Button className="flex items-center bg-adviceBot px-8 py-6 rounded-xl max-sm:w-full">
-							<span className="material-symbols-outlined text-2xl">smart_toy</span>
+							<Bot />
 							Przejdź do podglądu szablonu
 						</Button>
 					</Link>

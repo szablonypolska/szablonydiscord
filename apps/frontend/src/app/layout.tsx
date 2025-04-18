@@ -1,7 +1,7 @@
 import type { Metadata } from "next"
 import { Inter } from "next/font/google"
 import "./globals.css"
-import SeesionWrapper from "@/components/client/dashboard/sessionWrapper"
+import SeesionWrapper from "@/components/client/sessionWrapper"
 
 export const dynamic = "force-dynamic"
 

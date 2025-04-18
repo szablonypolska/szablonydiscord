@@ -1,8 +1,12 @@
+"use client"
 import { Button } from "@nextui-org/button"
+import gsap from "gsap"
 import { ArrowRight, Check, Lock, Shield, Sparkles } from "lucide-react"
 import Link from "next/link"
+import { useEffect, useRef } from "react"
 
 export default function OfferList() {
+	const animation = useRef<HTMLDivElement>(null)
 	const packages = [
 		{
 			id: 1,
@@ -39,17 +43,24 @@ export default function OfferList() {
 		},
 	]
 
+	useEffect(() => {
+		gsap.to(animation.current, {
+			opacity: 1,
+			duration: 0.5,
+			y: 10,
+			ease: "ease out",
+		})
+	}, [])
+
 	return (
-		<div className="flex flex-col items-center justify-center my-20">
+		<div className="flex flex-col items-center justify-center my-20 opacity-0" ref={animation}>
 			<div className="flex items-center gap-3 bg-borderColor p-1.5 px-5 rounded-full w-fit">
 				<Sparkles className="text-primaryColor w-5 h-5" />
 				<p className="font-semibold text-sm">Wybierz pakiet ochrony</p>
 			</div>
 			<div className="mt-5 text-center">
 				<h1 className="text-3xl font-semibold">Zabezpiecz swój serwer Discord</h1>
-				<p className="text-textColor mt-3 w-[50rem] max-md:w-11/12">
-					Wybierz poziom ochrony, który najlepiej odpowiada Twoim potrzebom. Każdy pakiet zawiera różne metody weryfikacji i czasy realizacji.
-				</p>
+				<p className="text-textColor mt-3 w-[50rem] max-md:w-11/12">Wybierz poziom ochrony, który najlepiej odpowiada Twoim potrzebom. Każdy pakiet zawiera różne metody weryfikacji i czasy realizacji.</p>
 			</div>
 			<div className="flex items-center gap-5 mt-14 max-lg:grid max-lg:grid-cols-2 max-md:grid-cols-1">
 				{packages.map(el => (

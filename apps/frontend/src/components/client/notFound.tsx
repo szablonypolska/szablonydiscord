@@ -8,7 +8,7 @@ import { usePathname } from "next/navigation"
 export default function NotFoundWeb() {
 	const pathname = usePathname()
 	return (
-		<div className="flex flex-col justify-center text-center  w-full my-32">
+		<div className="flex flex-col justify-center text-center  w-full  my-32">
 			<div className="text-center">
 				<div className="inline-flex items-center justify-center w-20 h-20 bg-borderColor rounded-2xl mb-6 relative group">
 					<FileQuestion className="w-10 h-10 text-darkGray group-hover:scale-110 transition-transform duration-300" />
@@ -21,12 +21,7 @@ export default function NotFoundWeb() {
 				<p className="text-darkGray">Strona której szukasz mogła zostać przeniesiona lub nie istnieje.</p>
 				<p className="text-darkGray">Sprawdź czy adres URL jest poprawny lub wróć do strony głównej.</p>
 				<div className=" p-5 bg-borderColor rounded-xl w-[35rem] mt-6 relative max-md:w-full">
-					<input
-						type="text"
-						readOnly
-						className="bg-altBackgroundColor w-full p-3 rounded-xl border border-[#2f2f2f] text-darkGray pl-10 outline-none"
-						value={`https://szablonydiscord.pl${pathname}`}
-					/>
+					<input type="text" readOnly className="bg-altBackgroundColor w-full p-3 rounded-xl border border-[#2f2f2f] text-darkGray pl-10 outline-none" value={`https://szablonydiscord.pl${pathname}`} />
 					<div className="absolute top-1/2 -translate-y-1/2 pl-3">
 						<Search className="text-darkGray" size={18} />
 					</div>

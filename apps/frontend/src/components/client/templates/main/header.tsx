@@ -4,16 +4,24 @@ import { Button } from "@nextui-org/button"
 import decorationTemplatesElement from "../../../../../public/templatesDecorationSearch.svg"
 import searchDecoration from "../../../../../public/searchDecoration.svg"
 import Image from "next/image"
-import { useState } from "react"
+import { useEffect, useRef, useState } from "react"
 import Link from "next/link"
 import { PlaceholdersAndVanishInput } from "@/components/ui/placeholders-and-vanish-input"
 import { Search } from "lucide-react"
 import { BlurFade } from "@/components/ui/blur-fade"
+import gsap from "gsap"
 
 export default function HeaderTemplates({ searchHistory }: { searchHistory: string[] }) {
 	const [text, setText] = useState<string>("")
+	const animationImage = useRef<HTMLImageElement>(null)
 
-	console.log(searchHistory)
+	useEffect(() => {
+		gsap.to(animationImage.current, {
+			opacity: 1,
+			duration: 0.5,
+			x: -10,
+		})
+	}, [])
 
 	const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
 		console.log(handleChange)
@@ -25,7 +33,7 @@ export default function HeaderTemplates({ searchHistory }: { searchHistory: stri
 
 	return (
 		<>
-			<header className="flex items-center max-lg:gap-5 max-lg:mt-32  my-20  relative px-10 max-md:px-5">
+			<header className="flex items-center max-lg:gap-5 max-lg:mt-32  my-20  relative px-10  max-md:px-5">
 				<div className="relative w-1/2 max-lg:w-full">
 					<BlurFade delay={0.02} inView>
 						<h1 className="text-[2.8rem] leading-[55px] font-bold uppercase w-full tracking-wider max-sm:text-2xl  max-sm:tracking-widest">
@@ -67,7 +75,7 @@ export default function HeaderTemplates({ searchHistory }: { searchHistory: stri
 					</div>
 					<Image src={decorationTemplatesElement} alt="dekoracyjny wykresowy element" className="absolute -top-20 right-5 z-10" />
 				</div>
-				<Image src={searchDecoration} alt="test" className="flex justify-center w-1/2 h-96 max-lg:w-5/12 max-lg:hidden"></Image>
+				<Image src={searchDecoration} alt="zdjecie z czlowiekiem" className="flex justify-center w-1/2 h-96 max-lg:w-5/12 max-lg:hidden opacity-0" ref={animationImage}></Image>
 			</header>
 		</>
 	)

@@ -1,31 +1,32 @@
 {
-    "name": "scan",
-    "private": true,
-    "scripts": {
-        "build": "rimraf ./apps/frontend/node_modules && turbo db:build &&  turbo build",
-        "dev": "turbo dev",
-        "lint": "turbo lint",
-        "format": "prettier --write \"**/*.{ts,tsx,md}\""
-    },
-    "devDependencies": {
-        "prettier": "^3.2.5",
-        "turbo": "^2.3.3",
-        "typescript": "5.5.4"
-    },
-    "engines": {
-        "node": ">=18"
-    },
-    "packageManager": "npm@10.2.4",
-    "workspaces": [
-        "apps/**/*",
-        "packages/**/*"
-    ],
-    "dependencies": {
-        "@prisma/client": "^6.2.1",
-        "@repo/db": "*",
-        "@repo/shared": "^1.0.0",
-        "prisma": "^6.0.1",
-        "rimraf": "^6.0.1",
-        "sharp": "^0.34.1"
-    }
+	"name": "scan",
+	"private": true,
+	"scripts": {
+		"build": "rimraf ./apps/frontend/node_modules && turbo db:build &&  turbo build",
+		"dev": "turbo dev",
+		"start": "turbo start",
+		"lint": "turbo lint",
+		"format": "prettier --write \"**/*.{ts,tsx,md}\""
+	},
+	"devDependencies": {
+		"prettier": "^3.2.5",
+		"turbo": "^2.3.3",
+		"typescript": "5.5.4"
+	},
+	"engines": {
+		"node": ">=18"
+	},
+	"packageManager": "npm@10.2.4",
+	"workspaces": [
+		"apps/**/*",
+		"packages/**/*"
+	],
+	"dependencies": {
+		"@prisma/client": "^6.2.1",
+		"@repo/db": "*",
+		"@repo/shared": "^1.0.0",
+		"prisma": "^6.0.1",
+		"rimraf": "^6.0.1",
+		"sharp": "^0.34.1"
+	}
 }
