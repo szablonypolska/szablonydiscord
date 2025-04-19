@@ -21,11 +21,15 @@ export class CreatePayments {
   );
 
   private priceAfterPrototion: number = null;
-  private uid = new ShortUniqueId({ length: 5 });
+  private uid = new ShortUniqueId({
+    dictionary: 'number',
+    length: 3,
+  });
 
   async createPayments(create: CreatePaymentsDto) {
     try {
       const checkOffer = offerList(create.offer);
+      const orderCode = this.uid.rnd();
 
       if (!checkOffer) throw new BadRequestException('There is not such offer');
 
@@ -48,23 +52,15 @@ export class CreatePayments {
           checkOffer.price - (checkOffer.price * checkCode.discount) / 100;
       }
 
-      const createOrder = await this.prisma.client.order.create({
-        data: {
-          orderCode: this.uid.rnd(),
-          offer: create.offer,
-          orderAmount: this.priceAfterPrototion
-            ? this.priceAfterPrototion
-            : checkOffer.price,
-          userId: checkUserIsExists.userId,
-        },
-      });
-
       const price = await this.stripe.prices.create({
         unit_amount: this.priceAfterPrototion
           ? Math.floor(this.priceAfterPrototion * 100)
           : Math.floor(checkOffer.price * 100),
         currency: 'pln',
         product: 'prod_S8ABOWqGVSN6MD',
+        metadata: {
+          orderCode: orderCode,
+        },
       });
 
       const createSession = await this.stripe.checkout.sessions.create({
@@ -75,12 +71,33 @@ export class CreatePayments {
           },
         ],
         metadata: {
-          orderCode: createOrder.orderCode,
+          orderCode: orderCode,
+          offer: create.offer,
         },
         mode: 'payment',
         success_url: `https://szablonydiscord.pl?session_id={CHECKOUT_SESSION_ID}`,
         cancel_url: `https://szablonydiscord.pl/cancel`,
       });
+
+      await this.prisma.client.$transaction([
+        this.prisma.client.order.create({
+          data: {
+            orderCode: orderCode,
+            offer: create.offer,
+            orderAmount: this.priceAfterPrototion
+              ? this.priceAfterPrototion
+              : checkOffer.price,
+            userId: checkUserIsExists.userId,
+            orderPaymentLink: createSession.url,
+          },
+        }),
+        this.prisma.client.orderEvent.create({
+          data: {
+            orderCode: orderCode,
+            status: 'NEW',
+          },
+        }),
+      ]);
 
       return { paymentLink: createSession.url };
     } catch (err) {

@@ -12,7 +12,7 @@ export default function OfferBasic() {
 	const [error, setError] = useState<string>("")
 
 	useEffect(() => {
-		dispatch({ type: "offers", payload: "advanced" })
+		dispatch({ type: "offers", payload: "basic" })
 	}, [])
 
 	useEffect(() => {

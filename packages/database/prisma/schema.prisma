@@ -13,6 +13,13 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+enum OrderStatus {
+  NEW
+  PENDING
+  COMPLETED
+  CANCELED
+}
+
 
 model User {
   id Int @id @default(autoincrement())
@@ -69,11 +76,21 @@ model Order {
   Id Int @id @default(autoincrement())
   orderCode String @unique
   dateCreate DateTime @default(now())
-  status String @default("NEW")
+  status OrderStatus @default(NEW)
   offer String
   userId String
   orderAmount Int @default(0)
+  orderPaymentLink String
   user User @relation(fields: [userId], references: [userId])
+  events OrderEvent[]
+}
+
+model OrderEvent {
+  Id Int @id @default(autoincrement())
+  orderCode String 
+  status OrderStatus
+  date DateTime @default(now())
+  order Order @relation(fields: [orderCode], references: [orderCode])
 }
 
 model Webhook {

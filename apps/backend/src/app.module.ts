@@ -10,11 +10,15 @@ import { CacheModule } from '@nestjs/cache-manager';
 import { SchedulesModule } from './schedules/schedules.module';
 import { NotificationsModule } from './notifications/notifications.module';
 import { ModulePayments } from './internal-api/payments/payments.module';
+import { EventEmitterModule } from '@nestjs/event-emitter';
+import { EventsModule } from './internal-api/payments/events/events.module';
 
 @Module({
   imports: [
     ConfigModule.forRoot(),
     CacheModule.registerAsync(RedisOptions),
+    EventEmitterModule.forRoot(),
+    EventsModule,
     PublicModule,
     SchedulesModule,
     ModulePayments,

@@ -1,35 +1,41 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, RawBodyRequest } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import Stripe from 'stripe';
 import { Request } from 'express';
+import { EventEmitter2 } from '@nestjs/event-emitter';
 
 @Injectable()
 export class WebhookService {
-  constructor(private readonly configService: ConfigService) {}
+  constructor(
+    private configService: ConfigService,
+    private eventEmitter: EventEmitter2,
+  ) {}
 
-  private apiKey = this.configService.get<string>('SECRET_API_KEY_STRIPE');
-  private webhookSecret = this.configService.get<string>(
-    'SECRET_WEBHOOK_STRIPE',
-  );
-  private client = new Stripe(this.apiKey);
+  private stripe = new Stripe(this.configService.get('SECRET_API_KEY_STRIPE'));
 
-  async manageTask(req: Request) {
+  async manageTask(req: RawBodyRequest<Request>) {
     const sig = req.headers['stripe-signature'];
+    let event: Stripe.Event;
 
-    try {
-      const thinEvent = this.client.parseThinEvent(
-        req.body,
-        sig,
-        this.webhookSecret,
-      );
+    event = this.stripe.webhooks.constructEvent(
+      req.rawBody,
+      sig,
+      this.configService.get('SECRET_WEBHOOK_STRIPE'),
+    );
 
-      const event = await this.client.v2.core.events.retrieve(thinEvent.id);
-
-      console.log(event.type);
-    } catch (err) {
-      console.log(err);
+    if (event.type === 'price.created') {
+      const session = event.data.object as Stripe.Price;
+      this.eventEmitter.emit(`payment_created`, {
+        code: session.metadata.orderCode,
+      });
     }
 
-    console.log(sig);
+    if (event.type === 'checkout.session.completed') {
+      const session = event.data.object as Stripe.Checkout.Session;
+      this.eventEmitter.emit(
+        `pucharsed_successfull_${session.metadata.offer}`,
+        { code: session.metadata.orderCode },
+      );
+    }
   }
 }

@@ -1,4 +1,11 @@
-import { Body, Controller, HttpCode, Post, Request } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  HttpCode,
+  Post,
+  Req,
+  RawBodyRequest,
+} from '@nestjs/common';
 import { CreatePayments } from './services/create-payments.service';
 import { VerifyPromoCodeService } from './services/verify-promo-code.service';
 import { VerifyPromoCodeDto } from './dto/verify-promo-code.dto';
@@ -28,7 +35,7 @@ export class PaymentsController {
 
   @Post('/webhook')
   @HttpCode(200)
-  manageTask(@Request() req: RequestExpress) {
+  manageTask(@Req() req: RawBodyRequest<RequestExpress>) {
     return this.webhook.manageTask(req);
   }
 }

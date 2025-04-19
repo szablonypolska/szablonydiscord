@@ -1,14 +1,33 @@
 import OrderHeader from "@/components/client/order/orderHeader"
 import OrderImage from "@/components/client/order/orderImage"
 import OrderTimeline from "@/components/client/order/orderTimeline"
+import { prisma } from "@repo/db"
+import { notFound } from "next/navigation"
 
-export default async function Order() {
+interface Params {
+	id: string
+}
+
+export default async function Order(props: { params: Promise<Params> }) {
+	const params = await props.params
+
+	const { id } = params
+
+	const getDataOrder = await prisma.order.findUnique({
+		where: { orderCode: id },
+		include: { events: true },
+	})
+
+	if (!getDataOrder) return notFound()
+
+	console.log(getDataOrder.events)
+
 	return (
 		<>
 			<div className="flex items-center justify-center gap-20 max-xl:gap-10 mt-20 max-w-screen-xl mx-auto px-5">
 				<div className="flex flex-col gap-10 w-full">
-					<OrderHeader />
-					<OrderTimeline />
+					<OrderHeader code={getDataOrder.orderCode} />
+					<OrderTimeline events={getDataOrder.events} />
 				</div>
 				<OrderImage />
 			</div>

@@ -1,25 +1,58 @@
 "use client"
 
-import React, { useState } from "react"
-import { Check, BadgePlus, CreditCard, Handshake, CircleCheck, CircleAlert } from "lucide-react"
+import React, { useEffect, useRef, useState } from "react"
+import { Check, BadgePlus, CreditCard, Handshake, CircleCheck } from "lucide-react"
+import gsap from "gsap"
+import { PropsOrder } from "@/components/interfaces/order/status/common"
+import { format, parse, parseISO } from "date-fns"
+import { pl } from "date-fns/locale"
 
-export default function OrderTimeline() {
-	const [activeStep, setActiveStep] = useState(2)
+export default function OrderTimeline({ events }: { events: PropsOrder[] }) {
+	console.log(events)
+	const [activeStep, setActiveStep] = useState(0)
+	const progressAnimation = useRef<HTMLDivElement>(null)
 
-	console.log(activeStep)
+	useEffect(() => {
+		const tl = gsap.timeline()
+
+		if (events[1] || events[2]) {
+			tl.to(progressAnimation.current, {
+				width: "50%",
+				duration: 1,
+				ease: "power1.inOut",
+				onComplete: () => setActiveStep(1),
+			})
+		}
+
+		if (events[2]) {
+			tl.to(progressAnimation.current, {
+				width: "100%",
+				duration: 1,
+				ease: "power1.inOut",
+				onComplete: () => setActiveStep(2),
+			})
+		}
+	}, [])
+
+	const formatData = (date: Date) => {
+		const now = new Date(date)
+
+		const formatNow = format(now, "dd.MM.yyyy, HH:mm", { locale: pl })
+
+		return formatNow
+	}
 
 	const steps = [
-		{ label: "Stworzono", subtitle: "19.04.2025, 10:32", icon: BadgePlus },
-		{ label: "Oczekiwanie", subtitle: "19.04.2025, 10:31", icon: CreditCard },
+		{ label: "Stworzono", subtitle: `${events[0] ? formatData(events[0].date) : "Brak danych"}`, icon: BadgePlus },
+		{ label: "Oczekiwanie", subtitle: `${events[1] ? formatData(events[1].date) : ""}`, icon: CreditCard },
 		{ label: "Zakończono", subtitle: "", icon: Handshake },
 	]
-	const progressPercent = (activeStep / (steps.length - 1)) * 100
 
 	return (
 		<div className="w-[40rem]  py-4 max-2xl:w-full">
 			<div className="relative">
 				<div className="h-2.5 bg-primaryDark opacity-80 rounded-full relative">
-					<div className="absolute top-0 left-0 h-full bg-primaryColor rounded-full" style={{ width: `${progressPercent}%` }} />
+					<div className="absolute top-0 left-0 h-full bg-primaryColor rounded-full transition-all" ref={progressAnimation} />
 				</div>
 
 				{steps.map((el, idx) => {
@@ -41,16 +74,20 @@ export default function OrderTimeline() {
 					return (
 						<div key={idx} className={`absolute ${pos} mt-5 ${idx === 2 && "text-right"} ${idx === 1 && "text-center"} ${idx === 0 && "text-left"}  ${idx > activeStep && "text-textColor "}`}>
 							<p className={`text-sm ${idx == activeStep && "font-semibold text-primaryColor"} `}>{step.label}</p>
-							{<p className="text-xs text-textColor mt-2 ">{step.subtitle && step.subtitle}</p>}
+							<p className="text-xs text-textColor mt-2 ">{step.subtitle && step.subtitle}</p>
 						</div>
 					)
 				})}
 			</div>
-			<div className="bg-boxColor p-5 border border-borderColor w-full rounded-lg mt-24">
+			<div className="bg-boxColor p-5 border border-borderColor w-full rounded-lg mt-[6.5rem]">
 				<div className="flex items-center gap-3">
 					<CircleCheck className="text-primaryColor" />
 					<p className="text-primaryColor font-semibold">To zamówienie zostało opłacone i zakończone.</p>
 				</div>
+			</div>
+
+			<div className="flex items-center gap-3 mt-3">
+				<p className="text-textColor text-sm">*Więcej na temat tego zamówienia znajdziesz w panelu</p>
 			</div>
 		</div>
 	)
