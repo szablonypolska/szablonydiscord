@@ -19,6 +19,7 @@ export class CreatePayments {
   private stripe = new Stripe(
     this.configService.get<string>('SECRET_API_KEY_STRIPE'),
   );
+  private hostname = this.configService.get<string>('HOSTNAME');
 
   private priceAfterPrototion: number = null;
   private uid = new ShortUniqueId({
@@ -74,9 +75,14 @@ export class CreatePayments {
           orderCode: orderCode,
           offer: create.offer,
         },
+        payment_intent_data: {
+          metadata: {
+            orderCode: orderCode,
+          },
+        },
         mode: 'payment',
-        success_url: `https://szablonydiscord.pl?session_id={CHECKOUT_SESSION_ID}`,
-        cancel_url: `https://szablonydiscord.pl/cancel`,
+        success_url: `${this.hostname}/payments/{CHECKOUT_SESSION_ID}`,
+        cancel_url: `${this.hostname}/payments/{CHECKOUT_SESSION_ID}`,
       });
 
       await this.prisma.client.$transaction([

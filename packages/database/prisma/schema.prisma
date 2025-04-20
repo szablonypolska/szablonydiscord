@@ -15,7 +15,7 @@ datasource db {
 
 enum OrderStatus {
   NEW
-  PENDING
+  PAID
   COMPLETED
   CANCELED
 }
@@ -49,7 +49,7 @@ model Notification {
   description String
   dateAdd DateTime @default(now())
   userId String
-  user User @relation(fields: [userId], references: [userId])
+  user User @relation(fields: [userId], references: [userId], onDelete: Cascade, onUpdate: Cascade)
 }
 
 model Api {
@@ -69,7 +69,7 @@ model Api {
   dailyLimit Int @default(500)
   userId String
   webhook Webhook[]
-  user User @relation(fields: [userId], references: [userId])
+  user User @relation(fields: [userId], references: [userId], onDelete: Cascade, onUpdate: Cascade)
 }
 
 model Order {
@@ -81,7 +81,7 @@ model Order {
   userId String
   orderAmount Int @default(0)
   orderPaymentLink String
-  user User @relation(fields: [userId], references: [userId])
+  user User @relation(fields: [userId], references: [userId], onDelete: Cascade, onUpdate: Cascade) 
   events OrderEvent[]
 }
 
@@ -90,7 +90,7 @@ model OrderEvent {
   orderCode String 
   status OrderStatus
   date DateTime @default(now())
-  order Order @relation(fields: [orderCode], references: [orderCode])
+  order Order @relation(fields: [orderCode], references: [orderCode], onDelete: Cascade, onUpdate: Cascade)
 }
 
 model Webhook {
@@ -101,7 +101,7 @@ model Webhook {
   title String
   description String
   apiKeyId String
-  api Api @relation(fields: [apiKeyId], references: [apiKeyId])
+  api Api @relation(fields: [apiKeyId], references: [apiKeyId], onDelete: Cascade, onUpdate: Cascade)
 }
 
 model Templates {

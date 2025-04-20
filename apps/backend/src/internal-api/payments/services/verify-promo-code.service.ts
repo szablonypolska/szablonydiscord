@@ -37,6 +37,7 @@ export class VerifyPromoCodeService {
         newPrice,
         differencePrice: Math.abs(offer.price - newPrice).toFixed(2),
         percentDiscount: checkPromocode.discount,
+        code: promoCodeBody.code,
       };
     } catch (err) {
       console.log(err);

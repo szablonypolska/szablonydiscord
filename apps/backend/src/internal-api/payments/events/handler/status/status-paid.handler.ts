@@ -6,23 +6,21 @@ import { PrismaService } from '@repo/shared';
 export class StatusPaidHandler {
   constructor(private prisma: PrismaService) {}
 
-  @OnEvent('payment_created')
+  @OnEvent('order_paid')
   async handleBasic(payload: { code: string }) {
     console.log(payload);
     try {
-      await new Promise((resolve) => setTimeout(resolve, 2000));
-
       await this.prisma.client.order.update({
         where: { orderCode: payload.code },
         data: {
-          status: 'PENDING',
+          status: 'PAID',
         },
       });
 
       await this.prisma.client.orderEvent.create({
         data: {
           orderCode: payload.code,
-          status: 'PENDING',
+          status: 'PAID',
         },
       });
     } catch (err) {

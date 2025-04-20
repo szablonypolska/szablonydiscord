@@ -23,9 +23,9 @@ export class WebhookService {
       this.configService.get('SECRET_WEBHOOK_STRIPE'),
     );
 
-    if (event.type === 'price.created') {
-      const session = event.data.object as Stripe.Price;
-      this.eventEmitter.emit(`payment_created`, {
+    if (event.type === 'charge.succeeded') {
+      const session = event.data.object as Stripe.Charge;
+      this.eventEmitter.emit(`order_paid`, {
         code: session.metadata.orderCode,
       });
     }

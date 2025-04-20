@@ -1,5 +1,5 @@
 import OfferBasic from "@/components/client/offers/details/basic/offerBasic"
-import OfferPremium from "@/components/client/offers/details/basic/offerPremium"
+import OfferPremium from "@/components/client/offers/details/premium/offerPremium"
 import FinalizationOrder from "@/components/client/offers/details/finalizationOrder"
 import { OrderType } from "@/types/order"
 

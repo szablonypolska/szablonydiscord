@@ -18,7 +18,7 @@ export default function OrderTimeline({ events }: { events: PropsOrder[] }) {
 		if (events[1] || events[2]) {
 			tl.to(progressAnimation.current, {
 				width: "50%",
-				duration: 1,
+				duration: 0.8,
 				ease: "power1.inOut",
 				onComplete: () => setActiveStep(1),
 			})
@@ -27,7 +27,7 @@ export default function OrderTimeline({ events }: { events: PropsOrder[] }) {
 		if (events[2]) {
 			tl.to(progressAnimation.current, {
 				width: "100%",
-				duration: 1,
+				duration: 0.8,
 				ease: "power1.inOut",
 				onComplete: () => setActiveStep(2),
 			})
@@ -44,12 +44,12 @@ export default function OrderTimeline({ events }: { events: PropsOrder[] }) {
 
 	const steps = [
 		{ label: "Stworzono", subtitle: `${events[0] ? formatData(events[0].date) : "Brak danych"}`, icon: BadgePlus },
-		{ label: "Oczekiwanie", subtitle: `${events[1] ? formatData(events[1].date) : ""}`, icon: CreditCard },
+		{ label: "Opłacone", subtitle: `${events[1] ? formatData(events[1].date) : ""}`, icon: CreditCard },
 		{ label: "Zakończono", subtitle: "", icon: Handshake },
 	]
 
 	return (
-		<div className="w-[40rem]  py-4 max-2xl:w-full">
+		<div className="w-[40rem]  py-4 max-2xl:w-full mt-8">
 			<div className="relative">
 				<div className="h-2.5 bg-primaryDark opacity-80 rounded-full relative">
 					<div className="absolute top-0 left-0 h-full bg-primaryColor rounded-full transition-all" ref={progressAnimation} />
@@ -78,16 +78,6 @@ export default function OrderTimeline({ events }: { events: PropsOrder[] }) {
 						</div>
 					)
 				})}
-			</div>
-			<div className="bg-boxColor p-5 border border-borderColor w-full rounded-lg mt-[6.5rem]">
-				<div className="flex items-center gap-3">
-					<CircleCheck className="text-primaryColor" />
-					<p className="text-primaryColor font-semibold">To zamówienie zostało opłacone i zakończone.</p>
-				</div>
-			</div>
-
-			<div className="flex items-center gap-3 mt-3">
-				<p className="text-textColor text-sm">*Więcej na temat tego zamówienia znajdziesz w panelu</p>
 			</div>
 		</div>
 	)

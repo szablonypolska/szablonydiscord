@@ -3,6 +3,7 @@
 import { useOrderContext } from "@/context/OrderContext"
 import createPayments from "@/lib/payments/createPayments"
 import { Button } from "@nextui-org/button"
+import gsap from "gsap"
 import { Lock, Timer, Loader2, ShoppingBag } from "lucide-react"
 import { useSession } from "next-auth/react"
 import Link from "next/link"
@@ -23,7 +24,6 @@ export default function SummaryOrder() {
 
 			setLoader(false)
 			router.push(data.paymentLink)
-			console.log(data)
 		} catch (err) {
 			console.log(err)
 		}
@@ -57,10 +57,7 @@ export default function SummaryOrder() {
 				</div>
 			</div>
 			{session && (
-				<Button
-					className={`mt-5 h-14 transition-all  rounded-xl w-full  disabled:cursor-not-allowed  ${!state.blocked || loader ? "bg-borderColor" : " bg-primaryColor"}`}
-					disabled={!state.blocked}
-					onPress={buy}>
+				<Button className={`mt-5 h-14 transition-all  rounded-xl w-full  disabled:cursor-not-allowed  ${!state.blocked || loader ? "bg-borderColor" : " bg-primaryColor"}`} disabled={!state.blocked} onPress={buy}>
 					{loader && (
 						<div className="flex items-center gap-3 text-gray-200">
 							<Loader2 className="w-5 h-5 animate-spin" /> <span>Trwa sprawdzanie</span>

@@ -1,15 +1,18 @@
-import { Body, Controller, Post, Get, HttpCode } from '@nestjs/common';
+import { Body, Controller, Post, Get, HttpCode, Query } from '@nestjs/common';
 import { TemplatesService } from './services/create.service';
 import { MigrationService } from './services/migration.service';
 import { SearchService } from './services/search.service';
 import { Template } from '../../interfaces/template.interface';
+import { VerifyTemplateService } from './services/verify.service';
+import { VerifyTemplateDto } from './dto/verify.dto';
 
-@Controller('/api/internal')
+@Controller('/api/internal/templates')
 export class TemplateController {
   constructor(
     private readonly templates: TemplatesService,
     private readonly migrations: MigrationService,
     private readonly search: SearchService,
+    private readonly verify: VerifyTemplateService,
   ) {}
 
   @Post('/create')
@@ -19,11 +22,19 @@ export class TemplateController {
   }
 
   @Get('/migration')
+  @HttpCode(200)
   async migration() {
     await this.migrations.migration();
   }
 
+  @Get('/verify')
+  @HttpCode(200)
+  async verifyTemplate(@Query() data: VerifyTemplateDto) {
+    await this.verify.verifyTemplates(data);
+  }
+
   @Post('/search')
+  @HttpCode(200)
   searchTemplate(
     @Body('name') name: string,
   ): Promise<{ templates: Template[]; type: string }> {
