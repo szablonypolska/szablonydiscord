@@ -39,6 +39,13 @@ export default function DiscountCode() {
 				return
 			}
 
+			if (checkCode.type === "exceededLimit") {
+				dispatch({ type: "discountDetails", payload: { differencePrice: 0, newPrice: 0, percentDiscount: 0, code: "", discount: false } })
+				setError("Wykorzystano limit użyć kodu promocyjnego")
+				setLoader(false)
+				return
+			}
+
 			dispatch({
 				type: "discountDetails",
 				payload: { differencePrice: checkCode.differencePrice, newPrice: checkCode.newPrice, code: checkCode.code, percentDiscount: checkCode.percentDiscount, discount: true },

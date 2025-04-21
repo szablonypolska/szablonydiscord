@@ -18,7 +18,7 @@ export default function OrderTimeline({ events }: { events: PropsOrder[] }) {
 		if (events[1] || events[2]) {
 			tl.to(progressAnimation.current, {
 				width: "50%",
-				duration: 0.8,
+				duration: 0.5,
 				ease: "power1.inOut",
 				onComplete: () => setActiveStep(1),
 			})
@@ -27,7 +27,7 @@ export default function OrderTimeline({ events }: { events: PropsOrder[] }) {
 		if (events[2]) {
 			tl.to(progressAnimation.current, {
 				width: "100%",
-				duration: 0.8,
+				duration: 0.5,
 				ease: "power1.inOut",
 				onComplete: () => setActiveStep(2),
 			})

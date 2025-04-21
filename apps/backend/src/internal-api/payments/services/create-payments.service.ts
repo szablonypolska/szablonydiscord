@@ -9,106 +9,106 @@ import { CreatePaymentsDto } from '../dto/create-payments.dto';
 import { offerList } from 'src/common/constants/offerList.constans';
 import { PrismaService } from '@repo/shared';
 import ShortUniqueId from 'short-unique-id';
+import { EventEmitter2 } from '@nestjs/event-emitter';
 
 @Injectable()
 export class CreatePayments {
+  private stripe: Stripe;
+  private hostname: string;
+  private uid = new ShortUniqueId({ dictionary: 'number', length: 3 });
+
   constructor(
-    private configService: ConfigService,
+    configService: ConfigService,
     private prisma: PrismaService,
-  ) {}
-  private stripe = new Stripe(
-    this.configService.get<string>('SECRET_API_KEY_STRIPE'),
-  );
-  private hostname = this.configService.get<string>('HOSTNAME');
+    private eventEmitter: EventEmitter2,
+  ) {
+    this.stripe = new Stripe(
+      configService.get<string>('SECRET_API_KEY_STRIPE'),
+    );
+    this.hostname = configService.get<string>('HOSTNAME');
+  }
 
-  private priceAfterPrototion: number = null;
-  private uid = new ShortUniqueId({
-    dictionary: 'number',
-    length: 3,
-  });
+  async createPayments(dto: CreatePaymentsDto) {
+    const offer = offerList(dto.offer);
+    if (!offer) throw new BadRequestException('There is no such offer');
 
-  async createPayments(create: CreatePaymentsDto) {
-    try {
-      const checkOffer = offerList(create.offer);
-      const orderCode = this.uid.rnd();
+    const user = await this.prisma.client.user.findUnique({
+      where: { userId: dto.userId },
+    });
+    if (!user) throw new UnauthorizedException('You are not login');
 
-      if (!checkOffer) throw new BadRequestException('There is not such offer');
-
-      const checkUserIsExists = await this.prisma.client.user.findUnique({
-        where: { userId: create.userId },
+    let finalPrice = offer.price;
+    if (dto.code) {
+      const promo = await this.prisma.client.promoCode.findUnique({
+        where: { code: dto.code },
       });
-
-      if (!checkUserIsExists)
-        throw new UnauthorizedException('You are not login');
-
-      if (create.code) {
-        const checkCode = await this.prisma.client.promoCode.findUnique({
-          where: { code: create.code },
-        });
-
-        if (!checkCode)
-          throw new BadRequestException('This promocode no exists');
-
-        this.priceAfterPrototion =
-          checkOffer.price - (checkOffer.price * checkCode.discount) / 100;
-      }
-
-      const price = await this.stripe.prices.create({
-        unit_amount: this.priceAfterPrototion
-          ? Math.floor(this.priceAfterPrototion * 100)
-          : Math.floor(checkOffer.price * 100),
-        currency: 'pln',
-        product: 'prod_S8ABOWqGVSN6MD',
-        metadata: {
-          orderCode: orderCode,
-        },
-      });
-
-      const createSession = await this.stripe.checkout.sessions.create({
-        line_items: [
-          {
-            price: price.id,
-            quantity: 1,
-          },
-        ],
-        metadata: {
-          orderCode: orderCode,
-          offer: create.offer,
-        },
-        payment_intent_data: {
-          metadata: {
-            orderCode: orderCode,
-          },
-        },
-        mode: 'payment',
-        success_url: `${this.hostname}/payments/{CHECKOUT_SESSION_ID}`,
-        cancel_url: `${this.hostname}/payments/{CHECKOUT_SESSION_ID}`,
-      });
-
-      await this.prisma.client.$transaction([
-        this.prisma.client.order.create({
-          data: {
-            orderCode: orderCode,
-            offer: create.offer,
-            orderAmount: this.priceAfterPrototion
-              ? this.priceAfterPrototion
-              : checkOffer.price,
-            userId: checkUserIsExists.userId,
-            orderPaymentLink: createSession.url,
-          },
-        }),
-        this.prisma.client.orderEvent.create({
-          data: {
-            orderCode: orderCode,
-            status: 'NEW',
-          },
-        }),
-      ]);
-
-      return { paymentLink: createSession.url };
-    } catch (err) {
-      console.log(err);
-      throw err;
+      if (promo.usageCount >= promo.maxUsageCount)
+        throw new BadRequestException('usage limit reached');
+      if (!promo) throw new BadRequestException('Promocode is not exists');
+      finalPrice = (offer.price * (100 - promo.discount)) / 100;
     }
+
+    const orderCode = this.uid.rnd();
+    const session =
+      finalPrice > 0
+        ? await this.createStripeSession(
+            finalPrice,
+            dto.offer,
+            orderCode,
+            dto.code,
+          )
+        : null;
+
+    await this.prisma.client.$transaction([
+      this.prisma.client.order.create({
+        data: {
+          orderCode,
+          offer: dto.offer,
+          orderAmount: finalPrice,
+          userId: user.userId,
+          orderPaymentLink: session?.url ?? '',
+          slugUrl: dto.link.split(`${this.hostname}/templates/`)[1],
+          serverId: dto.offer === 'advanced' ? dto.serverId : null,
+          serverName: dto.offer === 'premium' ? dto.serverName : null,
+        },
+      }),
+      this.prisma.client.orderEvent.create({
+        data: { orderCode, status: 'NEW' },
+      }),
+    ]);
+
+    if (finalPrice === 0) {
+      this.eventEmitter.emit('order_paid', {
+        code: orderCode,
+        promoCode: dto.code,
+      });
+      this.eventEmitter.emit(`pucharsed_successfull_${dto.offer}`, {
+        code: orderCode,
+      });
+    }
+
+    return { link: finalPrice === 0 ? `/order/${orderCode}` : session.url };
+  }
+
+  private async createStripeSession(
+    amount: number,
+    offer: string,
+    orderCode: string,
+    promoCode: string,
+  ) {
+    const price = await this.stripe.prices.create({
+      unit_amount: Math.floor(amount * 100),
+      currency: 'pln',
+      product: 'prod_S8ABOWqGVSN6MD',
+      metadata: { orderCode },
+    });
+    return this.stripe.checkout.sessions.create({
+      line_items: [{ price: price.id, quantity: 1 }],
+      metadata: { orderCode, offer },
+      payment_intent_data: { metadata: { orderCode, promoCode } },
+      mode: 'payment',
+      success_url: `${this.hostname}/payments/{CHECKOUT_SESSION_ID}`,
+      cancel_url: `${this.hostname}/payments/{CHECKOUT_SESSION_ID}`,
+    });
   }
 }

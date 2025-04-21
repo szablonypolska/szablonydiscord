@@ -27,6 +27,7 @@ export class WebhookService {
       const session = event.data.object as Stripe.Charge;
       this.eventEmitter.emit(`order_paid`, {
         code: session.metadata.orderCode,
+        promoCode: session.metadata.promoCode,
       });
     }
 

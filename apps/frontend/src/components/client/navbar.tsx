@@ -33,7 +33,7 @@ export default function Navbar() {
 						<li>
 							<Link href="https://szablonydiscord.pl/api/docs">API</Link>
 						</li>
-						<li>
+						<li className={`${pathname === "/offers" ? "py-2 px-6 bg-borderColor rounded-full" : ""}`}>
 							<Link href="/offers">Oferta</Link>
 						</li>
 					</ul>

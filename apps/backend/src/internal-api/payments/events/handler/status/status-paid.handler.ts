@@ -7,22 +7,35 @@ export class StatusPaidHandler {
   constructor(private prisma: PrismaService) {}
 
   @OnEvent('order_paid')
-  async handleBasic(payload: { code: string }) {
-    console.log(payload);
+  async handleBasic(payload: { code: string; promoCode: string }) {
     try {
-      await this.prisma.client.order.update({
-        where: { orderCode: payload.code },
-        data: {
-          status: 'PAID',
-        },
-      });
+      console.log(`zwraca`, payload);
 
-      await this.prisma.client.orderEvent.create({
-        data: {
-          orderCode: payload.code,
-          status: 'PAID',
-        },
-      });
+      if (payload.promoCode) {
+        await this.prisma.client.promoCode.update({
+          where: { code: payload.promoCode },
+          data: {
+            usageCount: {
+              increment: 1,
+            },
+          },
+        });
+      }
+
+      await this.prisma.client.$transaction([
+        this.prisma.client.order.update({
+          where: { orderCode: payload.code },
+          data: {
+            status: 'PAID',
+          },
+        }),
+        this.prisma.client.orderEvent.create({
+          data: {
+            orderCode: payload.code,
+            status: 'PAID',
+          },
+        }),
+      ]);
     } catch (err) {
       console.log(err);
     }

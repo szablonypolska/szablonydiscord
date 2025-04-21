@@ -3,31 +3,34 @@ import TemplatesDetails from "@/components/client/templates/details/templatesDet
 import ErrorWeb from "@/components/client/error"
 import { cookies } from "next/headers"
 import { HistoryVisitTemplate } from "@/components/interfaces/common"
+import { notFound } from "next/navigation"
 
 interface Params {
 	params: string
 }
 
 export default async function LoadTemplatesData({ params }: Params) {
+	let [visitHistory, templatesData] = await prisma.$transaction([
+		prisma.visitTemplateHistory.findMany({ where: { slugUrl: params } }),
+		prisma.templates.findUnique({
+			where: {
+				slugUrl: params,
+			},
+			select: {
+				title: true,
+				description: true,
+				categories: true,
+				link: true,
+				slugUrl: true,
+			},
+		}),
+	])
+
+	if (!templatesData) notFound()
+
 	try {
 		const cookieStore = await cookies()
 		const sessionId = cookieStore.get("sessionId")
-
-		let [visitHistory, templatesData] = await prisma.$transaction([
-			prisma.visitTemplateHistory.findMany({ where: { slugUrl: params } }),
-			prisma.templates.findUnique({
-				where: {
-					slugUrl: params,
-				},
-				select: {
-					title: true,
-					description: true,
-					categories: true,
-					link: true,
-					slugUrl: true,
-				},
-			}),
-		])
 
 		const searchVisit = visitHistory.some((el: HistoryVisitTemplate) => el.uuid === sessionId?.value)
 
@@ -35,8 +38,6 @@ export default async function LoadTemplatesData({ params }: Params) {
 			const createData = await prisma.visitTemplateHistory.create({ data: { uuid: sessionId?.value, slugUrl: params } })
 			visitHistory = [...visitHistory, createData]
 		}
-
-		if (!templatesData) throw new Error(JSON.stringify({ message: "such template does not exist in the database", code: "500" }))
 
 		const discordTemplateCode = templatesData.link.split("https://discord.new/")[1]
 

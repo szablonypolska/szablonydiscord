@@ -1,4 +1,4 @@
-export default async function createPayments(offer: string, userId: string, code?: string) {
+export default async function createPayments(offer: string, userId: string, code?: string, serverLink?: string, serverId?: string, serverName?: string) {
 	try {
 		const fetchData = await fetch(process.env.NEXT_PUBLIC_INTERNAL_CREATE_PAYMENT!, {
 			method: "POST",
@@ -9,12 +9,15 @@ export default async function createPayments(offer: string, userId: string, code
 				offer,
 				userId,
 				code,
+				link: serverLink,
+				serverId: serverId,
+				serverLink: serverName,
 			}),
 		})
 
 		return await fetchData.json()
 	} catch (err) {
-		console.error("Error in searchTemplate:", err)
+		console.error("Error in createPayments:", err)
 		throw err
 	}
 }

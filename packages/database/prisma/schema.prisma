@@ -81,6 +81,9 @@ model Order {
   userId String
   orderAmount Int @default(0)
   orderPaymentLink String
+  slugUrl String?
+  serverId String?
+  serverName String?
   user User @relation(fields: [userId], references: [userId], onDelete: Cascade, onUpdate: Cascade) 
   events OrderEvent[]
 }
@@ -129,7 +132,7 @@ model VisitTemplateHistory {
   uuid String 
   slugUrl String
   date DateTime @default(now())
-  url Templates @relation(fields: [slugUrl], references: [slugUrl])
+  url Templates @relation(fields: [slugUrl], references: [slugUrl], onDelete: Cascade, onUpdate: Cascade)
 
   @@index([slugUrl])
 }

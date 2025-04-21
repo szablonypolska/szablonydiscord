@@ -27,6 +27,12 @@ export class VerifyPromoCodeService {
       const newPrice =
         offer.price - (offer.price * checkPromocode.discount) / 100;
 
+      if (checkPromocode.usageCount >= checkPromocode.maxUsageCount)
+        throw new BadGatewayException({
+          message: 'exceeded usage count limit',
+          type: 'exceededLimit',
+        });
+
       if (checkPromocode.discount !== 100 && newPrice < 2.5)
         throw new BadGatewayException({
           message: "'Minimal price is 2.00 PLN'",

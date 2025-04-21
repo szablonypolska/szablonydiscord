@@ -20,10 +20,10 @@ export default function SummaryOrder() {
 		try {
 			if (!state.blocked) return
 			setLoader(true)
-			const data = await createPayments(state.offers, session?.user.id || "", state.discountDetails?.code)
+			const data = await createPayments(state.offers, session?.user.id || "", state.discountDetails?.code, state.serverLink, state.serverId, state.serverName)
 
 			setLoader(false)
-			router.push(data.paymentLink)
+			router.push(data.link)
 		} catch (err) {
 			console.log(err)
 		}
