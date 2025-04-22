@@ -18,7 +18,7 @@ export class BasicOfferHandler {
       });
 
       await this.prisma.client.templates.delete({
-        where: { slugUrl: dataOrder.slugUrl },
+        where: { templateId: dataOrder.templateId },
       });
 
       await this.prisma.client.$transaction([

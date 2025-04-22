@@ -1,10 +1,14 @@
 export interface DataItem {
-  ID: number;
-  categories: string;
-  clickButtonUse: number;
-  dateCreate: string;
-  description: string;
-  idChat?: number;
+  id: 33;
+  templateId: string;
   link: string;
+  slugUrl: string;
+  categories: string;
+  dateCreate: string;
+  dateCreateSystem: DataItem;
   title: string;
+  sourceServerId: string;
+  description: string;
+  usageCount: number;
+  authorId: string;
 }

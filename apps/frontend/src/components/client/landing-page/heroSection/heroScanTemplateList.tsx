@@ -98,14 +98,7 @@ export default function ScanTemplateList({ templates, status }: Props) {
 					</div>
 					<div className="flex flex-col gap-3 mt-4">
 						{list.map(element => (
-							<motion.div
-								key={`source1-${element.id}` || element.templateId}
-								initial={{ opacity: 0, y: -50 }}
-								animate={{ opacity: 1, y: 0 }}
-								exit={{ opacity: 0, y: -50 }}
-								transition={{ duration: 0.5 }}
-								layout
-								className={`flex items-center gap-3 bg-altBackgroundColor border border-borderColor py-3 px-5 rounded-2xl  ${!element.title ? "hidden" : "block"}`}>
+							<motion.div key={`source1-${element.templateId}` || element.templateId} initial={{ opacity: 0, y: -50 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -50 }} transition={{ duration: 0.5 }} layout className={`flex items-center gap-3 bg-altBackgroundColor border border-borderColor py-3 px-5 rounded-2xl  ${!element.title ? "hidden" : "block"}`}>
 								<AnimatePresence>
 									<div className="text-gray-300 w-full">
 										<p className="truncate w-11/12">{element.title}</p>

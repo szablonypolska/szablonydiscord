@@ -25,6 +25,7 @@ export class CreatePayments {
     this.stripe = new Stripe(
       configService.get<string>('SECRET_API_KEY_STRIPE'),
     );
+
     this.hostname = configService.get<string>('HOSTNAME');
   }
 
@@ -32,9 +33,15 @@ export class CreatePayments {
     const offer = offerList(dto.offer);
     if (!offer) throw new BadRequestException('There is no such offer');
 
-    const user = await this.prisma.client.user.findUnique({
-      where: { userId: dto.userId },
-    });
+    const [user, templateData] = await this.prisma.client.$transaction([
+      this.prisma.client.user.findUnique({
+        where: { userId: dto.userId },
+      }),
+      this.prisma.client.templates.findUnique({
+        where: { slugUrl: dto.link.split(`${this.hostname}/templates/`)[1] },
+      }),
+    ]);
+
     if (!user) throw new UnauthorizedException('You are not login');
 
     let finalPrice = offer.price;
@@ -67,7 +74,7 @@ export class CreatePayments {
           orderAmount: finalPrice,
           userId: user.userId,
           orderPaymentLink: session?.url ?? '',
-          slugUrl: dto.link.split(`${this.hostname}/templates/`)[1],
+          templateId: templateData.templateId,
           serverId: dto.offer === 'advanced' ? dto.serverId : null,
           serverName: dto.offer === 'premium' ? dto.serverName : null,
         },

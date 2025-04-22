@@ -25,7 +25,7 @@ export default function TemplateList({ loadTemplates, loadTemplatesData }: Templ
 					</div>
 					<div className="grid grid-cols-3 max-xl:grid-cols-2 max-md:grid-cols-1 gap-10 max-lg:gap-5 mt-5">
 						{loadTemplates.map(el => (
-							<Cards key={el.id} title={el.title} description={el.description} usageCount={el.usageCount} categories={el.categories} templateId={el.templateId} slugUrl={el.slugUrl} />
+							<Cards key={el.templateId} title={el.title} description={el.description} usageCount={el.usageCount} categories={el.categories} templateId={el.templateId} slugUrl={el.slugUrl} />
 						))}
 					</div>
 					<div className="flex justify-center mt-5">
@@ -44,7 +44,7 @@ export default function TemplateList({ loadTemplates, loadTemplatesData }: Templ
 					</div>
 					<div className="grid grid-cols-3 max-xl:grid-cols-2 max-md:grid-cols-1 gap-10 max-lg:gap-5 mt-5">
 						{loadTemplatesData.map(el => (
-							<Cards key={el.id} title={el.title} description={el.description} usageCount={el.usageCount} categories={el.categories} templateId={el.templateId} slugUrl={el.slugUrl} />
+							<Cards key={el.templateId} title={el.title} description={el.description} usageCount={el.usageCount} categories={el.categories} templateId={el.templateId} slugUrl={el.slugUrl} />
 						))}
 					</div>
 					<div className="flex justify-center mt-5">

@@ -22,8 +22,7 @@ enum OrderStatus {
 
 
 model User {
-  id Int @id @default(autoincrement())
-  userId String @unique
+  userId String @unique @id
   slugUrl String @unique
   username String
   avatar String? 
@@ -53,8 +52,7 @@ model Notification {
 }
 
 model Api {
-  id Int @id @default(autoincrement())
-  apiKeyId String @unique
+  apiKeyId String @unique @id
   secretKey String @unique
   name String
   dateCreate DateTime @default(now())
@@ -81,7 +79,7 @@ model Order {
   userId String
   orderAmount Int @default(0)
   orderPaymentLink String
-  slugUrl String?
+  templateId String?
   serverId String?
   serverName String?
   user User @relation(fields: [userId], references: [userId], onDelete: Cascade, onUpdate: Cascade) 
@@ -108,8 +106,7 @@ model Webhook {
 }
 
 model Templates {
-  id Int @id @default(autoincrement())
-  templateId String @unique
+  templateId String @unique @id
   link String @unique
   slugUrl String @unique
   categories String
