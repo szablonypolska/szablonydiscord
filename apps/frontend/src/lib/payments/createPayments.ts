@@ -11,7 +11,7 @@ export default async function createPayments(offer: string, userId: string, code
 				code,
 				link: serverLink,
 				serverId: serverId,
-				serverLink: serverName,
+				serverName: serverName,
 			}),
 		})
 

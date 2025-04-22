@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState } from "react"
 import SummaryOrder from "../summaryOrder"
 import { useOrderContext } from "@/context/OrderContext"
-import { CircleAlert, Loader2, Server, ShieldCheckIcon } from "lucide-react"
+import { CircleAlert, Loader2, ShieldCheckIcon } from "lucide-react"
 import DiscountCode from "../../discountCode"
 import verifyTemplates from "@/lib/templates/verifyTemplates"
 import gsap from "gsap"
@@ -26,10 +26,8 @@ export default function OfferBasic() {
 
 			if (getData === 400) return setError("Link do szablonu nie dziala"), setLoader(false)
 
-			console.log("wywyouje sie")
-
 			dispatch({ type: "serverLink", payload: link })
-			dispatch({ type: "blocked", payload: true })
+
 			setError("")
 			setLoader(false)
 		} catch (err) {
@@ -45,7 +43,7 @@ export default function OfferBasic() {
 		if (link.includes(`${process.env.NEXT_PUBLIC_HOSTNAME}/templates`)) verifyTemplatesLink()
 
 		if (!link.includes(`${process.env.NEXT_PUBLIC_HOSTNAME}/templates`)) {
-			dispatch({ type: "blocked", payload: false })
+			dispatch({ type: "serverLink", payload: "" })
 			setError("Link do szablonu jest niepoprawny")
 		}
 	}, [link, state.serverLink])
@@ -87,7 +85,7 @@ export default function OfferBasic() {
 									type="text"
 									id="link"
 									defaultValue={state.serverLink}
-									disabled={state.blocked}
+									disabled={!!state.serverLink}
 									className={`bg-altBackgroundColor border ${error ? "border-errorColor focus:ring-errorColor" : "border-borderColor focus:ring-primaryColor"} w-full p-3 rounded-xl  focus:outline-none placeholder:text-placeHolderTextColor focus:ring-1 
 disabled:opacity-40 `}
 									placeholder="https://szablonydiscord.pl/templates/"

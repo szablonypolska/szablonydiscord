@@ -30,71 +30,79 @@ export class CreatePayments {
   }
 
   async createPayments(dto: CreatePaymentsDto) {
-    const offer = offerList(dto.offer);
-    if (!offer) throw new BadRequestException('There is no such offer');
+    try {
+      const offer = offerList(dto.offer);
+      console.log(dto);
+      if (!offer) throw new BadRequestException('There is no such offer');
 
-    const [user, templateData] = await this.prisma.client.$transaction([
-      this.prisma.client.user.findUnique({
+      let templateData;
+
+      const user = await this.prisma.client.user.findUnique({
         where: { userId: dto.userId },
-      }),
-      this.prisma.client.templates.findUnique({
-        where: { slugUrl: dto.link.split(`${this.hostname}/templates/`)[1] },
-      }),
-    ]);
-
-    if (!user) throw new UnauthorizedException('You are not login');
-
-    let finalPrice = offer.price;
-    if (dto.code) {
-      const promo = await this.prisma.client.promoCode.findUnique({
-        where: { code: dto.code },
       });
-      if (promo.usageCount >= promo.maxUsageCount)
-        throw new BadRequestException('usage limit reached');
-      if (!promo) throw new BadRequestException('Promocode is not exists');
-      finalPrice = (offer.price * (100 - promo.discount)) / 100;
-    }
 
-    const orderCode = this.uid.rnd();
-    const session =
-      finalPrice > 0
-        ? await this.createStripeSession(
-            finalPrice,
-            dto.offer,
+      if (dto.link) {
+        templateData = await this.prisma.client.templates.findUnique({
+          where: { slugUrl: dto.link.split(`${this.hostname}/templates/`)[1] },
+        });
+      }
+
+      if (!user) throw new UnauthorizedException('You are not login');
+
+      let finalPrice = offer.price;
+      if (dto.code) {
+        const promo = await this.prisma.client.promoCode.findUnique({
+          where: { code: dto.code },
+        });
+        if (promo.usageCount >= promo.maxUsageCount)
+          throw new BadRequestException('usage limit reached');
+        if (!promo) throw new BadRequestException('Promocode is not exists');
+        finalPrice = (offer.price * (100 - promo.discount)) / 100;
+      }
+
+      const orderCode = this.uid.rnd();
+      const session =
+        finalPrice > 0
+          ? await this.createStripeSession(
+              finalPrice,
+              dto.offer,
+              orderCode,
+              dto.code,
+            )
+          : null;
+
+      await this.prisma.client.$transaction([
+        this.prisma.client.order.create({
+          data: {
             orderCode,
-            dto.code,
-          )
-        : null;
+            offer: dto.offer,
+            orderAmount: finalPrice,
+            userId: user.userId,
+            orderPaymentLink: session?.url ?? '',
+            templateId: templateData ? templateData.templateId : '',
+            serverId: dto.offer === 'advanced' ? dto.serverId : null,
+            serverName: dto.offer === 'premium' ? dto.serverName : null,
+          },
+        }),
+        this.prisma.client.orderEvent.create({
+          data: { orderCode, status: 'NEW' },
+        }),
+      ]);
 
-    await this.prisma.client.$transaction([
-      this.prisma.client.order.create({
-        data: {
-          orderCode,
-          offer: dto.offer,
-          orderAmount: finalPrice,
-          userId: user.userId,
-          orderPaymentLink: session?.url ?? '',
-          templateId: templateData.templateId,
-          serverId: dto.offer === 'advanced' ? dto.serverId : null,
-          serverName: dto.offer === 'premium' ? dto.serverName : null,
-        },
-      }),
-      this.prisma.client.orderEvent.create({
-        data: { orderCode, status: 'NEW' },
-      }),
-    ]);
+      if (finalPrice === 0) {
+        this.eventEmitter.emit('order_paid', {
+          code: orderCode,
+          promoCode: dto.code,
+        });
+        this.eventEmitter.emit(`pucharsed_successfull_${dto.offer}`, {
+          code: orderCode,
+        });
+      }
 
-    if (finalPrice === 0) {
-      this.eventEmitter.emit('order_paid', {
-        code: orderCode,
-        promoCode: dto.code,
-      });
-      this.eventEmitter.emit(`pucharsed_successfull_${dto.offer}`, {
-        code: orderCode,
-      });
+      return { link: finalPrice === 0 ? `/order/${orderCode}` : session.url };
+    } catch (err) {
+      console.log(err);
     }
-
-    return { link: finalPrice === 0 ? `/order/${orderCode}` : session.url };
   }
 
   private async createStripeSession(

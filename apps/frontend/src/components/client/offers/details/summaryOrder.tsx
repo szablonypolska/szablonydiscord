@@ -16,11 +16,24 @@ export default function SummaryOrder() {
 	const router = useRouter()
 	const { data: session } = useSession()
 
+	const validation = () => {
+		switch (state.offers) {
+			case "basic":
+				return state.serverLink ? true : false
+			case "premium":
+				return state.serverName ? true : false
+			default:
+				return false
+		}
+	}
+
 	const buy = async () => {
 		try {
-			if (!state.blocked) return
+			if (!validation()) return
 			setLoader(true)
 			const data = await createPayments(state.offers, session?.user.id || "", state.discountDetails?.code, state.serverLink, state.serverId, state.serverName)
+
+			console.log(data)
 
 			setLoader(false)
 			router.push(data.link)
@@ -57,7 +70,7 @@ export default function SummaryOrder() {
 				</div>
 			</div>
 			{session && (
-				<Button className={`mt-5 h-14 transition-all  rounded-xl w-full  disabled:cursor-not-allowed  ${!state.blocked || loader ? "bg-borderColor" : " bg-primaryColor"}`} disabled={!state.blocked} onPress={buy}>
+				<Button className={`mt-5 h-14 transition-all  rounded-xl w-full  disabled:cursor-not-allowed  ${!validation() || loader ? "bg-borderColor" : " bg-primaryColor "}`} disabled={!validation()} onPress={buy}>
 					{loader && (
 						<div className="flex items-center gap-3 text-gray-200">
 							<Loader2 className="w-5 h-5 animate-spin" /> <span>Trwa sprawdzanie</span>

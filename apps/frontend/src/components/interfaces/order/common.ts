@@ -12,7 +12,6 @@ export interface AppState {
 	price: number
 	offers: OrderType
 	discountDetails: PromoCodeDetails
-	blocked: boolean
 	serverLink: string
 	serverName: string
 	serverId: string

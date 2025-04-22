@@ -7,18 +7,12 @@ const initialState: AppState = {
 	price: 0,
 	offers: "basic",
 	discountDetails: { differencePrice: 0, newPrice: 0, percentDiscount: 0, code: "", discount: false },
-	blocked: false,
 	serverLink: "",
 	serverName: "",
 	serverId: "",
 }
 
-type Action =
-	| { type: "price"; payload: number }
-	| { type: "offers"; payload: OrderType }
-	| { type: "discountDetails"; payload: PromoCodeDetails }
-	| { type: "blocked"; payload: boolean }
-	| { type: "serverLink"; payload: string }
+type Action = { type: "price"; payload: number } | { type: "offers"; payload: OrderType } | { type: "discountDetails"; payload: PromoCodeDetails } | { type: "serverLink"; payload: string } | { type: "serverName"; payload: string }
 
 const reducer = (state: AppState, action: Action): AppState => {
 	switch (action.type) {
@@ -28,10 +22,11 @@ const reducer = (state: AppState, action: Action): AppState => {
 			return { ...state, offers: action.payload }
 		case "discountDetails":
 			return { ...state, discountDetails: action.payload }
+		case "serverName":
+			return { ...state, serverName: action.payload }
 		case "serverLink":
 			return { ...state, serverLink: action.payload }
-		case "blocked":
-			return { ...state, blocked: action.payload }
+
 		default:
 			return state
 	}
