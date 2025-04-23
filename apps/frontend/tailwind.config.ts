@@ -12,6 +12,7 @@ export default {
 				background: "var(--background)",
 				foreground: "var(--foreground)",
 				borderColor: "var(--borderColor)",
+				altBorderColor: "var(--altBorderColor)",
 				boxColor: "var(--boxColor)",
 				textColor: "var(--textColor)",
 				textSpecial: "var(--textSpecial)",
