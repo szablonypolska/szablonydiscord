@@ -9,6 +9,7 @@ import TemplatesProfile from "./userTemplates"
 import { Check } from "lucide-react"
 import { Tooltip } from "@heroui/react"
 import Link from "next/link"
+import discordUserAvatar from "../../../../public/discordUserAvatar.jpg"
 
 interface Props {
 	data: User
@@ -22,7 +23,7 @@ export default function UserProfle({ data }: Props) {
 				<div className="max-md:w-full">
 					<div className="flex flex-col items-center bg-boxColor border border-borderColor p-5 w-[22rem] max-xl:w-72 max-md:w-full px-10 z-10 rounded-xl flex-shrink-0">
 						<div className="relative">
-							<Image src={`https://cdn.discordapp.com/avatars/${data.userId}/${data.avatar}.jpg`} width={150} height={150} alt="avatar" className="rounded-full" />
+							<Image src={`${data.avatar ? `https://cdn.discordapp.com/avatars/${data.userId}/${data.avatar}.jpg` : discordUserAvatar.src}`} width={150} height={150} alt="avatar" className="rounded-full" />
 							{data.register && (
 								<Tooltip content="Zarejestrowane konto" className="bg-altBackgroundColor p-2 rounded-xl">
 									<div className="absolute bottom-2 right-0 p-1.5 bg-primaryColor w-fit rounded-full">
