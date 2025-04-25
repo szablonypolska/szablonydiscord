@@ -4,10 +4,10 @@ import { Shield } from "lucide-react"
 
 export default function RightSidebarPreview({ dataTemplate }: { dataTemplate: DiscordTemplate }) {
 	return (
-		<div className="bg-altBackgroundColor h-screen  w-[16rem] flex-shrink-0 transition-all hover:w-80 max-lg:w-0">
+		<div className="bg-altBackgroundColor h-screen  w-[18rem] flex-shrink-0 transition-all  max-lg:w-0">
 			<div className="flex items-center  gap-2 h-16 border-b border-b-borderColor p-3"></div>
-			<div className="flex flex-col gap-2 p-3 px-4  h-[calc(100vh-4rem)] overflow-y-hidden hover:overflow-auto">
-				{dataTemplate.serialized_source_guild.roles.map((el: Roles) => {
+			<div className="flex flex-col gap-2 p-3 px-4  h-[calc(100vh-4rem)] scrollbar scrollbar-thumb-altBorderColor scrollbar-track-borderColor  overflow-y-scroll">
+				{dataTemplate.serialized_source_guild.roles.reverse().map((el: Roles) => {
 					const hexColor = `#${el.color.toString(16).padStart(6, "0")}`
 
 					return (

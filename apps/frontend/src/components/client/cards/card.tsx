@@ -12,7 +12,7 @@ interface CardProps {
 
 export default function Cards({ title, description, usageCount, categories, templateId, slugUrl }: CardProps) {
 	return (
-		<div className="flex flex-col bg-background border border-borderColor p-5 rounded-lg" key={templateId}>
+		<div className="card flex flex-col bg-background border border-borderColor p-5 rounded-lg opacity-0" key={templateId}>
 			<h3 className="text-xl truncate w-11/12">{title}</h3>
 			<p className="mt-3 text-textColor truncate w-11/12 ">{description}</p>
 			<div className="flex-grow"></div>

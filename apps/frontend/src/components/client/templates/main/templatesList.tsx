@@ -1,3 +1,5 @@
+"use client"
+
 import { Button } from "@nextui-org/button"
 import recommendIcon from "../../../../../public/recomendIcon.svg"
 import addIcon from "../../../../../public/addIcon.svg"
@@ -5,6 +7,8 @@ import Image from "next/image"
 import { TemplatesProps } from "../../../interfaces/common"
 import Cards from "@/components/client/cards/card"
 import Link from "next/link"
+import animateCards from "@/utils/animations/animateCards"
+import { useEffect, useRef } from "react"
 
 interface TemplateListProps {
 	loadTemplates: TemplatesProps[]
@@ -12,9 +16,15 @@ interface TemplateListProps {
 }
 
 export default function TemplateList({ loadTemplates, loadTemplatesData }: TemplateListProps) {
+	const animation = useRef<HTMLDivElement>(null)
+
+	useEffect(() => {
+		animateCards(animation.current)
+	}, [])
+
 	return (
 		<>
-			<div className="">
+			<div className="" ref={animation}>
 				<div className="">
 					<div className="flex items-center gap-3">
 						<Image src={recommendIcon} alt="proponowane szablony - ikona" className="max-md:w-14 max-md:h-14" priority />

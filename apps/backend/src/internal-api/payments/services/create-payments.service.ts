@@ -119,7 +119,7 @@ export class CreatePayments {
     });
     return this.stripe.checkout.sessions.create({
       line_items: [{ price: price.id, quantity: 1 }],
-      metadata: { orderCode, offer },
+      metadata: { orderCode, offer, promoCode },
       payment_intent_data: { metadata: { orderCode, promoCode } },
       mode: 'payment',
       success_url: `${this.hostname}/payments/{CHECKOUT_SESSION_ID}`,

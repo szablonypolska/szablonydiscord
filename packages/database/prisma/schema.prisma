@@ -149,3 +149,9 @@ model PromoCode {
   discount Int @default(0)
   expiredDate DateTime
 }
+
+model ReserveTemplate {
+  id Int @id @default(autoincrement())
+  name String?
+  serverId String?
+} 

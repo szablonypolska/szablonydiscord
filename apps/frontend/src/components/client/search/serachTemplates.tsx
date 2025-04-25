@@ -3,12 +3,13 @@
 import Cards from "../cards/card"
 import { cn, Pagination, PaginationItemType, PaginationItemRenderProps } from "@heroui/react"
 import { ArrowRight, ArrowLeft } from "lucide-react"
-import { useEffect, useState } from "react"
+import { useEffect, useRef, useState } from "react"
 import { Template } from "../../interfaces/common"
 import { useSearchParams, useRouter } from "next/navigation"
 import SearchTopBar from "./searchTopBar"
 import useWindowSize from "@/hooks/useWindowSize"
 import SearchError from "./searchError"
+import animateCards from "@/utils/animations/animateCards"
 
 interface Props {
 	templates: {
@@ -25,11 +26,16 @@ export default function SearchTemplate({ templates }: Props) {
 	const currentPage = searchParams.get("page") ?? "1"
 	const [typeView, setTypeView] = useState<"grid" | "list">("grid")
 	const { width } = useWindowSize()
+	const animation = useRef<HTMLDivElement>(null)
 
 	useEffect(() => {
 		if (width <= 768) setTypeView("list")
 		if (width >= 768) setTypeView("grid")
 	}, [width])
+
+	useEffect(() => {
+		animateCards(animation.current)
+	}, [currentPage, searchParams])
 
 	const handlePageChange = (newPage: number) => {
 		const params = new URLSearchParams(searchParams.toString())
@@ -64,49 +70,19 @@ export default function SearchTemplate({ templates }: Props) {
 			)
 		}
 		return (
-			<button
-				key={key}
-				ref={ref}
-				className={cn(className, "bg-boxColorDashboard border border-borderColor w-10 h-10 rounded-lg mx-0.5", isActive && " bg-primaryDark text-primaryLight  ")}
-				onClick={() => setPage(value)}>
+			<button key={key} ref={ref} className={cn(className, "bg-boxColorDashboard border border-borderColor w-10 h-10 rounded-lg mx-0.5", isActive && " bg-primaryDark text-primaryLight  ")} onClick={() => setPage(value)}>
 				{value}
 			</button>
 		)
 	}
 
 	return (
-		<div className="flex flex-col w-full">
+		<div className="flex flex-col w-full" ref={animation}>
 			<SearchTopBar count={templates.count} typeView={typeView} setTypeView={setTypeView} />
 			{!templates.count && <SearchError />}
 			<div className="w-full">
-				<div className={`grid ${typeView === "grid" ? "grid-cols-2" : "grid-cols-1"} gap-5 mt-5 max-md:gap-2`}>
-					{templates.templates &&
-						templates.templates.map(el => (
-							<Cards
-								title={el.title}
-								description={el.description as string}
-								usageCount={el.usageCount}
-								categories={el.categories}
-								templateId={el.templateId}
-								key={el.templateId}
-								slugUrl={el.slugUrl}
-							/>
-						))}
-				</div>
-				{templates.count > 0 && (
-					<Pagination
-						key={currentPage}
-						disableCursorAnimation
-						showControls
-						isDisabled={pageLength == 1}
-						className="flex justify-center mt-5 gap-4"
-						initialPage={parseInt(currentPage)}
-						renderItem={renderItem}
-						total={templates.count}
-						variant="light"
-						onChange={handlePageChange}
-					/>
-				)}
+				<div className={`grid ${typeView === "grid" ? "grid-cols-2" : "grid-cols-1"} gap-5 mt-5 max-md:gap-2`}>{templates.templates && templates.templates.map(el => <Cards title={el.title} description={el.description as string} usageCount={el.usageCount} categories={el.categories} templateId={el.templateId} key={el.templateId} slugUrl={el.slugUrl} />)}</div>
+				{templates.count > 0 && <Pagination key={currentPage} disableCursorAnimation showControls isDisabled={pageLength == 1} className="flex justify-center mt-5 gap-4" initialPage={parseInt(currentPage)} renderItem={renderItem} total={templates.count} variant="light" onChange={handlePageChange} />}
 			</div>
 		</div>
 	)

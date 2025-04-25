@@ -13,7 +13,7 @@ import { categoriesTemplate } from 'src/common/constants/categories.constans';
 import { DetailsTemplates } from '../interfaces/templates.interface';
 import { differenceInDays, format } from 'date-fns';
 import { pl } from 'date-fns/locale';
-import { isPolishOnly } from 'src/common/utils/validationPolishChar.util';
+import { slugify } from 'src/common/utils/slugify';
 
 @Injectable()
 export class TemplatesService {
@@ -68,13 +68,21 @@ export class TemplatesService {
         (repeat: any) => repeat.title === fetchTemplates.data.name,
       );
 
+      const checkReserveTemplate = await this.checkReserveTemplate(
+        fetchTemplates.data.name,
+        fetchTemplates.data.description,
+      );
+
+      if (checkReserveTemplate)
+        throw new ConflictException('This template is reserve.');
+
       if (templateRepeat) {
         throw new ConflictException('Template already exists');
       }
 
       if (differenceDays <= 30) {
         if (templateRepeatName) {
-          throw new ConflictException('Template already exists1');
+          throw new ConflictException('Template already exists');
         }
       }
 
@@ -108,14 +116,7 @@ export class TemplatesService {
         });
       }
 
-      if (isPolishOnly(fetchTemplates.data.name)) {
-        this.slugUrl = this.uid.rnd();
-      } else {
-        this.slugUrl = fetchTemplates.data.name
-          .toLowerCase()
-          .split(' ')
-          .join('-');
-      }
+      this.slugUrl = await slugify(fetchTemplates.data.name);
 
       await this.prisma.client.templates.create({
         data: {
@@ -126,6 +127,7 @@ export class TemplatesService {
           slugUrl: this.slugUrl,
           title: fetchTemplates.data.name,
           description: category.description,
+          sourceServerId: fetchTemplates.data.description,
           usageCount: fetchTemplates.data.usage_count,
           authorId: fetchTemplates.data.creator.id,
         },
@@ -135,5 +137,22 @@ export class TemplatesService {
     } catch (err) {
       throw err;
     }
+  }
+
+  private async checkReserveTemplate(name: string, serverId: string) {
+    const reserveTemplates =
+      await this.prisma.client.reserveTemplate.findMany();
+
+    const checkByName = reserveTemplates.some(
+      (el: { name: string }) => el.name === name,
+    );
+
+    const checkById = reserveTemplates.some(
+      (el: { serverId: string }) => el.serverId === serverId,
+    );
+
+    if (checkByName || checkById) return true;
+
+    return false;
   }
 }

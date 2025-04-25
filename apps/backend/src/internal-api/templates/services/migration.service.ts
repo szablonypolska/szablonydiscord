@@ -6,6 +6,7 @@ import { PrismaService } from '@repo/shared';
 import ShortUniqueId from 'short-unique-id';
 import { HttpService } from '@nestjs/axios';
 import { isPolishOnly } from 'src/common/utils/validationPolishChar.util';
+import { slugify } from 'src/common/utils/slugify';
 
 @Injectable()
 export class MigrationService {
@@ -16,7 +17,7 @@ export class MigrationService {
   ) {}
 
   private slugUrl: string = null;
-  private uid = new ShortUniqueId({ length: 15 });
+  private uid = new ShortUniqueId({ length: 5 });
   private sleep(ms: number): Promise<void> {
     console.log('czekam..');
     return new Promise((resolve) => setTimeout(resolve, ms));
@@ -31,7 +32,9 @@ export class MigrationService {
 
       const array: DataItem[] = Object.values(templateSnapshot.val());
 
-      for (let el of array) {
+      const reverseArray = array.reverse();
+
+      for (let el of reverseArray) {
         const check = await this.prisma.client.templates.findUnique({
           where: { link: el.link },
         });
@@ -71,26 +74,11 @@ export class MigrationService {
             });
           }
 
-          if (isPolishOnly(fetchTemplates.data.name)) {
-            this.slugUrl = this.uid.rnd();
-          } else {
-            this.slugUrl = fetchTemplates.data.name
-              .normalize('NFD')
-              .replace(/[\u0300-\u036f]/g, '')
-              .replace(/[^\w\s-]/g, '')
-              .replace(/\s+/g, '-')
-              .replace(/-{2,}/g, '-')
-              .replace(/^-+|-+$/g, '')
-              .toLowerCase();
-          }
+          const templatesName = fetchTemplates.data.name
+            .split('by szdc.pl')[0]
+            .normalize('NFKD');
 
-          const checkUniqueSlug = await this.prisma.client.templates.findUnique(
-            { where: { slugUrl: this.slugUrl } },
-          );
-
-          if (checkUniqueSlug) {
-            this.slugUrl = this.uid.rnd();
-          }
+          this.slugUrl = await slugify(templatesName);
 
           await this.prisma.client.templates.create({
             data: {
@@ -99,7 +87,7 @@ export class MigrationService {
               categories: el.categories,
               dateCreate: el.dateCreate,
               link: el.link,
-              title: fetchTemplates.data.name,
+              title: templatesName,
               description: el.description,
               sourceServerId: el.serverOutputId ? el.serverOutputId : null,
               usageCount: el.usageCount || 0,
