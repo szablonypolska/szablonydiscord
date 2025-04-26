@@ -30,6 +30,7 @@ export interface DiscordTemplate {
 		roles: Roles[]
 	}
 	usage_count: number
+	created_at: Date
 }
 
 export interface BaseInforamtion {

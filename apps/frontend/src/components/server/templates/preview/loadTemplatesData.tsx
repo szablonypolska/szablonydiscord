@@ -13,7 +13,6 @@ export default async function LoadPreviewData({ id }: { id: string }) {
 	const data = await prisma.templates.findUnique({
 		where: { slugUrl: id },
 	})
-
 	if (!data) {
 		return (
 			<>
@@ -26,7 +25,7 @@ export default async function LoadPreviewData({ id }: { id: string }) {
 		)
 	}
 
-	const dataTemplate = await getDataTemplate(data.link.split("https://discord.new/")[1])
+	const dataTemplate = await getDataTemplate(data.link.split("https://discord.new/")[1], id)
 
 	return (
 		<>
