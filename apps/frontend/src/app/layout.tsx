@@ -2,7 +2,7 @@ import type { Metadata } from "next"
 import { Inter } from "next/font/google"
 import "./globals.css"
 import SeesionWrapper from "@/components/client/sessionWrapper"
-import Logo from "../../public/logo.svg"
+import HandleView from "@/components/client/support-chat/handleView"
 
 export const dynamic = "force-dynamic"
 
@@ -28,7 +28,11 @@ export default function RootLayout({
 		<>
 			<html lang="pl">
 				<SeesionWrapper>
-					<body className={inter.className}>{children}</body>
+					<body className={inter.className}>
+						{" "}
+						<HandleView />
+						{children}
+					</body>
 				</SeesionWrapper>
 			</html>
 		</>

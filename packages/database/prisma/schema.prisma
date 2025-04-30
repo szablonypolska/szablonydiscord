@@ -39,6 +39,30 @@ model User {
   notification Notification[]
   api Api[]
   order Order[]
+  chat Chat[]
+}
+
+model Chat {
+  id String @id @default(uuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  subject String
+  status String @default("OPEN")
+  description String
+  userId String
+  agent String?
+  user User @relation(fields: [userId], references: [userId], onDelete: Cascade)
+  message Message[]
+}
+
+model Message {
+  id Int @id @default(autoincrement())
+  content String
+  type String @default("USER")
+  author String
+  authorId String
+  chatId String
+  chat Chat @relation(fields: [chatId], references: [id], onDelete: Cascade)
 }
 
 model Notification {

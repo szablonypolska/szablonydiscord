@@ -1,6 +1,5 @@
 import { Module } from '@nestjs/common';
 import { QueueModule } from './internal-api/queue/queue.module';
-import { ListenerModule } from './internal-api/listener/listener.module';
 import { TemplateModule } from './internal-api/templates/templates.module';
 import { ConfigModule } from '@nestjs/config';
 import { ApiKeysModule } from './internal-api/api-keys/api-keys.module';
@@ -12,6 +11,7 @@ import { NotificationsModule } from './notifications/notifications.module';
 import { ModulePayments } from './internal-api/payments/payments.module';
 import { EventEmitterModule } from '@nestjs/event-emitter';
 import { EventsModule } from './internal-api/payments/events/events.module';
+import { ChatModule } from './internal-api/chat/chat.module';
 
 @Module({
   imports: [
@@ -21,9 +21,9 @@ import { EventsModule } from './internal-api/payments/events/events.module';
     EventsModule,
     PublicModule,
     SchedulesModule,
+    ChatModule,
     ModulePayments,
     // QueueModule,
-    ListenerModule,
     TemplateModule,
     ApiKeysModule,
     NotificationsModule,
