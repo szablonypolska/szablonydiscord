@@ -1,7 +1,7 @@
 import { Button } from "@nextui-org/button"
 import { Send } from "lucide-react"
 
-export default function Chat() {
+export default function ChatWindow() {
 	const messages = [
 		{
 			permission: "admin",

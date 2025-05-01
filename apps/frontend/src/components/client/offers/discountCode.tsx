@@ -1,7 +1,7 @@
 "use client"
 
 import { Button } from "@nextui-org/button"
-import { CircleAlert, Loader2, Check, Tag } from "lucide-react"
+import { CircleAlert, Loader2, Check } from "lucide-react"
 import { useEffect, useState } from "react"
 import vetifyDiscountCode from "@/lib/payments/verifyPromoCode"
 import { useOrderContext } from "@/context/OrderContext"

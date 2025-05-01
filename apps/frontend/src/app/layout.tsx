@@ -27,13 +27,13 @@ export default function RootLayout({
 	return (
 		<>
 			<html lang="pl">
-				<SeesionWrapper>
-					<body className={inter.className}>
+				<body className={inter.className}>
+					<SeesionWrapper>
 						{" "}
 						<HandleView />
 						{children}
-					</body>
-				</SeesionWrapper>
+					</SeesionWrapper>
+				</body>
 			</html>
 		</>
 	)

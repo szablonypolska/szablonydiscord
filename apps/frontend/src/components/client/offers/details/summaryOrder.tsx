@@ -3,7 +3,6 @@
 import { useOrderContext } from "@/context/OrderContext"
 import createPayments from "@/lib/payments/createPayments"
 import { Button } from "@nextui-org/button"
-import gsap from "gsap"
 import { Lock, Timer, Loader2, ShoppingBag } from "lucide-react"
 import { useSession } from "next-auth/react"
 import Link from "next/link"
