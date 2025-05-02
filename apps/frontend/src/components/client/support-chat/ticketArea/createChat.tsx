@@ -12,7 +12,7 @@ import { useEffect, useRef, useState } from "react"
 
 export default function CreateChat() {
 	const animation = useRef<HTMLDivElement>(null)
-	const { currentView, setChatId, setCurrentView } = useChatContext()
+	const { currentView, setChatId } = useChatContext()
 	const { data: session } = useSession()
 	const [loader, setLoader] = useState<boolean>(false)
 
@@ -35,8 +35,7 @@ export default function CreateChat() {
 
 		const data = await createChatApi(text.subject, text.description, session?.user.id || "")
 
-		console.log(data)
-		setCurrentView(TypeView.CHAT)
+		setChatId(data.chatId)
 		setLoader(false)
 	}
 

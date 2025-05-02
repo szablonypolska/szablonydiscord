@@ -36,7 +36,14 @@ export class CreateService {
         },
       });
 
-      console.log(createChat);
+      await this.prisma.client.message.create({
+        data: {
+          content:
+            'Dziękujemy za stworzenie zgłoszenia. Wkrótce skontaktuje się z tobą nasza administracja.',
+          type: 'ADMIN',
+          chatId: createChat.id,
+        },
+      });
 
       return { chatId: createChat.id };
     } catch (err) {

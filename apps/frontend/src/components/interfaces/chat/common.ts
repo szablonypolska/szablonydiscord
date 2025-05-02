@@ -9,12 +9,21 @@ enum Status {
 	CLOSE = "CLOSE",
 }
 
+export enum TypePerrmision {
+	ADMIN = "ADMIN",
+	USER = "USER",
+	SYSTEM = "SYSTEM",
+}
+
 export interface Message {
+	id?: number
 	content: string
-	type: TypeView
+	type: TypePerrmision
 	author: string
 	authorId: string
+	createdAt: Date
 	chatId: string
+	tempId?: string
 }
 
 export interface Chat {

@@ -24,7 +24,7 @@ export default function HandleView() {
 
 	return (
 		<>
-			<div className="bg-boxColor border border-borderColor w-96 fixed bottom-3 right-3  z-[100] rounded-xl">
+			<div className="bg-boxColor border border-borderColor w-[25rem] fixed bottom-3 right-3  z-[100] rounded-xl">
 				<HeaderSupportChat />
 				<div className="">
 					<Component />
