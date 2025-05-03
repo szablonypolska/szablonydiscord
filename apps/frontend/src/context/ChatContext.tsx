@@ -1,8 +1,7 @@
 "use client"
-import React, { createContext, Dispatch, SetStateAction, useContext, useEffect, useState } from "react"
-import { TypeView, Chat, Message } from "../components/interfaces/chat/common"
-import loadMessage from "@/lib/chat/loadMessage"
-import { connectSocketBackend } from "@/lib/socket"
+import React, { createContext, Dispatch, SetStateAction, useContext, useState } from "react"
+import { TypeView, Chat, Message, TypeLoad } from "../components/interfaces/chat/common"
+import useLoadMessage from "@/hooks/useLoadMessage"
 
 interface ChatContextType {
 	currentView: TypeView
@@ -13,6 +12,7 @@ interface ChatContextType {
 	setChatList: Dispatch<SetStateAction<Chat[]>>
 	message: Message[]
 	setMessage: Dispatch<SetStateAction<Message[]>>
+	loading: TypeLoad
 }
 
 export const ChatContext = createContext<ChatContextType | null>(null)
@@ -22,50 +22,11 @@ export const ChatProvider = ({ children, userId }: { children: React.ReactNode; 
 	const [chatId, setChatId] = useState<string>("")
 	const [chatList, setChatList] = useState<Chat[]>([])
 	const [message, setMessage] = useState<Message[]>([])
-	const socket = connectSocketBackend()
+	const [loading, setLoading] = useState<TypeLoad>("loading")
 
-	useEffect(() => {
-		const loadData = async () => {
-			const data = await loadMessage(userId, chatId)
+	useLoadMessage({ chatId, setMessage, userId, setCurrentView, setChatId, currentView, loading, setLoading })
 
-			setMessage(data.data)
-		}
-
-		if (chatId) {
-			loadData()
-		}
-	}, [chatId, setMessage])
-
-	useEffect(() => {
-		if (chatId) {
-			setCurrentView(TypeView.CHAT)
-		}
-	}, [chatId])
-
-	useEffect(() => {
-		if (currentView !== "CHAT") {
-			setChatId("")
-		}
-	}, [currentView])
-
-	useEffect(() => {
-		socket.on("message:new", newMessage => {
-			setMessage(prev =>
-				prev.map(msg => {
-					if (msg.tempId === newMessage.tempId) {
-						const { tempId, ...rest } = newMessage
-						return rest
-					}
-					return msg
-				})
-			)
-		})
-		return () => {
-			socket.off("message:new")
-		}
-	})
-
-	return <ChatContext.Provider value={{ currentView, setCurrentView, chatId, setChatId, chatList, setChatList, message, setMessage }}>{children}</ChatContext.Provider>
+	return <ChatContext.Provider value={{ currentView, setCurrentView, chatId, setChatId, chatList, setChatList, message, setMessage, loading}}>{children}</ChatContext.Provider>
 }
 
 export function useChatContext() {

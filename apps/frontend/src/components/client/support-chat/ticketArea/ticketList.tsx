@@ -25,15 +25,12 @@ export default function TicketList() {
 					<Plus className="w-5 h-5" /> <span>Nowe zgłoszenie</span>
 				</Button>
 				<Button className="flex justify-start bg-borderColor text-sm rounded-xl w-full h-11">
-					<CircleAlert className="w-5 h-5" /> <span>Problem z zamówieniem</span>
-				</Button>
-				<Button className="flex justify-start bg-borderColor text-sm rounded-xl w-full h-11">
 					<Flag className="w-5 h-5" /> <span>Zgłoś szablon</span>
 				</Button>
 			</div>
 			<div className="w-full h-[1px] bg-borderColor my-2"></div>
 			<div className="flex flex-col gap-4 py-4 px-5 max-h-36 scrollbar scrollbar-thumb-altBorderColor scrollbar-track-borderColor  overflow-y-auto">
-				{chatList.map((el: Chat) => (
+				{chatList.reverse().map((el: Chat) => (
 					<button className="border border-borderColor rounded-xl hover:border-primaryColor bg-altBackgroundColor  px-4 py-3" key={el.id} onClick={() => setChatId(el.id)}>
 						<div className="flex items-start gap-3 w-full">
 							<div className="w-3 h-3 bg-primaryColor rounded-full animate-pulse mt-1.5"></div>

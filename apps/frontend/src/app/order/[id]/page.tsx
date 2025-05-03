@@ -1,3 +1,4 @@
+import OrderAnimationWrapper from "@/components/client/order/orderAnimationWrapper"
 import OrderCardInfo from "@/components/client/order/orderCardInfo"
 import OrderHeader from "@/components/client/order/orderHeader"
 import OrderImage from "@/components/client/order/orderImage"
@@ -19,15 +20,15 @@ export default async function Order(props: { params: Promise<Params> }) {
 		include: { events: true },
 	})
 
+	console.log(getDataOrder)
+
 	if (!getDataOrder) return notFound()
 
 	return (
 		<>
-			<div className="flex items-center justify-center gap-20 max-xl:gap-10 mt-20 max-w-screen-xl mx-auto px-5">
+			<div className="flex items-center justify-center gap-24 max-xl:gap-10 mt-20 max-w-screen-xl mx-auto px-5">
 				<div className="flex flex-col  w-full">
-					<OrderHeader code={getDataOrder.orderCode} />
-					<OrderTimeline events={getDataOrder.events} />
-					<OrderCardInfo status={getDataOrder.status} orderPaymentLink={getDataOrder.orderPaymentLink} />
+					<OrderAnimationWrapper code={getDataOrder.orderCode} events={getDataOrder.events} status={getDataOrder.status} orderPaymentLink={getDataOrder.orderPaymentLink} />
 				</div>
 				<OrderImage />
 			</div>

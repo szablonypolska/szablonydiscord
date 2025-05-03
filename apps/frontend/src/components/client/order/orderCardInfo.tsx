@@ -1,9 +1,9 @@
 import { Button } from "@nextui-org/button"
 import { CircleAlert, Clock, Loader, Loader2 } from "lucide-react"
 import Link from "next/link"
+import { PropsOrder } from "@/components/interfaces/order/status/common"
 
-export default function OrderCardInfo({ status, orderPaymentLink }: { status: string; orderPaymentLink: string }) {
-	console.log(orderPaymentLink)
+export default function OrderCardInfo({ status, orderPaymentLink, events }: { status: string; orderPaymentLink: string; events: PropsOrder[] }) {
 	return (
 		<>
 			{status === "COMPLETED" && (

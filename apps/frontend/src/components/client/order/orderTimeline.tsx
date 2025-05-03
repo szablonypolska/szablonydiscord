@@ -1,14 +1,13 @@
 "use client"
 
 import React, { useEffect, useRef, useState } from "react"
-import { Check, BadgePlus, CreditCard, Handshake, CircleCheck } from "lucide-react"
+import { Check, BadgePlus, CreditCard, Handshake } from "lucide-react"
 import gsap from "gsap"
 import { PropsOrder } from "@/components/interfaces/order/status/common"
-import { format, parse, parseISO } from "date-fns"
+import { format } from "date-fns"
 import { pl } from "date-fns/locale"
 
 export default function OrderTimeline({ events }: { events: PropsOrder[] }) {
-	console.log(events)
 	const [activeStep, setActiveStep] = useState(0)
 	const progressAnimation = useRef<HTMLDivElement>(null)
 

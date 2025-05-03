@@ -4,16 +4,16 @@ import { PrismaService } from '@repo/shared';
 
 @Injectable()
 export class BasicOfferHandler {
-  constructor(
-    private prisma: PrismaService,
-  ) {}
+  constructor(private prisma: PrismaService) {}
 
-  @OnEvent('pucharsed_successfull_basic')
+  @OnEvent('pucharsed_successfull_basic', { async: true, promisify: true })
   async handleBasic(payload: { code: string }) {
     try {
       const dataOrder = await this.prisma.client.order.findUnique({
         where: { orderCode: payload.code },
       });
+
+      if (dataOrder.status !== 'PAID') return;
 
       await this.prisma.client.templates.delete({
         where: { templateId: dataOrder.templateId },

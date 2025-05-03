@@ -9,7 +9,7 @@ export default function LackTicket() {
 	const { setCurrentView } = useChatContext()
 
 	return (
-		<div className="flex flex-col items-center text-center p-4 py-5 h-80">
+		<div className="flex flex-col items-center text-center p-4 py-5 transition-all h-80">
 			<div className="flex items-center justify-center w-14 h-14 rounded-full bg-borderColor">
 				<MessagesSquare className="text-primaryColor" />
 			</div>

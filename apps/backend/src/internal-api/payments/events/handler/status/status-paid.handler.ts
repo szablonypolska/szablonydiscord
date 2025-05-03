@@ -6,7 +6,7 @@ import { PrismaService } from '@repo/shared';
 export class StatusPaidHandler {
   constructor(private prisma: PrismaService) {}
 
-  @OnEvent('order_paid')
+  @OnEvent('order_paid', { async: true, promisify: true })
   async handleBasic(payload: { code: string; promoCode: string }) {
     try {
       console.log(`zwraca`, payload);

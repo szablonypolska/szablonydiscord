@@ -90,13 +90,16 @@ export class CreatePayments {
       ]);
 
       if (finalPrice === 0) {
-        this.eventEmitter.emit('order_paid', {
+        await this.eventEmitter.emitAsync('order_paid', {
           code: orderCode,
           promoCode: dto.code,
         });
-        this.eventEmitter.emit(`pucharsed_successfull_${dto.offer}`, {
-          code: orderCode,
-        });
+        await this.eventEmitter.emitAsync(
+          `pucharsed_successfull_${dto.offer}`,
+          {
+            code: orderCode,
+          },
+        );
       }
 
       return { link: finalPrice === 0 ? `/order/${orderCode}` : session.url };

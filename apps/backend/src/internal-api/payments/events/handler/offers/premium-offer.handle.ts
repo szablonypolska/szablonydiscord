@@ -6,7 +6,7 @@ import { PrismaService } from '@repo/shared';
 export class PremiumOfferHandler {
   constructor(private prisma: PrismaService) {}
 
-  @OnEvent('pucharsed_successfull_premium')
+  @OnEvent('pucharsed_successfull_premium', { async: true, promisify: true })
   async handleBasic(payload: { code: string }) {
     try {
       const dataOrder = await this.prisma.client.order.findUnique({

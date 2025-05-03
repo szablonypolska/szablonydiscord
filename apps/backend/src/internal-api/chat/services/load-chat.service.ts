@@ -15,7 +15,7 @@ export class LoadChatService {
 
       if (!getUser) throw new UnauthorizedException('You are not login');
 
-      return { data: getUser.chat };
+      return { data: getUser.chat.reverse() };
     } catch (err) {
       console.log(err);
       throw err;

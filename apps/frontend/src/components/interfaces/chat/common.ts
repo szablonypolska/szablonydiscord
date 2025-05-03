@@ -15,6 +15,8 @@ export enum TypePerrmision {
 	SYSTEM = "SYSTEM",
 }
 
+export type TypeLoad = "loading" | "success" | "error"
+
 export interface Message {
 	id?: number
 	content: string
