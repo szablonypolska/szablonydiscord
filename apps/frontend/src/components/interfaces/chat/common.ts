@@ -2,6 +2,7 @@ export enum TypeView {
 	MAIN = "MAIN",
 	CREATE = "CREATE",
 	CHAT = "CHAT",
+	REPORT = "REPORT",
 }
 
 enum Status {

@@ -10,7 +10,7 @@ import { Loader2 } from "lucide-react"
 
 export default function LoadingTicket() {
 	const { data: session } = useSession()
-	const { chatList, setChatList } = useChatContext()
+	const { chatList, setChatList, currentView } = useChatContext()
 	const fetchedRef = useRef(false)
 	const [loader, setLoader] = useState(true)
 
@@ -25,7 +25,7 @@ export default function LoadingTicket() {
 				}
 			})
 			.finally(() => setLoader(false))
-	}, [session, setChatList, setLoader])
+	}, [session, setChatList, setLoader, currentView])
 
 	if (loader) {
 		return (

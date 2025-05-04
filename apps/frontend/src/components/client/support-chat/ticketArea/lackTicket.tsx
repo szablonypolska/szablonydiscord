@@ -2,7 +2,7 @@
 
 import { useChatContext } from "@/context/ChatContext"
 import { Button } from "@nextui-org/button"
-import { Plus, MessagesSquare, Search } from "lucide-react"
+import { Plus, MessagesSquare, Flag, CircleAlert } from "lucide-react"
 import { TypeView } from "@/components/interfaces/chat/common"
 
 export default function LackTicket() {
@@ -24,9 +24,8 @@ export default function LackTicket() {
 				<p className="mx-3 text-textColor text-sm">Lub</p>
 				<div className="w-full h-[1px] bg-borderColor"></div>
 			</div>
-			<Button className="flex items-center gap-2 bg-borderColor  w-full rounded-lg">
-				<Search className="w-5 h-5" />
-				<span className="text-sm">Sprawdź status zamówienia</span>
+			<Button className="flex items-center gap-2 bg-borderColor  w-full rounded-lg" onPress={() => setCurrentView(TypeView.REPORT)}>
+				<CircleAlert className="w-5 h-5" /> <span className="text-sm">Problem z szablonem discord</span>
 			</Button>
 		</div>
 	)
