@@ -12,6 +12,7 @@ import { ModulePayments } from './internal-api/payments/payments.module';
 import { EventEmitterModule } from '@nestjs/event-emitter';
 import { EventsModule } from './internal-api/payments/events/events.module';
 import { ChatModule } from './internal-api/chat/chat.module';
+import { MailModule } from './mail/mail.module';
 
 @Module({
   imports: [
@@ -27,6 +28,7 @@ import { ChatModule } from './internal-api/chat/chat.module';
     TemplateModule,
     ApiKeysModule,
     NotificationsModule,
+    MailModule,
   ],
 })
 export class AppModule {}

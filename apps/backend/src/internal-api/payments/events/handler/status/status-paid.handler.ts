@@ -1,15 +1,23 @@
 import { Injectable } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
 import { OnEvent } from '@nestjs/event-emitter';
 import { PrismaService } from '@repo/shared';
+import { MailService } from 'src/mail/services/mail.service';
 
 @Injectable()
 export class StatusPaidHandler {
-  constructor(private prisma: PrismaService) {}
+  constructor(
+    private prisma: PrismaService,
+    private readonly mailService: MailService,
+    private configService: ConfigService,
+  ) {}
 
   @OnEvent('order_paid', { async: true, promisify: true })
   async handleBasic(payload: { code: string; promoCode: string }) {
     try {
-      console.log(`zwraca`, payload);
+      const dataOrder = await this.prisma.client.order.findUnique({
+        where: { orderCode: payload.code },
+      });
 
       if (payload.promoCode) {
         await this.prisma.client.promoCode.update({
@@ -21,6 +29,17 @@ export class StatusPaidHandler {
           },
         });
       }
+
+      await this.mailService.sendPaidEmail(
+        'karol.krawczyk205@gmail.com',
+        payload.code,
+        'TheProShizer',
+        dataOrder.offer,
+        dataOrder.orderAmount,
+        '23',
+        '23',
+        `${this.configService.get('HOSTNAME')}/order/${payload.code}`,
+      );
 
       await this.prisma.client.$transaction([
         this.prisma.client.order.update({

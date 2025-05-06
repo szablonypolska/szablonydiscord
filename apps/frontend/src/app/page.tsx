@@ -14,7 +14,7 @@ export default function Home() {
 			<div className="max-w-screen-2xl mx-auto w-full py-4 p-2">
 				<Navbar />
 				<GlobalToaster />
-				<Image src={decorationElement} alt="dekoracyjny element" className="absolute top-0 left-0 z-10"></Image>
+				<Image src={decorationElement} alt="dekoracyjny element" className="absolute top-0 left-0 z-10 pointer-events-none"></Image>
 				<HeroSection />
 				<Statistics />
 				<EmblaCarousel slides={[1, 2, 3, 4, 5, 6, 7, 8, 9]} />

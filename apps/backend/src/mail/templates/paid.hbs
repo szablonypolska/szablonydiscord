@@ -1,0 +1,125 @@
+<html lang='pl'>
+  <head>
+    <meta charset='UTF-8' />
+    <meta name='viewport' content='width=device-width, initial-scale=1.0' />
+    <title>Potwierdzenie zamówienia</title>
+  </head>
+  <body
+    style="margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Arial, sans-serif; background-color: #f5f5f5; color: #333; line-height: 1.6;"
+  >
+    <div style='max-width: 600px; margin: 0 auto; padding: 20px;'>
+      <div
+        style='background-color: #fff; border-radius: 8px; overflow: hidden; box-shadow: 0 1px 3px rgba(0,0,0,0.1);'
+      >
+
+        <div
+          style='background-color: #00796b; padding: 20px; text-align: center;'
+        >
+          <h1
+            style='color: white; margin: 0; font-weight: 500; font-size: 22px;'
+          >Zamówienie opłacone</h1>
+        </div>
+
+        <div style='padding: 25px 30px 5px;'>
+          <p>Witaj {{customerName}},</p>
+          <p>Dziękujemy za zakup! Twoja płatność została pomyślnie zrealizowana.</p>
+        </div>
+
+        <div style='padding: 5px 30px 25px;'>
+          <div
+            style='background-color: #f9f9f9; border-radius: 6px; padding: 20px; margin-bottom: 20px;'
+          >
+            <div
+              style='font-weight: bold; font-size: 18px; margin-bottom: 15px; color: #333;'
+            >Podsumowanie zamówienia #{{orderId}}</div>
+
+            <table style='width: 100%; border-collapse: collapse;'>
+              <tr>
+                <td style='padding: 10px 0; border-bottom: 1px solid #eee;'>Data
+                  zamówienia:</td>
+                <td
+                  style='padding: 10px 0; border-bottom: 1px solid #eee; text-align: right;'
+                >{{orderDate}}</td>
+              </tr>
+
+              <tr>
+                <td
+                  colspan='2'
+                  style='padding: 15px 0 10px; font-weight: bold; color: #333;'
+                >Szczegóły zakupu:</td>
+              </tr>
+
+              <tr>
+                <td style='padding: 8px 0; color: #555;'>{{productName}}</td>
+                <td
+                  style='padding: 8px 0; text-align: right; font-weight: 500;'
+                >{{productPrice}} zł</td>
+              </tr>
+
+              <tr>
+                <td
+                  style='padding: 12px 0; border-top: 1px solid #eee; color: #555;'
+                >Razem:</td>
+                <td
+                  style='padding: 12px 0; border-top: 1px solid #eee; text-align: right; color: #555;'
+                >{{subtotal}} zł</td>
+              </tr>
+
+              {{#if discountCode}}
+                <tr>
+                  <td style='padding: 8px 0; color: #00796b;'>Kod rabatowy:
+                    {{discountCode}}</td>
+                  <td
+                    style='padding: 8px 0; text-align: right; color: #00796b;'
+                  >-{{discountAmount}} zł</td>
+                </tr>
+              {{/if}}
+
+              <tr>
+                <td
+                  style='padding: 12px 0; border-top: 1px solid #eee; font-weight: bold; font-size: 16px; color: #333;'
+                >Do zapłaty:</td>
+                <td
+                  style='padding: 12px 0; border-top: 1px solid #eee; text-align: right; font-weight: bold; font-size: 16px; color: #333;'
+                >{{totalAmount}} zł</td>
+              </tr>
+
+              <tr>
+                <td
+                  style='padding: 8px 0; color: #00796b; font-weight: 500;'
+                >Status płatności:</td>
+                <td
+                  style='padding: 8px 0; text-align: right; color: #00796b; font-weight: 500;'
+                >Opłacone</td>
+              </tr>
+            </table>
+          </div>
+
+          <div style='text-align: center; margin: 30px 0;'>
+            <a
+              href='{{trackingUrl}}'
+              style='display: inline-block; background-color: #00796b; color: white; text-decoration: none; padding: 14px 30px; border-radius: 4px; font-weight: 500; font-size: 16px;'
+            >Śledź swoje zamówienie</a>
+          </div>
+
+          <div
+            style='text-align: center; margin-top: 25px; padding-top: 25px; border-top: 1px solid #eee; color: #666; font-size: 14px;'
+          >
+            <p>Masz pytania dotyczące zamówienia? Nasz zespół wsparcia jest
+              dostępny, aby Ci pomóc.</p>
+            <p><a
+                href='mailto:pomoc@szablonydiscord.pl'
+                style='color: #00796b; text-decoration: none;'
+              >pomoc@szablonydiscord.pl</a></p>
+          </div>
+        </div>
+      </div>
+
+      <div
+        style='text-align: center; margin-top: 30px; color: #888; font-size: 13px;'
+      >
+        <p>© 2025 SzablonyDiscord. Wszystkie prawa zastrzeżone.</p>
+      </div>
+    </div>
+  </body>
+</html>

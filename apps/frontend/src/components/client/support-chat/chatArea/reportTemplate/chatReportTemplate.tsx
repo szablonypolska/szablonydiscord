@@ -45,7 +45,7 @@ export default function ChatReportTemplate() {
 
 	return (
 		<div className="px-4 py-5 opacity-0 mt-1" ref={animation}>
-			<div className="bg-borderColor p-5 rounded-xl">
+			<div className="bg-altBackgroundColor border border-borderColor p-5 rounded-xl">
 				<div className="flex items-center gap-3">
 					<div className="bg-primaryColor p-3 rounded-xl w-fit opacity-80">
 						<Flag className="" />
@@ -56,7 +56,7 @@ export default function ChatReportTemplate() {
 					</div>
 				</div>
 				<div className="relative mt-4">
-					<input type="text" className={`bg-boxColor border ${error ? "border-errorColor focus:ring-errorColor" : "border-altBorderColor focus:ring-primaryColor"} w-full p-2.5 px-3 rounded-xl placeholder:text-sm pl-9 focus:outline-none focus:ring-1 disabled:opacity-80 `} disabled={!disabled} onChange={e => setText(e.target.value)} placeholder="Wklej link do szablonu" />
+					<input type="text" className={`bg-boxColor border ${error ? "border-errorColor focus:ring-errorColor" : "border-borderColor focus:ring-primaryColor"} w-full p-2.5 px-3 rounded-xl placeholder:text-sm pl-9 focus:outline-none focus:ring-1 disabled:opacity-80 `} disabled={!disabled} onChange={e => setText(e.target.value)} placeholder="Wklej link do szablonu" />
 					<Search className="text-gray-500 absolute top-1/2 left-3 -translate-y-1/2 w-4 h-4" />
 					{loader && (
 						<div className="absolute top-1/2 -translate-y-1/2 right-3 bg-boxColor mx-1">
