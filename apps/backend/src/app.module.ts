@@ -13,6 +13,7 @@ import { EventEmitterModule } from '@nestjs/event-emitter';
 import { EventsModule } from './internal-api/payments/events/events.module';
 import { ChatModule } from './internal-api/chat/chat.module';
 import { MailModule } from './mail/mail.module';
+import { ServerModule } from './internal-api/server/server.module';
 
 @Module({
   imports: [
@@ -23,6 +24,7 @@ import { MailModule } from './mail/mail.module';
     PublicModule,
     SchedulesModule,
     ChatModule,
+    ServerModule,
     ModulePayments,
     // QueueModule,
     TemplateModule,

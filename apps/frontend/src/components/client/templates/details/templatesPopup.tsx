@@ -51,7 +51,7 @@ export default function TemplatesPopup({ link, popup, setPopup }: Props) {
 		<>
 			{popup && <div ref={overlayRef} className="fixed inset-0 bg-black bg-opacity-80 z-50 opacity-0" onClick={handleClose} />}
 
-			<div ref={containerRef} className="absolute top-1/2 left-1/2 z-50 w-[30rem] max-md:w-11/12  bg-altBackgroundColor p-8 rounded-xl border border-borderColor opacity-0 transform -translate-x-1/2 -translate-y-1/2">
+			<div ref={containerRef} className="absolute top-1/2 left-1/2 z-[150] w-[30rem] max-md:w-11/12  bg-altBackgroundColor p-8 rounded-xl border border-borderColor opacity-0 transform -translate-x-1/2 -translate-y-1/2">
 				<div className="absolute top-4 right-4">
 					<button onClick={handleClose} aria-label="Zamknij popup">
 						<X />

@@ -43,6 +43,7 @@
     "cacheable": "^1.8.7",
     "class-transformer": "^0.5.1",
     "class-validator": "^0.14.1",
+    "discord.js-selfbot-v13": "^3.6.1",
     "firebase-admin": "^13.0.2",
     "fuse.js": "^7.0.0",
     "googleapis": "^148.0.0",

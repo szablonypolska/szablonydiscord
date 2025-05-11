@@ -25,7 +25,7 @@ export class WebhookService {
 
     if (event.type === 'charge.succeeded') {
       const session = event.data.object as Stripe.Charge;
-      this.eventEmitter.emit(`order_paid`, {
+      this.eventEmitter.emitAsync(`order_paid`, {
         code: session.metadata.orderCode,
         promoCode: session.metadata.promoCode,
       });
@@ -33,7 +33,7 @@ export class WebhookService {
 
     if (event.type === 'checkout.session.completed') {
       const session = event.data.object as Stripe.Checkout.Session;
-      this.eventEmitter.emit(
+      this.eventEmitter.emitAsync(
         `pucharsed_successfull_${session.metadata.offer}`,
         { code: session.metadata.orderCode },
       );

@@ -76,7 +76,7 @@ export class CreatePayments {
           data: {
             orderCode,
             offer: dto.offer,
-            orderAmount: finalPrice,
+            orderAmount: finalPrice * 100,
             userId: user.userId,
             orderPaymentLink: session?.url ?? '',
             templateId: templateData ? templateData.templateId : '',

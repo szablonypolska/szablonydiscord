@@ -42,12 +42,12 @@ export default function HandleView() {
 				<MessageSquare className="w-6 h-6" />
 			</div>
 
-			<div className="bg-boxColor border border-borderColor w-[25rem] fixed bottom-3 right-3  z-[100] rounded-xl">
+			{/* <div className="bg-boxColor border border-borderColor w-[25rem] fixed bottom-3 right-3  z-[100] rounded-xl">
 				<HeaderSupportChat />
 				<div className="">
 					<Component />
 				</div>
-			</div>
+			</div> */}
 		</>
 	)
 }

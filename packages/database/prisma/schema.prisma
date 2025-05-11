@@ -180,3 +180,33 @@ model ReserveTemplate {
   name String?
   serverId String?
 } 
+
+model GenerateStatus {
+  sessionId String @unique
+  slugUrl String?
+  hasError Boolean @default(false)
+  rolesNumber Int @default(0)
+  categoryNumber Int @default(0)
+  channelNumber Int @default(0)
+
+  aiAnalysisStatus      String     @default("waiting")
+  aiAnalysisProgress    Int        @default(0)
+  aiAnalysisError       String?
+
+  configureServerStatus String @default("waiting")
+  configureServerProgress Int @default(0)
+  configureError String?
+
+  rolesStatus String @default("waiting")
+  rolesProgress Int @default(0)
+  rolesError String?
+  roles Role[]
+}
+
+model Role {
+  id Int @id @default(autoincrement())
+  sessionId String
+  name String
+  color String
+  generateStatus GenerateStatus @relation(fields: [sessionId], references: [sessionId])
+}

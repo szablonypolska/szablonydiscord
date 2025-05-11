@@ -8,10 +8,12 @@ import { Menu } from "lucide-react"
 
 export function Logo() {
 	return (
-		<div className="flex items-center gap-2">
-			<Image src={logo} alt="logo" />
-			<h2 className="text-xl font-medium">SzablonyDiscord</h2>
-		</div>
+		<Link href="/">
+			<div className="flex items-center gap-2">
+				<Image src={logo} alt="logo" />
+				<h2 className="text-xl font-medium">SzablonyDiscord</h2>
+			</div>
+		</Link>
 	)
 }
 
@@ -24,8 +26,8 @@ export default function Navbar() {
 				<Logo />
 				<div className="">
 					<ul className="flex items-center gap-5">
-						<li className={`${pathname === "/" ? "py-2 px-6 bg-borderColor rounded-full" : ""}`}>
-							<Link href="/">Skanowanie</Link>
+						<li className={`${pathname === "/builder" ? "py-2 px-6 bg-borderColor rounded-full" : ""}`}>
+							<Link href="/builder">Builder</Link>
 						</li>
 						<li className={`${pathname === "/templates" ? "py-2 px-6 bg-borderColor rounded-full" : ""}`}>
 							<Link href="/templates">Szablony</Link>

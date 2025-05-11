@@ -3,6 +3,7 @@ import { ConfigService } from '@nestjs/config';
 import { OnEvent } from '@nestjs/event-emitter';
 import { PrismaService } from '@repo/shared';
 import { MailService } from 'src/mail/services/mail.service';
+import { WebsocketGateway } from 'src/websocket/websocket.gateway';
 
 @Injectable()
 export class StatusPaidHandler {
@@ -10,6 +11,7 @@ export class StatusPaidHandler {
     private prisma: PrismaService,
     private readonly mailService: MailService,
     private configService: ConfigService,
+    private websocket: WebsocketGateway,
   ) {}
 
   @OnEvent('order_paid', { async: true, promisify: true })
@@ -35,10 +37,12 @@ export class StatusPaidHandler {
         payload.code,
         'TheProShizer',
         dataOrder.offer,
-        dataOrder.orderAmount,
+        (dataOrder.orderAmount / 100).toFixed(2),
         '23',
         '23',
         `${this.configService.get('HOSTNAME')}/order/${payload.code}`,
+        '23',
+        '2',
       );
 
       await this.prisma.client.$transaction([
@@ -55,6 +59,14 @@ export class StatusPaidHandler {
           },
         }),
       ]);
+
+      this.websocket.server.emit('order_status', {
+        status: 'PAID',
+        orderCode: payload.code,
+        events: { date: new Date(), status: 'PAID' },
+      });
+
+      console.log('poszlo');
     } catch (err) {
       console.log(err);
     }

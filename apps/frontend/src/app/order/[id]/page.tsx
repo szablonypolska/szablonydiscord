@@ -20,8 +20,6 @@ export default async function Order(props: { params: Promise<Params> }) {
 		include: { events: true },
 	})
 
-	console.log(getDataOrder)
-
 	if (!getDataOrder) return notFound()
 
 	return (

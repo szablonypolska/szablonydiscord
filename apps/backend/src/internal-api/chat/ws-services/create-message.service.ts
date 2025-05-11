@@ -25,8 +25,6 @@ export class CreateMessageService {
 
       const message = { ...createMessage, tempId: payload.tempId };
 
-      console.log(message);
-
       this.websocket.server.emit('message:new', message);
     } catch (err) {
       console.log(err);
