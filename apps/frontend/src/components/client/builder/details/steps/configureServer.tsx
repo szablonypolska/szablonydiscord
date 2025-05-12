@@ -15,16 +15,14 @@ export default function ConfigureServer() {
 
 		const interval = setInterval(() => {
 			if (progress <= 80 && builderData.configureServerStatus === "in_progress") {
-				setProgress(prev => prev + 3)
+				setProgress(prev => prev + 10)
 			}
 		}, 800)
-
-		console.log(progress, builderData.configureServerStatus)
 
 		return () => {
 			clearInterval(interval)
 		}
-	})
+	}, [builderData])
 
 	return (
 		<div className="">

@@ -69,10 +69,18 @@ export class DiscordServerCreatorService {
       this.websocket.server.emit('generate_data', {
         sessionId,
         status: 'done',
+        rolesNumber: config.roles.length,
+        categoryNumber: config.categories.length,
+        channelNumber: config.channels.length,
       });
       await this.prisma.client.generateStatus.update({
         where: { sessionId },
-        data: { aiAnalysisStatus: 'done' },
+        data: {
+          aiAnalysisStatus: 'done',
+          rolesNumber: config.roles.length,
+          categoryNumber: config.categories.length,
+          channelNumber: config.channels.length,
+        },
       });
       const guild = await this.createGuild(config.serverConfig, sessionId);
 
@@ -206,6 +214,14 @@ export class DiscordServerCreatorService {
   ): Promise<void> {
     const sortedRoles = [...roles].sort((a, b) => b.position - a.position);
     let createdRole: number = 0;
+    this.websocket.server.emit('update_roles_status', {
+      sessionId,
+      status: 'in_progress',
+    });
+    await this.prisma.client.generateStatus.update({
+      where: { sessionId },
+      data: { rolesStatus: 'in_progress' },
+    });
 
     const everyoneRole = guild.roles.everyone;
     this.roleMap.set('everyone', everyoneRole);
@@ -236,15 +252,33 @@ export class DiscordServerCreatorService {
 
         createdRole++;
 
+        console.log(role.name, role.color);
+
+        this.websocket.server.emit('update_roles', {
+          sessionId,
+          name: role.name,
+          color: role.color,
+        });
+        await this.prisma.client.role.create({
+          data: { sessionId, name: role.name, color: String(role.color) },
+        });
+
         this.roleMap.set(roleConfig.id, role);
       } catch (error) {
         throw error;
       }
 
-      console.log(`Liczba ról ${roles.length}, stworzonych ${createdRole}`);
-
       await new Promise((resolve) => setTimeout(resolve, 1000));
     }
+
+    this.websocket.server.emit('update_roles_status', {
+      sessionId,
+      status: 'done',
+    });
+    await this.prisma.client.generateStatus.update({
+      where: { sessionId },
+      data: { rolesStatus: 'done' },
+    });
   }
 
   private async createCategories(

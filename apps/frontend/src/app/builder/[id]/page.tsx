@@ -22,7 +22,7 @@ export default async function BuilderDashboard({ params }: { params: Promise<Par
 				<SidebarBuilder />
 				<div className="flex flex-col w-full">
 					<TopSidebarBuilder />
-					<div className="p-6">
+					<div className="">
 						<LivePreview />
 					</div>
 				</div>

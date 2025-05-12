@@ -20,18 +20,18 @@ export const BuilderProvider = ({ children, id, data }: { children: React.ReactN
 		channelNumber: data.channelNumber,
 
 		aiAnalysisStatus: data.aiAnalysisStatus,
-		aiAnalysisProgress: data.aiAnalysisProgress,
 		aiAnalysisError: data.aiAnalysisError,
 
 		configureServerStatus: data.configureServerStatus,
-		configureServerProgress: data.configureServerProgress,
 		configureError: data.configureError,
 
 		rolesStatus: data.rolesStatus,
-		rolesProgress: data.rolesProgress,
 		rolesError: data.rolesError,
+		roles: data.roles,
 
-		roles: [],
+		categoryStatus: data.categoryStatus,
+		categoryError: data.categoryError,
+		category: [],
 	})
 
 	useBuilderWebSocket({ setBuilderData, id })

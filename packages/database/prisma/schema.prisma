@@ -190,17 +190,25 @@ model GenerateStatus {
   channelNumber Int @default(0)
 
   aiAnalysisStatus      String     @default("waiting")
-  aiAnalysisProgress    Int        @default(0)
   aiAnalysisError       String?
 
   configureServerStatus String @default("waiting")
-  configureServerProgress Int @default(0)
   configureError String?
 
   rolesStatus String @default("waiting")
-  rolesProgress Int @default(0)
   rolesError String?
   roles Role[]
+
+  categoryStatus String @default("waiting")
+  categoryError String?
+  category Category[]
+}
+
+model Category {
+  id Int @id @default(autoincrement())
+  sessionId String
+  name String
+  generateStatus GenerateStatus @relation(fields: [sessionId], references: [sessionId], onDelete: Cascade, onUpdate: Cascade)
 }
 
 model Role {
@@ -208,5 +216,5 @@ model Role {
   sessionId String
   name String
   color String
-  generateStatus GenerateStatus @relation(fields: [sessionId], references: [sessionId])
+  generateStatus GenerateStatus @relation(fields: [sessionId], references: [sessionId], onDelete: Cascade, onUpdate: Cascade)
 }

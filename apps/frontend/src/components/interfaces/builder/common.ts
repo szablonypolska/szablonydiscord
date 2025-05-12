@@ -9,21 +9,25 @@ export interface BuilderType {
 	channelNumber: number
 
 	aiAnalysisStatus: BuilderStatus
-	aiAnalysisProgress: number
 	aiAnalysisError?: string
 
 	configureServerStatus: BuilderStatus
-	configureServerProgress: number
 	configureError?: string
 
 	rolesStatus: BuilderStatus
-	rolesProgress: number
 	rolesError?: string
 	roles: Roles[]
+
+	categoryStatus: BuilderStatus
+	categoryError?: string
+	category: Category[]
+}
+
+export interface Category {
+	name: string
 }
 
 export interface Roles {
-	sessionId: string
 	name: string
 	color: string
 }
