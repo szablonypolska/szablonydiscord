@@ -9,22 +9,32 @@ export interface BuilderType {
 	channelNumber: number
 
 	aiAnalysisStatus: BuilderStatus
-	aiAnalysisError?: string
+	aiAnalysisError: boolean
 
 	configureServerStatus: BuilderStatus
-	configureError?: string
+	configureServerError: boolean
 
 	rolesStatus: BuilderStatus
-	rolesError?: string
+	rolesError: boolean
 	roles: Roles[]
 
 	categoryStatus: BuilderStatus
-	categoryError?: string
+	categoryError: boolean
 	category: Category[]
+
+	channelStatus: string
+	channelError: boolean
+	channel: Channel[]
 }
 
 export interface Category {
 	name: string
+	type?: number
+}
+
+export interface Channel {
+	name: string
+	type?: number
 }
 
 export interface Roles {

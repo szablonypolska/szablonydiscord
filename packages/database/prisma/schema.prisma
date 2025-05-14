@@ -190,26 +190,41 @@ model GenerateStatus {
   channelNumber Int @default(0)
 
   aiAnalysisStatus      String     @default("waiting")
-  aiAnalysisError       String?
+  aiAnalysisError       Boolean @default(false)
 
   configureServerStatus String @default("waiting")
-  configureError String?
+  configureServerError Boolean @default(false)
 
   rolesStatus String @default("waiting")
-  rolesError String?
+  rolesError Boolean @default(false)
   roles Role[]
 
   categoryStatus String @default("waiting")
-  categoryError String?
+  categoryError Boolean @default(false)
   category Category[]
+
+  channelStatus String @default("waiting")
+  channelError Boolean @default(false)
+  channel Channel[]
 }
 
 model Category {
   id Int @id @default(autoincrement())
   sessionId String
   name String
+  type Int @default(4)
   generateStatus GenerateStatus @relation(fields: [sessionId], references: [sessionId], onDelete: Cascade, onUpdate: Cascade)
 }
+
+model Channel {
+   id Int @id @default(autoincrement())
+  sessionId String
+  name String
+  type Int @default(0)
+  generateStatus GenerateStatus @relation(fields: [sessionId], references: [sessionId], onDelete: Cascade, onUpdate: Cascade)
+}
+
+
 
 model Role {
   id Int @id @default(autoincrement())

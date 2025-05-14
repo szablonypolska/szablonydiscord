@@ -29,6 +29,7 @@ export default function useBuilderWebSocket({ setBuilderData, id }: { setBuilder
 				setBuilderData(prev => ({
 					...prev,
 					configureServerStatus: message.status,
+					configureServerError: message.configureServerError ? message.configureServerError : false,
 				}))
 			}
 		})
@@ -47,6 +48,24 @@ export default function useBuilderWebSocket({ setBuilderData, id }: { setBuilder
 				setBuilderData(prev => ({
 					...prev,
 					roles: [...prev.roles, { sessionId: id, name: message.name, color: message.color }],
+				}))
+			}
+		})
+
+		socket.on("update_category_status", message => {
+			if (id === message.sessionId) {
+				setBuilderData(prev => ({
+					...prev,
+					categoryStatus: message.status,
+				}))
+			}
+		})
+
+		socket.on("update_category", message => {
+			if (id === message.sessionId) {
+				setBuilderData(prev => ({
+					...prev,
+					category: [...prev.category, { sessionId: id, name: message.name }],
 				}))
 			}
 		})

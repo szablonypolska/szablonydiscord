@@ -22,7 +22,7 @@ export default function MainContentInput() {
 				</div>
 				<div className="w-full h-[1px] bg-borderColor rounded-xl my-5"></div>
 				<div className="bg-altBackgroundColor border border-borderColor p-3 rounded-xl">
-					<textarea className="w-full h-18  resize-none  focus:outline-none rounded-lg placeholder:opacity-80 bg-altBackgroundColor" onChange={e => setText(e.target.value)} placeholder="Np. stwórz serwer dla społeczności graczy z kanałami do różnych gier, miejscem na ogłoszenia i rolami dla moderatorów..."></textarea>
+					<textarea className="w-full h-18  resize-none  focus:outline-none rounded-lg placeholder:opacity-80 bg-altBackgroundColor placeholder:text-sm" onChange={e => setText(e.target.value)} placeholder="Np. stwórz serwer dla społeczności graczy z kanałami do różnych gier, miejscem na ogłoszenia i rolami dla moderatorów..."></textarea>
 
 					<div className="w-full h-[1px] bg-borderColor rounded-lg my-3"></div>
 					<div className="flex items-center justify-end gap-3">

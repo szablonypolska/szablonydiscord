@@ -3,6 +3,7 @@ import AnalysisAi from "./steps/analysisAi"
 import ConfigureServer from "./steps/configureServer"
 import CreateRoles from "./steps/createRoles"
 import CreateCategory from "./steps/createCategory"
+import CreateChannels from "./steps/createChannels"
 
 export default function SidebarBuilder() {
 	return (
@@ -19,6 +20,7 @@ export default function SidebarBuilder() {
 				<ConfigureServer />
 				<CreateRoles />
 				<CreateCategory />
+				<CreateChannels />
 			</div>
 		</div>
 	)

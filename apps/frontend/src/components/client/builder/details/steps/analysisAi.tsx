@@ -25,7 +25,7 @@ export default function AnalysisAi() {
 
 	return (
 		<>
-			<Progress Icon={Bot} title="Analiza AI" description="Przygotowywanie danych przez AI" width={builderData.aiAnalysisStatus === "done" ? 100 : progress} active={builderData.aiAnalysisStatus === "done" || builderData.aiAnalysisStatus === "in_progress"} success={progress === 100 || builderData.aiAnalysisStatus === "done"} />
+			<Progress Icon={Bot} title="Analiza AI" description="Przygotowywanie danych przez AI" width={builderData.aiAnalysisStatus === "done" ? 100 : progress} active={builderData.aiAnalysisStatus === "done" || builderData.aiAnalysisStatus === "in_progress"} success={progress === 100 || builderData.aiAnalysisStatus === "done"} error={builderData.aiAnalysisError} />
 		</>
 	)
 }

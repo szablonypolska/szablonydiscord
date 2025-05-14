@@ -53,18 +53,13 @@ export default function TemplatesVisuzalization({ filtredChannel, filtredRoles }
 							<div className={`flex items-center w-96 max-md:w-full ${el.type !== 4 && "hover:bg-borderColor"} truncate rounded-lg group`} key={el.id}>
 								<div className={`flex items-center   ${el.type !== 4 && "hover:bg-borderColor"}  rounded-lg group w-full`} key={el.id}>
 									<div className={`w-full ${channelStyles[el.type]}`} key={el.id}>
-										<span className="text-2xl text-channelColor  font-black">{el.type === 0 && el.permission_overwrites.length > 0 ? channelIcons[5] : channelIcons[el.type]}</span>
+										<span className="text-2xl text-channelColor  font-black">{el.type === 0 && el.permission_overwrites && el.permission_overwrites.length > 0 ? channelIcons[5] : channelIcons[el.type]}</span>
 										<p>{el.name}</p>
 									</div>
 								</div>
 
 								{el.type !== 4 && (
-									<ButtonCopy
-										size="icon"
-										className="disabled:opacity-100 hidden group-hover:flex"
-										onClick={() => handleCopyName(el.name)}
-										aria-label={copied ? "Copied" : "Copy to clipboard"}
-										disabled={copied}>
+									<ButtonCopy size="icon" className="disabled:opacity-100 hidden group-hover:flex" onClick={() => handleCopyName(el.name)} aria-label={copied ? "Copied" : "Copy to clipboard"} disabled={copied}>
 										<div className={cn("transition-all", copied ? "scale-100 opacity-100" : "scale-0 opacity-0")}>
 											<Check className="stroke-primaryColor" size={16} strokeWidth={2} aria-hidden="true" />
 										</div>

@@ -10,11 +10,12 @@ interface Props {
 	width: number
 	active: boolean
 	success: boolean
+	error: boolean
 }
 
-export default function Progress({ Icon, title, description, width, active, success }: Props) {
+export default function Progress({ Icon, title, description, width, active, success, error }: Props) {
 	const animation = useRef<HTMLDivElement>(null)
-	const widthNumber = active ? width : 0
+	const widthNumber = active ? (error ? 0 : width) : 0
 
 	useEffect(() => {
 		gsap.to(animation.current, {
@@ -27,12 +28,14 @@ export default function Progress({ Icon, title, description, width, active, succ
 	return (
 		<div className="mb-5">
 			<div className="flex items-center  gap-3">
-				<div className={`flex items-center justify-center  ${active  ? (success ? "bg-borderColor" : "bg-primaryDark") : "bg-borderColor text-textColor"} p-3 rounded-lg shrink-0`}>
-					<Icon className={`w-5 h-5 ${success && "text-primaryColor"}`} />
+				<div
+					className={`flex items-center justify-center  ${error ? "bg-darknesErrorColor" : active ? (success ? "bg-borderColor" : "bg-primaryDark") : "bg-borderColor text-textColor"}
+ p-3 rounded-lg shrink-0`}>
+					<Icon className={`w-5 h-5 ${error && "text-errorColor"} ${success && "text-primaryColor"}`} />
 				</div>
 				<div className="">
-					<p className={`font-medium text-sm ${!active && "text-darkGray"} `}>{title}</p>
-					<span className="text-xs text-textColor">{description}</span>
+					<p className={`font-medium text-sm ${!active && "text-darkGray"} ${error && "text-errorColor"} `}>{title}</p>
+					<span className={`text-xs  ${error ? "text-red-400" : "text-textColor"}`}>{error ? "Wystąpił błąd, spróbuj ponownie pozniej" : description}</span>
 				</div>
 			</div>
 			<div className="mt-3">

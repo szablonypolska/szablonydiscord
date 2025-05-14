@@ -31,7 +31,7 @@ export default function ChannelList({ dataTemplate, slugUrl }: { dataTemplate: D
 					{dataTemplate.serialized_source_guild.channels.map((el: Channel) => (
 						<div className={`flex items-center   ${el.type !== 4 && "hover:bg-borderColor"}  rounded-lg group w-full`} key={el.id}>
 							<div className={`w-full ${channelStyles[el.type]}`} key={el.id}>
-								<span className="text-2xl text-channelColor material-symbols-outlined font-black">{el.type === 0 && el.permission_overwrites.length > 0 ? channelIcons[5] : channelIcons[el.type]}</span>
+								<span className="text-2xl text-channelColor material-symbols-outlined font-black">{el.type === 0 && el.permission_overwrites && el.permission_overwrites.length > 0 ? channelIcons[5] : channelIcons[el.type]}</span>
 								{el.type === 4 && (
 									<div className="flex items-center justify-between w-full">
 										<p>{el.name}</p>

@@ -26,7 +26,7 @@ export default function ConfigureServer() {
 
 	return (
 		<div className="">
-			<Progress Icon={Crown} title="Konfiuracja serwer" description="Ustawianie podstawowych funkcji" width={builderData.configureServerStatus === "done" ? 100 : progress} active={builderData.configureServerStatus === "done" || builderData.configureServerStatus === "in_progress"} success={progress === 100 || builderData.configureServerStatus === "done"} />
+			<Progress Icon={Crown} title="Konfiuracja serwer" description="Ustawianie podstawowych funkcji" width={builderData.configureServerStatus === "done" ? 100 : progress} active={builderData.configureServerStatus === "done" || builderData.configureServerStatus === "in_progress"} success={progress === 100 || builderData.configureServerStatus === "done"} error={builderData.configureServerError} />
 		</div>
 	)
 }

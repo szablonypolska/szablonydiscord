@@ -2,7 +2,7 @@ export interface Channel {
 	name: string
 	type: number
 	id: number
-	permission_overwrites: Permission[]
+	permission_overwrites?: Permission[]
 }
 
 export interface Roles {
