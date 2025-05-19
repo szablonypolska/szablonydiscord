@@ -20,6 +20,9 @@ export default function useBuilderWebSocket({ setBuilderData, id }: { setBuilder
 					rolesNumber: message.rolesNumber,
 					categoryNumber: message.categoryNumber,
 					channelNumber: message.channelNumber,
+					title: message.title,
+					description: message.description,
+					aiAnalysisError: message.aiAnalysisError ? message.aiAnalysisError : false,
 				}))
 			}
 		})
@@ -39,6 +42,7 @@ export default function useBuilderWebSocket({ setBuilderData, id }: { setBuilder
 				setBuilderData(prev => ({
 					...prev,
 					rolesStatus: message.status,
+					rolesError: message.rolesError ? message.rolesError : false,
 				}))
 			}
 		})
@@ -57,6 +61,7 @@ export default function useBuilderWebSocket({ setBuilderData, id }: { setBuilder
 				setBuilderData(prev => ({
 					...prev,
 					categoryStatus: message.status,
+					categoryError: message.categoryError ? message.categoryError : false,
 				}))
 			}
 		})
@@ -65,7 +70,35 @@ export default function useBuilderWebSocket({ setBuilderData, id }: { setBuilder
 			if (id === message.sessionId) {
 				setBuilderData(prev => ({
 					...prev,
-					category: [...prev.category, { sessionId: id, name: message.name }],
+					category: [...prev.category, { sessionId: id, name: message.name, id: message.id, parentId: message.parentId, position: message.position, type: message.type, private: message.private }],
+				}))
+			}
+		})
+
+		socket.on("update_channel_status", message => {
+			if (id === message.sessionId) {
+				setBuilderData(prev => ({
+					...prev,
+					channelStatus: message.status,
+					channelError: message.rolesError ? message.rolesError : false,
+				}))
+			}
+		})
+
+		socket.on("update_channel", message => {
+			if (id === message.sessionId) {
+				setBuilderData(prev => ({
+					...prev,
+					channel: [...prev.channel, { sessionId: id, id: message.id, name: message.name, type: message.type, parentId: message.parentId, position: message.position, private: message.private }],
+				}))
+			}
+		})
+
+		socket.on("update_template", message => {
+			if (id === message.sessionId) {
+				setBuilderData(prev => ({
+					...prev,
+					templateCode: message.templateCode,
 				}))
 			}
 		})

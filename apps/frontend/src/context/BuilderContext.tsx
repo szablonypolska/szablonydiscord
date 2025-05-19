@@ -13,7 +13,9 @@ export const BuilderContext = createContext<BuilderContextType | null>(null)
 export const BuilderProvider = ({ children, id, data }: { children: React.ReactNode; id: string; data: BuilderType }) => {
 	const [builderData, setBuilderData] = useState<BuilderType>({
 		sessionId: data.sessionId,
-		slugUrl: data.slugUrl,
+		title: data.title,
+		description: data.description,
+		templateCode: data.templateCode,
 		hasError: data.hasError,
 		rolesNumber: data.rolesNumber,
 		categoryNumber: data.categoryNumber,
@@ -27,15 +29,15 @@ export const BuilderProvider = ({ children, id, data }: { children: React.ReactN
 
 		rolesStatus: data.rolesStatus,
 		rolesError: data.rolesError,
-		roles: data.roles,
+		roles: data.roles || [],
 
 		categoryStatus: data.categoryStatus,
 		categoryError: data.categoryError,
-		category: [],
+		category: data.category || [],
 
 		channelStatus: data.channelStatus,
 		channelError: data.channelError,
-		channel: [],
+		channel: data.channel || [],
 	})
 
 	useBuilderWebSocket({ setBuilderData, id })

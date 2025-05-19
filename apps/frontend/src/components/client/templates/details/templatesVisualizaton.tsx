@@ -7,8 +7,10 @@ import { cn } from "@/lib/utils"
 import { Button as ButtonCopy } from "@/components/ui/button"
 import { Check, Copy } from "lucide-react"
 import { useState } from "react"
-import { ChevronDown, Hash, Volume2 } from "lucide-react"
-import { ChannelPermission } from "../../preview/visualization/channelPermissions"
+import { ChevronDown } from "lucide-react"
+import { ChannelPermission } from "../../icons/channelPermissions"
+import { ChannelIcon } from "../../icons/channel"
+import { VoiceChannelIcon } from "../../icons/voiceChannel"
 
 interface Type {
 	filtredChannel: Channel[]
@@ -24,10 +26,10 @@ export default function TemplatesVisuzalization({ filtredChannel, filtredRoles }
 	}
 
 	const channelIcons: { [key: number]: React.ReactNode } = {
-		0: <Hash className="text-channelColor w-6 h-6 mr-2" />,
-		2: <Volume2 className="text-channelColor w-6 h-6  mr-2" />,
+		0: <ChannelIcon />,
+		2: <VoiceChannelIcon />,
 		4: <ChevronDown className="text-channelColor w-4 h-4 mr-0.5" />,
-		5: <ChannelPermission sizeHash={6} sizeLock={2.5} />,
+		5: <ChannelPermission />,
 	}
 
 	const copyLink = (hex: string) => {

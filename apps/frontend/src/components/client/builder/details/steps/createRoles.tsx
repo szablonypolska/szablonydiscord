@@ -15,11 +15,10 @@ export default function CreateRoles() {
 		setProgress((builderData.roles.length / builderData.rolesNumber) * 100)
 	}, [builderData])
 
-	console.log(builderData.roles)
 
 	return (
 		<div className="">
-			<Progress Icon={Shield} title="Tworzenie ról" description={`Tworzenie ról (${builderData.roles.length}/${builderData.rolesNumber})`} width={builderData.rolesStatus === "done" ? 100 : progress} active={builderData.rolesStatus === "done" || builderData.rolesStatus === "in_progress"} success={progress === 100 || builderData.rolesStatus === "done"} error={builderData.rolesError} />
+			<Progress Icon={Shield} title="Tworzenie ról" description={`Tworzenie ról (${builderData.roles && builderData.roles.length}/${builderData.rolesNumber})`} width={builderData.rolesStatus === "done" ? 100 : progress} active={builderData.rolesStatus === "done" || builderData.rolesStatus === "in_progress"} success={progress === 100 || builderData.rolesStatus === "done"} error={builderData.rolesError} />
 		</div>
 	)
 }

@@ -1,8 +1,10 @@
-import { Mic, Headphones, Settings, ChevronDown, Hash, Volume2, Plus, Users } from "lucide-react"
+import { Mic, Headphones, Settings, ChevronDown, Plus, Users } from "lucide-react"
 import { DiscordTemplate } from "../../interfaces/templates/common"
-import { ChannelPermission } from "./visualization/channelPermissions"
+import { ChannelPermission } from "../icons/channelPermissions"
 import { Channel } from "@/components/interfaces/templates/common"
 import Link from "next/link"
+import { ChannelIcon } from "../icons/channel"
+import { VoiceChannelIcon } from "../icons/voiceChannel"
 
 export default function ChannelList({ dataTemplate, slugUrl }: { dataTemplate: DiscordTemplate; slugUrl: string }) {
 	const channelStyles: { [key: number]: string } = {
@@ -12,10 +14,10 @@ export default function ChannelList({ dataTemplate, slugUrl }: { dataTemplate: D
 	}
 
 	const channelIcons: { [key: number]: React.ReactNode } = {
-		0: <Hash className="text-channelColor w-5 h-5 mr-1" />,
-		2: <Volume2 className="text-channelColor w-5 h-5  mr-1" />,
-		4: <ChevronDown className="text-channelColor w-3 h-3 mr-0.5" />,
-		5: <ChannelPermission sizeHash={5} sizeLock={2} />,
+		0: <ChannelIcon />,
+		2: <VoiceChannelIcon />,
+		4: <ChevronDown className="text-channelColor w-4 h-4 mr-0.5" />,
+		5: <ChannelPermission />,
 	}
 
 	return (

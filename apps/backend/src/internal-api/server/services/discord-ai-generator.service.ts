@@ -13,20 +13,21 @@ export class DiscordAiGeneratorService {
     private createServer: DiscordServerCreatorService,
   ) {}
 
-  async generate(description: string, token: string, id: string) {
+  async generate(description: string, token: string, sessionId: string) {
     try {
       this.websocket.server.emit('generate_data', {
-        sessionId: id,
+        sessionId: sessionId,
         status: 'in_progress',
       });
       await this.prisma.client.generateStatus.update({
-        where: { sessionId: id },
+        where: { sessionId: sessionId },
         data: { aiAnalysisStatus: 'in_progress' },
       });
       const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
       const model = genAI.getGenerativeModel({ model: 'gemini-2.0-flash-exp' });
 
-      const promptGenerate = `Opis: ${description}, ${prompt}`;
+      const promptGenerate = `### OPIS UŻYTKOWNIKA (NAJWYŻSZY PRIORYTET): ${description}
+      ### STANDARDOWY PROMPT (niższy priorytet, stosuj tylko gdy nie koliduje z OPISEM UŻYTKOWNIKA): ${prompt}`;
 
       const result = await model.generateContent(promptGenerate);
       const text = result.response
@@ -36,9 +37,41 @@ export class DiscordAiGeneratorService {
 
       const config = JSON.parse(text);
 
-      this.createServer.createServer(token, config, id);
+      this.websocket.server.emit('generate_data', {
+        sessionId,
+        status: 'done',
+        rolesNumber: config.roles.length,
+        categoryNumber: config.categories.length,
+        channelNumber: config.channels.length,
+        title: config.details.title,
+        description: config.details.description,
+      });
+
+      await this.prisma.client.generateStatus.update({
+        where: { sessionId },
+        data: {
+          aiAnalysisStatus: 'done',
+          rolesNumber: config.roles.length,
+          categoryNumber: config.categories.length,
+          channelNumber: config.channels.length,
+          title: config.details.title,
+          description: config.details.description,
+        },
+      });
+
+      this.createServer.createServer(token, config, sessionId);
     } catch (err) {
       console.log(err);
+
+      this.websocket.server.emit('generate_data', {
+        sessionId,
+        status: 'error',
+        aiAnalysisError: true,
+      });
+      await this.prisma.client.generateStatus.update({
+        where: { sessionId },
+        data: { aiAnalysisError: true },
+      });
     }
   }
 }

@@ -29,34 +29,33 @@ export class DiscordServerCreatorService {
     try {
       this.client = new Client();
       await this.client.login(token);
-      this.websocket.server.emit('generate_data', {
-        sessionId,
-        status: 'done',
-        rolesNumber: config.roles.length,
-        categoryNumber: config.categories.length,
-        channelNumber: config.channels.length,
-      });
-      await this.prisma.client.generateStatus.update({
-        where: { sessionId },
-        data: {
-          aiAnalysisStatus: 'done',
-          rolesNumber: config.roles.length,
-          categoryNumber: config.categories.length,
-          channelNumber: config.channels.length,
-        },
-      });
+
       const guild = await this.configureGuild.createGuild(
+        this.client,
         config.serverConfig,
         sessionId,
       );
 
-      await this.createRole.createRoles(guild, config.roles, sessionId);
-      await this.createCategory.createCategories(
+      const roleMap = await this.createRole.createRoles(
+        guild,
+        config.roles,
+        sessionId,
+      );
+
+      const categoryMap = await this.createCategory.createCategories(
         guild,
         config.categories,
         sessionId,
+        roleMap,
       );
-      await this.createChannel.createChannels(guild, config.channels);
+
+      await this.createChannel.createChannels(
+        guild,
+        config.channels,
+        categoryMap,
+        roleMap,
+        sessionId,
+      );
 
       const templates = await guild.createTemplate(
         config.details.title,
@@ -65,8 +64,18 @@ export class DiscordServerCreatorService {
 
       await this.client.destroy();
 
+      this.websocket.server.emit('update_template', {
+        sessionId,
+        templateCode: templates.code,
+      });
+      await this.prisma.client.generateStatus.update({
+        where: { sessionId },
+        data: { templateCode: templates.code },
+      });
+
       return templates.code;
     } catch (error) {
+      console.error('Error in createServer:', error);
       if (this.client && this.client.isReady()) {
         await this.client.destroy();
       }

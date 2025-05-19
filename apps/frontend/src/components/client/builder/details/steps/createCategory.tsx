@@ -15,11 +15,10 @@ export default function CreateCategory() {
 		setProgress((builderData.category.length / builderData.categoryNumber) * 100)
 	}, [builderData])
 
-	console.log(builderData.category)
 
 	return (
 		<div className="">
-			<Progress Icon={ChartBarStacked} title="Tworzenie kategorii" description={`Tworzenie kategorii (${builderData.category.length}/${builderData.categoryNumber})`} width={builderData.categoryStatus === "done" ? 100 : progress} active={builderData.categoryStatus === "done" || builderData.categoryStatus === "in_progress"} success={progress === 100 || builderData.categoryStatus === "done"} error={builderData.categoryError} />
+			<Progress Icon={ChartBarStacked} title="Tworzenie kategorii" description={`Tworzenie kategorii (${builderData.category && builderData.category.length}/${builderData.categoryNumber})`} width={builderData.categoryStatus === "done" ? 100 : progress} active={builderData.categoryStatus === "done" || builderData.categoryStatus === "in_progress"} success={progress === 100 || builderData.categoryStatus === "done"} error={builderData.categoryError} />
 		</div>
 	)
 }

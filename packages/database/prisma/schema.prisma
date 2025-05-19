@@ -183,11 +183,13 @@ model ReserveTemplate {
 
 model GenerateStatus {
   sessionId String @unique
-  slugUrl String?
+  templateCode String?
   hasError Boolean @default(false)
   rolesNumber Int @default(0)
   categoryNumber Int @default(0)
   channelNumber Int @default(0)
+  title String?
+  description String?
 
   aiAnalysisStatus      String     @default("waiting")
   aiAnalysisError       Boolean @default(false)
@@ -209,7 +211,7 @@ model GenerateStatus {
 }
 
 model Category {
-  id Int @id @default(autoincrement())
+  id String @id
   sessionId String
   name String
   type Int @default(4)
@@ -217,11 +219,19 @@ model Category {
 }
 
 model Channel {
-   id Int @id @default(autoincrement())
+  id String @id
   sessionId String
   name String
   type Int @default(0)
+  parentId String
+  position Int
+  private Boolean @default(false)
   generateStatus GenerateStatus @relation(fields: [sessionId], references: [sessionId], onDelete: Cascade, onUpdate: Cascade)
+}
+
+model Token {
+  id Int @id @default(autoincrement())
+  token String
 }
 
 

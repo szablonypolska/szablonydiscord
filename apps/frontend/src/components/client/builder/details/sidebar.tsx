@@ -4,10 +4,11 @@ import ConfigureServer from "./steps/configureServer"
 import CreateRoles from "./steps/createRoles"
 import CreateCategory from "./steps/createCategory"
 import CreateChannels from "./steps/createChannels"
+import SidebarFooter from "./sidebarFooter"
 
 export default function SidebarBuilder() {
 	return (
-		<div className="bg-boxColor w-[22rem] h-screen border-r border-borderColor px-4 py-5 shrink-0">
+		<div className="flex flex-col sticky top-0 bg-boxColor w-[22rem] lg:h-screen border-r border-borderColor px-4 py-5 shrink-0 max-lg:static max-lg:w-full">
 			<div className="flex items-center gap-3  ">
 				<Bot className="w-10 h-10 text-primaryColor" />
 				<div className="">
@@ -15,13 +16,14 @@ export default function SidebarBuilder() {
 					<p className="text-sm text-textColor">Budowanie szablonu...</p>
 				</div>
 			</div>
-			<div className="mt-8">
+			<div className=" mt-8 lg:flex-grow">
 				<AnalysisAi />
 				<ConfigureServer />
 				<CreateRoles />
 				<CreateCategory />
 				<CreateChannels />
 			</div>
+			<SidebarFooter />
 		</div>
 	)
 }

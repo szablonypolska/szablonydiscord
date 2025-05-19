@@ -9,6 +9,7 @@ import { DiscordCreateRolesService } from './services/discord-roles.service';
 import { DiscordGuildService } from './services/discord-guild.service';
 import { DiscordAiGeneratorService } from './services/discord-ai-generator.service';
 import { DiscordServerCreatorService } from './services/discord-server-creator.service';
+import { DiscordChooseToken } from './services/discord-choose-token.service';
 
 @Module({
   imports: [WebsocketModule, SharedModule],
@@ -20,6 +21,7 @@ import { DiscordServerCreatorService } from './services/discord-server-creator.s
     DiscordGuildService,
     DiscordAiGeneratorService,
     DiscordServerCreatorService,
+    DiscordChooseToken,
   ],
   controllers: [ServerController],
 })

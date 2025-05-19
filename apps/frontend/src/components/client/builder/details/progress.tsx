@@ -39,7 +39,7 @@ export default function Progress({ Icon, title, description, width, active, succ
 				</div>
 			</div>
 			<div className="mt-3">
-				<div className="w-full bg-boxColorDashboard h-1.5 rounded-full">
+				<div className="w-full bg-boxColorDashboard h-[0.30rem] rounded-full">
 					<div className="bg-primaryColor h-full rounded-full" ref={animation} style={{ width: `0%` }}></div>
 				</div>
 			</div>

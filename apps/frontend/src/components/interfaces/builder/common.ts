@@ -2,11 +2,13 @@ export type BuilderStatus = "waiting" | "in_progress" | "done" | "error"
 
 export interface BuilderType {
 	sessionId: string
-	slugUrl?: string
+	templateCode?: string
 	hasError: boolean
 	rolesNumber: number
 	categoryNumber: number
 	channelNumber: number
+	title: string
+	description: string
 
 	aiAnalysisStatus: BuilderStatus
 	aiAnalysisError: boolean
@@ -28,13 +30,21 @@ export interface BuilderType {
 }
 
 export interface Category {
+	id: string
 	name: string
-	type?: number
+	type: number
+	position: number
+	parentId: string
+	private: false
 }
 
 export interface Channel {
+	id: string
 	name: string
+	parentId: string
+	position: number
 	type?: number
+	private: boolean
 }
 
 export interface Roles {

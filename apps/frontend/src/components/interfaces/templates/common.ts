@@ -5,6 +5,8 @@ export interface Channel {
 	permission_overwrites?: Permission[]
 }
 
+
+
 export interface Roles {
 	name: string
 	color: number
