@@ -15,7 +15,7 @@ interface Props {
 
 export default function Progress({ Icon, title, description, width, active, success, error }: Props) {
 	const animation = useRef<HTMLDivElement>(null)
-	const widthNumber = active ? (error ? 0 : width) : 0
+	const widthNumber = active ? (error ? 100 : width) : 0
 
 	useEffect(() => {
 		gsap.to(animation.current, {
@@ -40,7 +40,7 @@ export default function Progress({ Icon, title, description, width, active, succ
 			</div>
 			<div className="mt-3">
 				<div className="w-full bg-boxColorDashboard h-[0.30rem] rounded-full">
-					<div className="bg-primaryColor h-full rounded-full" ref={animation} style={{ width: `0%` }}></div>
+					<div className={`${error ? "bg-errorColor" : "bg-primaryColor"} h-full rounded-full`} ref={animation} style={{ width: `0%` }}></div>
 				</div>
 			</div>
 		</div>

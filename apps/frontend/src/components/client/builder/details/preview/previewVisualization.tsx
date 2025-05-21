@@ -7,14 +7,14 @@ import { Button as ButtonCopy } from "@/components/ui/button"
 import { Check, Copy } from "lucide-react"
 import { useState, useMemo } from "react"
 import { ChevronDown, Hash, Volume2 } from "lucide-react"
-import { ChannelPermission } from "../../icons/channelPermissions"
+import { ChannelPermission } from "../../../icons/channelPermissions"
 import { Roles, Channel, Category } from "@/components/interfaces/builder/common"
 import PreviewChannelLoading from "./loading/previewChannelLoading"
 import PreviewRolesLoading from "./loading/previewRolesLoading"
 import { useBuilderContext } from "@/context/BuilderContext"
-import { VoiceChannelPermission } from "../../icons/voiceChannelPerrmisions"
-import { VoiceChannelIcon } from "../../icons/voiceChannel"
-import { ChannelIcon } from "../../icons/channel"
+import { VoiceChannelPermission } from "../../../icons/voiceChannelPerrmisions"
+import { VoiceChannelIcon } from "../../../icons/voiceChannel"
+import { ChannelIcon } from "../../../icons/channel"
 
 interface Type {
 	filtredChannel: Channel[]
@@ -112,7 +112,7 @@ export default function PreviewVisualization({ filtredChannel, filtredRoles, cat
 	return (
 		<>
 			<section className="items-center mt-5 w-full">
-				<div className="flex gap-5 rounded-xl w-full">
+				<div className="flex gap-5 rounded-xl w-full max-xl:flex-col">
 					{builderData.channel.length === 0 && builderData.category.length === 0 && <PreviewChannelLoading />}
 					{(builderData.channel.length > 0 || builderData.category.length > 0) && (
 						<article className="bg-altBackgroundColor border border-borderColor rounded-xl w-1/2 p-8 max-lg:w-full min-h-96 max-xl:w-full ">

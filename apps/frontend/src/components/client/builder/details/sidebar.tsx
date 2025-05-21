@@ -5,6 +5,7 @@ import CreateRoles from "./steps/createRoles"
 import CreateCategory from "./steps/createCategory"
 import CreateChannels from "./steps/createChannels"
 import SidebarFooter from "./sidebarFooter"
+import Authentication from "./steps/authentication"
 
 export default function SidebarBuilder() {
 	return (
@@ -18,6 +19,7 @@ export default function SidebarBuilder() {
 			</div>
 			<div className=" mt-8 lg:flex-grow">
 				<AnalysisAi />
+				<Authentication />
 				<ConfigureServer />
 				<CreateRoles />
 				<CreateCategory />

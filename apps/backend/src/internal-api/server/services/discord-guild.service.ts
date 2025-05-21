@@ -25,7 +25,7 @@ export class DiscordGuildService {
       where: { sessionId },
       data: { configureServerStatus: 'in_progress' },
     });
-    
+
     try {
       const guildOptions: any = {
         name: config.name,
@@ -53,17 +53,18 @@ export class DiscordGuildService {
       await new Promise((resolve) => setTimeout(resolve, 3000));
 
       await this.cleanupDefaultChannels(guild);
-      
+      await this.cleanupDefaultRoles(guild);
+
       this.websocket.server.emit('server_configure', {
         sessionId,
         status: 'done',
       });
-      
+
       await this.prisma.client.generateStatus.update({
         where: { sessionId },
         data: { configureServerStatus: 'done' },
       });
-      
+
       await new Promise((resolve) => setTimeout(resolve, 2000));
       return guild;
     } catch (error) {
@@ -80,56 +81,38 @@ export class DiscordGuildService {
       throw error;
     }
   }
-  
+
   private async cleanupDefaultChannels(guild: Guild): Promise<void> {
-    const channels = await guild.channels.fetch();
+    try {
+      const channels = await guild.channels.fetch();
 
-    for (const [id, channel] of channels) {
-      const channelName = channel.name.toLowerCase();
-      const channelType = channel.type;
-
-      if (
-        channelName === 'ogólny' ||
-        channelName === 'general' ||
-        channelName === 'ogolny' ||
-        channelName === 'ogólne' ||
-        channelName === 'general-voice' ||
-        channelName === 'ogolne'
-      ) {
-        await channel.delete();
-      }
-
-      if (channelType === 'GUILD_CATEGORY') {
-        const categoryName = channelName.toLowerCase();
-        if (
-          categoryName === 'kanały tekstowe' ||
-          categoryName === 'text channels' ||
-          categoryName === 'kanaly tekstowe' ||
-          categoryName === 'textkanalen' ||
-          categoryName === 'canais de texto' ||
-          categoryName === 'canales de texto' ||
-          categoryName === 'textuele kanalen' ||
-          categoryName === 'canaux textuels' ||
-          categoryName === 'textkanäle' ||
-          categoryName === 'testkanallar' ||
-          categoryName === 'канали с текст' ||
-          categoryName === 'textové kanály' ||
-          categoryName === 'kanały głosowe' ||
-          categoryName === 'voice channels' ||
-          categoryName === 'kanaly glosowe' ||
-          categoryName === 'spraakkanalen' ||
-          categoryName === 'canais de voz' ||
-          categoryName === 'canales de voz' ||
-          categoryName === 'sprach-kanäle' ||
-          categoryName === 'vocale kanalen' ||
-          categoryName === 'canaux vocaux' ||
-          categoryName === 'röstkanaler' ||
-          categoryName === 'гласови канали' ||
-          categoryName === 'hlasové kanály'
-        ) {
+      for (const [id, channel] of channels) {
+        try {
           await channel.delete();
+        } catch (error) {
+          console.log(`Błąd podczas usuwania kanału ${channel.name}:`, error);
         }
       }
+    } catch (error) {
+      console.log('Błąd podczas usuwania domyślnych kanałów:', error);
+    }
+  }
+
+  private async cleanupDefaultRoles(guild: Guild): Promise<void> {
+    try {
+      const roles = await guild.roles.fetch();
+
+      for (const [id, role] of roles) {
+        try {
+          if (!role.managed && role.name !== '@everyone') {
+            await role.delete();
+          }
+        } catch (error) {
+          console.log(`Błąd podczas usuwania roli ${role.name}:`, error);
+        }
+      }
+    } catch (error) {
+      console.log('Błąd podczas usuwania domyślnych ról:', error);
     }
   }
 }

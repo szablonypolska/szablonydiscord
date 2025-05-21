@@ -1,13 +1,14 @@
-import { Body, Controller, Post, Get } from '@nestjs/common';
+import { Body, Controller, Post } from '@nestjs/common';
 import { GenerateServerSchema } from './services/generate-server-schema.service';
 import { GenerateServerSchemaDto } from './dto/generate-server-schema.dto';
-import { DiscordChooseToken } from './services/discord-choose-token.service';
+import { PublishTemplate } from './services/publish.service';
+import { PublishDto } from './dto/publish.dto';
 
 @Controller('/api/server')
 export class ServerController {
   constructor(
     private generate: GenerateServerSchema,
-    private discordChoose: DiscordChooseToken,
+    private publish: PublishTemplate,
   ) {}
 
   @Post('/generate')
@@ -15,8 +16,8 @@ export class ServerController {
     return this.generate.generate(data);
   }
 
-  @Get('/choose')
-  async chooseToken() {
-    return this.discordChoose.choose();
+  @Post('/publish')
+  async publishTemplate(@Body() data: PublishDto) {
+    return this.publish.publishTemplate(data)
   }
 }

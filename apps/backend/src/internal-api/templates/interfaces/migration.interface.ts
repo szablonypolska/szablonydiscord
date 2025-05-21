@@ -3,7 +3,6 @@ export interface DataItem {
   categories: string;
   clickButtonUse: number;
   usageCount: number;
-  dateCreate: string;
   description: string;
   userId: string;
   avatar: string;

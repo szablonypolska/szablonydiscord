@@ -4,7 +4,7 @@ import { prisma } from "@repo/db"
 
 export default async function HeroSection() {
 	const templates = await prisma.templates.findMany({
-		orderBy: { dateCreateSystem: "desc" },
+		orderBy: { dateCreate: "desc" },
 		take: 50,
 	})
 

@@ -2,18 +2,18 @@ import { Injectable } from '@nestjs/common';
 import { WebsocketGateway } from 'src/websocket/websocket.gateway';
 import { PrismaService } from '@repo/shared';
 import { GoogleGenerativeAI } from '@google/generative-ai';
-import { DiscordServerCreatorService } from './discord-server-creator.service';
 import { prompt } from '../instructions/ai-prompt.json';
+import { DiscordChooseToken } from './authentication.service';
 
 @Injectable()
 export class DiscordAiGeneratorService {
   constructor(
     private websocket: WebsocketGateway,
     private prisma: PrismaService,
-    private createServer: DiscordServerCreatorService,
+    private discordChooseToken: DiscordChooseToken,
   ) {}
 
-  async generate(description: string, token: string, sessionId: string) {
+  async generate(description: string, sessionId: string) {
     try {
       this.websocket.server.emit('generate_data', {
         sessionId: sessionId,
@@ -59,7 +59,7 @@ export class DiscordAiGeneratorService {
         },
       });
 
-      this.createServer.createServer(token, config, sessionId);
+      this.discordChooseToken.authentication(config, sessionId);
     } catch (err) {
       console.log(err);
 

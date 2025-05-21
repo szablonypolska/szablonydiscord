@@ -27,6 +27,16 @@ export default function useBuilderWebSocket({ setBuilderData, id }: { setBuilder
 			}
 		})
 
+		socket.on("update_status_authentication", message => {
+			if (id === message.sessionId) {
+				setBuilderData(prev => ({
+					...prev,
+					authenticationStatus: message.status,
+					authenticationError: message.authenticationError ? message.authenticationError : false,
+				}))
+			}
+		})
+
 		socket.on("server_configure", message => {
 			if (id === message.sessionId) {
 				setBuilderData(prev => ({

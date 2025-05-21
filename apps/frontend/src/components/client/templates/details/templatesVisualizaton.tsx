@@ -11,6 +11,7 @@ import { ChevronDown } from "lucide-react"
 import { ChannelPermission } from "../../icons/channelPermissions"
 import { ChannelIcon } from "../../icons/channel"
 import { VoiceChannelIcon } from "../../icons/voiceChannel"
+import { NsfwIcon } from "../../icons/nsfwIcon"
 
 interface Type {
 	filtredChannel: Channel[]
@@ -30,6 +31,7 @@ export default function TemplatesVisuzalization({ filtredChannel, filtredRoles }
 		2: <VoiceChannelIcon />,
 		4: <ChevronDown className="text-channelColor w-4 h-4 mr-0.5" />,
 		5: <ChannelPermission />,
+		7: <NsfwIcon />,
 	}
 
 	const copyLink = (hex: string) => {
@@ -46,6 +48,21 @@ export default function TemplatesVisuzalization({ filtredChannel, filtredRoles }
 		}
 	}
 
+	const icon = (el: Channel) => {
+		if (el.type === 0 && el.permission_overwrites && el.permission_overwrites.length === 0 && !el.nsfw) {
+			return channelIcons[0]
+		} else if (el.type === 0 && el.nsfw) {
+			return <NsfwIcon />
+		} else if (el.type === 0 && el.permission_overwrites && el.permission_overwrites.length > 0 && !el.nsfw) {
+			return channelIcons[5]
+		} else if (el.type === 4) {
+			return channelIcons[4]
+		} else {
+			console.log(el.permission_overwrites, "dla glosowego")
+			return channelIcons[2]
+		}
+	}
+
 	return (
 		<>
 			<section className="items-center mt-5 max-xl:w-11/12">
@@ -55,7 +72,7 @@ export default function TemplatesVisuzalization({ filtredChannel, filtredRoles }
 							<div className={`flex items-center w-96 max-md:w-full ${el.type !== 4 && "hover:bg-borderColor"} truncate rounded-lg group`} key={el.id}>
 								<div className={`flex items-center   ${el.type !== 4 && "hover:bg-borderColor"}  rounded-lg group w-full`} key={el.id}>
 									<div className={`w-full ${channelStyles[el.type]}`} key={el.id}>
-										<span className="text-2xl text-channelColor  font-black">{el.type === 0 && el.permission_overwrites && el.permission_overwrites.length > 0 ? channelIcons[5] : channelIcons[el.type]}</span>
+										<span className="text-2xl text-channelColor  font-black">{icon(el)}</span>
 										<p>{el.name}</p>
 									</div>
 								</div>

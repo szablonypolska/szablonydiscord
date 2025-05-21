@@ -24,6 +24,9 @@ export const BuilderProvider = ({ children, id, data }: { children: React.ReactN
 		aiAnalysisStatus: data.aiAnalysisStatus,
 		aiAnalysisError: data.aiAnalysisError,
 
+		authenticationStatus: data.authenticationStatus,
+		authenticationError: data.authenticationError,
+
 		configureServerStatus: data.configureServerStatus,
 		configureServerError: data.configureServerError,
 

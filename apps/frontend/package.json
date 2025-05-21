@@ -29,6 +29,7 @@
 		"gsap": "^3.12.7",
 		"ioredis": "^5.4.2",
 		"lucide-react": "^0.471.2",
+		"motion": "^12.12.1",
 		"next-auth": "^4.24.11",
 		"react": "^19.0.0",
 		"react-countup": "^6.5.3",

@@ -2,10 +2,9 @@ export interface Channel {
 	name: string
 	type: number
 	id: number
+	nsfw: boolean
 	permission_overwrites?: Permission[]
 }
-
-
 
 export interface Roles {
 	name: string

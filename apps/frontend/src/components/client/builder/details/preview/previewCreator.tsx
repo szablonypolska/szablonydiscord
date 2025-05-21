@@ -1,7 +1,7 @@
 import { Button } from "@nextui-org/button"
 import Image from "next/image"
 import Link from "next/link"
-import discordUserAvatar from "../../../../../public/discordUserAvatar.jpg"
+import discordUserAvatar from "../../../../../../public/discordUserAvatar.jpg"
 
 interface PropsCreator {
 	id: string

@@ -1,7 +1,7 @@
 import BuilderWrapper from "@/components/client/builder/builderWrapper"
 import SidebarBuilder from "@/components/client/builder/details/sidebar"
 import TopSidebarBuilder from "@/components/client/builder/details/topSidebar"
-import LivePreview from "@/components/client/builder/preview/livePreview"
+import LivePreview from "@/components/client/builder/details/preview/livePreview"
 import { prisma } from "@repo/db"
 
 interface Params {

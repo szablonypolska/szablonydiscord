@@ -14,14 +14,13 @@ export default function PreviewTemplate() {
 
 	const channels = [...builderData.category, ...builderData.channel]
 
-
 	return (
 		<div className="flex flex-col items-center w-full">
 			<div className="bg-altBackgroundColor w-full p-8 rounded-xl border border-borderColor max-lg:p-5">
 				<header>
 					<div className="flex items-center justify-between">
 						<div className="flex items-center gap-4 w-full">
-							{builderData.title ? <h1 className="text-2xl max-w-[30rem] truncate max-lg:max-w-96 h-8">{builderData.title}</h1> : <div className="w-72 h-8 bg-borderColor rounded-lg animate-pulse"></div>}
+							{builderData.title ? <h1 className="text-2xl max-w-[30rem] truncate max-lg:max-w-96">{builderData.title}</h1> : <div className="w-72 h-8 bg-borderColor rounded-lg animate-pulse"></div>}
 
 							<div className="flex gap-1 max-sm:hidden">
 								<span className="px-4 py-1 bg-borderColor w-fit text-sm rounded-full">AI</span>
@@ -42,7 +41,7 @@ export default function PreviewTemplate() {
 							</Tooltip>
 						</div>
 					</div>
-					{builderData.description ? <p className="text-textColor text-lg md:w-9/12 max-md:w-full h-6">{builderData.description}</p> : <div className="w-[28rem] h-6 bg-borderColor rounded-lg animate-pulse"></div>}
+					{builderData.description ? <p className="text-textColor text-lg md:w-9/12 max-md:w-full">{builderData.description}</p> : <div className="w-[28rem] h-6 bg-borderColor rounded-lg animate-pulse"></div>}
 				</header>
 
 				<section className="flex items-center gap-2 mt-5 max-sm:flex-col">

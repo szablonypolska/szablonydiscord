@@ -22,7 +22,6 @@ export class GenerateServerSchema {
 
       this.createServer.generate(
         data.description,
-        data.token,
         create.sessionId,
       );
 

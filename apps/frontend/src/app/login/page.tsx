@@ -13,7 +13,7 @@ export default function Login() {
 					<LoginForm />
 					<LoginInfo />
 				</div>
-				{/* <Button onPress={() => signIn("discord", { callbackUrl: "/dashboard" })}>zaloguj sie</Button> */}
+				<Button onPress={() => signIn("discord", { callbackUrl: "/dashboard" })}>zaloguj sie</Button>
 			</div>
 		</>
 	)

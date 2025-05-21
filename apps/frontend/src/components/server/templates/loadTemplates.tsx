@@ -13,7 +13,7 @@ export default async function LoadTemplates() {
 	const loadTemplatesData: TemplatesProps[] = await prisma.templates.findMany({
 		take: 6,
 		orderBy: {
-			dateCreateSystem: "desc",
+			dateCreate: "desc",
 		},
 	})
 

@@ -12,6 +12,8 @@ import { TemplatesUserCreator } from "./templatesCreator"
 import TemplatesPopup from "./templatesPopup"
 import { useState } from "react"
 
+
+
 interface Props {
 	data: DiscordTemplate
 	base: BaseInforamtion
@@ -72,7 +74,6 @@ export default function TemplatesDetails({ data, base }: Props) {
 						<p className="text-textColor text-lg md:w-9/12 max-md:w-full">{base.description}</p>
 						<div className="max-sm:flex hidden mt-3 gap-2">
 							<span className="px-4 py-1 bg-borderColor  text-sm rounded-full w-full  text-center">{base.categories}</span>
-							<span className="px-4 py-1 bg-borderColor  text-sm rounded-full w-full text-center">Gamingowy</span>
 						</div>
 					</header>
 

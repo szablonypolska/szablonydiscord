@@ -13,6 +13,9 @@ export interface BuilderType {
 	aiAnalysisStatus: BuilderStatus
 	aiAnalysisError: boolean
 
+	authenticationStatus: BuilderStatus
+	authenticationError: boolean
+
 	configureServerStatus: BuilderStatus
 	configureServerError: boolean
 

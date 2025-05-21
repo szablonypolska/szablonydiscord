@@ -85,7 +85,6 @@ export class MigrationService {
               templateId: this.uid.rnd(),
               slugUrl: this.slugUrl,
               categories: el.categories,
-              dateCreate: el.dateCreate,
               link: el.link,
               title: templatesName,
               description: el.description,
