@@ -7,12 +7,13 @@ import { Plus, ArrowBigUp, Database, Code, Key } from "lucide-react"
 import Image from "next/image"
 import CountUp from "react-countup"
 import Modals from "./heroModal"
+import { formatData } from "@/utils/formatedData"
 
 interface Type {
 	title: string
 	id: number
 	usageCount: number
-	dateCreate: string
+	dateCreate: Date
 	templateId: string
 	waitElement?: number
 }
@@ -52,6 +53,8 @@ export default function ScanTemplateList({ templates, status }: Props) {
 			clearInterval(interval)
 		}
 	}, [id, status, templates])
+
+	console.log(list)
 
 	return (
 		<>
@@ -103,7 +106,7 @@ export default function ScanTemplateList({ templates, status }: Props) {
 									<div className="text-gray-300 w-full">
 										<p className="truncate w-11/12">{element.title}</p>
 										<div className="w-full flex items-center justify-between">
-											<p className="font-semibold">{element.dateCreate}</p>
+											<p className="font-semibold">{formatData(element.dateCreate)}</p>
 											<p className="font-semibold">{element.usageCount} użyć</p>
 										</div>
 									</div>

@@ -1,12 +1,33 @@
 "use client"
 
 import { BorderTrail } from "@/components/ui/border-trail"
+import builderCreateTemplate from "@/lib/builder/createTemplate"
 import { Button } from "@nextui-org/button"
-import { Bot, Sparkles } from "lucide-react"
+import { Bot, Loader2, Sparkles } from "lucide-react"
+import { useSession } from "next-auth/react"
 import { useState } from "react"
+import { useRouter } from "next/navigation"
+import { Tooltip } from "@heroui/react"
 
 export default function MainContentInput() {
 	const [text, setText] = useState<string>("")
+	const [loader, setLoader] = useState<boolean>(false)
+	const router = useRouter()
+	const { data: session } = useSession()
+
+	const createBuilder = async () => {
+		if (!text) return
+		try {
+			setLoader(true)
+			const data = await builderCreateTemplate(session?.user.id || "", text)
+
+			router.push(`/builder/${data.id}`)
+
+			setLoader(false)
+		} catch (err) {
+			console.log(err)
+		}
+	}
 
 	return (
 		<div className="mt-6 w-[45rem] max-md:w-11/12 relative">
@@ -32,9 +53,16 @@ export default function MainContentInput() {
 							<p className={`text-sm ${text.length > 500 ? "text-errorColor" : "text-textColor"}`}>{text.length}/500 znaków</p>
 						</div>
 
-						<Button className={`bg-primaryColor rounded-xl px-5 transition-all ${text.length ? "opacity-100" : "opacity-50"}`}>
-							<Sparkles className="w-5 h-5" /> <span className="text-sm">Generuj szablon</span>
-						</Button>
+						<Tooltip content="Musisz być zalogowany">
+							<Button className={`bg-primaryColor rounded-xl px-5 transition-all disabled:opacity-80 ${text.length ? "opacity-100" : "opacity-50"}`} disabled={loader} onPress={createBuilder}>
+								{!loader && (
+									<>
+										<Sparkles className="w-5 h-5" /> <span className="text-sm">Generuj szablon</span>
+									</>
+								)}
+								{loader && <Loader2 className="animate-spin" />}
+							</Button>
+						</Tooltip>
 					</div>
 				</div>
 			</div>

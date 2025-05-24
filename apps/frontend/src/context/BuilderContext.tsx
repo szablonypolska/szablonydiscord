@@ -16,10 +16,13 @@ export const BuilderProvider = ({ children, id, data }: { children: React.ReactN
 		title: data.title,
 		description: data.description,
 		templateCode: data.templateCode,
+		templateUrl: data.templateUrl,
 		hasError: data.hasError,
 		rolesNumber: data.rolesNumber,
 		categoryNumber: data.categoryNumber,
 		channelNumber: data.channelNumber,
+		rules: data.rules,
+		tariff: data.tariff,
 
 		aiAnalysisStatus: data.aiAnalysisStatus,
 		aiAnalysisError: data.aiAnalysisError,

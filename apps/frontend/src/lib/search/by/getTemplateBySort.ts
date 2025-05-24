@@ -1,6 +1,6 @@
 import { prisma } from "@repo/db"
 
-export default async function getTemplateBySort(skip: number, take: number, type: "dateCreateSystem" | "usageCount") {
+export default async function getTemplateBySort(skip: number, take: number, type: "dateCreate" | "usageCount") {
 	const count = await prisma.templates.count()
 	const numberPages = Math.ceil(count / 6)
 	const templateSort = await prisma.templates.findMany({

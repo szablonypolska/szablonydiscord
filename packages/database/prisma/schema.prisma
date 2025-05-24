@@ -190,6 +190,8 @@ model GenerateStatus {
   channelNumber Int @default(0)
   title String?
   description String?
+  rules String?
+  tariff String?
 
 
   aiAnalysisStatus      String     @default("waiting")

@@ -48,6 +48,8 @@ export interface ServerRole {
 export interface Details {
   title: string;
   description: string;
+  rules: string;
+  tariff: string
 }
 
 export interface ServerCreationConfig {

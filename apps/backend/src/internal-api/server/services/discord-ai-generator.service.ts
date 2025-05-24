@@ -56,6 +56,8 @@ export class DiscordAiGeneratorService {
           channelNumber: config.channels.length,
           title: config.details.title,
           description: config.details.description,
+          rules: config.details.rules,
+          tariff: config.details.tariff
         },
       });
 

@@ -3,12 +3,15 @@ export type BuilderStatus = "waiting" | "in_progress" | "done" | "error"
 export interface BuilderType {
 	sessionId: string
 	templateCode?: string
+	templateUrl?: string
 	hasError: boolean
 	rolesNumber: number
 	categoryNumber: number
 	channelNumber: number
 	title: string
 	description: string
+	rules: string
+	tariff: string
 
 	aiAnalysisStatus: BuilderStatus
 	aiAnalysisError: boolean
