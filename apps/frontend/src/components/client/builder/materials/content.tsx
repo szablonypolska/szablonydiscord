@@ -1,26 +1,77 @@
 "use client"
 
 import { useBuilderContext } from "@/context/BuilderContext"
-import { Shield } from "lucide-react"
+import { Shield, Scale, Copy, Check, GlobeLock, CircleHelp } from "lucide-react"
+import { Button as ButtonCopy } from "@/components/ui/button"
+import { useState } from "react"
+import { cn } from "@/lib/utils"
+
+interface Props {
+	Icon: React.ComponentType<React.SVGProps<SVGSVGElement>>
+	title: string
+	description: string
+	content: string
+}
 
 export default function ContentBuilderMaterials() {
-	const { builderData } = useBuilderContext()
-	console.log(builderData)
-	return (
-		<div className="w-full bg-altBackgroundColor rounded-xl border border-borderColor">
-			<div className="flex items-center gap-4 p-6">
-				<div className="bg-borderColor text-primaryColor p-3 rounded-lg w-fit">
-					<Shield className="w-7 h-7" />
+	const { builderData, currentView } = useBuilderContext()
+
+	const Content = () => {
+		switch (currentView) {
+			case "rules":
+				return <ContentBox Icon={Shield} title="Regulamin" description="Podstawowe zasady serwera" content={builderData.rules} />
+			case "tariff":
+				return <ContentBox Icon={Scale} title="Taryfikator kar" description="System kar i konsekwencji" content={builderData.tariff} />
+			case "privacyPolicy":
+				return <ContentBox Icon={GlobeLock} title="Polityka prywatności" description="Przykładowa polityka prywatnosci serwera" content={builderData.privacyPolicy} />
+			case "faq":
+				return <ContentBox Icon={CircleHelp} title="FAQ" description="Pytania i odpowiedzi na najczęściej zadawane pytania" content={builderData.faq} />
+			default:
+				return <p>Nie znaleziono</p>
+		}
+	}
+
+	const ContentBox = ({ Icon, title, description, content }: Props) => {
+		const [copied, setCopied] = useState<boolean>(false)
+
+		const handleCopyDescription = () => {
+			try {
+				navigator.clipboard.writeText(content)
+				setCopied(true)
+				setTimeout(() => setCopied(false), 1500)
+			} catch (err) {
+				console.error(err)
+			}
+		}
+
+		return (
+			<div className="w-full bg-altBackgroundColor rounded-xl border border-borderColor">
+				<div className="flex items-center justify-between gap-4 p-6">
+					<div className="flex items-center gap-4">
+						<div className="bg-borderColor text-primaryColor p-3 rounded-lg w-fit">
+							<Icon className="w-7 h-7" />
+						</div>
+						<div className="">
+							<p className="text-lg font-medium">{title}</p>
+							<p className="text-textColor">{description}</p>
+						</div>
+					</div>
+					<ButtonCopy size="icon" className=" flex" onClick={() => handleCopyDescription()} aria-label={copied ? "Copied" : "Copy to clipboard"} disabled={copied}>
+						<div className={cn("transition-all", copied ? "scale-100 opacity-100" : "scale-0 opacity-0")}>
+							<Check className="stroke-primaryColor" size={25} strokeWidth={2} aria-hidden="true" />
+						</div>
+						<div className={cn("absolute transition-all text-textColor", copied ? "scale-0 opacity-0" : "scale-100 opacity-100")}>
+							<Copy size={25} strokeWidth={2} aria-hidden="true" />
+						</div>
+					</ButtonCopy>
 				</div>
-				<div className="">
-					<p className="text-lg font-medium">Regulamin</p>
-					<p className="text-textColor">Podstawowe zasady serwera</p>
+				<div className="w-full bg-borderColor h-[1px]"></div>
+				<div className="p-6">
+					<pre className="text-gray-300 whitespace-pre-wrap text-sm">{content}</pre>
 				</div>
 			</div>
-			<div className="w-full bg-borderColor h-[1px]"></div>
-			<div className="p-6">
-				<code className="text-gray-300 whitespace-pre-wrap">{`${builderData.rules}`}</code>
-			</div>
-		</div>
-	)
+		)
+	}
+
+	return <Content />
 }

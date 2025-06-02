@@ -6,9 +6,9 @@ import { useGSAP } from "@gsap/react"
 import { ScrollTrigger } from "gsap/ScrollTrigger"
 import InnerWrapper from "./innerWrapper"
 
-export default function SeesionWrapper({ children }: { children: React.ReactNode }) {
-	gsap.registerPlugin(useGSAP, ScrollTrigger)
+gsap.registerPlugin(useGSAP, ScrollTrigger)
 
+export default function SeesionWrapper({ children }: { children: React.ReactNode }) {
 	return (
 		<SessionProvider>
 			<InnerWrapper>{children}</InnerWrapper>

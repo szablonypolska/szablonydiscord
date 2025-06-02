@@ -49,7 +49,9 @@ export interface Details {
   title: string;
   description: string;
   rules: string;
-  tariff: string
+  tariff: string;
+  privacyPolicy: string;
+  faq: string;
 }
 
 export interface ServerCreationConfig {

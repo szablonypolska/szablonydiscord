@@ -17,5 +17,19 @@ export default async function LoadTemplates() {
 		},
 	})
 
-	return <TemplateList loadTemplates={loadTemplates} loadTemplatesData={loadTemplatesData} />
+	const loadTemplatesPopularData: TemplatesProps[] = await prisma.templates.findMany({
+		take: 6,
+		orderBy: {
+			visitHistory: {
+				_count: "desc",
+			},
+		},
+		include: {
+			_count: {
+				select: { visitHistory: true },
+			},
+		},
+	})
+
+	return <TemplateList loadTemplates={loadTemplates} loadTemplatesData={loadTemplatesData} loadTemplatesPopularData={loadTemplatesPopularData} />
 }

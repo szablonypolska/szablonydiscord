@@ -192,6 +192,9 @@ model GenerateStatus {
   description String?
   rules String?
   tariff String?
+  privacyPolicy String?
+  faq String?
+  code String @default("")
 
 
   aiAnalysisStatus      String     @default("waiting")

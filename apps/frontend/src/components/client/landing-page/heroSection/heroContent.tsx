@@ -26,7 +26,7 @@ export default function HeroContent() {
 				</div>
 				<h2 className="text-4xl font-medium tracking-wide mt-5 max-md:text-2xl max-md:font-semibold max-lg:text-3xl">Witaj w SzablonyDiscord</h2>
 				<h3 className="flex items-center gap-2 text-4xl font-medium tracking-wide max-md:mt-2 mt-5 max-md:text-2xl max-md:text-wrap max-lg:text-3xl">
-					gdzie twój serwer discord <AnimatedText text="nabierze" textClassName="text-4xl tracking-wide text-primaryColor font-semibold max-md:text-2xl max-md:mt-1 max-lg:text-3xl mb-0.5" underlinePath="M 0,10 Q 75,0 150,10 Q 225,20 300,10" underlineHoverPath="M 0,10 Q 75,20 150,10 Q 225,0 300,10" underlineDuration={1} />
+					gdzie twój serwer discord <span className="text-primaryColor font-semibold">nabierze</span>
 				</h3>
 				<h3 className="text-4xl tracking-wide mt-5 text-primaryColor font-semibold max-md:text-2xl max-md:mt-1 max-lg:text-3xl">nowoczesnego wyglądu!</h3>
 				<p className="my-7 w-[45rem] text-sm text-textColor max-xl:w-[35rem] max-md:text-xs max-lg:w-full max-md:my-4">Lorem ipsum dolor sit amet consectetur adipisicing elit. Quia necessitatibus, pariatur ratione minus pariatur eos fugiat voluptates sit voluptate dolor quisquam accusantium. Ut aspernatur Lorem ipsum dolor sit amet. incidunt ducimus dolore.</p>

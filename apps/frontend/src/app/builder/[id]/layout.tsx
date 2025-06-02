@@ -9,7 +9,7 @@ export const metadata: Metadata = {
 }
 
 interface LayoutParams {
-	params: { id: string }
+	params: Promise<{ id: string }>
 	children: React.ReactNode
 }
 

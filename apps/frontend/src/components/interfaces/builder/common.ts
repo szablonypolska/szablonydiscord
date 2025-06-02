@@ -1,4 +1,6 @@
 export type BuilderStatus = "waiting" | "in_progress" | "done" | "error"
+export type ViewType = "rules" | "tariff" | "privacyPolicy" | "faq"
+export type CurrentPreviewType = "template" | "code"
 
 export interface BuilderType {
 	sessionId: string
@@ -12,6 +14,9 @@ export interface BuilderType {
 	description: string
 	rules: string
 	tariff: string
+	privacyPolicy: string
+	faq: string
+	code: string
 
 	aiAnalysisStatus: BuilderStatus
 	aiAnalysisError: boolean

@@ -7,7 +7,6 @@ import { Bot, Loader2, Sparkles } from "lucide-react"
 import { useSession } from "next-auth/react"
 import { useState } from "react"
 import { useRouter } from "next/navigation"
-import { Tooltip } from "@heroui/react"
 
 export default function MainContentInput() {
 	const [text, setText] = useState<string>("")
@@ -44,8 +43,8 @@ export default function MainContentInput() {
 					</div>
 				</div>
 				<div className="w-full h-[1px] bg-borderColor rounded-xl my-5"></div>
-				<div className="bg-altBackgroundColor border border-borderColor p-3 rounded-xl group focus-within:border-altBorderColor transition-colors">
-					<textarea className="w-full h-18 resize-none focus:outline-none rounded-lg placeholder:opacity-80 bg-altBackgroundColor placeholder:text-sm" onChange={e => setText(e.target.value)} placeholder="Np. stwórz serwer dla społeczności graczy z kanałami do różnych gier, miejscem na ogłoszenia i rolami dla moderatorów..."></textarea>
+				<div className="bg-altBackgroundColor border border-borderColor p-3 rounded-xl group focus-within:border-altBorderColor  transition-all">
+					<textarea className="w-full h-12 resize-none focus:outline-none rounded-lg placeholder:opacity-80  bg-altBackgroundColor placeholder:text-sm" onChange={e => setText(e.target.value)} placeholder="Np. stwórz serwer dla społeczności graczy z kanałami do różnych gier, miejscem na ogłoszenia i rolami dla moderatorów..."></textarea>
 
 					<div className="w-full h-[1px] bg-borderColor rounded-lg my-3"></div>
 					<div className="flex items-center justify-end gap-3">
@@ -53,16 +52,14 @@ export default function MainContentInput() {
 							<p className={`text-sm ${text.length > 500 ? "text-errorColor" : "text-textColor"}`}>{text.length}/500 znaków</p>
 						</div>
 
-						<Tooltip content="Musisz być zalogowany">
-							<Button className={`bg-primaryColor rounded-xl px-5 transition-all disabled:opacity-80 ${text.length ? "opacity-100" : "opacity-50"}`} disabled={loader} onPress={createBuilder}>
-								{!loader && (
-									<>
-										<Sparkles className="w-5 h-5" /> <span className="text-sm">Generuj szablon</span>
-									</>
-								)}
-								{loader && <Loader2 className="animate-spin" />}
-							</Button>
-						</Tooltip>
+						<Button className={`bg-primaryColor rounded-xl px-5 transition-all disabled:opacity-80 ${text.length ? "opacity-100" : "opacity-50"}`} disabled={loader} onPress={createBuilder}>
+							{!loader && (
+								<>
+									<Sparkles className="w-5 h-5" /> <span className="text-sm">Generuj szablon</span>
+								</>
+							)}
+							{loader && <Loader2 className="animate-spin" />}
+						</Button>
 					</div>
 				</div>
 			</div>

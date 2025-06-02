@@ -1,54 +1,27 @@
 "use client"
 import React, { createContext, useContext, useEffect, useState, SetStateAction, Dispatch } from "react"
-import { BuilderType } from "@/components/interfaces/builder/common"
+import { BuilderType, ViewType, CurrentPreviewType } from "@/components/interfaces/builder/common"
 import useBuilderWebSocket from "@/hooks/useBuilderWebSocket"
 
 interface BuilderContextType {
 	builderData: BuilderType
+	currentView: ViewType
+	setCurrentView: Dispatch<SetStateAction<ViewType>>
 	setBuilderData: Dispatch<SetStateAction<BuilderType>>
+	currentPreview: CurrentPreviewType
+	setCurrentPreview: Dispatch<SetStateAction<CurrentPreviewType>>
 }
 
 export const BuilderContext = createContext<BuilderContextType | null>(null)
 
 export const BuilderProvider = ({ children, id, data }: { children: React.ReactNode; id: string; data: BuilderType }) => {
-	const [builderData, setBuilderData] = useState<BuilderType>({
-		sessionId: data.sessionId,
-		title: data.title,
-		description: data.description,
-		templateCode: data.templateCode,
-		templateUrl: data.templateUrl,
-		hasError: data.hasError,
-		rolesNumber: data.rolesNumber,
-		categoryNumber: data.categoryNumber,
-		channelNumber: data.channelNumber,
-		rules: data.rules,
-		tariff: data.tariff,
-
-		aiAnalysisStatus: data.aiAnalysisStatus,
-		aiAnalysisError: data.aiAnalysisError,
-
-		authenticationStatus: data.authenticationStatus,
-		authenticationError: data.authenticationError,
-
-		configureServerStatus: data.configureServerStatus,
-		configureServerError: data.configureServerError,
-
-		rolesStatus: data.rolesStatus,
-		rolesError: data.rolesError,
-		roles: data.roles || [],
-
-		categoryStatus: data.categoryStatus,
-		categoryError: data.categoryError,
-		category: data.category || [],
-
-		channelStatus: data.channelStatus,
-		channelError: data.channelError,
-		channel: data.channel || [],
-	})
+	const [builderData, setBuilderData] = useState<BuilderType>(data)
+	const [currentView, setCurrentView] = useState<ViewType>("rules")
+	const [currentPreview, setCurrentPreview] = useState<CurrentPreviewType>("code")
 
 	useBuilderWebSocket({ setBuilderData, id })
 
-	return <BuilderContext.Provider value={{ builderData, setBuilderData }}>{children}</BuilderContext.Provider>
+	return <BuilderContext.Provider value={{ builderData, setBuilderData, currentView, setCurrentView, currentPreview, setCurrentPreview }}>{children}</BuilderContext.Provider>
 }
 
 export function useBuilderContext() {

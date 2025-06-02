@@ -1,6 +1,8 @@
 "use client"
 
+import { ShiningText } from "@/components/ui/shining-text"
 import gsap from "gsap"
+import { Loader2 } from "lucide-react"
 import React, { useEffect, useRef } from "react"
 
 interface Props {
@@ -31,10 +33,10 @@ export default function Progress({ Icon, title, description, width, active, succ
 				<div
 					className={`flex items-center justify-center  ${error ? "bg-darknesErrorColor" : active ? (success ? "bg-borderColor" : "bg-primaryDark") : "bg-borderColor text-textColor"}
  p-3 rounded-lg shrink-0`}>
-					<Icon className={`w-5 h-5 ${error && "text-errorColor"} ${success && "text-primaryColor"}`} />
+					{active && !error && !success ? <Loader2 className="w-5 h-5 animate-spin" /> : <Icon className={`w-5 h-5 ${error && "text-errorColor"} ${success && "text-primaryColor"}`} />}
 				</div>
 				<div className="">
-					<p className={`font-medium text-sm ${!active && "text-darkGray"} ${error && "text-errorColor"} `}>{title}</p>
+					<p className={`font-medium text-sm ${!active && "text-darkGray"} ${error && "text-errorColor"} `}>{active && !error && !success ? <ShiningText text={title} /> : title}</p>
 					<span className={`text-xs  ${error ? "text-red-400" : "text-textColor"}`}>{error ? "Wystąpił błąd, spróbuj ponownie pozniej" : description}</span>
 				</div>
 			</div>

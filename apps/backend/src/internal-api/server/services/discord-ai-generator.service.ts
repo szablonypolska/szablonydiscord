@@ -4,6 +4,8 @@ import { PrismaService } from '@repo/shared';
 import { GoogleGenerativeAI } from '@google/generative-ai';
 import { prompt } from '../instructions/ai-prompt.json';
 import { DiscordChooseToken } from './authentication.service';
+import { google } from '@ai-sdk/google';
+import { generateText, streamText } from 'ai';
 
 @Injectable()
 export class DiscordAiGeneratorService {
@@ -15,6 +17,9 @@ export class DiscordAiGeneratorService {
 
   async generate(description: string, sessionId: string) {
     try {
+      let generatedText: string = '';
+      let batchedText: string = '';
+      let batchedNumber: number = 0;
       this.websocket.server.emit('generate_data', {
         sessionId: sessionId,
         status: 'in_progress',
@@ -23,19 +28,32 @@ export class DiscordAiGeneratorService {
         where: { sessionId: sessionId },
         data: { aiAnalysisStatus: 'in_progress' },
       });
-      const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
-      const model = genAI.getGenerativeModel({ model: 'gemini-2.0-flash-exp' });
 
-      const promptGenerate = `### OPIS UŻYTKOWNIKA (NAJWYŻSZY PRIORYTET): ${description}
-      ### STANDARDOWY PROMPT (niższy priorytet, stosuj tylko gdy nie koliduje z OPISEM UŻYTKOWNIKA): ${prompt}`;
+      const { textStream } = await streamText({
+        model: google('gemini-2.5-flash-preview-04-17'),
 
-      const result = await model.generateContent(promptGenerate);
-      const text = result.response
-        .text()
-        .replace(/```(json)?\n?/g, '')
-        .trim();
+        prompt: `### OPIS UŻYTKOWNIKA (NAJWYŻSZY PRIORYTET, ważniejsze od instrukcji): ${description}
+      ### STANDARDOWY PROMPT (niższy priorytet, stosuj tylko gdy nie koliduje z OPISEM UŻYTKOWNIKA): ${prompt}`,
+      });
 
-      const config = JSON.parse(text);
+      for await (const text of textStream) {
+        batchedText += text.replace(/```(json)?\n?/g, '').trim();
+        generatedText += text.replace(/```(json)?\n?/g, '').trim();
+        batchedNumber++;
+
+        if (batchedNumber === 10) {
+          this.websocket.server.emit('update_code', {
+            sessionId,
+            code: batchedText.replace(/```(json)?\n?/g, '').trim(),
+          });
+        }
+      }
+
+      generatedText.replace(/```(json)?\n?/g, '').trim();
+
+      console.log(generateText);
+
+      const config = JSON.parse(generatedText);
 
       this.websocket.server.emit('generate_data', {
         sessionId,
@@ -57,7 +75,9 @@ export class DiscordAiGeneratorService {
           title: config.details.title,
           description: config.details.description,
           rules: config.details.rules,
-          tariff: config.details.tariff
+          tariff: config.details.tariff,
+          privacyPolicy: config.details.privacyPolicy,
+          faq: config.details.faq,
         },
       });
 

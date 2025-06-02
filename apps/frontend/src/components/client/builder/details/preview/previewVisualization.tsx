@@ -6,7 +6,7 @@ import { cn } from "@/lib/utils"
 import { Button as ButtonCopy } from "@/components/ui/button"
 import { Check, Copy } from "lucide-react"
 import { useState, useMemo } from "react"
-import { ChevronDown, Hash, Volume2 } from "lucide-react"
+import { ChevronDown } from "lucide-react"
 import { ChannelPermission } from "../../../icons/channelPermissions"
 import { Roles, Channel, Category } from "@/components/interfaces/builder/common"
 import PreviewChannelLoading from "./loading/previewChannelLoading"
@@ -107,7 +107,6 @@ export default function PreviewVisualization({ filtredChannel, filtredRoles, cat
 		}
 	}
 
-	console.log(builderData.channel)
 
 	return (
 		<>
