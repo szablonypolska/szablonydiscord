@@ -50,6 +50,7 @@
     "fuse.js": "^7.0.0",
     "googleapis": "^148.0.0",
     "handlebars": "^4.7.8",
+    "jsonrepair": "^3.12.0",
     "next": "^15.3.0",
     "nodemailer": "^6.10.1",
     "reflect-metadata": "^0.2.0",

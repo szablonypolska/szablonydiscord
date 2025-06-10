@@ -50,6 +50,8 @@ export class DiscordGuildService {
 
       const guild = await client.guilds.create(config.name, guildOptions);
 
+      console.log('id', guild.id, guild);
+
       await new Promise((resolve) => setTimeout(resolve, 3000));
 
       await this.cleanupDefaultChannels(guild);

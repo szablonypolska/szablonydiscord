@@ -4,12 +4,12 @@ import TopSidebarBuilder from "@/components/client/builder/details/topSidebar"
 
 export default async function BuilderDashboard() {
 	return (
-		<div className="flex w-full max-lg:flex-col overflow-x-hidden">
+		<div className="max-lg:flex max-lg:flex-col grid grid-cols-[22rem_1fr] w-full lg:h-screen max-lg:grid-cols-1 max-lg:grid-rows-[auto_1fr] ">
 			<SidebarBuilder />
-			<div className="flex flex-col w-[calc(100%-22rem)]">
+			<div className="flex flex-col scrollbar scrollbar-thumb-altBorderColor scrollbar-track-borderColor  overflow-y-auto">
 				<TopSidebarBuilder />
-				<div className="p-5 w-full max-lg:w-full">
-					<div className="flex flex-col  bg-boxColor  rounded-lg border  border-borderColor p-8  w-full ">
+				<div className="p-5 flex-1">
+					<div className="flex flex-col bg-boxColor rounded-lg border border-borderColor p-8 h-full">
 						<MenagePreview />
 					</div>
 				</div>

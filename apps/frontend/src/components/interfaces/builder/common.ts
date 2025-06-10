@@ -62,3 +62,9 @@ export interface Roles {
 	name: string
 	color: string
 }
+
+export interface Decoration {
+	id: number
+	style: string
+}
+

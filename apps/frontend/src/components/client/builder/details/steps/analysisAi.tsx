@@ -12,11 +12,9 @@ export default function AnalysisAi() {
 	useEffect(() => {
 		if (progress === 100 || builderData.aiAnalysisStatus !== "in_progress") return
 
-		console.log(progress)
-
 		const interval = setInterval(() => {
-			if (progress <= 80 && builderData.aiAnalysisStatus !== "done") {
-				setProgress(prev => prev + 1)
+			if (progress <= 80 && builderData.aiAnalysisStatus === "in_progress") {
+				setProgress(prev => prev + 0.5)
 			}
 		}, 800)
 

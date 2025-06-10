@@ -63,8 +63,6 @@ export class DiscordCreateRolesService {
 
           createdRole++;
 
-          console.log(role.name, role.color);
-
           this.websocket.server.emit('update_roles', {
             sessionId,
             name: role.name,

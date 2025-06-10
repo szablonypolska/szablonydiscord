@@ -82,7 +82,7 @@ export default function PreviewVisualization({ filtredChannel, filtredRoles, cat
 	const channelStyles: { [key: number]: string } = {
 		0: "flex items-center gap-1 pl-4 my-1  font-medium text-channelColor text-lg w-96 max-md:w-full  hover:bg-borderColor truncate rounded-lg", // Tekstowy
 		2: "flex items-center gap-1 pl-4 my-1 text-channelColor text-lg  w-96 max-md:w-full hover:bg-borderColor truncate rounded-lg", // Głosowy
-		4: "flex items-center gap-1 font-bold text-lg mt-2  text-textColor hover:text-white w-96 max-md:w-full", // Kategoria
+		4: "flex items-center gap-1 font-bold text-lg mt-2  text-textColor hover:text-white w-11/12 max-md:w-full", // Kategoria
 	}
 
 	const channelIcons: { [key: number]: React.ReactNode } = {
@@ -107,7 +107,6 @@ export default function PreviewVisualization({ filtredChannel, filtredRoles, cat
 		}
 	}
 
-
 	return (
 		<>
 			<section className="items-center mt-5 w-full">
@@ -116,7 +115,7 @@ export default function PreviewVisualization({ filtredChannel, filtredRoles, cat
 					{(builderData.channel.length > 0 || builderData.category.length > 0) && (
 						<article className="bg-altBackgroundColor border border-borderColor rounded-xl w-1/2 p-8 max-lg:w-full min-h-96 max-xl:w-full ">
 							{sortedChannels.map((el: Channel, index) => (
-								<div className={`flex items-center w-96 max-md:w-full ${el.type !== 4 && "hover:bg-borderColor"} truncate rounded-lg group`} key={index}>
+								<div className={`relative flex items-center w-96 max-md:w-full ${el.type !== 4 && "hover:bg-borderColor"} truncate rounded-lg group`} key={index}>
 									<div className={`flex items-center ${el.type !== 4 && "hover:bg-borderColor"} rounded-lg group w-full`} key={`inner-${index}`}>
 										<div className={`w-full ${channelStyles[el.type || 0]}`} key={`style-${index}`}>
 											<span className="text-2xl text-channelColor font-black">{el.type === 0 ? (el.private ? channelIcons[5] : channelIcons[el.type || 0]) : el.type === 2 && el.private ? channelIcons[6] : channelIcons[el.type || 0]}</span>
@@ -143,7 +142,9 @@ export default function PreviewVisualization({ filtredChannel, filtredRoles, cat
 						<article className="bg-altBackgroundColor border border-borderColor rounded-xl w-1/2 p-8 max-lg:w-full min-h-96 max-xl:w-full flex-shrink-0">
 							<div className="flex flex-wrap gap-2">
 								{filtredRoles.map((el: Roles, index) => {
-									const hexColor = `#${el.color.toString().padStart(6, "0")}`
+									const hexColor = `#${parseInt(el.color).toString(16).padStart(6, "0")}`
+
+									console.log(hexColor, el.name, el.color)
 
 									return (
 										<div style={{ borderColor: hexColor }} className="flex items-center gap-2 border-2 py-1 px-4 rounded-full whitespace-nowrap overflow-hidden" key={index}>

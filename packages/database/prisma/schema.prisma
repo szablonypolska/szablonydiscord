@@ -243,12 +243,20 @@ model Token {
   token String
 }
 
-
-
 model Role {
   id Int @id @default(autoincrement())
   sessionId String
   name String
   color String
   generateStatus GenerateStatus @relation(fields: [sessionId], references: [sessionId], onDelete: Cascade, onUpdate: Cascade)
+}
+
+model DecorationChannel {
+  id Int @id @default(autoincrement())
+  style String
+}
+
+model DecorationCategory {
+  id Int @id @default(autoincrement())
+  style String
 }

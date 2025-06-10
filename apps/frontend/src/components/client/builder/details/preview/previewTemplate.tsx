@@ -15,7 +15,7 @@ export default function PreviewTemplate() {
 	const channels = [...builderData.category, ...builderData.channel]
 
 	return (
-		<div className="flex flex-col items-center w-full">
+		<div className="flex flex-col items-center w-full ">
 			<div className="bg-altBackgroundColor w-full p-8 rounded-xl border border-borderColor max-lg:p-5">
 				<header>
 					<div className="flex items-center justify-between">
@@ -26,7 +26,7 @@ export default function PreviewTemplate() {
 								<span className="px-4 py-1 bg-borderColor w-fit text-sm rounded-full">AI</span>
 							</div>
 						</div>
-						<div className="flex items-center gap-2">
+						<div className="flex items-center gap-2 opacity-80">
 							<Tooltip content="Odsłony szablonu" className="p-1 px-3 bg-borderColor rounded-xl" delay={300}>
 								<div className="flex items-center gap-1 px-3 py-1 bg-borderColor w-fit rounded-xl max-md:hidden">
 									<Eye className="font-black" />

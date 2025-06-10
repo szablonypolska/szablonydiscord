@@ -44,6 +44,8 @@ export default function ContentBuilderMaterials() {
 			}
 		}
 
+		const formattedContent = content.replace(/\\n/g, "\n")
+
 		return (
 			<div className="w-full bg-altBackgroundColor rounded-xl border border-borderColor">
 				<div className="flex items-center justify-between gap-4 p-6">
@@ -67,7 +69,7 @@ export default function ContentBuilderMaterials() {
 				</div>
 				<div className="w-full bg-borderColor h-[1px]"></div>
 				<div className="p-6">
-					<pre className="text-gray-300 whitespace-pre-wrap text-sm">{content}</pre>
+					<pre className="text-gray-300 whitespace-pre-wrap text-sm">{formattedContent}</pre>
 				</div>
 			</div>
 		)

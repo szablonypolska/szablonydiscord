@@ -113,13 +113,13 @@ export default function useBuilderWebSocket({ setBuilderData, id }: { setBuilder
 			}
 		})
 
-		socket.on("update_code", message => {
-			if (id === message.sessionId) {
-				setBuilderData(prev => ({
-					...prev,
-					code: prev.code + message.code,
-				}))
-			}
-		})
+		// socket.on("update_code", message => {
+		// 	if (id === message.sessionId) {
+		// 		setBuilderData(prev => ({
+		// 			...prev,
+		// 			code: prev.code + message.code,
+		// 		}))
+		// 	}
+		// })
 	}, [])
 }
