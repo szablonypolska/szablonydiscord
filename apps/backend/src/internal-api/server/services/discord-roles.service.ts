@@ -22,6 +22,7 @@ export class DiscordCreateRolesService {
 
     try {
       const sortedRoles = [...roles].sort((a, b) => b.position - a.position);
+
       let createdRole: number = 0;
 
       this.websocket.server.emit('update_roles_status', {
@@ -36,6 +37,8 @@ export class DiscordCreateRolesService {
 
       const everyoneRole = guild.roles.everyone;
       this.roleMap.set('everyone', everyoneRole);
+
+      console.log(sortedRoles);
 
       for (const roleConfig of sortedRoles) {
         try {

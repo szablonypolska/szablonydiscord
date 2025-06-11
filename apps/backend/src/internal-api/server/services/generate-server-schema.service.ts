@@ -18,7 +18,7 @@ export class GenerateServerSchema {
         data: { sessionId: this.uid.rnd() },
       });
 
-      this.createServer.generate(data.description, create.sessionId);
+      this.createServer.generate(data.description, create.sessionId, data.decorationChannel, data.decorationCategory);
 
       return { id: create.sessionId };
     } catch (err) {

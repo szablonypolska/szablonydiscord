@@ -1,4 +1,4 @@
-export default async function builderCreateTemplate(userId: string, description: string) {
+export default async function builderCreateTemplate(userId: string, description: string, decorationChannel: string, decorationCategory: string) {
 	try {
 		const fetchData = await fetch(process.env.NEXT_PUBLIC_INTERNAL_BUILDER_CREATE!, {
 			method: "POST",
@@ -8,6 +8,8 @@ export default async function builderCreateTemplate(userId: string, description:
 			body: JSON.stringify({
 				userId,
 				description,
+				decorationChannel,
+				decorationCategory
 			}),
 		})
 

@@ -8,4 +8,12 @@ export class GenerateServerSchemaDto {
   @IsNotEmpty()
   @IsString()
   description: string;
+
+  @IsNotEmpty()
+  @IsString()
+  decorationChannel: string;
+
+  @IsNotEmpty()
+  @IsString()
+  decorationCategory: string;
 }

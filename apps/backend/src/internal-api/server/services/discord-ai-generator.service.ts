@@ -16,7 +16,12 @@ export class DiscordAiGeneratorService {
 
   private generatedText: string = '';
 
-  async create(description: string, sessionId: string) {
+  async create(
+    description: string,
+    sessionId: string,
+    decorationChannel: string,
+    decorationCategory: string,
+  ) {
     let sendWebsocket: number = 0;
     let batchNumber: number = 0;
     let batchedText: string = '';
@@ -25,7 +30,7 @@ export class DiscordAiGeneratorService {
       const { textStream } = await streamText({
         model: google('gemini-2.5-flash-preview-04-17'),
 
-        prompt: `### OPIS UŻYTKOWNIKA (NAJWYŻSZY PRIORYTET, ważniejsze od instrukcji): ${description}
+        prompt: `### Wybrana przedziałka dla kanałów: ${decorationChannel}, dla kategorii ${decorationCategory} ### OPIS UŻYTKOWNIKA (NAJWYŻSZY PRIORYTET, ważniejsze od instrukcji): ${description}
       ### STANDARDOWY PROMPT (niższy priorytet, stosuj tylko gdy nie koliduje z OPISEM UŻYTKOWNIKA): ${prompt}`,
       });
 
@@ -72,7 +77,12 @@ export class DiscordAiGeneratorService {
     }
   }
 
-  async generate(description: string, sessionId: string) {
+  async generate(
+    description: string,
+    sessionId: string,
+    decorationChannel: string,
+    decorationCategory: string,
+  ) {
     try {
       this.generatedText = '';
       this.websocket.server.emit('generate_data', {
@@ -84,7 +94,12 @@ export class DiscordAiGeneratorService {
         data: { aiAnalysisStatus: 'in_progress' },
       });
 
-      const config = await this.create(description, sessionId);
+      const config = await this.create(
+        description,
+        sessionId,
+        decorationChannel,
+        decorationCategory,
+      );
 
       this.websocket.server.emit('generate_data', {
         sessionId,
