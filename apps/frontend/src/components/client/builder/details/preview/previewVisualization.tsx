@@ -15,6 +15,7 @@ import { useBuilderContext } from "@/context/BuilderContext"
 import { VoiceChannelPermission } from "../../../icons/voiceChannelPerrmisions"
 import { VoiceChannelIcon } from "../../../icons/voiceChannel"
 import { ChannelIcon } from "../../../icons/channel"
+import { motion } from "framer-motion"
 
 interface Type {
 	filtredChannel: Channel[]
@@ -113,7 +114,7 @@ export default function PreviewVisualization({ filtredChannel, filtredRoles, cat
 				<div className="flex gap-5 rounded-xl w-full max-xl:flex-col">
 					{builderData.channel.length === 0 && builderData.category.length === 0 && <PreviewChannelLoading />}
 					{(builderData.channel.length > 0 || builderData.category.length > 0) && (
-						<article className="bg-altBackgroundColor border border-borderColor rounded-xl w-1/2 p-8 max-lg:w-full min-h-96 max-xl:w-full ">
+						<motion.article initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1, duration: 0.3 }} className="bg-altBackgroundColor border border-borderColor rounded-xl w-1/2 p-8 max-lg:w-full min-h-96 max-xl:w-full ">
 							{sortedChannels.map((el: Channel, index) => (
 								<div className={`relative flex items-center w-96 max-md:w-full ${el.type !== 4 && "hover:bg-borderColor"} truncate rounded-lg group`} key={index}>
 									<div className={`flex items-center ${el.type !== 4 && "hover:bg-borderColor"} rounded-lg group w-full`} key={`inner-${index}`}>
@@ -135,11 +136,11 @@ export default function PreviewVisualization({ filtredChannel, filtredRoles, cat
 									)}
 								</div>
 							))}
-						</article>
+						</motion.article>
 					)}
 					{builderData.roles.length === 0 && <PreviewRolesLoading />}
 					{builderData.roles.length > 0 && (
-						<article className="bg-altBackgroundColor border border-borderColor rounded-xl w-1/2 p-8 max-lg:w-full min-h-96 max-xl:w-full flex-shrink-0">
+						<motion.article initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2, duration: 0.3 }} className="bg-altBackgroundColor border border-borderColor rounded-xl w-1/2 p-8 max-lg:w-full min-h-96 max-xl:w-full flex-shrink-0">
 							<div className="flex flex-wrap gap-2">
 								{filtredRoles.map((el: Roles, index) => {
 									const hexColor = `#${parseInt(el.color).toString(16).padStart(6, "0")}`
@@ -156,7 +157,7 @@ export default function PreviewVisualization({ filtredChannel, filtredRoles, cat
 									)
 								})}
 							</div>
-						</article>
+						</motion.article>
 					)}
 				</div>
 			</section>

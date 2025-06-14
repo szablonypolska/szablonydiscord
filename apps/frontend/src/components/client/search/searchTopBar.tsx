@@ -1,5 +1,6 @@
 "use client"
 import { Button } from "@nextui-org/button"
+import { motion } from "framer-motion"
 import { ArrowDown, ArrowUp, ArrowUpDown, Check, ChevronDown, Grid, List } from "lucide-react"
 import Link from "next/link"
 import { useSearchParams } from "next/navigation"
@@ -49,7 +50,7 @@ export default function SearchTopBar({ count, typeView, setTypeView }: Props) {
 		},
 	]
 	return (
-		<div className="flex items-center justify-between  p-3 px-6 rounded-xl w-full border border-borderColor">
+		<motion.div initial={{ opacity: 0, y: -20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="flex items-center justify-between  p-3 px-6 rounded-xl w-full border border-borderColor">
 			<div className="flex items-center gap-3">
 				<p className="text-darkGray">
 					Znaleziono <span className="text-white">{count * 6}</span> szablonów
@@ -62,9 +63,7 @@ export default function SearchTopBar({ count, typeView, setTypeView }: Props) {
 			</div>
 			<div className="flex gap-5 h-11 max-md:gap-2">
 				<div className="relative h-full">
-					<Button
-						onPress={() => setShowSortDropdown(!showSortDropdown)}
-						className="flex items-center gap-2 bg-altBackgroundColor border border-borderColor rounded-xl px-4 py-2 text-sm hover:border-primaryColor transition-colors h-full">
+					<Button onPress={() => setShowSortDropdown(!showSortDropdown)} className="flex items-center gap-2 bg-altBackgroundColor border border-borderColor rounded-xl px-4 py-2 text-sm hover:border-primaryColor transition-colors h-full">
 						<ArrowUpDown size={16} />
 						{sortOptions.find(opt => opt.id === sortBy)?.label}
 						<ChevronDown size={14} className={`transition-transform duration-200 ${showSortDropdown ? "rotate-180" : ""}`} />
@@ -97,6 +96,6 @@ export default function SearchTopBar({ count, typeView, setTypeView }: Props) {
 					</Button>
 				</div>
 			</div>
-		</div>
+		</motion.div>
 	)
 }

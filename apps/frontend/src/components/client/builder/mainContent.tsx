@@ -3,6 +3,7 @@ import MainContentInput from "./mainContentInput"
 import MainContentBox from "./mainContentBox"
 import { prisma } from "@repo/db"
 
+
 export default async function MainContentBuilder() {
 	const decorationChannel = await prisma.decorationChannel.findMany({})
 	const decorationCategory = await prisma.decorationCategory.findMany({})

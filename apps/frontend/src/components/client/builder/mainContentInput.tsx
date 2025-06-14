@@ -11,6 +11,7 @@ import { Decoration } from "@/components/interfaces/builder/common"
 import MainContentChooseChannel from "./mainContentChooseChannel"
 import MainContentChooseCategory from "./mainContentChooseCategory"
 import MainContentErrorGenerate from "./mainContentErrorGenerate"
+import { motion } from "framer-motion"
 
 export default function MainContentInput({ decorationChannel, decorationCategory }: { decorationChannel: Decoration[]; decorationCategory: Decoration[] }) {
 	const [text, setText] = useState<string>("")
@@ -38,7 +39,7 @@ export default function MainContentInput({ decorationChannel, decorationCategory
 	}
 
 	return (
-		<div className="mt-6 w-[45rem] max-md:w-11/12 relative z-20">
+		<motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.3 }} className="mt-6 w-[45rem] max-md:w-11/12 relative z-20">
 			<div className={`transition-all ${!generateError && "h-0"} overflow-hidden`}>
 				<MainContentErrorGenerate />
 			</div>
@@ -65,14 +66,35 @@ export default function MainContentInput({ decorationChannel, decorationCategory
 						</div>
 						<div className="w-full h-[1px] bg-borderColor rounded-lg my-3"></div>
 						<div className="flex items-center justify-between gap-3 max-md:justify-normal">
-							<div className="">
+							<div className="max-md:hidden">
 								<Button className="rounded-xl" onPress={() => setSettings(!settings)}>
 									<Settings className="w-4 h-4 text-textColor" />
 								</Button>
 							</div>
-							<div className="flex items-center gap-3">
+							<div className="flex flex-col  gap-3 w-full md:hidden">
+								<div className="flex items-center justify-between">
+									<div className="">
+										<Button className="rounded-xl" onPress={() => setSettings(!settings)}>
+											<Settings className="w-4 h-4 text-textColor" />
+										</Button>
+									</div>
+									<div className="">
+										<p className={`text-sm ${text.length > 500 ? "text-errorColor" : "text-textColor"}`}>{text.length}/3000 znaków</p>
+									</div>
+								</div>
+
+								<Button className={`bg-primaryColor rounded-xl px-5 transition-all disabled:opacity-80 ${text.length ? "opacity-100" : "opacity-50"}`} disabled={loader} onPress={createBuilder}>
+									{!loader && (
+										<>
+											<Sparkles className="w-5 h-5" /> <span className="text-sm">Generuj szablon</span>
+										</>
+									)}
+									{loader && <Loader2 className="animate-spin" />}
+								</Button>
+							</div>
+							<div className="flex items-center gap-3 max-md:hidden">
 								<div className="">
-									<p className={`text-sm ${text.length > 500 ? "text-errorColor" : "text-textColor"}`}>{text.length}/500 znaków</p>
+									<p className={`text-sm ${text.length > 500 ? "text-errorColor" : "text-textColor"}`}>{text.length}/3000 znaków</p>
 								</div>
 
 								<Button className={`bg-primaryColor rounded-xl px-5 transition-all disabled:opacity-80 ${text.length ? "opacity-100" : "opacity-50"}`} disabled={loader} onPress={createBuilder}>
@@ -88,6 +110,6 @@ export default function MainContentInput({ decorationChannel, decorationCategory
 					</div>
 				</div>
 			)}
-		</div>
+		</motion.div>
 	)
 }

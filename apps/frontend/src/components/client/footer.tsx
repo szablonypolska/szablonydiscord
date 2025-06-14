@@ -6,7 +6,7 @@ import { MapPin, Mail } from "lucide-react"
 
 export default function Footer() {
 	return (
-		<footer className="bg-altBackgroundColor w-full p-5 mt-20">
+		<footer className="bg-altBackgroundColor w-full p-5 mt-20 z-50">
 			<div className="flex flex-col items-center max-w-screen-2xl mx-auto mt-10">
 				<Logo />
 

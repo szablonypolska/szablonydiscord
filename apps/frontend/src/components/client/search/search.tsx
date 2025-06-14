@@ -1,5 +1,6 @@
 "use client"
 import { Button } from "@nextui-org/button"
+import { motion } from "framer-motion"
 import { Search as SearchItem, LoaderCircle } from "lucide-react"
 import { useRouter, useSearchParams } from "next/navigation"
 import { useEffect, useState, useTransition } from "react"
@@ -33,28 +34,19 @@ export default function Search() {
 	}, [nameParams, name, initialize])
 
 	return (
-		<div className="w-full bg-boxColor p-5 border border-borderColor rounded-xl px-8">
+		<motion.div initial={{ opacity: 0, y: -20 }} animate={{ opacity: 1, y: 0 }} className="w-full bg-boxColor p-5 border border-borderColor rounded-xl px-8">
 			<div className="mt-3">
 				<h1 className="text-2xl font-medium">Szablony Discord</h1>
 				<p className="text-sm text-silverColor mt-2">Przeglądaj i filtruj szablony według kategorii lub użyj wyszukiwarki</p>
 			</div>
 			<div className="flex items-center gap-3 relative mt-5">
-				<input
-					type="text"
-					className="bg-altBackgroundColor border border-borderColor w-full p-3.5 rounded-xl focus:ring-2 focus:ring-primaryDark focus:outline-none"
-					placeholder="Wyszukaj po nazwie lub id..."
-					defaultValue={name}
-					onChange={e => setName(e.target.value)}
-				/>
+				<input type="text" className="bg-altBackgroundColor border border-borderColor w-full p-3.5 rounded-xl focus:ring-2 focus:ring-primaryDark focus:outline-none" placeholder="Wyszukaj po nazwie lub id..." defaultValue={name} onChange={e => setName(e.target.value)} />
 
-				<Button
-					className="flex items-center gap-2 bg-primaryDark text-primaryLight rounded-xl px-6 py-7 text-sm transition-colors disabled:opacity-50"
-					isDisabled={isPending || checkName}
-					onPress={handleSearch}>
+				<Button className="flex items-center gap-2 bg-primaryDark text-primaryLight rounded-xl px-6 py-7 text-sm transition-colors disabled:opacity-50" isDisabled={isPending || checkName} onPress={handleSearch}>
 					{isPending ? <LoaderCircle size="40" className="animate-spin" /> : <SearchItem size="37" />}
 					Wyszukaj
 				</Button>
 			</div>
-		</div>
+		</motion.div>
 	)
 }

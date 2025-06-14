@@ -7,6 +7,7 @@ import { Bot, Download, Eye, Plus, Users, Volume2 } from "lucide-react"
 import { useSession } from "next-auth/react"
 import PreviewVisualization from "./previewVisualization"
 import { PreviewCreator } from "./previewCreator"
+import { motion } from "framer-motion"
 
 export default function PreviewTemplate() {
 	const { builderData } = useBuilderContext()
@@ -16,7 +17,7 @@ export default function PreviewTemplate() {
 
 	return (
 		<div className="flex flex-col items-center w-full ">
-			<div className="bg-altBackgroundColor w-full p-8 rounded-xl border border-borderColor max-lg:p-5">
+			<motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.3 }} className="bg-altBackgroundColor w-full p-8 rounded-xl border border-borderColor max-lg:p-5">
 				<header>
 					<div className="flex items-center justify-between">
 						<div className="flex items-center gap-4 w-full">
@@ -79,7 +80,7 @@ export default function PreviewTemplate() {
 						Przejdź do podglądu szablonu
 					</Button>
 				</section>
-			</div>
+			</motion.div>
 			<PreviewVisualization filtredChannel={channels} filtredRoles={builderData.roles} categories={builderData.category} />
 		</div>
 	)

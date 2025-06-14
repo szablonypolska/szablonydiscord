@@ -14,7 +14,7 @@ export class DiscordAiGeneratorService {
     private discordChooseToken: DiscordChooseToken,
   ) {}
 
-  private generatedText: string = '';
+  private generatedText: string[] = [];
 
   async create(
     description: string,
@@ -24,7 +24,9 @@ export class DiscordAiGeneratorService {
   ) {
     let sendWebsocket: number = 0;
     let batchNumber: number = 0;
-    let batchedText: string = '';
+    let batchedText: string[] = [];
+    const BATCH_SIZE = 100;
+    const BATCH_STEP = 20;
 
     try {
       const { textStream } = await streamText({
@@ -35,36 +37,36 @@ export class DiscordAiGeneratorService {
       });
 
       for await (const text of textStream) {
-        const replaceText = text.replace(/```(json)?\n?/g, '').trim();
+        const chunk = text.replace(/```(json)?\n?/g, '').trim();
 
-        this.generatedText += replaceText;
+        this.generatedText.push(chunk);
         sendWebsocket++;
 
-        if (sendWebsocket >= 100) {
+        if (sendWebsocket >= BATCH_SIZE) {
           batchNumber++;
-          batchedText += replaceText;
+          batchedText.push(chunk);
         }
 
-        if (sendWebsocket >= 100 && batchNumber >= 20) {
+        if (sendWebsocket >= BATCH_SIZE && batchNumber >= BATCH_STEP) {
           this.websocket.server.emit('update_code', {
             sessionId,
-            code: replaceText,
+            code: batchedText.join(''),
           });
           batchNumber = 0;
-          batchedText = '';
+          batchedText.length = 0;
         }
 
-        if (sendWebsocket <= 100 && batchNumber <= 20) {
+        if (sendWebsocket <= BATCH_SIZE && batchNumber <= BATCH_STEP) {
           this.websocket.server.emit('update_code', {
             sessionId,
-            code: replaceText,
+            code: chunk,
           });
         }
       }
 
-      this.generatedText.replace(/^\s*json\s*/i, '');
-
-      const json = JSON.parse(this.generatedText);
+      const json = JSON.parse(
+        this.generatedText.join('').replace(/^\s*json\s*/i, ''),
+      );
 
       return json;
     } catch (err) {
@@ -72,7 +74,7 @@ export class DiscordAiGeneratorService {
 
       await this.prisma.client.generateStatus.update({
         where: { sessionId },
-        data: { code: this.generatedText },
+        data: { code: this.generatedText.join('') },
       });
     }
   }
@@ -84,7 +86,7 @@ export class DiscordAiGeneratorService {
     decorationCategory: string,
   ) {
     try {
-      this.generatedText = '';
+      this.generatedText.length = 0;
       this.websocket.server.emit('generate_data', {
         sessionId: sessionId,
         status: 'in_progress',
@@ -125,7 +127,7 @@ export class DiscordAiGeneratorService {
           tariff: config.details.tariff,
           privacyPolicy: config.details.privacyPolicy,
           faq: config.details.faq,
-          code: this.generatedText,
+          code: this.generatedText.join(''),
         },
       });
 

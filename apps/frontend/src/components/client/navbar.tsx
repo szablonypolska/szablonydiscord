@@ -88,7 +88,7 @@ export default function Navbar() {
 
 	return (
 		<>
-			<nav className="bg-altBackgroundColor w-full z-20 relative border-borderColor border py-5 px-7 rounded-full mt-8 max-lg:py-4 shadow-[0_0_100px_10px_rgba(23,128,119,0.08)]">
+			<nav className="bg-altBackgroundColor w-full z-[100] relative border-borderColor border py-5 px-7 rounded-full mt-8 max-lg:py-4 shadow-[0_0_100px_10px_rgba(23,128,119,0.08)]">
 				<div className="flex items-center justify-between max-lg:hidden">
 					<Logo />
 					<div className="">
@@ -118,9 +118,9 @@ export default function Navbar() {
 					<div className="flex items-center justify-between">
 						<Logo />
 
-						<Button onPress={() => setView(!view)}>
+						<button onClick={() => setView(!view)}>
 							<Menu className="w-8 h-8" />
-						</Button>
+						</button>
 					</div>
 				</div>
 			</nav>

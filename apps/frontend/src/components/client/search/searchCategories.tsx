@@ -5,6 +5,7 @@ import { ArrowDown, ArrowUp } from "lucide-react"
 import { Button } from "@nextui-org/button"
 import { useSearchParams } from "next/navigation"
 import { useRouter } from "next/navigation"
+import { motion } from "framer-motion"
 
 interface Type {
 	categories: string
@@ -40,16 +41,11 @@ export default function SearchCategories({ categories }: TypeProps) {
 	}
 
 	return (
-		<div className="w-80  bg-boxColor py-5 border border-borderColor rounded-xl flex-shrink-0 max-xl:w-72 max-lg:w-full">
+		<motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} className="w-80  bg-boxColor py-5 border border-borderColor rounded-xl flex-shrink-0 max-xl:w-72 max-lg:w-full">
 			<p className="font-medium text-lg px-5">Kategorie</p>
 			<div className="flex flex-col gap-2 px-5 mt-5">
 				{categories.slice(0, showLength).map((el, index) => (
-					<Button
-						key={index}
-						onPress={() => handleChange(el.categories)}
-						className={`group flex items-center justify-between text-textColor my-0 py-0 px-3 rounded-xl hover:bg-borderColor w-full ${
-							el.categories == category && "bg-primaryDark text-primaryLight hover:bg-primaryDark"
-						}`}>
+					<Button key={index} onPress={() => handleChange(el.categories)} className={`group flex items-center justify-between text-textColor my-0 py-0 px-3 rounded-xl hover:bg-borderColor w-full ${el.categories == category && "bg-primaryDark text-primaryLight hover:bg-primaryDark"}`}>
 						<p className={`${el.categories == category && "bg-primaryDark text-primaryLight hover:bg-primaryDark"}`}>{el.categories}</p>
 						<p className={`${el.categories == category && "bg-primaryDark text-primaryLight hover:bg-primaryDark"}`}>{el._count.categories}</p>
 					</Button>
@@ -61,6 +57,6 @@ export default function SearchCategories({ categories }: TypeProps) {
 					{show ? <ArrowUp size="20" /> : <ArrowDown size="20" />}
 				</button>
 			</div>
-		</div>
+		</motion.div>
 	)
 }

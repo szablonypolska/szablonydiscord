@@ -32,6 +32,9 @@ model User {
   warnings Int @default(0)
   limitApiKey Int @default(2)
   trustScore Int @default(100)
+  walletBalance Int @default(0)
+  builderAiUsage Int @default(0)
+  builderAiLimit Int @default(3)
   notificationApi Boolean @default(false)
   emailVerified Boolean @default(false)
   permission String @default("user")
@@ -40,6 +43,18 @@ model User {
   api Api[]
   order Order[]
   chat Chat[]
+  transaction Transaction[]
+}
+
+model Transaction {
+  id Int @id @default(autoincrement())
+  transactionId String @unique
+  userId String
+  amount Int @default(0)
+  date DateTime @default(now())
+  type String 
+  description String?
+  user User @relation(fields: [userId], references: [userId], onDelete: Cascade, onUpdate: Cascade)
 }
 
 model Chat {

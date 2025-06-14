@@ -4,24 +4,15 @@ import { Button } from "@nextui-org/button"
 import decorationTemplatesElement from "../../../../../public/templatesDecorationSearch.svg"
 import searchDecoration from "../../../../../public/searchDecoration.svg"
 import Image from "next/image"
-import { useEffect, useRef, useState } from "react"
+import { useState } from "react"
 import Link from "next/link"
 import { PlaceholdersAndVanishInput } from "@/components/ui/placeholders-and-vanish-input"
 import { Search } from "lucide-react"
 import { BlurFade } from "@/components/ui/blur-fade"
-import gsap from "gsap"
+import { motion } from "framer-motion"
 
 export default function HeaderTemplates({ searchHistory }: { searchHistory: string[] }) {
 	const [text, setText] = useState<string>("")
-	const animationImage = useRef<HTMLImageElement>(null)
-
-	useEffect(() => {
-		gsap.to(animationImage.current, {
-			opacity: 1,
-			duration: 0.5,
-			x: -10,
-		})
-	}, [])
 
 	const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
 		console.log(handleChange)
@@ -75,7 +66,9 @@ export default function HeaderTemplates({ searchHistory }: { searchHistory: stri
 					</div>
 					<Image src={decorationTemplatesElement} alt="dekoracyjny wykresowy element" className="absolute -top-20 right-5 z-10" />
 				</div>
-				<Image src={searchDecoration} alt="zdjecie z czlowiekiem" className="flex justify-center w-1/2 h-96 max-lg:w-5/12 max-lg:hidden opacity-0" ref={animationImage}></Image>
+				<motion.div initial={{ opacity: 0, x: 50 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1, duration: 0.3 }} className="w-1/2 h-full max-lg:w-full max-md:hidden relative">
+					<Image src={searchDecoration} alt="zdjecie z czlowiekiem" className="flex justify-center w-full h-96 max-lg:w-5/12 max-lg:hidden "></Image>
+				</motion.div>
 			</header>
 		</>
 	)

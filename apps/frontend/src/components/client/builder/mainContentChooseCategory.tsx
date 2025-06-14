@@ -20,10 +20,6 @@ export default function MainContentChooseCategory({ decorationCategory, currentC
 		setViewCategoryDecoration(false)
 	}, [currentCategoryDecoration])
 
-	useEffect(() => {
-		setViewCategoryDecoration(false)
-	}, [currentCategoryDecoration])
-
 	const handleClickOutside = () => {
 		setViewCategoryDecoration(false)
 	}
@@ -37,12 +33,12 @@ export default function MainContentChooseCategory({ decorationCategory, currentC
 				<p>Styl kategorii</p>
 			</div>
 			<div className="relative mt-2 w-full">
-				<button className="flex items-center justify-between bg-borderColor w-full border border-altBorderColor rounded-lg p-2 text-left text-sm hover:border-primaryColor" onClick={() => setViewCategoryDecoration(!viewCategoryDecoration)}>
+				<button className="flex items-center justify-between bg-borderColor w-full border border-altBorderColor rounded-lg p-2 text-left text-sm hover:border-primaryColor" onClick={() => setViewCategoryDecoration(true)}>
 					<span>{currentCategoryDecoration}</span>
 					<ChevronDown className={`w-4 h-4 transition-all ${viewCategoryDecoration ? "rotate-180" : ""}`} />
 				</button>
 				{viewCategoryDecoration && (
-					<div className="absolute flex flex-col items-start bg-boxColor p-2  rounded-lg w-11/12 mt-2 border border-borderColor h-80  z-50 max-md:w-full" ref={elementRef}>
+					<div className="absolute flex flex-col items-start bg-boxColor p-2  rounded-lg w-11/12 mt-2 border border-borderColor h-80  z-[150] max-md:w-full" ref={elementRef}>
 						<div className="w-full">
 							<button onClick={() => setCurrentCategoryDecoration("━━≫INFORMACJE≪━━")} className={`${"━━≫INFORMACJE≪━━" === currentCategoryDecoration && "bg-primaryColor w-full rounded-lg text-left px-2"} w-full text-left px-4`}>
 								<pre className="my-2 text-sm">━━≫INFORMACJE≪━━ (domyślny)</pre>
