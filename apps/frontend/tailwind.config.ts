@@ -27,6 +27,7 @@ export default {
 				errorColor: "var(--errorColor)",
 				darknesErrorColor: "var(--darknesErrorColor)",
 				primaryDark: "var(--primary-dark)",
+				"primaryDark-50": "color-mix(in srgb, var(--primary-dark) 50%, transparent)",
 				primaryLight: "var(--primary-light)",
 				darkGray: "var(--darkGray)",
 				placeHolderTextColor: "var(--placeholderTextColor)",

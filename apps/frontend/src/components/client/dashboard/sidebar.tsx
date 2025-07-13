@@ -9,6 +9,7 @@ import { Key, User, FileCode2, Shield, LogOut } from "lucide-react"
 import { useSession, signOut } from "next-auth/react"
 import DiscordUserAvatar from "../../../../public/discordUserAvatar.jpg"
 import { useDashboardContext } from "@/context/DashboardContext"
+import WalletPopup from "./wallet/walletPopup"
 
 export default function Sidebar() {
 	const pathname = usePathname()
@@ -17,9 +18,9 @@ export default function Sidebar() {
 
 	return (
 		<>
+			<WalletPopup />
 			<div className={`fixed top-0 left-0 w-full h-full  backdrop-blur-[2px] transition-opacity duration-300 ease-in-out z-10 ${showSidebar ? "max-lg:block lg:hidden" : "hidden"}`}></div>
-			<div
-				className={`flex flex-col bg-sidebarColor border-r-2 border-borderColor h-screen ${showSidebar ? "w-[17rem]" : "w-20 max-lg:w-0 max-lg:overflow-hidden"} transition-all duration-300 max-lg:absolute  z-20  `}>
+			<div className={`flex flex-col bg-sidebarColor border-r-2 border-borderColor h-screen ${showSidebar ? "w-[18rem]" : "w-20 max-lg:w-0 max-lg:overflow-hidden"} transition-all duration-300 max-lg:absolute  z-20  `}>
 				<Link href="/" className={`flex items-center gap-4 px-3 h-16 ${!showSidebar && "justify-center max-lg:justify-start"}`}>
 					<Image src={logo} alt="logo storny szablonydiscord" />
 					<h2 className={`${showSidebar ? "block" : "hidden max-lg:block"} text-xl`}>SzablonyDiscord</h2>
@@ -30,8 +31,7 @@ export default function Sidebar() {
 					<p className="px-2 text-silverColor uppercase text-sm truncate w-11/12">wszystko</p>
 					<div className="w-full">
 						<Link href="/dashboard">
-							<div
-								className={`${pathname === "/dashboard" ? "bg-primaryColor text-white" : "text-silverColor hover:bg-borderColor"} px-2 w-full rounded-lg py-2 flex ${!showSidebar && "justify-center max-lg:justify-start"}  items-center gap-4 text-lg`}>
+							<div className={`${pathname === "/dashboard" || pathname.includes("api") ? "bg-primaryColor text-white" : "text-silverColor hover:bg-borderColor"} px-2 w-full rounded-lg py-2 flex ${!showSidebar && "justify-center max-lg:justify-start"}  items-center gap-4 text-lg`}>
 								<Key size={showSidebar ? "25" : "30"} />
 								<p className={`${showSidebar ? "block" : "hidden max-lg:block"}`}>Api Menagement</p>
 							</div>
@@ -39,8 +39,7 @@ export default function Sidebar() {
 					</div>
 					<div className="">
 						<Link href="/dashboard/profile">
-							<div
-								className={`${pathname === "/dashboard/profile" ? "bg-primaryColor text-white" : "text-silverColor hover:bg-borderColor"} px-2 w-full rounded-lg py-2 flex ${!showSidebar && "justify-center max-lg:justify-start"}  items-center gap-4 text-lg`}>
+							<div className={`${pathname === "/dashboard/profile" ? "bg-primaryColor text-white" : "text-silverColor hover:bg-borderColor"} px-2 w-full rounded-lg py-2 flex ${!showSidebar && "justify-center max-lg:justify-start"}  items-center gap-4 text-lg`}>
 								<User size={showSidebar ? "25" : "30"} />
 								<p className={`${showSidebar ? "block" : "hidden max-lg:block"}`}>Publiczny profil</p>
 							</div>
@@ -48,8 +47,7 @@ export default function Sidebar() {
 					</div>
 					<div className="">
 						<Link href="/dashboard/templates">
-							<div
-								className={`${pathname === "/dashboard/templates" ? "bg-primaryColor text-white" : "text-silverColor hover:bg-borderColor"} px-2 w-full rounded-lg py-2 flex ${!showSidebar && "justify-center"}  items-center gap-4 text-lg`}>
+							<div className={`${pathname === "/dashboard/templates" ? "bg-primaryColor text-white" : "text-silverColor hover:bg-borderColor"} px-2 w-full rounded-lg py-2 flex ${!showSidebar && "justify-center"}  items-center gap-4 text-lg`}>
 								<FileCode2 size={showSidebar ? "25" : "30"} />
 								<p className={`${showSidebar ? "block" : "hidden max-lg:block"}`}>Szablony</p>
 							</div>
@@ -58,8 +56,7 @@ export default function Sidebar() {
 					<p className={`px-2 text-silverColor uppercase text-sm mt-5 ${!showSidebar && "text-center px-0 max-lg:text-start"}`}>admin</p>
 					<div className="">
 						<Link href="/dashboard/admin">
-							<div
-								className={`${pathname === "/dashboard/admin" ? "bg-primaryColor text-white" : "text-silverColor hover:bg-borderColor"} px-2 w-full rounded-lg py-2 flex ${!showSidebar && "justify-center"}  items-center gap-4 text-lg`}>
+							<div className={`${pathname === "/dashboard/admin" ? "bg-primaryColor text-white" : "text-silverColor hover:bg-borderColor"} px-2 w-full rounded-lg py-2 flex ${!showSidebar && "justify-center"}  items-center gap-4 text-lg`}>
 								<Shield size={showSidebar ? "25" : "30"} />
 								<p className={`${showSidebar ? "block" : "hidden max-lg:block"}`}>Admin Panel</p>
 							</div>

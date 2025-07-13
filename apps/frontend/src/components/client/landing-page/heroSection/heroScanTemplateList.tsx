@@ -54,13 +54,11 @@ export default function ScanTemplateList({ templates, status }: Props) {
 		}
 	}, [id, status, templates])
 
-	console.log(list)
-
 	return (
 		<>
 			<Modals modal={modal} setModal={setModal} status={status} />
 			<div className="w-[27rem] rounded-lg p-5 relative max-md:w-full max-md:p-0 max-lg:w-1/2 max-md:mt-10 max-md:px-2">
-				<div className="flex gap-3 bg-darknesPrimaryColor py-3 px-5 w-fit rounded-2xl absolute -top-[4rem] -left-[6rem] z-20 max-lg:py-2 max-lg:px-3 max-lg:-top-[2rem] max-md:-left-2 max-md:-top-12">
+				<motion.div initial={{ opacity: 0, x: -10 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.3, duration: 0.3 }} className="flex gap-3 bg-darknesPrimaryColor py-3 px-5 w-fit rounded-2xl absolute -top-[4rem] -left-[6rem] z-20 max-lg:py-2 max-lg:px-3 max-lg:-top-[2rem] max-md:-left-2 max-md:-top-12">
 					<div className="w-12 h-12 bg-primaryColor flex items-center justify-center rounded-full">
 						<Plus className=" " />
 					</div>
@@ -75,8 +73,8 @@ export default function ScanTemplateList({ templates, status }: Props) {
 							</button>
 						</p>
 					</div>
-				</div>
-				<div className="absolute -bottom-20 -right-12 bg-darknesPrimaryColor p-1 z-20 flex gap-2 items-center rounded-full px-2 pl-5 max-lg:-right-2 max-md:bottom-5  ">
+				</motion.div>
+				<motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.5, duration: 0.3 }} className="absolute -bottom-20 -right-12 bg-darknesPrimaryColor p-1 z-20 flex gap-2 items-center rounded-full px-2 pl-5 max-lg:-right-2 max-md:bottom-5  ">
 					<p>Wspieramy:</p>
 					<div className="flex  bg-boxColor px-1 rounded-full">
 						<div className="bg-borderColor w-8 h-8 flex items-center justify-center rounded-full m-1 text-primaryColor">
@@ -92,16 +90,16 @@ export default function ScanTemplateList({ templates, status }: Props) {
 							<Key className="w-4 h-4" />
 						</div>
 					</div>
-				</div>
+				</motion.div>
 				<Image src={heroDecoration} alt="decoration element" className="absolute -top-5 left-[21.5rem] z-0 max-md:-top-[6rem]  max-md:left-[10rem]" />
-				<div className="absolute inset-0 z-10 bg-boxColor rounded-lg border border-borderColor p-5 overflow-hidden max-lg:relative max-lg:w-full max-md:mb-20 max-md:mx-auto max-md:px-2">
+				<motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.4, duration: 0.3 }} className="absolute inset-0 z-10 bg-boxColor rounded-lg border border-borderColor p-5 overflow-hidden max-lg:relative max-lg:w-full max-md:mb-20 max-md:mx-auto max-md:px-2">
 					<div className="flex items-center gap-1 mt-2">
 						<p className="">Ostatnie przeskanowane szablony</p>
 						<p className="font-semibold">({scanTemplate})</p>
 					</div>
 					<div className="flex flex-col gap-3 mt-4">
 						{list.map(element => (
-							<motion.div key={`source1-${element.templateId}` || element.templateId} initial={{ opacity: 0, y: -50 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -50 }} transition={{ duration: 0.5 }} layout className={`flex items-center gap-3 bg-altBackgroundColor border border-borderColor py-3 px-5 rounded-2xl  ${!element.title ? "hidden" : "block"}`}>
+							<motion.div key={`source1-${element.templateId}` || element.templateId} initial={{ opacity: 0, y: -20 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -50 }} transition={{ duration: 0.5 }} layout className={`flex items-center gap-3 bg-altBackgroundColor border border-borderColor py-3 px-5 rounded-2xl  ${!element.title ? "hidden" : "block"}`}>
 								<AnimatePresence>
 									<div className="text-gray-300 w-full">
 										<p className="truncate w-11/12">{element.title}</p>
@@ -114,7 +112,7 @@ export default function ScanTemplateList({ templates, status }: Props) {
 							</motion.div>
 						))}
 					</div>
-				</div>
+				</motion.div>
 			</div>
 		</>
 	)

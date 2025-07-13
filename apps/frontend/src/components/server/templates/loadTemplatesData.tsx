@@ -60,8 +60,6 @@ export default async function LoadTemplatesData({ params }: Params) {
 
 		templatesData = { ...templatesData, historyLength: visitHistory.length }
 
-		console.log(templateDiscordJson)
-
 		return <TemplatesDetails data={templateDiscordJson} base={templatesData} />
 	} catch (err: unknown) {
 		let message = "Unknown error occurred"

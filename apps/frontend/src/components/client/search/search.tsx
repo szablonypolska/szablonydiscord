@@ -34,7 +34,7 @@ export default function Search() {
 	}, [nameParams, name, initialize])
 
 	return (
-		<motion.div initial={{ opacity: 0, y: -20 }} animate={{ opacity: 1, y: 0 }} className="w-full bg-boxColor p-5 border border-borderColor rounded-xl px-8">
+		<motion.div initial={{ opacity: 0, y: -20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.3 }} className="w-full bg-boxColor p-5 border border-borderColor rounded-xl px-8">
 			<div className="mt-3">
 				<h1 className="text-2xl font-medium">Szablony Discord</h1>
 				<p className="text-sm text-silverColor mt-2">Przeglądaj i filtruj szablony według kategorii lub użyj wyszukiwarki</p>

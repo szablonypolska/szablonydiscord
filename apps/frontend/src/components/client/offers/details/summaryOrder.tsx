@@ -3,6 +3,7 @@
 import { useOrderContext } from "@/context/OrderContext"
 import createPayments from "@/lib/payments/createPayments"
 import { Button } from "@nextui-org/button"
+import { motion } from "framer-motion"
 import { Lock, Timer, Loader2, ShoppingBag } from "lucide-react"
 import { useSession } from "next-auth/react"
 import Link from "next/link"
@@ -42,7 +43,7 @@ export default function SummaryOrder() {
 	}
 
 	return (
-		<div className="sticky top-0 left-0 bg-boxColor border border-borderColor p-5 rounded-xl w-[22rem] flex-shrink-0">
+		<motion.div initial={{ opacity: 0, x: 30 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.3, duration: 0.3 }} className="sticky top-0 left-0 bg-boxColor border border-borderColor p-5 rounded-xl w-[22rem] flex-shrink-0">
 			<h2 className="font-semibold">Podsumowanie</h2>
 			<div className="flex flex-col gap-4 mt-5">
 				<div className="flex items-center justify-between">
@@ -93,6 +94,6 @@ export default function SummaryOrder() {
 				<Timer className="w-4 h-4" />
 				<p className="text-sm">Realizacja: natychmiastowa</p>
 			</div>
-		</div>
+		</motion.div>
 	)
 }

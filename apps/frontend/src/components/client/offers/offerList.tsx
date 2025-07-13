@@ -1,12 +1,10 @@
 "use client"
 import { Button } from "@nextui-org/button"
-import gsap from "gsap"
-import { ArrowRight, Check, Lock, Shield, Sparkles } from "lucide-react"
+import { motion } from "framer-motion"
+import { ArrowRight, Check, Lock, Shield } from "lucide-react"
 import Link from "next/link"
-import { useEffect, useRef } from "react"
 
 export default function OfferList() {
-	const animation = useRef<HTMLDivElement>(null)
 	const packages = [
 		{
 			id: 1,
@@ -43,20 +41,11 @@ export default function OfferList() {
 		},
 	]
 
-	useEffect(() => {
-		gsap.to(animation.current, {
-			opacity: 1,
-			duration: 0.5,
-			y: 10,
-			ease: "ease out",
-		})
-	}, [])
-
 	return (
-		<div className="flex flex-col items-center justify-center my-20 opacity-0" ref={animation}>
-			<div className="flex items-center gap-3 bg-borderColor p-1.5 px-5 rounded-full w-fit">
-				<Sparkles className="text-primaryColor w-5 h-5" />
-				<p className="font-semibold text-sm">Wybierz pakiet ochrony</p>
+		<motion.div initial={{ opacity: 0, y: -30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.3 }} className="flex flex-col items-center justify-center my-20">
+			<div className="flex items-center gap-2 bg-primaryDark-50 text-primaryColor p-1.5 px-5 rounded-full w-fit">
+				<Shield className="text-primaryColor w-5 h-5" />
+				<p className=" text-sm">Wybierz pakiet ochrony</p>
 			</div>
 			<div className="mt-5 text-center">
 				<h1 className="text-3xl font-semibold">Zabezpiecz swój serwer Discord</h1>
@@ -112,6 +101,6 @@ export default function OfferList() {
 				))}
 			</div>
 			<p className="mt-5 text-sm text-textColor">*Niniejsza oferta stanowi współprace ze shizeclone.eu</p>
-		</div>
+		</motion.div>
 	)
 }

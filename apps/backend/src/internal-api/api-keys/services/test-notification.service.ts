@@ -34,7 +34,9 @@ export class NotificationTestService {
     });
   };
 
-  async testNotification(testBody: TestNotificationData): Promise<void> {
+  async testNotification(
+    testBody: TestNotificationData,
+  ): Promise<{ message: string }> {
     try {
       console.log(testBody);
       const searchApi = await this.prisma.client.api.findUnique({
@@ -52,11 +54,14 @@ export class NotificationTestService {
         searchApi,
       );
 
+      const title = this.replaceVariables(testBody.title, searchApi);
+
       const embed = {
         embeds: [
           {
-            title: testBody.title,
+            title: title,
             description: description,
+            color: parseInt(testBody.color, 16),
 
             footer: {
               text: 'powered by SzablonyDiscord',
@@ -66,6 +71,8 @@ export class NotificationTestService {
       };
 
       await firstValueFrom(this.httpService.post(testBody.webhookUrl, embed));
+
+      return { message: 'Notification sent successfully' };
     } catch (err) {
       console.log(err);
       throw err;

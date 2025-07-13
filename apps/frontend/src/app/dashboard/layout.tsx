@@ -43,14 +43,14 @@ export default async function Layout({ children }: { children: React.ReactNode }
 			/>
 			<NotificationsSidebar />
 
-			<div className="flex w-full h-screen">
+			<div className="flex w-full h-screen ">
 				<div className="flex-shrink-0">
 					<Sidebar />
 				</div>
 
-				<div className="flex flex-col w-full">
+				<div className="flex flex-col w-full ">
 					<TopSidebar />
-					<div className="overflow-y-auto">{children}</div>
+					<div className="scrollbar scrollbar-thumb-altBorderColor scrollbar-track-borderColor overflow-y-auto">{children}</div>
 				</div>
 			</div>
 		</DashboardProvider>

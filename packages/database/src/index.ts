@@ -1,10 +1,11 @@
 import { PrismaClient } from "@prisma/client"
-import { withPulse } from "@prisma/extension-pulse"
 
-const prisma = new PrismaClient({ log: ["warn", "error"] }).$extends(
-	withPulse({
-		apiKey: process.env["PULSE_API_KEY"] as string,
-	})
-)
+declare global {
+	var prisma: PrismaClient | undefined
+}
 
-export { prisma }
+export const prisma = globalThis.prisma || new PrismaClient()
+
+if (process.env.NODE_ENV !== "production") {
+	globalThis.prisma = prisma
+}

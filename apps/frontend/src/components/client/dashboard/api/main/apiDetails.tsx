@@ -56,7 +56,7 @@ export default function ApiDetails({ user, updateUser }: CreateApiKeyProps) {
 
 	return (
 		<>
-			{user.api.map(el => {
+			{user.api.map((el, index) => {
 				const succesRate = (el.successCount / el.reqCount) * 100
 				const errorRate = (el.errorCount / el.reqCount) * 100
 				const monthlyUsage = (el.monthlyCount / el.monthlyLimit) * 100
@@ -64,14 +64,12 @@ export default function ApiDetails({ user, updateUser }: CreateApiKeyProps) {
 				const lastUsedApi = formatData(el.lastUsed as Date)
 
 				return (
-					<div className="flex flex-col  w-full bg-altBackgroundColor border border-borderColor mt-7 rounded-xl p-10 max-xl:p-5" key={el.id}>
+					<div className="flex flex-col  w-full bg-altBackgroundColor border border-borderColor mt-7 rounded-xl  p-10 max-xl:p-5" key={el.id || index}>
 						<div className="flex  justify-between max-md:flex-col">
 							<div>
 								<div className="flex items-center gap-5">
 									<h3 className="text-xl font-semibold">{el.name}</h3>
-									<span className={`px-3 py-1 ${el.status ? "bg-darknesPrimaryColor text-primaryColor" : "bg-darknesErrorColor text-errorColor"} rounded-full`}>
-										{el.status ? "Aktywny" : "Wyłączony"}
-									</span>
+									<span className={`px-3 py-1 ${el.status ? "bg-darknesPrimaryColor text-primaryColor" : "bg-darknesErrorColor text-errorColor"} rounded-full`}>{el.status ? "Aktywny" : "Wyłączony"}</span>
 								</div>
 								<p className="text-silverColor text-md">Stworzony: {dateCreateApi}</p>
 							</div>
@@ -82,9 +80,7 @@ export default function ApiDetails({ user, updateUser }: CreateApiKeyProps) {
 										Konfiguruj
 									</Button>
 								</Link>
-								<Button
-									className={`flex items-center ${el.status ? "bg-borderColor" : "bg-primaryColor"} rounded-xl py-6 px-5 max-md:w-full`}
-									onPress={() => handlerUpdate(el.userId, el.apiKeyId, "update")}>
+								<Button className={`flex items-center ${el.status ? "bg-borderColor" : "bg-primaryColor"} rounded-xl py-6 px-5 max-md:w-full`} onPress={() => handlerUpdate(el.userId, el.apiKeyId, "update")}>
 									{el.status ? "Wyłącz" : "Włącz"}
 								</Button>
 								<Button className="flex items-center hover:bg-borderColor py-6 px-3 rounded-xl max-md:w-full" onPress={() => handlerUpdate(el.userId, el.apiKeyId, "delete")}>

@@ -7,7 +7,7 @@ import { motion } from "framer-motion"
 export default function HeroContent() {
 	return (
 		<>
-			<motion.div initial={{ opacity: 0, x: -40 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 }} className="max-md:flex max-md:flex-col max-md:items-center max-md:text-center mb-10 max-md:w-full max-lg:w-1/2">
+			<motion.div initial={{ opacity: 0, x: -30 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 }} className="max-md:flex max-md:flex-col max-md:items-center max-md:text-center mb-10 max-md:w-full max-lg:w-1/2">
 				<div className="flex items-center gap-2 bg-borderColor w-fit px-2 py-1 rounded-full">
 					<BadgeCheck className="text-primaryColor w-5 h-5 max-md:w-4 max-md:h-4" />
 					<p className="text-gray-300 max-md:text-sm">Szablonydiscord jest w pełni bezpłatne</p>

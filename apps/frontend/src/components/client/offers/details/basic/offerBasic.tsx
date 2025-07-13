@@ -1,19 +1,19 @@
 "use client"
 
-import { useEffect, useRef, useState } from "react"
+import { useEffect, useState } from "react"
 import SummaryOrder from "../summaryOrder"
 import { useOrderContext } from "@/context/OrderContext"
 import { CircleAlert, Loader2, ShieldCheckIcon } from "lucide-react"
 import DiscountCode from "../../discountCode"
 import verifyTemplates from "@/lib/templates/verifyTemplates"
-import gsap from "gsap"
+import { motion } from "framer-motion"
+
 
 export default function OfferBasic() {
 	const { state, dispatch } = useOrderContext()
 	const [link, setLink] = useState<string>("")
 	const [error, setError] = useState<string>("")
 	const [loader, setLoader] = useState<boolean>(false)
-	const animation = useRef<HTMLDivElement>(null)
 
 	useEffect(() => {
 		dispatch({ type: "offers", payload: "basic" })
@@ -48,19 +48,10 @@ export default function OfferBasic() {
 		}
 	}, [link, state.serverLink])
 
-	useEffect(() => {
-		gsap.to(animation.current, {
-			opacity: 1,
-			duration: 0.5,
-			y: -10,
-			ease: "ease out",
-		})
-	}, [])
-
 	return (
-		<div className="flex items-start gap-5 w-full mt-8 max-lg:flex-col opacity-0" ref={animation}>
+		<div className="flex items-start gap-5 w-full mt-8 max-lg:flex-col">
 			<div className="w-full">
-				<div className="flex justify-between items-start bg-boxColor border border-borderColor p-5 rounded-lg w-full max-md:flex-col">
+				<motion.div initial={{opacity: 0, y: -30}} animate={{opacity: 1, y: 0}} transition={{ duration: 0.3}} className="flex justify-between items-start bg-boxColor border border-borderColor p-5 rounded-lg w-full max-md:flex-col">
 					<div className="flex items-center gap-3 ">
 						<div className="flex items-center justify-center w-14 h-14 bg-borderColor rounded-lg">
 							<ShieldCheckIcon className="w-7 h-7 text-primaryColor" />
@@ -71,8 +62,8 @@ export default function OfferBasic() {
 						</div>
 					</div>
 					<div className="bg-primaryColor px-3 py-1 rounded-full text-sm max-md:mt-2 max-md:w-full max-md:text-center">Wybrany pakiet</div>
-				</div>
-				<div className="bg-boxColor border border-borderColor  rounded-lg w-full mt-5">
+				</motion.div>
+				<motion.div initial={{opacity: 0, y: -30}} animate={{opacity: 1, y: 0}} transition={{delay: 0.1, duration: 0.3}} className="bg-boxColor border border-borderColor  rounded-lg w-full mt-5">
 					<p className="font-semibold p-5">Dane serwera</p>
 					<div className="w-full h-[1px] bg-borderColor"></div>
 					<div className="p-5">
@@ -104,7 +95,7 @@ disabled:opacity-40 `}
 							</div>
 						</div>
 					</div>
-				</div>
+				</motion.div>
 				<DiscountCode />
 			</div>
 			<SummaryOrder />

@@ -50,7 +50,7 @@ export default function SearchTopBar({ count, typeView, setTypeView }: Props) {
 		},
 	]
 	return (
-		<motion.div initial={{ opacity: 0, y: -20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="flex items-center justify-between  p-3 px-6 rounded-xl w-full border border-borderColor">
+		<motion.div initial={{ opacity: 0, y: -20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1, duration: 0.3 }} className="flex items-center justify-between  p-3 px-6 rounded-xl w-full border border-borderColor">
 			<div className="flex items-center gap-3">
 				<p className="text-darkGray">
 					Znaleziono <span className="text-white">{count * 6}</span> szablonów

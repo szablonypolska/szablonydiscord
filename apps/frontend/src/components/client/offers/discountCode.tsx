@@ -5,6 +5,7 @@ import { CircleAlert, Loader2, Check } from "lucide-react"
 import { useEffect, useState } from "react"
 import vetifyDiscountCode from "@/lib/payments/verifyPromoCode"
 import { useOrderContext } from "@/context/OrderContext"
+import { motion } from "framer-motion"
 
 export default function DiscountCode() {
 	const [loader, setLoader] = useState<boolean>(false)
@@ -62,7 +63,7 @@ export default function DiscountCode() {
 
 	return (
 		<>
-			<div className="bg-boxColor border border-borderColor rounded-lg w-full mt-5">
+			<motion.div initial={{ opacity: 0, y: -30 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2, duration: 0.3 }} className="bg-boxColor border border-borderColor rounded-lg w-full mt-5">
 				<p className="font-semibold p-5">Kod promocyjny</p>
 
 				<div className="w-full h-[1px] bg-borderColor"></div>
@@ -92,7 +93,7 @@ export default function DiscountCode() {
 						<p>{error}</p>
 					</div>
 				</div>
-			</div>
+			</motion.div>
 		</>
 	)
 }

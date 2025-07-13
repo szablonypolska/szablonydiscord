@@ -18,7 +18,7 @@ export class TemplatesService {
         await this.prisma.client.$transaction([
           this.prisma.client.templates.count(),
           this.prisma.client.templates.findMany({
-            orderBy: { dateCreateSystem: 'desc' },
+            orderBy: { dateCreate: 'desc' },
             skip: (pageNumber - 1) * pageSize,
             take: pageSize,
           }),

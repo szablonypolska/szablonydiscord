@@ -27,7 +27,7 @@ export default function TopSidebar() {
 					<div className="flex items-center gap-4 ml-4 mr-3 max-lg:hidden">
 						<Home size="16" color="#9ca3af" />
 						<ChevronRight size="14" color="#9ca3af" />
-						<p className="font-medium text-lg">{pathname.split("/dashboard")[1] === "" ? "Home" : pathname.split("/dashboard")[1]}</p>
+						<p className="font-medium text-lg">Home</p>
 					</div>
 					<div className="h-3/6 w-0.5 bg-borderColor max-lg:hidden"></div>
 					<div className="flex items-center gap-3 p-2 px-3 bg-altBackgroundColor border border-borderColor rounded-lg hover:border-primaryColor transition-all ml-3 max-lg:hidden">

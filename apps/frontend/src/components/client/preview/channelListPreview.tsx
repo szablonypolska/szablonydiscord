@@ -29,7 +29,7 @@ export default function ChannelList({ dataTemplate, slugUrl }: { dataTemplate: D
 						<ChevronDown className="text-gray-300" />
 					</div>
 				</Link>
-				<div className="p-3 w-full scrollbar scrollbar-thumb-altBorderColor scrollbar-track-borderColor  overflow-y-scroll">
+				<div className="p-3 w-full scrollbar scrollbar-thumb-altBorderColor scrollbar-track-borderColor  overflow-y-auto">
 					{dataTemplate.serialized_source_guild.channels.map((el: Channel) => (
 						<div className={`flex items-center   ${el.type !== 4 && "hover:bg-borderColor"}  rounded-lg group w-full`} key={el.id}>
 							<div className={`w-full ${channelStyles[el.type]}`} key={el.id}>

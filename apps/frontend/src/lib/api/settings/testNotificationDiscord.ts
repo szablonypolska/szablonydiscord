@@ -27,8 +27,6 @@ export default async function testNotification(params: CreateApiKeyParams) {
 		if (!fetchData.ok) {
 			throw new Error(`Error while response`)
 		}
-
-		return await fetchData.json()
 	} catch (err) {
 		console.error("Error in testNotification:", err)
 		throw err

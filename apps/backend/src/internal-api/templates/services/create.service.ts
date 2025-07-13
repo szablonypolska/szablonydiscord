@@ -14,6 +14,7 @@ import { DetailsTemplates } from '../interfaces/templates.interface';
 import { differenceInDays, format } from 'date-fns';
 import { pl } from 'date-fns/locale';
 import { slugify } from 'src/common/utils/slugify';
+import { generateText } from 'ai';
 
 @Injectable()
 export class TemplatesService {
