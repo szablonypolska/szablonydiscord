@@ -3,7 +3,6 @@
 import { Crown } from "lucide-react"
 import Progress from "../progress"
 import { useEffect, useState } from "react"
-import { BuilderStatus } from "@/components/interfaces/builder/common"
 import { useBuilderContext } from "@/context/BuilderContext"
 
 export default function ConfigureServer() {
@@ -22,7 +21,7 @@ export default function ConfigureServer() {
 		return () => {
 			clearInterval(interval)
 		}
-	}, [builderData])
+	}, [builderData, progress])
 
 	return (
 		<div className="">

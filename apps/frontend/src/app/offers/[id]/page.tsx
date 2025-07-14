@@ -8,12 +8,11 @@ interface Params {
 }
 
 export default async function OfferType(props: { params: Promise<Params> }) {
-	// eslint-disable-next-line @typescript-eslint/no-unused-vars
 	const params = await props.params
 
 	return (
 		<>
-			<div className="max-w-screen-lg mx-auto mt-20">
+			<div className="max-w-(--breakpoint-lg) mx-auto mt-20">
 				<div className="flex flex-col items-center justify-center  ">
 					<FinalizationOrder />
 					{params.id === "basic" && <OfferBasic />}

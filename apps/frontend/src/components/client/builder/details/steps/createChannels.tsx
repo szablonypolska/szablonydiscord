@@ -13,7 +13,7 @@ export default function CreateChannels() {
 		if (progress === 100 || builderData.channelStatus !== "in_progress") return
 
 		setProgress((builderData.channel.length / builderData.channelNumber) * 100)
-	}, [builderData])
+	}, [builderData, progress])
 
 	return (
 		<div className="">

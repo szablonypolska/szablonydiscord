@@ -25,12 +25,12 @@ export default function LoadingTicket() {
 				}
 			})
 			.finally(() => setLoader(false))
-	}, [session, setChatList, setLoader, currentView])
+	}, [session, setChatList, setLoader, currentView, chatList.length])
 
 	if (loader) {
 		return (
 			<div className="flex items-center justify-center h-80">
-				<Loader2 className="w-10 h-10 text-primaryColor animate-spin" />
+				<Loader2 className="w-10 h-10 text-primary-color animate-spin" />
 			</div>
 		)
 	}

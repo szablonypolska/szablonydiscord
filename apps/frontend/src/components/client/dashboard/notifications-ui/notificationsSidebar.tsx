@@ -41,30 +41,30 @@ export default function NotificationsSidebar() {
 			/>
 
 			<div
-				className={`fixed top-0 right-0 h-full bg-sidebarColor border-l-2 border-l-borderColor transition-all ${isNotificationVisible ? "w-[28rem] max-md:w-11/12" : "w-0"} overflow-hidden flex flex-col z-50`}>
+				className={`fixed top-0 right-0 h-full bg-sidebar-color border-l-2 border-l-border-color transition-all ${isNotificationVisible ? "w-md max-md:w-11/12" : "w-0"} overflow-hidden flex flex-col z-50`}>
 				<div className="flex items-center justify-between p-5">
 					<div>
 						<h2 className="text-xl">Powiadomienia</h2>
-						<p className="mt-1 text-silverColor">Tutaj zobaczysz swoje powiadomienia</p>
+						<p className="mt-1 text-silver-color">Tutaj zobaczysz swoje powiadomienia</p>
 					</div>
 					<Button className="px-1" onPress={toggleViewNotification}>
 						<X />
 					</Button>
 				</div>
 
-				<div className="w-full h-[2px] bg-borderColor" />
+				<div className="w-full h-[2px] bg-border-color" />
 
 				{groupedNotifications.today.length === 0 && groupedNotifications.yesterday.length === 0 && groupedNotifications.older.length === 0 && <NotificationsError />}
 
-				<div className="flex-grow overflow-y-auto">
+				<div className="grow overflow-y-auto">
 					<NotificationGroup title="dzisiaj" notifications={groupedNotifications.today} />
 					<NotificationGroup title="wczoraj" notifications={groupedNotifications.yesterday} />
 					<NotificationGroup title="starsze" notifications={groupedNotifications.older} />
 				</div>
 
-				<div className="w-full h-[2px] bg-borderColor" />
+				<div className="w-full h-[2px] bg-border-color" />
 				<div className="p-5">
-					<Button className="w-full bg-boxColor rounded-xl">Zobacz wszystkie</Button>
+					<Button className="w-full bg-box-color rounded-xl">Zobacz wszystkie</Button>
 				</div>
 			</div>
 		</>

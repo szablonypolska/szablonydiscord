@@ -12,7 +12,7 @@ export default function MenagePreview() {
 		if (builderData.aiAnalysisStatus === "done") {
 			setCurrentPreview("template")
 		}
-	}, [builderData.aiAnalysisStatus])
+	}, [builderData.aiAnalysisStatus, setCurrentPreview])
 
 	if (currentPreview === "code") return <PreviewCode />
 	if (currentPreview === "template") return <PreviewTemplate />

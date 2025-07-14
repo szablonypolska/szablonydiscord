@@ -1,11 +1,9 @@
 "use client"
 
-import { TypeView } from "@/components/interfaces/chat/common"
 import { useChatContext } from "@/context/ChatContext"
 import createChatApi from "@/lib/chat/createChat"
 import animateChangeSectionChat from "@/utils/animations/animateChangeSectionChat"
 import { Button } from "@nextui-org/button"
-import gsap from "gsap"
 import { CircleAlert, Loader2 } from "lucide-react"
 import { useSession } from "next-auth/react"
 import { useEffect, useRef, useState } from "react"
@@ -53,28 +51,28 @@ export default function CreateChat() {
 	return (
 		<div className="p-4 py-5 opacity-0 mt-1" ref={animation}>
 			<div className="flex flex-col">
-				<label htmlFor="" className="text-textColor text-sm mb-2">
+				<label htmlFor="" className="text-text-color text-sm mb-2">
 					Tytuł zgłoszenia
 				</label>
-				<input type="text" className={`bg-altBackgroundColor border ${error.subject ? "border-errorColor" : "border-borderColor"} w-full py-2 px-3 rounded-xl placeholder:text-sm focus:ring-1 focus:outline-none  focus:ring-primaryColor`} placeholder="Wpisz tytul" onChange={e => setText(prev => ({ ...prev, subject: e.target.value }))} />
+				<input type="text" className={`bg-alt-background-color border ${error.subject ? "border-error-color" : "border-border-color"} w-full py-2 px-3 rounded-xl placeholder:text-sm focus:ring-1 focus:outline-hidden  focus:ring-primary-color`} placeholder="Wpisz tytul" onChange={e => setText(prev => ({ ...prev, subject: e.target.value }))} />
 
-				<div className={`flex items-center gap-2 text-errorColor mt-0.5 transition-all ${error.subject ? "h-4" : "h-0"} overflow-hidden`}>
+				<div className={`flex items-center gap-2 text-error-color mt-0.5 transition-all ${error.subject ? "h-4" : "h-0"} overflow-hidden`}>
 					<CircleAlert className="w-3 h-3" />
 					<p className="text-sm">{error.subject}</p>
 				</div>
 			</div>
 			<div className="flex flex-col mt-5">
-				<label htmlFor="" className="text-textColor text-sm mb-2">
+				<label htmlFor="" className="text-text-color text-sm mb-2">
 					Opis problemu
 				</label>
-				<textarea className={`bg-altBackgroundColor border ${error.description ? "border-errorColor" : "border-borderColor"} w-full py-2 px-3 rounded-xl placeholder:text-sm focus:ring-1 focus:outline-none  focus:ring-primaryColor h-32 resize-none `} placeholder="Opisz dokładnie swój problem" onChange={e => setText(prev => ({ ...prev, description: e.target.value }))}></textarea>
+				<textarea className={`bg-alt-background-color border ${error.description ? "border-error-color" : "border-border-color"} w-full py-2 px-3 rounded-xl placeholder:text-sm focus:ring-1 focus:outline-hidden  focus:ring-primary-color h-32 resize-none `} placeholder="Opisz dokładnie swój problem" onChange={e => setText(prev => ({ ...prev, description: e.target.value }))}></textarea>
 
-				<div className={`flex items-center gap-2 text-errorColor mt-0.5 transition-all ${error.description ? "h-4" : "h-0"} overflow-hidden`}>
+				<div className={`flex items-center gap-2 text-error-color mt-0.5 transition-all ${error.description ? "h-4" : "h-0"} overflow-hidden`}>
 					<CircleAlert className="w-3 h-3" />
 					<p className="text-sm">{error.description}</p>
 				</div>
 			</div>
-			<Button className="mt-6 bg-primaryColor font-medium rounded-lg w-full text-sm disabled:opacity-70 disabled:cursor-not-allowed" disabled={loader} onPress={create}>
+			<Button className="mt-6 bg-primary-color font-medium rounded-lg w-full text-sm disabled:opacity-70 disabled:cursor-not-allowed" disabled={loader} onPress={create}>
 				{loader ? <Loader2 className="animate-spin" /> : <span>Utwórz zgłoszenie</span>}
 			</Button>
 		</div>

@@ -16,9 +16,8 @@ export default function PreviewCode() {
 
 	useEffect(() => {
 		codeRef.current = builderData.code || ""
-		console.log(codeRef.current)
 		setUpdate(prev => prev + 1)
-	}, [builderData.sessionId])
+	}, [builderData.sessionId, builderData.code])
 
 	useEffect(() => {
 		socket.on("update_code", message => {
@@ -30,9 +29,9 @@ export default function PreviewCode() {
 				setUpdate(prev => prev + 1)
 			}, 200)
 		})
-	}, [])
+	}, [builderData.sessionId, socket])
 
-	const lines = React.useMemo(() => (codeRef.current || builderData.code).split(/\r?\n/), [update, builderData.sessionId])
+	const lines = React.useMemo(() => (codeRef.current || builderData.code).split(/\r?\n/), [update, builderData.sessionId, builderData.code])
 
 	const listRef = useRef<List>(null)
 
@@ -77,7 +76,7 @@ export default function PreviewCode() {
 	}, [lines])
 
 	return (
-		<div className="relative h-full w-full bg-altBackgroundColor scroll-smooth py-5">
+		<div className="relative h-full w-full bg-alt-background-color scroll-smooth py-5">
 			{codeRef.current === "" && (
 				<div className="absolute inset-0 flex items-center justify-center bg-[#1a1a1a]">
 					<div className="text-center space-y-4  scale-110">
@@ -94,7 +93,7 @@ export default function PreviewCode() {
 			)}
 			<AutoSizer>
 				{({ height, width }) => (
-					<List ref={listRef} className="select-text scrollbar scrollbar-thumb-altBorderColor scrollbar-track-borderColor overflow-y-scroll" itemData={{ lines }} itemCount={lines.length} itemSize={18} height={height} width={width}>
+					<List ref={listRef} className="select-text scrollbar scrollbar-thumb-alt-border-color scrollbar-track-border-color overflow-y-scroll" itemData={{ lines }} itemCount={lines.length} itemSize={18} height={height} width={width}>
 						{Row}
 					</List>
 				)}

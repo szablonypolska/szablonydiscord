@@ -36,10 +36,10 @@ const EmblaCarousel: React.FC<PropType> = props => {
 		<section className="w-full mx-auto relative mt-20">
 			<div className="flex justify-between items-center">
 				<div className="">
-					<h2 className="text-3xl text-primaryColor font-semibold">Opinie naszej strony</h2>
-					<p className=" text-textColor mt-2">Lorem ipsum dolor sit amet consectetur, adipisicing elit. Qui porro quo eius aliquid ratione pariatur?</p>
+					<h2 className="text-3xl text-primary-color font-semibold">Opinie naszej strony</h2>
+					<p className=" text-text-color mt-2">Lorem ipsum dolor sit amet consectetur, adipisicing elit. Qui porro quo eius aliquid ratione pariatur?</p>
 				</div>
-				<Button className="px-6 py-2 rounded-full bg-primaryColor">Dodaj opinię</Button>
+				<Button className="px-6 py-2 rounded-full bg-primary-color">Dodaj opinię</Button>
 			</div>
 			<div className="overflow-hidden w-11/12 mx-auto mt-2 px-2  max-md:px-0" ref={emblaRef}>
 				<div className="relative flex w-full">
@@ -55,9 +55,9 @@ const EmblaCarousel: React.FC<PropType> = props => {
 								} ${lastItem ? "mr-16 max-md:mr-0" : ""}`}>
 								<div className="relative p-5   rounded-lg overflow-hidden">
 									<div className="flex items-center gap-1">
-										<div className="flex-grow h-0.5 bg-borderColor"></div>
+										<div className="grow h-0.5 bg-border-color"></div>
 										<Image src={icon} alt="ikona opinii" />
-										<div className="flex-grow h-0.5 bg-borderColor"></div>
+										<div className="grow h-0.5 bg-border-color"></div>
 									</div>
 									<div className="mt-5">
 										<p className="text-center text-gray-300">
@@ -65,7 +65,7 @@ const EmblaCarousel: React.FC<PropType> = props => {
 											debitis facere a commodi dolor voluptatem enim maxime illo! Enim sunt libero autem quidem minus cupiditate, quam vero esse sapiente qui voluptatum consequatur est aliquid nam
 											corrupti porro perferendis adipisci sequi facere cum omnis. Odio vel qui modi?
 										</p>
-										<p className="mt-5 text-center text-primaryColor font-semibold">TheProShizer</p>
+										<p className="mt-5 text-center text-primary-color font-semibold">TheProShizer</p>
 									</div>
 								</div>
 							</div>
@@ -75,7 +75,7 @@ const EmblaCarousel: React.FC<PropType> = props => {
 			</div>
 			<div className="absolute top-1/2 -translate-y-1/2 left-0">
 				<Button
-					className="flex justify-center text-primaryColor bg-altBackgroundColor w-12 h-12 rounded-full material-symbols-outlined disabled:text-gray-300"
+					className="flex justify-center text-primary-color bg-alt-background-color w-12 h-12 rounded-full material-symbols-outlined disabled:text-gray-300"
 					onPress={onPrevButtonClick}
 					disabled={prevBtnDisabled}>
 					arrow_back
@@ -83,7 +83,7 @@ const EmblaCarousel: React.FC<PropType> = props => {
 			</div>
 			<div className="absolute top-1/2 -translate-y-1/2 right-0">
 				<Button
-					className="flex justify-center text-primaryColor bg-altBackgroundColor w-12 h-12 rounded-full material-symbols-outlined disabled:text-gray-300"
+					className="flex justify-center text-primary-color bg-alt-background-color w-12 h-12 rounded-full material-symbols-outlined disabled:text-gray-300"
 					onPress={onNextButtonClick}
 					disabled={nextBtnDisabled}>
 					arrow_forward

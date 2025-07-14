@@ -19,13 +19,13 @@ export default function SearchError() {
 	return (
 		<>
 			<div className="flex flex-col justify-center items-center mt-20">
-				<div className="bg-primaryDark text-primaryLight p-5 rounded-full">
+				<div className="bg-primary-dark text-primary-light p-5 rounded-full">
 					<Search size="35" />
 				</div>
 				<div className="mt-5 text-center">
 					<h3 className="text-xl font-medium">Brak wyników wyszukiwania</h3>
-					<p className="text-darkGray w-[30rem] mt-3">Nie naleziono szablonów dla twojego zapytania. Spróbuj użyć innych słów kluczowych lub przeglądaj wszystkie szablony</p>
-					<Button className="bg-primaryDark text-primaryLight rounded-xl h-12 mt-7" onPress={handleClearSearch}>
+					<p className="text-dark-gray w-120 mt-3">Nie naleziono szablonów dla twojego zapytania. Spróbuj użyć innych słów kluczowych lub przeglądaj wszystkie szablony</p>
+					<Button className="bg-primary-dark text-primary-light rounded-xl h-12 mt-7" onPress={handleClearSearch}>
 						<RefreshCcw />
 						Wyczyść wyszukiwanie
 					</Button>

@@ -50,7 +50,7 @@ export default async function User({ params }: { params: Promise<Params> }) {
 
 	return (
 		<>
-			<div className="max-w-screen-xl mx-auto w-full py-4 p-2">
+			<div className="max-w-(--breakpoint-xl) mx-auto w-full py-4 p-2">
 				<UserProfle data={searchUser} />
 			</div>
 		</>

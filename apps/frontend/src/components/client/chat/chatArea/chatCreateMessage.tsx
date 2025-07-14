@@ -38,8 +38,8 @@ export default function ChatCreateMessage() {
 
 	return (
 		<div className="flex items-center gap-2 p-4 py-5">
-			<input type="text" className="bg-altBackgroundColor border border-borderColor w-full py-2 px-3 rounded-xl placeholder:text-sm focus:ring-1 focus:outline-none  focus:ring-primaryColor" onChange={e => setText(e.target.value)} placeholder="Wpisz coś..." />
-			<Button className="bg-primaryColor px-3 py-1 rounded-lg" onPress={send}>
+			<input type="text" className="bg-alt-background-color border border-border-color w-full py-2 px-3 rounded-xl placeholder:text-sm focus:ring-1 focus:outline-hidden  focus:ring-primary-color" onChange={e => setText(e.target.value)} placeholder="Wpisz coś..." />
+			<Button className="bg-primary-color px-3 py-1 rounded-lg" onPress={send}>
 				<Send />
 			</Button>
 		</div>

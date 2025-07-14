@@ -180,7 +180,7 @@ export function PlaceholdersAndVanishInput({ placeholders, onChange, onSubmit }:
 
 	return (
 		<form
-			className={cn("relative w-full bg-[#212121] placeholder:text-textColor pl-2 py-2 border border-borderColor rounded-xl overflow-hidden transition duration-200", value && "bg-[#212121]")}
+			className={cn("relative w-full bg-[#212121] placeholder:text-text-color pl-2 py-2 border border-border-color rounded-xl overflow-hidden transition duration-200", value && "bg-[#212121]")}
 			onSubmit={handleSubmit}>
 			<canvas
 				className={cn(
@@ -201,7 +201,7 @@ export function PlaceholdersAndVanishInput({ placeholders, onChange, onSubmit }:
 				value={value}
 				type="text"
 				className={cn(
-					"w-full relative text-sm sm:text-base z-50 border-none bg-transparent text-white h-full rounded-full focus:outline-none focus:ring-0  pl-10 pr-20",
+					"w-full relative text-sm sm:text-base z-50 border-none bg-transparent text-white h-full rounded-full focus:outline-hidden focus:ring-0  pl-10 pr-20",
 					animating && "text-transparent dark:text-transparent"
 				)}
 			/>
@@ -215,7 +215,7 @@ export function PlaceholdersAndVanishInput({ placeholders, onChange, onSubmit }:
 							animate={{ y: 0, opacity: 1 }}
 							exit={{ y: -15, opacity: 0 }}
 							transition={{ duration: 0.3, ease: "linear" }}
-							className="text-sm sm:text-base font-normal text-textColor  pl-12 text-left w-[calc(100%-2rem)] truncate">
+							className="text-sm sm:text-base font-normal text-text-color  pl-12 text-left w-[calc(100%-2rem)] truncate">
 							{placeholders[currentPlaceholder]}
 						</motion.p>
 					)}

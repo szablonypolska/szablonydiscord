@@ -1,4 +1,5 @@
 "use client"
+/* eslint-disable @typescript-eslint/no-unused-vars */
 
 import { useChatContext } from "@/context/ChatContext"
 import HeaderSupportChat from "./headerSupportChat"
@@ -38,11 +39,11 @@ export default function HandleView() {
 
 	return (
 		<>
-			<div className="p-4 bg-primaryColor  rounded-full fixed bottom-5 right-1  z-[100] opacity-0" ref={entryAnimation}>
+			<div className="p-4 bg-primary-color  rounded-full fixed bottom-5 right-1  z-100 opacity-0" ref={entryAnimation}>
 				<MessageSquare className="w-6 h-6" />
 			</div>
 
-			{/* <div className="bg-boxColor border border-borderColor w-[25rem] fixed bottom-3 right-3  z-[100] rounded-xl">
+			{/* <div className="bg-box-color border border-border-color w-100 fixed bottom-3 right-3  z-100 rounded-xl">
 				<HeaderSupportChat />
 				<div className="">
 					<Component />

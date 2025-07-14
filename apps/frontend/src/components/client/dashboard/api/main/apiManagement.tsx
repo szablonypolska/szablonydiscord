@@ -14,11 +14,11 @@ interface Type {
 
 function NoExistsApiKey({ modal, setModal }: Type) {
 	return (
-		<div className="flex flex-col items-center w-full bg-altBackgroundColor border border-borderColor mt-7 rounded-xl p-10">
+		<div className="flex flex-col items-center w-full bg-alt-background-color border border-border-color mt-7 rounded-xl p-10">
 			<Key size={75} color="#9ca3af" />
 			<h3 className="text-xl mt-5">Nie masz jeszcze kluczy API</h3>
-			<p className="text-silverColor mt-2">Stwórz swój pierwszy klucz API i zacznij kodzić razem z nami!</p>
-			<Button className="flex items-center bg-primaryColor py-6 rounded-xl mt-8" onPress={() => setModal(!modal)}>
+			<p className="text-silver-color mt-2">Stwórz swój pierwszy klucz API i zacznij kodzić razem z nami!</p>
+			<Button className="flex items-center bg-primary-color py-6 rounded-xl mt-8" onPress={() => setModal(!modal)}>
 				<Plus />
 				Stwórz swój klucz api
 			</Button>
@@ -37,7 +37,7 @@ export default function ApiMenagament() {
 				<div className="flex md:items-center justify-between max-md:flex-col">
 					<h2 className="text-2xl font-semibold">Zarządzaj kluczem API</h2>
 					{user.api.length > 0 && (
-						<Button className="flex items-center bg-primaryColor py-6 rounded-xl max-md:mt-2 max-md:w-full " onPress={() => setModal(!modal)}>
+						<Button className="flex items-center bg-primary-color py-6 rounded-xl max-md:mt-2 max-md:w-full " onPress={() => setModal(!modal)}>
 							<Plus />
 							Stwórz swój klucz api
 						</Button>

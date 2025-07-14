@@ -34,23 +34,23 @@ export default async function Layout({ children }: { children: React.ReactNode }
 		<DashboardProvider user={user}>
 			<Toaster
 				toastOptions={{
-					className: "bg-sidebarColor border border-borderColor text-white ml-5 flex items-center  gap-5 py-5",
+					className: "bg-sidebar-color border border-border-color text-white ml-5 flex items-center  gap-5 py-5",
 				}}
 				icons={{
-					success: <CircleCheckBig size="35" className="bg-darknesPrimaryColor text-primaryColor p-1.5 rounded-lg" />,
-					error: <CircleAlert size="35" className="bg-darknesErrorColor text-errorColor p-1.5 rounded-lg" />,
+					success: <CircleCheckBig size="35" className="bg-darknes-primary-color text-primary-color p-1.5 rounded-lg" />,
+					error: <CircleAlert size="35" className="bg-darknes-error-color text-error-color p-1.5 rounded-lg" />,
 				}}
 			/>
 			<NotificationsSidebar />
 
 			<div className="flex w-full h-screen ">
-				<div className="flex-shrink-0">
+				<div className="shrink-0">
 					<Sidebar />
 				</div>
 
 				<div className="flex flex-col w-full ">
 					<TopSidebar />
-					<div className="scrollbar scrollbar-thumb-altBorderColor scrollbar-track-borderColor overflow-y-auto">{children}</div>
+					<div className="scrollbar scrollbar-thumb-alt-border-color scrollbar-track-border-color overflow-y-auto">{children}</div>
 				</div>
 			</div>
 		</DashboardProvider>

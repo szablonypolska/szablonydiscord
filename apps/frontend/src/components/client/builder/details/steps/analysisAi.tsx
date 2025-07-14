@@ -21,7 +21,7 @@ export default function AnalysisAi() {
 		return () => {
 			clearInterval(interval)
 		}
-	}, [progress])
+	}, [progress, builderData.aiAnalysisStatus])
 
 	return (
 		<>

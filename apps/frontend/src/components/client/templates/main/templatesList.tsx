@@ -33,7 +33,7 @@ export default function TemplateList({ loadTemplates, loadTemplatesData, loadTem
 						<Image src={recommendIcon} alt="proponowane szablony - ikona" className="max-md:w-14 max-md:h-14 h-16 w-16" priority />
 						<div className="">
 							<h2 className="text-xl font-semibold max-md:text-lg">Polecane szablony</h2>
-							<p className="text-textColor text-lg max-md:text-sm">Sprawdź dostepne polecane szablony</p>
+							<p className="text-text-color text-lg max-md:text-sm">Sprawdź dostepne polecane szablony</p>
 						</div>
 					</div>
 					<div className="grid grid-cols-3 max-xl:grid-cols-2 max-md:grid-cols-1 gap-10 max-lg:gap-5 mt-5">
@@ -45,7 +45,7 @@ export default function TemplateList({ loadTemplates, loadTemplatesData, loadTem
 					</div>
 					<div className="flex justify-center mt-5">
 						<Link href="/search?sort=popularity">
-							<Button className="bg-altBackgroundColor px-10 border-borderColor rounded-lg">Zobacz więcej</Button>
+							<Button className="bg-alt-background-color px-10 border-border-color rounded-lg">Zobacz więcej</Button>
 						</Link>
 					</div>
 				</div>
@@ -54,7 +54,7 @@ export default function TemplateList({ loadTemplates, loadTemplatesData, loadTem
 						<Image src={popularIcon} alt="proponowane szablony - ikona" className="max-md:w-14 max-md:h-14 w-16 h-16" />
 						<div className="">
 							<h2 className="text-xl font-semibold max-md:text-lg">Popularne szablony</h2>
-							<p className="text-textColor text-lg  max-md:text-sm">Najczęściej odwiedzane szablony discord</p>
+							<p className="text-text-color text-lg  max-md:text-sm">Najczęściej odwiedzane szablony discord</p>
 						</div>
 					</div>
 					<div className="grid grid-cols-3 max-xl:grid-cols-2 max-md:grid-cols-1 gap-10 max-lg:gap-5 mt-5">
@@ -66,7 +66,7 @@ export default function TemplateList({ loadTemplates, loadTemplatesData, loadTem
 					</div>
 					<div className="flex justify-center mt-5">
 						<Link href="/search?sort=createdAt">
-							<Button className="bg-altBackgroundColor px-10 border-borderColor rounded-lg">Zobacz więcej</Button>
+							<Button className="bg-alt-background-color px-10 border-border-color rounded-lg">Zobacz więcej</Button>
 						</Link>
 					</div>
 				</div>
@@ -75,7 +75,7 @@ export default function TemplateList({ loadTemplates, loadTemplatesData, loadTem
 						<Image src={addIcon} alt="proponowane szablony - ikona" className="max-md:w-14 max-md:h-14 w-16 h-16" />
 						<div className="">
 							<h2 className="text-xl font-semibold max-md:text-lg">Nowe szablony</h2>
-							<p className="text-textColor text-lg  max-md:text-sm">Sprawdź dostepne nowe szablony</p>
+							<p className="text-text-color text-lg  max-md:text-sm">Sprawdź dostepne nowe szablony</p>
 						</div>
 					</div>
 					<div className="grid grid-cols-3 max-xl:grid-cols-2 max-md:grid-cols-1 gap-10 max-lg:gap-5 mt-5">
@@ -87,7 +87,7 @@ export default function TemplateList({ loadTemplates, loadTemplatesData, loadTem
 					</div>
 					<div className="flex justify-center mt-5">
 						<Link href="/search?sort=createdAt">
-							<Button className="bg-altBackgroundColor px-10 border-borderColor rounded-lg">Zobacz więcej</Button>
+							<Button className="bg-alt-background-color px-10 border-border-color rounded-lg">Zobacz więcej</Button>
 						</Link>
 					</div>
 				</div>

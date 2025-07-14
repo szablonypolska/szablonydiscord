@@ -68,7 +68,7 @@ export default function Modals({ modal, setModal, status }: Type) {
 
 			<div
 				ref={newRef}
-				className={` fixed  top-1/2  left-1/2 -translate-x-1/2 -translate-y-1/2 w-96  p-5 z-50  rounded-xl  max-md:w-11/12  bg-boxColor border  border-borderColor transition-all  duration-300  ease-in-out  origin-center  transform ${modal ? "opacity-100 scale-100" : "opacity-0 scale-90"} `}>
+				className={` fixed  top-1/2  left-1/2 -translate-x-1/2 -translate-y-1/2 w-96  p-5 z-50  rounded-xl  max-md:w-11/12  bg-box-color border  border-border-color transition-all  duration-300  ease-in-out  origin-center  transform ${modal ? "opacity-100 scale-100" : "opacity-0 scale-90"} `}>
 				<div className="flex items-center justify-between">
 					<p className="text-xl">System skanowania</p>
 					<Button className="material-symbols-outlined p-1 rounded-full" onPress={() => setModal(false)}>
@@ -87,7 +87,7 @@ export default function Modals({ modal, setModal, status }: Type) {
 						)}
 					</div>
 				</div>
-				<Button className="w-full px-4 py-1 bg-primaryColor mt-5 rounded-lg" onPress={() => setModal(false)}>
+				<Button className="w-full px-4 py-1 bg-primary-color mt-5 rounded-lg" onPress={() => setModal(false)}>
 					Zamknij
 				</Button>
 			</div>

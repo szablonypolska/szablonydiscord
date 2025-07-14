@@ -39,7 +39,7 @@ export default function ApiModal({ modal, setModal }: ModalProps) {
 				}`}></div>
 			<div
 				ref={newRef}
-				className={`fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[27rem] p-5 z-50 rounded-xl max-md:w-11/12 bg-sidebarColor border border-borderColor transition-all duration-300 ease-in-out origin-center transform ${
+				className={`fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-108 p-5 z-50 rounded-xl max-md:w-11/12 bg-sidebar-color border border-border-color transition-all duration-300 ease-in-out origin-center transform ${
 					modal ? "opacity-100 scale-100 pointer-events-auto" : "opacity-0 scale-90 pointer-events-none"
 				}`}>
 				{user.api.length !== user.limitApiKey && (

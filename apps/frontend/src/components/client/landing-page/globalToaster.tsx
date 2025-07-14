@@ -12,13 +12,13 @@ export default function GlobalToaster() {
 			if (message.action == "create") {
 				toast.message("Szablon serwera został dodany", {
 					description: `ID szablony: ${message.templateId}, ${message.dateCreate}`,
-					className: "bg-boxColor border border-borderColor text-white",
+					className: "bg-box-color border border-border-color text-white",
 				})
 			}
 
 			if (message.action == "delete") {
 				toast.info("Szablon serwera został usunięty z naszej bazy.", {
-					className: "bg-boxColor border border-borderColor text-white",
+					className: "bg-box-color border border-border-color text-white",
 				})
 			}
 		})

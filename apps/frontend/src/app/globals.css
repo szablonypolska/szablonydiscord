@@ -1,6 +1,69 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss";
+
+@plugin 'tailwind-scrollbar';
+
+@custom-variant dark (&:is(.dark *));
+
+@theme {
+	--color-darknes-primary-color: var(--darknesPrimaryColor);
+	--color-primary-color: var(--primary-color);
+	--color-alt-background-color: var(--altBackgroundColor);
+	--color-background: var(--background);
+	--color-foreground: var(--foreground);
+	--color-border-color: var(--borderColor);
+	--color-alt-border-color: var(--altBorderColor);
+	--color-box-color: var(--boxColor);
+	--color-text-color: var(--textColor);
+	--color-text-special: var(--textSpecial);
+	--color-advice-bot: var(--advicebot);
+	--color-channel-color: var(--channelColor);
+	--color-sidebar-color: var(--sidebarColor);
+	--color-silver-color: var(--silverColor);
+	--color-box-color-dashboard: var(--boxColorDashboard);
+	--color-warning-color: var(--warningColor);
+	--color-darknes-warning-color: var(--darknesWarningColor);
+	--color-disabled-button: var(--disabledButton);
+	--color-error-color: var(--errorColor);
+	--color-darknes-error-color: var(--darknesErrorColor);
+	--color-primary-dark: var(--primary-dark);
+	--color-primary-dark-50: color-mix(in srgb, var(--primary-dark) 50%, transparent);
+	--color-primary-light: var(--primary-light);
+	--color-dark-gray: var(--darkGray);
+	--color-place-holder-text-color: var(--placeholderTextColor);
+	--color-section-color: var(--section-color);
+
+	--animate-shiny-text: shiny-text 10s infinite;
+
+	@keyframes shiny-text {
+		0%,
+		90%,
+		100% {
+			background-position: calc(-100% - var(--shiny-width)) 0;
+		}
+		30%,
+		60% {
+			background-position: calc(100% + var(--shiny-width)) 0;
+		}
+	}
+}
+
+/*
+  The default border color has changed to `currentcolor` in Tailwind CSS v4,
+  so we've added these compatibility styles to make sure everything still
+  looks the same as it did with Tailwind CSS v3.
+
+  If we ever want to remove these styles, we need to add an explicit border
+  color utility to any element that depends on these defaults.
+*/
+@layer base {
+	*,
+	::after,
+	::before,
+	::backdrop,
+	::file-selector-button {
+		border-color: var(--color-gray-200, currentcolor);
+	}
+}
 
 :root {
 	--background: #191919;
@@ -27,6 +90,7 @@
 	--darkGray: #808080;
 	--darknesWarningColor: #302319;
 	--placeholderTextColor: #666666;
+	--section-color: #1d1d1d;
 }
 
 /* @media (prefers-color-scheme: dark) {

@@ -34,38 +34,38 @@ export default function SidebarFooter() {
 
 	return (
 		<div className="">
-			<div className="w-full h-[1px] bg-borderColor rounded-full my-4"></div>
+			<div className="w-full h-px bg-border-color rounded-full my-4"></div>
 			{hasError && (
-				<div className="my-5 p-4 bg-darknesErrorColor rounded-xl">
+				<div className="my-5 p-4 bg-darknes-error-color rounded-xl">
 					<h2 className="text-red-600 font-semibold">Błąd generowania</h2>
-					<p className="text-errorColor text-sm mt-0.5">Wystąpił błąd podczas generowania, spróbuj ponownie później.</p>
+					<p className="text-error-color text-sm mt-0.5">Wystąpił błąd podczas generowania, spróbuj ponownie później.</p>
 				</div>
 			)}
 			{!builderData.templateCode && !hasError && (
 				<div className="flex items-center gap-3 rounded-lg ">
-					<Loader2 className="animate-spin w-5 h-5 text-primaryColor" />
-					<p className="text-sm text-textColor">Trwa generowanie szablonu</p>
+					<Loader2 className="animate-spin w-5 h-5 text-primary-color" />
+					<p className="text-sm text-text-color">Trwa generowanie szablonu</p>
 				</div>
 			)}
 			{builderData.templateCode && !builderData.templateUrl && (
-				<Button className="w-full rounded-xl bg-borderColor opacity-90 hover:opacity-100 disabled:opacity-80" onPress={publishTemplate} disabled={loader}>
+				<Button className="w-full rounded-xl bg-border-color opacity-90 hover:opacity-100 disabled:opacity-80" onPress={publishTemplate} disabled={loader}>
 					{!loader && (
 						<>
 							<Crown className="w-5 h-5" />
 							<span className="text-sm">Opublikuj szablon</span>
 						</>
 					)}
-					{loader && <Loader2 className="text-textColor animate-spin" />}
+					{loader && <Loader2 className="text-text-color animate-spin" />}
 				</Button>
 			)}
 			{hasError && (
 				<Link href="/builder">
-					<Button className="w-full rounded-xl bg-borderColor text-sm">Spróbuj ponownie</Button>
+					<Button className="w-full rounded-xl bg-border-color text-sm">Spróbuj ponownie</Button>
 				</Link>
 			)}
 			{builderData.templateUrl && (
 				<Link href={`/templates/${builderData.templateUrl}`}>
-					<Button className="w-full rounded-xl bg-primaryColor text-sm">
+					<Button className="w-full rounded-xl bg-primary-color text-sm">
 						<span>Przejdz do szablonu</span> <MoveRight />
 					</Button>
 				</Link>

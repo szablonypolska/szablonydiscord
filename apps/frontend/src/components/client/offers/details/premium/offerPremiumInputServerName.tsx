@@ -19,7 +19,7 @@ export default function OfferPremiumInputServerName() {
 			dispatch({ type: "serverName", payload: name })
 			setError("")
 		}
-	}, [name, state.serverName])
+	}, [name, state.serverName, dispatch])
 
 	return (
 		<div className="flex flex-col mt-5">
@@ -32,13 +32,13 @@ export default function OfferPremiumInputServerName() {
 						type="text"
 						id="link"
 						defaultValue={state.serverName}
-						className={`bg-altBackgroundColor border ${error ? "border-errorColor focus:ring-errorColor" : "border-borderColor focus:ring-primaryColor"} w-full p-3 rounded-xl  focus:outline-none placeholder:text-placeHolderTextColor focus:ring-1 
+						className={`bg-alt-background-color border ${error ? "border-error-color focus:ring-error-color" : "border-border-color focus:ring-primary-color"} w-full p-3 rounded-xl  focus:outline-hidden placeholder:text-place-holder-text-color focus:ring-1 
 							disabled:opacity-40 `}
 						placeholder="np. Szabloniki"
 						onChange={e => setName(e.target.value)}
 					/>
 				</div>
-				<div className={`flex items-center gap-2 text-errorColor transition-all text-sm mt-1 ${error ? "h-5" : "h-0"}  overflow-hidden `}>
+				<div className={`flex items-center gap-2 text-error-color transition-all text-sm mt-1 ${error ? "h-5" : "h-0"}  overflow-hidden `}>
 					<CircleAlert className="w-4 h-4" />
 					<p>{error}</p>
 				</div>

@@ -121,5 +121,5 @@ export default function useBuilderWebSocket({ setBuilderData, id }: { setBuilder
 		// 		}))
 		// 	}
 		// })
-	}, [])
+	}, [id, setBuilderData, socket])
 }

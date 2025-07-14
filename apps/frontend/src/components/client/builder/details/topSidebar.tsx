@@ -9,27 +9,27 @@ export default function TopSidebarBuilder() {
 	const { builderData, currentPreview, setCurrentPreview } = useBuilderContext()
 
 	return (
-		<div className="flex items-center justify-between bg-boxColor h-14 border-b border-borderColor w-full  max-lg:w-full p-5">
+		<div className="flex items-center justify-between bg-box-color h-14 border-b border-border-color w-full  max-lg:w-full p-5">
 			<div className="flex items-center gap-3">
 				<div className="flex items-center gap-3">
-					<Hash className="w-6 h-6 text-textColor" />
+					<Hash className="w-6 h-6 text-text-color" />
 					<h2>Podgląd szablonu</h2>
 				</div>
 			</div>
 			<div className="flex gap-3">
 				{currentPreview === "code" && (
-					<Button className="bg-borderColor p-2 rounded-lg px-3" onPress={() => setCurrentPreview("template")}>
+					<Button className="bg-border-color p-2 rounded-lg px-3" onPress={() => setCurrentPreview("template")}>
 						<Eye />
 					</Button>
 				)}
 				{currentPreview === "template" && (
-					<Button className="bg-borderColor p-2 rounded-lg px-3" onPress={() => setCurrentPreview("code")}>
+					<Button className="bg-border-color p-2 rounded-lg px-3" onPress={() => setCurrentPreview("code")}>
 						<Code />
 					</Button>
 				)}
 				{builderData.aiAnalysisStatus === "done" && (
 					<Link href={`/builder/${builderData.sessionId}/materials`}>
-						<Button className="bg-borderColor rounded-lg">
+						<Button className="bg-border-color rounded-lg">
 							<FileText className="" /> <span>Materiały</span>
 						</Button>
 					</Link>

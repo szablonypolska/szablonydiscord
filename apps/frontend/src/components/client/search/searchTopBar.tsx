@@ -50,26 +50,26 @@ export default function SearchTopBar({ count, typeView, setTypeView }: Props) {
 		},
 	]
 	return (
-		<motion.div initial={{ opacity: 0, y: -20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1, duration: 0.3 }} className="flex items-center justify-between  p-3 px-6 rounded-xl w-full border border-borderColor">
+		<motion.div initial={{ opacity: 0, y: -20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1, duration: 0.3 }} className="flex items-center justify-between  p-3 px-6 rounded-xl w-full border border-border-color">
 			<div className="flex items-center gap-3">
-				<p className="text-darkGray">
+				<p className="text-dark-gray">
 					Znaleziono <span className="text-white">{count * 6}</span> szablonów
 				</p>
 				{page >= 2 && (
-					<p className="text-xs bg-borderColor p-2 rounded-xl w-fit text-darkGray">
+					<p className="text-xs bg-border-color p-2 rounded-xl w-fit text-dark-gray">
 						Wyświetlanie {(page - 1) * 6}-{page * 6} z {count * 6}
 					</p>
 				)}
 			</div>
 			<div className="flex gap-5 h-11 max-md:gap-2">
 				<div className="relative h-full">
-					<Button onPress={() => setShowSortDropdown(!showSortDropdown)} className="flex items-center gap-2 bg-altBackgroundColor border border-borderColor rounded-xl px-4 py-2 text-sm hover:border-primaryColor transition-colors h-full">
+					<Button onPress={() => setShowSortDropdown(!showSortDropdown)} className="flex items-center gap-2 bg-alt-background-color border border-border-color rounded-xl px-4 py-2 text-sm hover:border-primary-color transition-colors h-full">
 						<ArrowUpDown size={16} />
 						{sortOptions.find(opt => opt.id === sortBy)?.label}
 						<ChevronDown size={14} className={`transition-transform duration-200 ${showSortDropdown ? "rotate-180" : ""}`} />
 					</Button>
 					{showSortDropdown && (
-						<div className="absolute right-0 top-full mt-2 w-48 bg-altBackgroundColor border border-borderColor rounded-xl overflow-hidden z-10">
+						<div className="absolute right-0 top-full mt-2 w-48 bg-alt-background-color border border-border-color rounded-xl overflow-hidden z-10">
 							{sortOptions.map(option => (
 								<Link href={option.link} key={option.id}>
 									<button
@@ -77,21 +77,21 @@ export default function SearchTopBar({ count, typeView, setTypeView }: Props) {
 											setSortBy(option.id as SortOption)
 											setShowSortDropdown(false)
 										}}
-										className="w-full flex items-center gap-2 px-4 py-3 text-sm hover:bg-borderColor transition-colors">
+										className="w-full flex items-center gap-2 px-4 py-3 text-sm hover:bg-border-color transition-colors">
 										<option.icon size={14} />
 										{option.label}
-										{sortBy === option.id && <Check size={14} className="ml-auto text-primaryLight" />}
+										{sortBy === option.id && <Check size={14} className="ml-auto text-primary-light" />}
 									</button>
 								</Link>
 							))}
 						</div>
 					)}
 				</div>
-				<div className="flex items-center gap-1 border border-borderColor rounded-xl px-1 py-1 bg-boxColor h-full">
-					<Button className={`h-9 p-2 px-2 rounded-xl text-darkGray hover:text-white ${typeView === "grid" && "bg-borderColor text-white"}`} onPress={() => setTypeView("grid")}>
+				<div className="flex items-center gap-1 border border-border-color rounded-xl px-1 py-1 bg-box-color h-full">
+					<Button className={`h-9 p-2 px-2 rounded-xl text-dark-gray hover:text-white ${typeView === "grid" && "bg-border-color text-white"}`} onPress={() => setTypeView("grid")}>
 						<Grid size={20} />
 					</Button>
-					<Button className={`h-9 p-2 px-2 rounded-xl text-darkGray hover:text-white  ${typeView === "list" && "bg-borderColor text-white"}`} onPress={() => setTypeView("list")}>
+					<Button className={`h-9 p-2 px-2 rounded-xl text-dark-gray hover:text-white  ${typeView === "list" && "bg-border-color text-white"}`} onPress={() => setTypeView("list")}>
 						<List size={20} />
 					</Button>
 				</div>

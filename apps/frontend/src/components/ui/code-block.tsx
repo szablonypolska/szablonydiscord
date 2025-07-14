@@ -44,12 +44,12 @@ export const CodeBlock = ({ language, filename, code, highlightLines = [], tabs 
 	const activeHighlightLines = tabsExist ? tabs[activeTab].highlightLines || [] : highlightLines
 
 	return (
-		<div className="relative  w-full rounded-lg bg-altBackgroundColor p-4 font-mono text-sm ">
+		<div className="relative  w-full rounded-lg bg-alt-background-color p-4 font-mono text-sm ">
 			<div className="flex flex-col gap-2">
 				{tabsExist && (
 					<div className="flex  overflow-x-auto">
 						{tabs.map((tab, index) => (
-							<button key={index} onClick={() => setActiveTab(index)} className={`px-3 !py-2 text-xs transition-colors font-sans ${activeTab === index ? "text-white" : "text-zinc-400 hover:text-zinc-200"}`}>
+							<button key={index} onClick={() => setActiveTab(index)} className={`px-3 py-2! text-xs transition-colors font-sans ${activeTab === index ? "text-white" : "text-zinc-400 hover:text-zinc-200"}`}>
 								{tab.name}
 							</button>
 						))}

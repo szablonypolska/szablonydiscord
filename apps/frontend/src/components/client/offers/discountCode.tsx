@@ -63,10 +63,10 @@ export default function DiscountCode() {
 
 	return (
 		<>
-			<motion.div initial={{ opacity: 0, y: -30 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2, duration: 0.3 }} className="bg-boxColor border border-borderColor rounded-lg w-full mt-5">
+			<motion.div initial={{ opacity: 0, y: -30 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2, duration: 0.3 }} className="bg-box-color border border-border-color rounded-lg w-full mt-5">
 				<p className="font-semibold p-5">Kod promocyjny</p>
 
-				<div className="w-full h-[1px] bg-borderColor"></div>
+				<div className="w-full h-px bg-border-color"></div>
 
 				<div className="p-5 transition-all">
 					<div className="flex items-center gap-3">
@@ -75,20 +75,20 @@ export default function DiscountCode() {
 								type="text"
 								id="link"
 								defaultValue={state.discountDetails.code || code}
-								className={`bg-altBackgroundColor border  w-full p-3 h-12 rounded-xl focus:outline-none placeholder:text-placeHolderTextColor focus:ring-1  ${error ? "border-errorColor focus:ring-errorColor" : "border-borderColor focus:ring-primaryColor"}
+								className={`bg-alt-background-color border  w-full p-3 h-12 rounded-xl focus:outline-hidden placeholder:text-place-holder-text-color focus:ring-1  ${error ? "border-error-color focus:ring-error-color" : "border-border-color focus:ring-primary-color"}
   `}
 								placeholder="Wpisz kod promocyjny"
 								onChange={e => setCode(e.target.value)}
 							/>
-							{success && <Check className="absolute top-1/2 -translate-y-1/2 right-2 text-primaryColor w-5 h-5" />}
+							{success && <Check className="absolute top-1/2 -translate-y-1/2 right-2 text-primary-color w-5 h-5" />}
 						</div>
 
-						<Button className={`flex items-center bg-borderColor rounded-xl h-12 transition-all   ${loader ? "opacity-70 w-14" : "w-32"}`} onPress={applyCode}>
+						<Button className={`flex items-center bg-border-color rounded-xl h-12 transition-all   ${loader ? "opacity-70 w-14" : "w-32"}`} onPress={applyCode}>
 							{loader && <Loader2 className=" animate-spin" />}
 							{!loader && <span>Zastosuj</span>}
 						</Button>
 					</div>
-					<div className={`flex items-center gap-2 text-errorColor transition-all text-sm mt-1 ${error ? "h-5" : "h-0"}  overflow-hidden `}>
+					<div className={`flex items-center gap-2 text-error-color transition-all text-sm mt-1 ${error ? "h-5" : "h-0"}  overflow-hidden `}>
 						<CircleAlert className="w-4 h-4" />
 						<p>{error}</p>
 					</div>

@@ -3,7 +3,7 @@
 import { TypeView, Message, TypeLoad } from "@/components/interfaces/chat/common"
 import loadMessage from "@/lib/chat/loadMessage"
 import { connectSocketBackend } from "@/lib/socket"
-import { Dispatch, SetStateAction, useEffect, useState } from "react"
+import { Dispatch, SetStateAction, useEffect } from "react"
 
 interface Props {
 	chatId: string
@@ -16,7 +16,7 @@ interface Props {
 	setLoading: Dispatch<SetStateAction<TypeLoad>>
 }
 
-export default function useLoadMessage({ chatId, setMessage, userId, setCurrentView, setChatId, currentView, loading, setLoading }: Props) {
+export default function useLoadMessage({ chatId, setMessage, userId, setCurrentView, setChatId, currentView, setLoading }: Props) {
 	const socket = connectSocketBackend()
 
 	useEffect(() => {
@@ -36,26 +36,26 @@ export default function useLoadMessage({ chatId, setMessage, userId, setCurrentV
 		if (chatId) {
 			loadData()
 		}
-	}, [chatId, setMessage])
+	}, [chatId, setMessage, setLoading, userId])
 
 	useEffect(() => {
 		if (chatId) {
 			setCurrentView(TypeView.CHAT)
 		}
-	}, [chatId])
+	}, [chatId, setCurrentView])
 
 	useEffect(() => {
 		if (currentView !== "CHAT") {
 			setChatId("")
 		}
-	}, [currentView])
+	}, [currentView, setChatId])
 
 	useEffect(() => {
 		socket.on("message:new", newMessage => {
 			setMessage(prev =>
 				prev.map(msg => {
 					if (msg.tempId === newMessage.tempId) {
-						const { tempId, ...rest } = newMessage
+						const { ...rest } = newMessage
 						return rest
 					}
 					return msg

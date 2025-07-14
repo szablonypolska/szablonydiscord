@@ -47,27 +47,27 @@ export default function ContentBuilderMaterials() {
 		const formattedContent = content.replace(/\\n/g, "\n")
 
 		return (
-			<div className="w-full bg-altBackgroundColor rounded-xl border border-borderColor">
+			<div className="w-full bg-alt-background-color rounded-xl border border-border-color">
 				<div className="flex items-center justify-between gap-4 p-6">
 					<div className="flex items-center gap-4">
-						<div className="bg-borderColor text-primaryColor p-3 rounded-lg w-fit">
+						<div className="bg-border-color text-primary-color p-3 rounded-lg w-fit">
 							<Icon className="w-7 h-7" />
 						</div>
 						<div className="">
 							<p className="text-lg font-medium">{title}</p>
-							<p className="text-textColor">{description}</p>
+							<p className="text-text-color">{description}</p>
 						</div>
 					</div>
 					<ButtonCopy size="icon" className=" flex" onClick={() => handleCopyDescription()} aria-label={copied ? "Copied" : "Copy to clipboard"} disabled={copied}>
 						<div className={cn("transition-all", copied ? "scale-100 opacity-100" : "scale-0 opacity-0")}>
-							<Check className="stroke-primaryColor" size={25} strokeWidth={2} aria-hidden="true" />
+							<Check className="stroke-primary-color" size={25} strokeWidth={2} aria-hidden="true" />
 						</div>
-						<div className={cn("absolute transition-all text-textColor", copied ? "scale-0 opacity-0" : "scale-100 opacity-100")}>
+						<div className={cn("absolute transition-all text-text-color", copied ? "scale-0 opacity-0" : "scale-100 opacity-100")}>
 							<Copy size={25} strokeWidth={2} aria-hidden="true" />
 						</div>
 					</ButtonCopy>
 				</div>
-				<div className="w-full bg-borderColor h-[1px]"></div>
+				<div className="w-full bg-border-color h-px"></div>
 				<div className="p-6">
 					<pre className="text-gray-300 whitespace-pre-wrap text-sm">{formattedContent}</pre>
 				</div>

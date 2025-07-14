@@ -12,7 +12,7 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
 	return (
 		<>
-			<div className="max-w-screen-2xl mx-auto w-full py-4 p-2">
+			<div className="max-w-(--breakpoint-2xl) mx-auto w-full py-4 p-2">
 				<Image src={decorationElement} alt="dekoracyjny element" className="absolute top-0 left-0 pointer-events-none" />
 				<Navbar />
 				{children}

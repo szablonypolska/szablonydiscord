@@ -9,7 +9,7 @@ export default function SidebarBuilderMaterialsFooter() {
 	return (
 		<div className="">
 			<Link href={`/builder/${builderData.sessionId}`}>
-				<Button className="bg-primaryColor w-full rounded-xl text-sm">
+				<Button className="bg-primary-color w-full rounded-xl text-sm">
 					<ArrowLeft className="w-5 h-5" />
 					<span>Powrót do podglądu</span>
 				</Button>

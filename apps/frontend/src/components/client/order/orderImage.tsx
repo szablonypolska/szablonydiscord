@@ -16,5 +16,5 @@ export default function OrderImage() {
 		})
 	}, [])
 
-	return <Image src={statusOne} ref={animation} alt="order status" className="w-[35rem] h-[35rem] max-2xl:w-1/2 max-lg:hidden pointer-events-none opacity-0" priority />
+	return <Image src={statusOne} ref={animation} alt="order status" className="w-140 h-140 max-2xl:w-1/2 max-lg:hidden pointer-events-none opacity-0" priority />
 }

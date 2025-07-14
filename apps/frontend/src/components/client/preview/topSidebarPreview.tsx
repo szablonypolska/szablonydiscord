@@ -3,10 +3,10 @@ import { Hash, Link, BellOff, Pin, Users } from "lucide-react"
 export default function TopSidebarPreview() {
 	return (
 		<>
-			<div className="flex items-center h-16 border-b border-borderColor p-3 px-5 w-full">
+			<div className="flex items-center h-16 border-b border-border-color p-3 px-5 w-full">
 				<div className="flex items-center justify-between w-full">
 					<div className="flex items-center gap-1.5">
-						<Hash className="text-textSpecial " />
+						<Hash className="text-text-special " />
 						<p className="text-lg text-gray-200 font-semibold">ogólny</p>
 					</div>
 					<div className="flex gap-4">

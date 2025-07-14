@@ -13,8 +13,7 @@ export default function CreateCategory() {
 		if (progress === 100 || builderData.categoryStatus !== "in_progress") return
 
 		setProgress((builderData.category.length / builderData.categoryNumber) * 100)
-	}, [builderData])
-
+	}, [builderData, progress])
 
 	return (
 		<div className="">

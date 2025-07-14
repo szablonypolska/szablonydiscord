@@ -27,7 +27,7 @@ export default function NotificationGroup({ title, notifications }: Notification
 
 	return (
 		<>
-			<p className="px-5 my-5 uppercase text-silverColor text-sm">
+			<p className="px-5 my-5 uppercase text-silver-color text-sm">
 				{title} ({notifications.length})
 			</p>
 			<div className="flex flex-col items-center gap-5 px-5">{notifications.map((notification, index) => renderNotificationCard(notification, index))}</div>

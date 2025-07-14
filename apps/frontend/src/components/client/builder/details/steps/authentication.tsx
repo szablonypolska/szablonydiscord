@@ -21,9 +21,8 @@ export default function Authentication() {
 		return () => {
 			clearInterval(interval)
 		}
-	}, [])
+	}, [builderData.authenticationStatus, progress])
 
-	console.log(builderData.authenticationStatus)
 
 	return (
 		<>

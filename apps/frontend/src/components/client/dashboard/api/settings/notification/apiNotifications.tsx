@@ -42,9 +42,9 @@ export default function ApiSettingsNotifications(params: { params: string }) {
 
 	return (
 		<>
-			<div className="bg-sidebarColor p-5 border border-borderColor rounded-xl mt-7">
+			<div className="bg-sidebar-color p-5 border border-border-color rounded-xl mt-7">
 				<ApiSettingsNotificationTopBar />
-				<div className="bg-boxColor p-5 mt-5 rounded-lg">
+				<div className="bg-box-color p-5 mt-5 rounded-lg">
 					<ApiSettingsNotificationHeader formData={formData} handleChange={handleChange} />
 					{formData.visible && <ApiSettingsNotificationForm formData={formData} handleChange={handleChange} error={error} setError={setError} id={params.params} />}
 				</div>

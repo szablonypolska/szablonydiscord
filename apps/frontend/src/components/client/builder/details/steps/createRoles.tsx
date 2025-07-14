@@ -13,8 +13,7 @@ export default function CreateRoles() {
 		if (progress === 100 || builderData.rolesStatus !== "in_progress") return
 
 		setProgress((builderData.roles.length / builderData.rolesNumber) * 100)
-	}, [builderData])
-
+	}, [builderData, progress])
 
 	return (
 		<div className="">

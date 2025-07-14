@@ -32,7 +32,7 @@ export default function OrderAnimationWrapper({ code, events, status, orderPayme
 
 				<OrderTimeline events={events} />
 
-				<OrderCardInfo status={status} orderPaymentLink={orderPaymentLink} events={events} />
+				<OrderCardInfo status={status} orderPaymentLink={orderPaymentLink} />
 			</div>
 		</>
 	)
