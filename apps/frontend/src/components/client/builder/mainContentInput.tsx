@@ -39,7 +39,7 @@ export default function MainContentInput({ decorationChannel, decorationCategory
 	}
 
 	return (
-		<motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.3 }} className="mt-6 w-180 max-md:w-11/12 relative z-20">
+		<motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }} className="mt-6 w-180 max-md:w-11/12 relative z-20">
 			<div className={`transition-all ${!generateError && "h-0"} overflow-hidden`}>
 				<MainContentErrorGenerate />
 			</div>

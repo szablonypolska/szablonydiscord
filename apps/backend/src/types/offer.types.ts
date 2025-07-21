@@ -1,1 +1,1 @@
-export type OfferType = 'basic' | 'premium' | 'advanced';
+export type OfferType = 'basic' | 'premium' | 'advanced' | 'upgrade';

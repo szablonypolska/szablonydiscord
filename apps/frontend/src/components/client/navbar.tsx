@@ -8,6 +8,7 @@ import { Menu, X, SparkleIcon, ChevronRight, LayoutTemplate, Code, Store, LogIn 
 import { Button } from "@nextui-org/button"
 import { Dispatch, SetStateAction, useRef, useState } from "react"
 import { useOnClickOutside } from "usehooks-ts"
+import { useEffect } from "react"
 
 export function Logo() {
 	return (
@@ -42,7 +43,7 @@ function NavbarMobile({ view, setView }: { view: boolean; setView: Dispatch<SetS
 			<div className={`fixed top-0 right-0 h-full transition-all ${view ? "w-1/2 max-md:w-9/12 max-sm:w-11/12" : "w-0"}  bg-box-color z-100 flex flex-col overflow-hidden`} ref={elementRef}>
 				<div className="flex items-center justify-between py-5 px-8 max-sm:px-4">
 					<Logo />
-					<Button onPress={() => setView(!view)}>
+					<Button onPress={() => setView(!view)} className="cursor-pointer">
 						<X className="w-7 h-7" />
 					</Button>
 				</div>
@@ -51,7 +52,7 @@ function NavbarMobile({ view, setView }: { view: boolean; setView: Dispatch<SetS
 					{element.map((el, index) => (
 						<Link href={`/${el.to}`} key={index}>
 							{" "}
-							<button className="w-full p-2 max-sm:px-0">
+							<button className="w-full p-2 max-sm:px-0 cursor-pointer">
 								<div className="flex items-center justify-between w-full">
 									<div className="flex items-center gap-3">
 										<div className="bg-border-color p-2.5 rounded-lg w-fit">{el.icon}</div>
@@ -69,12 +70,12 @@ function NavbarMobile({ view, setView }: { view: boolean; setView: Dispatch<SetS
 				</div>
 				<div className="flex flex-col gap-5 py-5 px-8 max-sm:px-4">
 					<Link href="/login">
-						<Button className="bg-primary-color rounded-lg w-full py-6">
+						<Button className="bg-primary-color rounded-lg w-full py-6 cursor-pointer">
 							<LogIn /> <span>Zaloguj się</span>
 						</Button>
 					</Link>
 					<Link href="/register">
-						<Button className="bg-border-color rounded-lg w-full py-6">Zarejestruj się</Button>
+						<Button className="bg-border-color rounded-lg w-full py-6 cursor-pointer">Zarejestruj się</Button>
 					</Link>
 				</div>
 			</div>
@@ -85,6 +86,10 @@ function NavbarMobile({ view, setView }: { view: boolean; setView: Dispatch<SetS
 export default function Navbar() {
 	const [view, setView] = useState<boolean>(false)
 	const pathname = usePathname()
+
+	useEffect(() => {
+		setView(false)
+	}, [pathname])
 
 	return (
 		<>
@@ -118,7 +123,7 @@ export default function Navbar() {
 					<div className="flex items-center justify-between">
 						<Logo />
 
-						<button onClick={() => setView(!view)}>
+						<button onClick={() => setView(!view)} className="cursor-pointer">
 							<Menu className="w-8 h-8" />
 						</button>
 					</div>

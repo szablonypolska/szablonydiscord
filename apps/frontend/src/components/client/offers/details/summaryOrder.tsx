@@ -15,6 +15,8 @@ export default function SummaryOrder() {
 	const [loader, setLoader] = useState<boolean>(false)
 	const router = useRouter()
 	const { data: session } = useSession()
+	const differencePrice = state.discountDetails.discount ? state.price * (state.discountDetails.percentDiscount / 100) : 0
+	const newPrice = state.price - differencePrice
 
 	const validation = () => {
 		switch (state.offers) {
@@ -53,7 +55,7 @@ export default function SummaryOrder() {
 				{state.discountDetails.discount && (
 					<div className="flex items-center justify-between">
 						<p className="text-primary-color">Zniżka ({state.discountDetails.percentDiscount}%)</p>
-						<p className="text-primary-color">-{state.discountDetails.differencePrice} zł</p>
+						<p className="text-primary-color">-{differencePrice} zł</p>
 					</div>
 				)}
 				<div className="flex items-center justify-between">
@@ -66,7 +68,7 @@ export default function SummaryOrder() {
 				<span>Suma</span>
 				<div className="flex items-center gap-2">
 					{state.discountDetails.discount && <p className="text-text-color line-through">{state.price.toFixed(2)} zł</p>}
-					<p className="text-2xl font-semibold">{state.discountDetails.discount ? state.discountDetails.newPrice.toFixed(2) : state.price.toFixed(2)} zł</p>
+					<p className="text-2xl font-semibold">{state.discountDetails.discount ? newPrice : state.price.toFixed(2)} zł</p>
 				</div>
 			</div>
 			{session && (

@@ -8,6 +8,8 @@ export const offerList = (offer: OfferType) => {
       return { offer: 'premium', price: 12.5 };
     case 'advanced':
       return { offer: 'advanced', price: 20.5 };
+    case 'upgrade':
+      return { offer: 'upgrade', price: 12 };
     default:
       return null;
   }

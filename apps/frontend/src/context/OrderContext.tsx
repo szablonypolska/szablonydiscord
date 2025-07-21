@@ -6,7 +6,7 @@ import { AppState, PromoCodeDetails } from "@/components/interfaces/order/common
 const initialState: AppState = {
 	price: 0,
 	offers: "basic",
-	discountDetails: { differencePrice: 0, newPrice: 0, percentDiscount: 0, code: "", discount: false },
+	discountDetails: { percentDiscount: 0, code: "", discount: false },
 	serverLink: "",
 	serverName: "",
 	serverId: "",

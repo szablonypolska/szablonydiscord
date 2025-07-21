@@ -1,18 +1,18 @@
 import { CacheModuleAsyncOptions } from '@nestjs/cache-manager';
-import { ConfigModule, ConfigService } from '@nestjs/config';
-import { redisStore } from 'cache-manager-redis-store';
+import { Keyv } from 'keyv';
+import { CacheableMemory } from 'cacheable';
+import { createKeyv } from '@keyv/redis';
 
 export const RedisOptions: CacheModuleAsyncOptions = {
   isGlobal: true,
-  imports: [ConfigModule],
-  useFactory: async (configService: ConfigService) => {
-    const store = await redisStore({
-      socket: {
-        host: 'localhost',
-        port: '6379',
-      },
-    });
-    return { stores: [store], ttl: 900000 };
+  useFactory: async () => {
+    return {
+      stores: [
+        new Keyv({
+          store: new CacheableMemory({ ttl: 60000, lruSize: 5000 }),
+        }),
+        createKeyv('redis://localhost:6379'),
+      ],
+    };
   },
-  inject: [ConfigService],
 };

@@ -1,27 +1,40 @@
 "use client"
 
-import { Calendar } from "lucide-react"
-import { useState } from "react"
+import { ArrowRight, Calendar, CircleAlert } from "lucide-react"
+import { useState, useEffect } from "react"
+import OfferUpgradeDiscountCode from "./offerUpgradeDiscountCode"
+import { Button } from "@nextui-org/button"
 
 export function OfferUpgradeSelectPlans() {
 	const [selectedPlan, setSelectedPlan] = useState<"monthly" | "annually">("monthly")
-
-	const plansOptions = [
+	const [discountValue, setDiscountValue] = useState<number>(0)
+	const [plansOptions, setPlansOptions] = useState<{ id: string; label: string; description: string; price: number; frequency: string; priceAfterDiscount: number }[]>([
 		{
 			id: "monthly",
 			label: "Miesięczny",
 			description: "Płatność miesięczna",
-			price: "12,99 zł",
+			price: 12.99,
 			frequency: "miesięcznie",
+			priceAfterDiscount: 12.99,
 		},
 		{
 			id: "annually",
 			label: "Roczny",
 			description: "Płatność roczna (taniej nawet 25%)",
-			price: "107,99 zł",
+			price: 107.99,
 			frequency: "rocznie",
+			priceAfterDiscount: 107.99,
 		},
-	]
+	])
+
+	useEffect(() => {
+		setPlansOptions(prev =>
+			prev.map(plan => ({
+				...plan,
+				priceAfterDiscount: parseFloat((plan.price - (plan.price * discountValue) / 100).toFixed(2)),
+			}))
+		)
+	}, [discountValue])
 
 	return (
 		<div className="bg-section-color rounded-xl p-6">
@@ -47,13 +60,24 @@ export function OfferUpgradeSelectPlans() {
 						</div>
 						<div className="flex items-center gap-6 pr-3 text-right">
 							<div className="flex flex-col">
-								<p className="font-medium text-lg">{plan.price}</p>
+								{discountValue > 0 && <p className="text-text-color text-sm line-through">{plan.price}</p>}
+								<p className="font-medium text-lg">{plan.priceAfterDiscount.toFixed(2)} zł</p>
 								<span className="text-text-color text-xs">{plan.frequency}</span>
 							</div>
 							<div className={`w-5 h-5 border  rounded-full relative ${plan.id === selectedPlan ? "border-primary-color" : "border-alt-border-color"}`}>{plan.id === selectedPlan && <div className="absolute w-3 h-3 bg-primary-color top-1/2 left-1/2 -translate-1/2 rounded-full"></div>}</div>
 						</div>
 					</button>
 				))}
+			</div>
+			<OfferUpgradeDiscountCode setDiscountValue={setDiscountValue} />
+			<div className="mt-5">
+				<Button className="bg-primary-color w-full rounded-lg py-5.5 font-medium">
+					<span>Rozpocznij subskrybcję</span> <ArrowRight className="w-4.5 h-4.5" />
+				</Button>
+				<div className="flex items-start gap-2 text-[10px] text-text-color mt-2">
+					<CircleAlert className="w-3 h-3 text-text-color mt-1" />
+					<p>Klikając &qout;Rozpocznij subskrypcję&qout;, wyrażasz zgodę na warunki korzystania z usługi. Możesz anulować subskrypcję w dowolnym momencie.</p>
+				</div>
 			</div>
 		</div>
 	)

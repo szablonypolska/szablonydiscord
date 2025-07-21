@@ -3,9 +3,9 @@
 import { Button } from "@nextui-org/button"
 import { CircleAlert, Loader2, Check } from "lucide-react"
 import { useEffect, useState } from "react"
-import vetifyDiscountCode from "@/lib/payments/verifyPromoCode"
 import { useOrderContext } from "@/context/OrderContext"
 import { motion } from "framer-motion"
+import { applyCode } from "@/utils/discount/applyCode"
 
 export default function DiscountCode() {
 	const [loader, setLoader] = useState<boolean>(false)
@@ -18,47 +18,29 @@ export default function DiscountCode() {
 		if (code !== "") return setError("")
 	}, [code])
 
-	const applyCode = async () => {
-		try {
-			if (!code) return setError("Pole nie może być puste")
-			setLoader(true)
-			setSuccess(false)
-			setError("")
-			const checkCode = await vetifyDiscountCode(state.offers, code)
+	const send = async () => {
+		if (!code) return setError("Pole nie może być puste")
 
-			if (checkCode.statusCode === 404) {
-				dispatch({ type: "discountDetails", payload: { differencePrice: 0, newPrice: 0, percentDiscount: 0, code: "", discount: false } })
-				setError("Wpisany kod promocyjny nie istnieje")
-				setLoader(false)
-				return
-			}
+		setLoader(true)
+		const verifyCode = await applyCode(state.offers, code)
 
-			if (checkCode.type === "lowPrice") {
-				dispatch({ type: "discountDetails", payload: { differencePrice: 0, newPrice: 0, percentDiscount: 0, code: "", discount: false } })
-				setError("Kwota zamówienia nie moze byc nizsza niz 2.50 zł")
-				setLoader(false)
-				return
-			}
-
-			if (checkCode.type === "exceededLimit") {
-				dispatch({ type: "discountDetails", payload: { differencePrice: 0, newPrice: 0, percentDiscount: 0, code: "", discount: false } })
-				setError("Wykorzystano limit użyć kodu promocyjnego")
-				setLoader(false)
-				return
-			}
-
-			dispatch({
-				type: "discountDetails",
-				payload: { differencePrice: checkCode.differencePrice, newPrice: checkCode.newPrice, code: checkCode.code, percentDiscount: checkCode.percentDiscount, discount: true },
-			})
-			setError("")
+		if (!verifyCode.success) {
+			setError(verifyCode.message)
 			setLoader(false)
-			setSuccess(true)
-		} catch (err) {
-			setError("Wystapil blad serwera, sprobuj pozniej")
-			setLoader(false)
-			console.log(err)
+			return
 		}
+
+		dispatch({
+			type: "discountDetails",
+			payload: {
+				percentDiscount: verifyCode.percentDiscount,
+				code: verifyCode.code,
+				discount: true,
+			},
+		})
+		setError("")
+		setSuccess(true)
+		setLoader(false)
 	}
 
 	return (
@@ -83,7 +65,7 @@ export default function DiscountCode() {
 							{success && <Check className="absolute top-1/2 -translate-y-1/2 right-2 text-primary-color w-5 h-5" />}
 						</div>
 
-						<Button className={`flex items-center bg-border-color rounded-xl h-12 transition-all   ${loader ? "opacity-70 w-14" : "w-32"}`} onPress={applyCode}>
+						<Button className={`flex items-center bg-border-color rounded-xl h-12 transition-all cursor-pointer   ${loader ? "opacity-70 w-14" : "w-32"}`} onPress={send}>
 							{loader && <Loader2 className=" animate-spin" />}
 							{!loader && <span>Zastosuj</span>}
 						</Button>
