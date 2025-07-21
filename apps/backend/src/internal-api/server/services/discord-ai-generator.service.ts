@@ -30,7 +30,7 @@ export class DiscordAiGeneratorService {
 
     try {
       const { textStream } = await streamText({
-        model: google('gemini-2.5-flash-preview-04-17'),
+        model: google('gemini-2.5-flash'),
 
         prompt: `### Wybrana przedziałka dla kanałów: ${decorationChannel}, dla kategorii ${decorationCategory} ### OPIS UŻYTKOWNIKA (NAJWYŻSZY PRIORYTET, ważniejsze od instrukcji): ${description}
       ### STANDARDOWY PROMPT (niższy priorytet, stosuj tylko gdy nie koliduje z OPISEM UŻYTKOWNIKA): ${prompt}`,
