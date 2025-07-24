@@ -49,11 +49,11 @@ export default function TemplatesPopup({ link, popup, setPopup }: Props) {
 
 	return (
 		<>
-			{popup && <div ref={overlayRef} className="fixed inset-0 bg-black bg-opacity-80 z-100 opacity-0" onClick={handleClose} />}
+			{popup && <div ref={overlayRef} className="fixed inset-0 bg-black/80 bg-opacity-80 z-100 opacity-0" onClick={handleClose} />}
 
 			<div ref={containerRef} className="absolute top-1/2 left-1/2 z-150 w-120 max-md:w-11/12  bg-alt-background-color p-8 rounded-xl border border-border-color opacity-0 transform -translate-x-1/2 -translate-y-1/2">
 				<div className="absolute top-4 right-4">
-					<button onClick={handleClose} aria-label="Zamknij popup">
+					<button onClick={handleClose} aria-label="Zamknij popup" className="cursor-pointer">
 						<X />
 					</button>
 				</div>
@@ -65,7 +65,7 @@ export default function TemplatesPopup({ link, popup, setPopup }: Props) {
 
 				<div className="flex flex-col gap-4">
 					<Link href={link} className="w-full h-18">
-						<Button className="w-full h-full px-0 rounded-xl">
+						<Button className="w-full h-full px-0 rounded-xl cursor-pointer">
 							<div className="flex items-center gap-3 w-full p-4 bg-border-color rounded-xl">
 								<div className="bg-alt-border-color p-2.5 rounded-lg">
 									<Server />
@@ -78,7 +78,7 @@ export default function TemplatesPopup({ link, popup, setPopup }: Props) {
 						</Button>
 					</Link>
 
-					<Button className="w-full h-18 px-0 rounded-xl relative cursor-not-allowed overflow-visible" disabled>
+					<Button className="w-full h-18 px-0 rounded-xl relative cursor-not-allowed overflow-visible " disabled>
 						<div className="flex items-center gap-3 w-full p-4 bg-border-color opacity-50 rounded-xl">
 							<div className="bg-alt-border-color p-2.5 rounded-lg">
 								<BotIcon />
@@ -107,7 +107,7 @@ export default function TemplatesPopup({ link, popup, setPopup }: Props) {
 							<p className="text-text-color truncate">{link}</p>
 						</div>
 						<div className="w-px h-full bg-alt-border-color" />
-						<button className="px-3" onClick={() => navigator.clipboard.writeText(link)}>
+						<button className="px-3 cursor-pointer" onClick={() => navigator.clipboard.writeText(link)}>
 							<Copy className="w-4 h-4" />
 						</button>
 					</div>

@@ -18,18 +18,18 @@ export default function TopSidebarBuilder() {
 			</div>
 			<div className="flex gap-3">
 				{currentPreview === "code" && (
-					<Button className="bg-border-color p-2 rounded-lg px-3" onPress={() => setCurrentPreview("template")}>
+					<Button className="bg-border-color p-2 rounded-lg px-3 cursor-pointer" onPress={() => setCurrentPreview("template")}>
 						<Eye />
 					</Button>
 				)}
 				{currentPreview === "template" && (
-					<Button className="bg-border-color p-2 rounded-lg px-3" onPress={() => setCurrentPreview("code")}>
+					<Button className="bg-border-color p-2 rounded-lg px-3 cursor-pointer" onPress={() => setCurrentPreview("code")}>
 						<Code />
 					</Button>
 				)}
 				{builderData.aiAnalysisStatus === "done" && (
 					<Link href={`/builder/${builderData.sessionId}/materials`}>
-						<Button className="bg-border-color rounded-lg">
+						<Button className="bg-border-color rounded-lg cursor-pointer">
 							<FileText className="" /> <span>Materiały</span>
 						</Button>
 					</Link>

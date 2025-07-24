@@ -1,16 +1,13 @@
 import Footer from "@/components/client/footer"
 import Navbar from "@/components/client/navbar"
 import NotFoundWeb from "@/components/client/notFound"
-import ChannelList from "@/components/client/preview/channelListPreview"
-import ContentPreview from "@/components/client/preview/contentPreview"
-import LeftSidebar from "@/components/client/preview/leftSidebarPreview"
-import RightSidebarPreview from "@/components/client/preview/rightSidebarPreview"
-import TopSidebarPreview from "@/components/client/preview/topSidebarPreview"
 import redis from "@/lib/redis"
 import getDataTemplate from "@/lib/templates/getData"
 import { prisma } from "@repo/db"
 import { DiscordTemplate } from "@/components/interfaces/templates/common"
 import { differenceInDays } from "date-fns/differenceInDays"
+import DiscordPreviewLayout from "@/components/client/preview/discordPreviewLayout"
+
 
 export default async function LoadPreviewData({ id }: { id: string }) {
 	let dataTemplate = {} as DiscordTemplate
@@ -45,16 +42,6 @@ export default async function LoadPreviewData({ id }: { id: string }) {
 	}
 
 	return (
-		<>
-			<div className="flex">
-				<LeftSidebar />
-				<ChannelList dataTemplate={dataTemplate} slugUrl={data.slugUrl} />
-				<div className="w-full h-full">
-					<TopSidebarPreview />
-					<ContentPreview />
-				</div>
-				<RightSidebarPreview dataTemplate={dataTemplate} />
-			</div>
-		</>
+		<DiscordPreviewLayout dataTemplate={dataTemplate} slugUrl={data.slugUrl} />
 	)
 }

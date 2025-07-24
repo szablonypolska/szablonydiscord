@@ -8,8 +8,8 @@ import { useSession } from "next-auth/react"
 import { useState } from "react"
 import { useRouter } from "next/navigation"
 import { Decoration } from "@/components/interfaces/builder/common"
-import MainContentChooseChannel from "./mainContentChooseChannel"
-import MainContentChooseCategory from "./mainContentChooseCategory"
+import MainContentChooseChannel from "./selectors/mainContentChooseChannel"
+import MainContentChooseCategory from "./selectors/mainContentChooseCategory"
 import MainContentErrorGenerate from "./mainContentErrorGenerate"
 import { motion } from "framer-motion"
 
@@ -39,7 +39,7 @@ export default function MainContentInput({ decorationChannel, decorationCategory
 	}
 
 	return (
-		<motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }} className="mt-6 w-180 max-md:w-11/12 relative z-20">
+		<motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2, duration: 0.5 }} className="mt-6 w-180 max-md:w-11/12 relative z-20">
 			<div className={`transition-all ${!generateError && "h-0"} overflow-hidden`}>
 				<MainContentErrorGenerate />
 			</div>
@@ -67,14 +67,14 @@ export default function MainContentInput({ decorationChannel, decorationCategory
 						<div className="w-full h-px bg-border-color rounded-lg my-3"></div>
 						<div className="flex items-center justify-between gap-3 max-md:justify-normal">
 							<div className="max-md:hidden">
-								<Button className="rounded-xl" onPress={() => setSettings(!settings)}>
+								<Button className="rounded-xl cursor-pointer" onPress={() => setSettings(!settings)}>
 									<Settings className="w-4 h-4 text-text-color" />
 								</Button>
 							</div>
 							<div className="flex flex-col  gap-3 w-full md:hidden">
 								<div className="flex items-center justify-between">
 									<div className="">
-										<Button className="rounded-xl" onPress={() => setSettings(!settings)}>
+										<Button className="rounded-xl cursor-pointer" onPress={() => setSettings(!settings)}>
 											<Settings className="w-4 h-4 text-text-color" />
 										</Button>
 									</div>
@@ -83,7 +83,7 @@ export default function MainContentInput({ decorationChannel, decorationCategory
 									</div>
 								</div>
 
-								<Button className={`bg-primary-color rounded-xl px-5 transition-all disabled:opacity-80 ${text.length ? "opacity-100" : "opacity-50"}`} disabled={loader} onPress={createBuilder}>
+								<Button className={`bg-primary-color rounded-xl px-5 transition-all disabled:opacity-80 cursor-pointer ${text.length ? "opacity-100" : "opacity-50"}`} disabled={loader} onPress={createBuilder}>
 									{!loader && (
 										<>
 											<Sparkles className="w-5 h-5" /> <span className="text-sm">Generuj szablon</span>
@@ -97,7 +97,7 @@ export default function MainContentInput({ decorationChannel, decorationCategory
 									<p className={`text-sm ${text.length > 500 ? "text-error-color" : "text-text-color"}`}>{text.length}/3000 znaków</p>
 								</div>
 
-								<Button className={`bg-primary-color rounded-xl px-5 transition-all disabled:opacity-80 ${text.length ? "opacity-100" : "opacity-50"}`} disabled={loader} onPress={createBuilder}>
+								<Button className={`bg-primary-color rounded-xl px-5 transition-all disabled:opacity-80 cursor-pointer ${text.length ? "opacity-100" : "opacity-50"}`} disabled={loader} onPress={createBuilder}>
 									{!loader && (
 										<>
 											<Sparkles className="w-5 h-5" /> <span className="text-sm">Generuj szablon</span>

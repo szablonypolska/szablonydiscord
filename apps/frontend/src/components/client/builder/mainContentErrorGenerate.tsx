@@ -11,7 +11,7 @@ export default function MainContentErrorGenerate() {
 			<p className="font-semibold mt-4">Wystąpił błąd</p>
 			<p className="text-sm text-text-color mt-1">Nie udało się wygenerować szablonu, spróbuj ponownie później</p>
 			<Link href="/builder">
-				<Button className="bg-border-color  rounded-lg text-sm mt-4">Spróbuj ponownie</Button>
+				<Button className="bg-border-color  rounded-lg text-sm mt-4 cursor-pointer">Spróbuj ponownie</Button>
 			</Link>
 		</div>
 	)

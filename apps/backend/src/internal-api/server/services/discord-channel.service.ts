@@ -99,7 +99,6 @@ export class DiscordCreateChannelService {
           },
         });
 
-        console.log('kanal', channel.id, channel.parentId, channel.position);
       } catch (error) {
         this.websocket.server.emit('update_channel_status', {
           sessionId,

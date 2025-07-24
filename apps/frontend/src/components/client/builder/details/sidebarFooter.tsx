@@ -48,7 +48,7 @@ export default function SidebarFooter() {
 				</div>
 			)}
 			{builderData.templateCode && !builderData.templateUrl && (
-				<Button className="w-full rounded-xl bg-border-color opacity-90 hover:opacity-100 disabled:opacity-80" onPress={publishTemplate} disabled={loader}>
+				<Button className="w-full rounded-xl bg-border-color opacity-90 hover:opacity-100 disabled:opacity-80 cursor-pointer" onPress={publishTemplate} disabled={loader}>
 					{!loader && (
 						<>
 							<Crown className="w-5 h-5" />
@@ -60,12 +60,12 @@ export default function SidebarFooter() {
 			)}
 			{hasError && (
 				<Link href="/builder">
-					<Button className="w-full rounded-xl bg-border-color text-sm">Spróbuj ponownie</Button>
+					<Button className="w-full rounded-xl bg-border-color text-sm cursor-pointer">Spróbuj ponownie</Button>
 				</Link>
 			)}
 			{builderData.templateUrl && (
 				<Link href={`/templates/${builderData.templateUrl}`}>
-					<Button className="w-full rounded-xl bg-primary-color text-sm">
+					<Button className="w-full rounded-xl bg-primary-color text-sm cursor-pointer">
 						<span>Przejdz do szablonu</span> <MoveRight />
 					</Button>
 				</Link>

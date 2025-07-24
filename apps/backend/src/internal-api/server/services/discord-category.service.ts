@@ -75,7 +75,6 @@ export class DiscordCreateCategoryService {
 
         this.categoryMap.set(categoryConfig.id, category);
 
-        console.log('kategoria', category.id, category.parentId);
       } catch (error) {
         this.websocket.server.emit('update_category_status', {
           sessionId,

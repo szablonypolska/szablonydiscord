@@ -102,13 +102,13 @@ export default function TemplatesDetails({ data, base }: Props) {
 					</section>
 
 					<section className="flex items-center gap-3 mt-10 max-sm:flex-col max-sm:w-full max-sm:mt-5">
-						<Button className="flex items-center bg-primary-color px-8 py-6 rounded-xl max-sm:w-full" onPress={() => setPopup(true)}>
+						<Button className="flex items-center bg-primary-color px-8 py-6 rounded-xl max-sm:w-full cursor-pointer" onPress={() => setPopup(true)}>
 							<Plus />
 							Użyj szablonu
 						</Button>
 
 						<Link href={`/preview/${base.slugUrl}`} className="max-sm:w-full">
-							<Button className="flex items-center bg-advice-bot px-8 py-6 rounded-xl max-sm:w-full">
+							<Button className="flex items-center bg-advice-bot px-8 py-6 rounded-xl max-sm:w-full cursor-pointer">
 								<Bot />
 								Przejdź do podglądu szablonu
 							</Button>

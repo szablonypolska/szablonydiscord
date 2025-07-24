@@ -27,6 +27,7 @@
 		"@repo/shared": "^1.0.0",
 		"minimatch": "^10.0.3",
 		"prisma": "^6.0.1",
+		"react-resizable-panels": "^3.0.3",
 		"rimraf": "^6.0.1",
 		"sharp": "^0.34.1",
 		"tailwind-scrollbar": "^4.0.2",

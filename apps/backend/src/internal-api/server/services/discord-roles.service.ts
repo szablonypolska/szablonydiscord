@@ -38,8 +38,6 @@ export class DiscordCreateRolesService {
       const everyoneRole = guild.roles.everyone;
       this.roleMap.set('everyone', everyoneRole);
 
-      console.log(sortedRoles);
-
       for (const roleConfig of sortedRoles) {
         try {
           let colorValue: ColorResolvable;

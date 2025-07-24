@@ -22,7 +22,7 @@ export default function ChannelList({ dataTemplate, slugUrl }: { dataTemplate: D
 
 	return (
 		<>
-			<div className="flex flex-col bg-alt-background-color h-screen w-[20rem] shrink-0 transition-all max-lg:w-0 overflow-hidden">
+			<div className="flex flex-col bg-alt-background-color h-screen w-full shrink-0 transition-all max-lg:w-0 overflow-hidden">
 				<Link href={`/templates/${slugUrl}`}>
 					<div className="flex items-center justify-between p-3 h-16 border-b border-border-color">
 						<p className="text-lg w-11/12 truncate">{dataTemplate.serialized_source_guild.name}</p>

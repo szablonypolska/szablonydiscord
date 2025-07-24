@@ -18,7 +18,7 @@ export default function SidebarBuilderMaterials() {
 			<div className=" mt-8 lg:grow">
 				<div className="">
 					<p className="text-text-color font-medium text-sm">Zasady i regulaminy</p>
-					<button className={` p-3 py-3.5  opacity-90 flex items-center justify-between  gap-3 rounded-xl my-3 transition-all hover:opacity-100 w-full ${currentView === "rules" ? "bg-primary-color" : "bg-border-color"}`} onClick={() => setCurrentView("rules")}>
+					<button className={` p-3 py-3.5  opacity-90 flex items-center justify-between  gap-3 rounded-xl my-3 transition-all hover:opacity-100 w-full ${currentView === "rules" ? "bg-primary-color" : "bg-border-color"} cursor-pointer`} onClick={() => setCurrentView("rules")}>
 						<div className="flex items-center gap-3 text-left">
 							<Shield />
 							<div className="">
@@ -28,7 +28,7 @@ export default function SidebarBuilderMaterials() {
 						</div>
 						<ChevronRight className="w-5 h-5" />
 					</button>
-					<button className={` p-3 py-3.5  opacity-90 flex items-center justify-between  gap-3 rounded-xl my-3 transition-all hover:opacity-100 w-full ${currentView === "tariff" ? "bg-primary-color" : "bg-border-color"}`} onClick={() => setCurrentView("tariff")}>
+					<button className={` p-3 py-3.5  opacity-90 flex items-center justify-between  gap-3 rounded-xl my-3 transition-all hover:opacity-100 w-full ${currentView === "tariff" ? "bg-primary-color" : "bg-border-color"} cursor-pointer`} onClick={() => setCurrentView("tariff")}>
 						<div className="flex items-center gap-3 text-left">
 							<Scale />
 							<div className="">
@@ -41,7 +41,7 @@ export default function SidebarBuilderMaterials() {
 				</div>
 				<div className="mt-5">
 					<p className="text-text-color font-medium text-sm">Informacje prawne</p>
-					<button className={` p-3 py-3.5  opacity-90 flex items-center justify-between  gap-3 rounded-xl my-3 transition-all hover:opacity-100 w-full ${currentView === "privacyPolicy" ? "bg-primary-color" : "bg-border-color"}`} onClick={() => setCurrentView("privacyPolicy")}>
+					<button className={` p-3 py-3.5  opacity-90 flex items-center justify-between  gap-3 rounded-xl my-3 transition-all hover:opacity-100 w-full ${currentView === "privacyPolicy" ? "bg-primary-color" : "bg-border-color"} cursor-pointer`} onClick={() => setCurrentView("privacyPolicy")}>
 						<div className="flex items-center gap-3 text-left">
 							<GlobeLock />
 							<div className="">
@@ -54,7 +54,7 @@ export default function SidebarBuilderMaterials() {
 				</div>
 				<div className="mt-5">
 					<p className="text-text-color font-medium text-sm">Pozostałe materiały</p>
-					<button className={` p-3 py-3.5  opacity-90 flex items-center justify-between  gap-3 rounded-xl my-3 transition-all hover:opacity-100 w-full ${currentView === "faq" ? "bg-primary-color" : "bg-border-color"}`} onClick={() => setCurrentView("faq")}>
+					<button className={` p-3 py-3.5  opacity-90 flex items-center justify-between  gap-3 rounded-xl my-3 transition-all hover:opacity-100 w-full ${currentView === "faq" ? "bg-primary-color" : "bg-border-color"} cursor-pointer`} onClick={() => setCurrentView("faq")}>
 						<div className="flex items-center gap-3 text-left">
 							<CircleHelp />
 							<div className="">

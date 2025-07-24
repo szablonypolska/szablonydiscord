@@ -58,7 +58,7 @@ export default function ContentBuilderMaterials() {
 							<p className="text-text-color">{description}</p>
 						</div>
 					</div>
-					<ButtonCopy size="icon" className=" flex" onClick={() => handleCopyDescription()} aria-label={copied ? "Copied" : "Copy to clipboard"} disabled={copied}>
+					<ButtonCopy size="icon" className=" flex cursor-pointer" onClick={() => handleCopyDescription()} aria-label={copied ? "Copied" : "Copy to clipboard"} disabled={copied}>
 						<div className={cn("transition-all", copied ? "scale-100 opacity-100" : "scale-0 opacity-0")}>
 							<Check className="stroke-primary-color" size={25} strokeWidth={2} aria-hidden="true" />
 						</div>

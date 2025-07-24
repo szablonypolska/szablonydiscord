@@ -28,7 +28,7 @@ export default function Cards({ title, description, usageCount, categories, temp
 				</div>
 			</div>
 			<Link href={`/templates/${slugUrl}`}>
-				<Button className="bg-primary-dark text-primary-light w-full mt-5 rounded-lg">Pokaż szablon</Button>
+				<Button className="bg-primary-dark text-primary-light w-full mt-5 rounded-lg cursor-pointer">Pokaż szablon</Button>
 			</Link>
 		</div>
 	)

@@ -31,14 +31,10 @@ export class DiscordChooseToken {
       for await (const token of allTokens) {
         try {
           await this.client.login(token.token);
-          console.log('przechodze', token.token);
-
           if (
             this.client.user.username &&
             this.client.guilds.cache.size < 100
           ) {
-            console.log(token.token);
-
             await this.updateAuthenticationStatus(sessionId, 'done');
 
             return this.createServer.createServer(

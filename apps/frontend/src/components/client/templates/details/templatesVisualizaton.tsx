@@ -78,7 +78,7 @@ export default function TemplatesVisuzalization({ filtredChannel, filtredRoles }
 								</div>
 
 								{el.type !== 4 && (
-									<ButtonCopy size="icon" className="disabled:opacity-100 hidden group-hover:flex" onClick={() => handleCopyName(el.name)} aria-label={copied ? "Copied" : "Copy to clipboard"} disabled={copied}>
+									<ButtonCopy size="icon" className="disabled:opacity-100 hidden group-hover:flex cursor-pointer" onClick={() => handleCopyName(el.name)} aria-label={copied ? "Copied" : "Copy to clipboard"} disabled={copied}>
 										<div className={cn("transition-all", copied ? "scale-100 opacity-100" : "scale-0 opacity-0")}>
 											<Check className="stroke-primary-color" size={16} strokeWidth={2} aria-hidden="true" />
 										</div>
@@ -98,7 +98,7 @@ export default function TemplatesVisuzalization({ filtredChannel, filtredRoles }
 								return (
 									<div style={{ borderColor: hexColor }} className="flex items-center gap-2 border-2 py-1 px-4 rounded-full whitespace-nowrap overflow-hidden" key={el.id}>
 										<Tooltip content="Skopiuj hex color" className="bg-box-color border border-border-color p-1 px-5 rounded-xl" delay={500}>
-											<Button style={{ backgroundColor: hexColor }} className="w-4 h-4 px-0 rounded-full" onPress={() => copyLink(hexColor)}></Button>
+											<Button style={{ backgroundColor: hexColor }} className="w-4 h-4 px-0 rounded-full cursor-pointer" onPress={() => copyLink(hexColor)}></Button>
 										</Tooltip>
 										<h2>{el.name}</h2>
 									</div>
