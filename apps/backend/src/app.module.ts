@@ -14,6 +14,7 @@ import { EventsModule } from './internal-api/payments/events/events.module';
 import { ChatModule } from './internal-api/chat/chat.module';
 import { MailModule } from './mail/mail.module';
 import { ServerModule } from './internal-api/server/server.module';
+import { TemplateIndexModule } from './internal-api/templates/index/template-index.module';
 
 @Module({
   imports: [
@@ -31,6 +32,7 @@ import { ServerModule } from './internal-api/server/server.module';
     ApiKeysModule,
     NotificationsModule,
     MailModule,
+    TemplateIndexModule,
   ],
 })
 export class AppModule {}

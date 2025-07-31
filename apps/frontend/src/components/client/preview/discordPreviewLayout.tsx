@@ -17,8 +17,10 @@ export default function DiscordPreviewLayout({ dataTemplate, slugUrl }: Props) {
 	return (
 		<PanelGroup direction="horizontal" className="w-full h-screen">
 			<LeftSidebar />
-			<Panel defaultSize={10} minSize={20} maxSize={25} className="w-[20rem]">
-				<ChannelList dataTemplate={dataTemplate} slugUrl={slugUrl} />
+			<Panel defaultSize={20} minSize={20} maxSize={30}>
+				<div className="max-w-[35rem] h-full">
+					<ChannelList dataTemplate={dataTemplate} slugUrl={slugUrl} />
+				</div>
 			</Panel>
 			<PanelResizeHandle className=" cursor-col-resize" />
 

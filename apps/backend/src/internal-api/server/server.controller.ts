@@ -20,6 +20,4 @@ export class ServerController {
   async publishTemplate(@Body() data: PublishDto) {
     return this.publish.publishTemplate(data);
   }
-
-
 }

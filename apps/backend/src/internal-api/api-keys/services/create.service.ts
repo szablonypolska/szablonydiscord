@@ -18,7 +18,7 @@ export class CreateApiKeysService {
   private uid = new ShortUniqueId({ length: 15 });
 
   async createApi(createApiBody: BodyData): Promise<object> {
-    console.log('otrzymuje');
+
     try {
       const checkUserIsExists = await this.prisma.client.user.findUnique({
         where: { userId: createApiBody.userId },

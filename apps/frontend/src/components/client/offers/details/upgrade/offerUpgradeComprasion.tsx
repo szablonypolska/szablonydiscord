@@ -61,8 +61,8 @@ export default function OfferUpgradeComparison() {
 				<p className="text-sm text-text-color text-center w-[40rem] max-md:w-11/12 mt-1">Sprawdź, co zyskujesz wybierając plan Premium i podnieś swoje doświadczenie na wyższy poziom</p>
 			</motion.div>
 			<div className="relative">
-				<div className="absolute -left-40 top-0 bg-primary-color w-28 h-28 blur-[100px] animate-pulse  max-md:blur-[100px] max-md:left-1/2 z-[-1]"></div>
-				<div className="absolute -right-32 bottom-0 bg-primary-color w-28 h-28 blur-[100px] animate-pulse max-md:right-0 max-md:hidden z-[-1]"></div>
+				<div className="absolute -left-20 top-0 bg-primary-color w-16 h-16 blur-[100px]  max-md:blur-[100px] max-md:left-1/2 z-[-1]"></div>
+				<div className="absolute -right-20 bottom-0 bg-primary-color w-18 h-18 blur-[100px]  max-md:right-0 max-md:hidden z-[-1]"></div>
 				<motion.div initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, ease: "easeOut" }} viewport={{ once: true, amount: 0.3 }} className="mt-5 border border-border-color w-[70rem] rounded-2xl bg-box-color max-2xl:w-11/12">
 					<div className="grid grid-cols-3  w-full ">
 						<div className="max-sm:p-3 p-6 border-b border-r border-border-color">

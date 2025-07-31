@@ -11,3 +11,7 @@ export interface Template {
   clickButtonUse?: number;
   authorId: string;
 }
+
+export interface SearchResult extends Template {
+  [key: string]: any;
+}

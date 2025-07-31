@@ -6,9 +6,10 @@ import { HttpModule } from '@nestjs/axios';
 import { MigrationService } from './services/migration.service';
 import { SearchService } from './services/search.service';
 import { VerifyTemplateService } from './services/verify.service';
+import { TemplateIndexModule } from './index/template-index.module';
 
 @Module({
-  imports: [SharedModule, FirebaseModule, HttpModule],
+  imports: [SharedModule, FirebaseModule, HttpModule, TemplateIndexModule],
   providers: [
     TemplatesService,
     MigrationService,

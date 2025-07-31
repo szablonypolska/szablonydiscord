@@ -5,6 +5,7 @@ import { SearchService } from './services/search.service';
 import { Template } from '../../interfaces/template.interface';
 import { VerifyTemplateService } from './services/verify.service';
 import { VerifyTemplateDto } from './dto/verify.dto';
+import { SearchDto } from './dto/search.dto';
 
 @Controller('/api/internal/templates')
 export class TemplateController {
@@ -36,8 +37,8 @@ export class TemplateController {
   @Post('/search')
   @HttpCode(200)
   searchTemplate(
-    @Body('name') name: string,
+    @Body() searchDto: SearchDto,
   ): Promise<{ templates: Template[]; type: string }> {
-    return this.search.searchTemplate(name);
+    return this.search.searchTemplate(searchDto);
   }
 }

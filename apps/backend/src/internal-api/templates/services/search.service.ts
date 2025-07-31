@@ -1,63 +1,34 @@
 import { BadGatewayException, Injectable } from '@nestjs/common';
-import { PrismaService } from '@repo/shared';
-import { Template } from '../../../interfaces/template.interface';
-import Fuse from 'fuse.js';
+import { SearchResult, Template } from '../../../interfaces/template.interface';
+import { ProviderIndex } from '../index/provider.store';
+import { SearchDto } from '../dto/search.dto';
 
 @Injectable()
 export class SearchService {
-  constructor(private readonly prisma: PrismaService) {}
-
-  private fuseOptions = {
-    includeScore: true,
-    threshold: 0.3,
-    keys: ['title', 'description', 'sourceServerId'],
-    getFn: (obj: Template, path: string) => {
-      if (path === 'description' && obj.description === 'Brak opisu szablonu') {
-        return '';
-      }
-      return obj[path];
-    },
-  };
+  constructor(private store: ProviderIndex) {}
 
   async searchTemplate(
-    name: string,
+    searchDto: SearchDto,
   ): Promise<{ templates: Template[]; type: string }> {
     try {
-      if (!name) {
-        throw new BadGatewayException('name is required');
+      const index = this.store.getIndex();
+
+      if (!index) {
+        throw new BadGatewayException(
+          'Index is not available, updating index...',
+        );
       }
 
-      const getSearchHistory = await this.prisma.client.searchHistory.findMany({
-        orderBy: { dateSearch: 'desc' },
-        take: 5,
+      const results = index.search(searchDto.name, {
+        limit: 50,
+        enrich: true,
       });
 
-      const checkIfSearchedToday = getSearchHistory.some(
-        (el: any) => el.title === name,
-      );
-
-      const templates = await this.prisma.client.templates.findMany({
-        orderBy: { usageCount: 'desc' },
+      const result = results[0].result.map((item: SearchResult) => {
+        return item.doc;
       });
 
-      const fuse = new Fuse<Template>(templates, this.fuseOptions);
-
-      const searchTemplates = fuse
-        .search(name)
-        .slice(0, 50)
-        .map((result) => result.item);
-
-      console.log(searchTemplates.length);
-
-      if (!checkIfSearchedToday && searchTemplates.length > 0) {
-        await this.prisma.client.searchHistory.create({
-          data: {
-            title: name,
-          },
-        });
-      }
-
-      return { templates: searchTemplates, type: 'search' };
+      return { templates: result, type: 'search' };
     } catch (err) {
       console.log(err);
       throw err;
