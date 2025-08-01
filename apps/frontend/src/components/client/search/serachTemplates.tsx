@@ -43,7 +43,7 @@ export default function SearchTemplate({ templates }: Props) {
 	const renderItem = ({ ref, key, value, isActive, onNext, onPrevious, setPage, className }: PaginationItemRenderProps) => {
 		if (value === PaginationItemType.NEXT) {
 			return (
-				<button key={key} className={cn(className, "w-10 h-10 bg-box-color-dashboard border border-border-color rounded-lg")} onClick={onNext}>
+				<button key={key} className={cn(className, "w-10 h-10 bg-box-color-dashboard border border-border-color rounded-lg cursor-pointer")} onClick={onNext}>
 					<ArrowRight size="15" />
 				</button>
 			)
@@ -51,7 +51,7 @@ export default function SearchTemplate({ templates }: Props) {
 
 		if (value === PaginationItemType.PREV) {
 			return (
-				<button key={key} className={cn(className, " w-10 h-10 bg-box-color-dashboard border border-border-color rounded-lg")} onClick={onPrevious}>
+				<button key={key} className={cn(className, " w-10 h-10 bg-box-color-dashboard border border-border-color rounded-lg cursor-pointer")} onClick={onPrevious}>
 					<ArrowLeft size="15" />
 				</button>
 			)
@@ -65,7 +65,7 @@ export default function SearchTemplate({ templates }: Props) {
 			)
 		}
 		return (
-			<button key={key} ref={ref} className={cn(className, "bg-box-color-dashboard border border-border-color w-10 h-10 rounded-lg mx-0.5", isActive && " bg-primary-dark text-primary-light  ")} onClick={() => setPage(value)}>
+			<button key={key} ref={ref} className={cn(className, "bg-box-color-dashboard border border-border-color w-10 h-10 rounded-lg mx-0.5 cursor-pointer", isActive && " bg-primary-dark text-primary-light  ")} onClick={() => setPage(value)}>
 				{value}
 			</button>
 		)

@@ -45,7 +45,7 @@ export default function TemplateList({ loadTemplates, loadTemplatesData, loadTem
 					</div>
 					<div className="flex justify-center mt-5">
 						<Link href="/search?sort=popularity">
-							<Button className="bg-alt-background-color px-10 border-border-color rounded-lg">Zobacz więcej</Button>
+							<Button className="bg-alt-background-color px-10 border-border-color rounded-lg cursor-pointer">Zobacz więcej</Button>
 						</Link>
 					</div>
 				</div>
@@ -66,7 +66,7 @@ export default function TemplateList({ loadTemplates, loadTemplatesData, loadTem
 					</div>
 					<div className="flex justify-center mt-5">
 						<Link href="/search?sort=createdAt">
-							<Button className="bg-alt-background-color px-10 border-border-color rounded-lg">Zobacz więcej</Button>
+							<Button className="bg-alt-background-color px-10 border-border-color rounded-lg cursor-pointer">Zobacz więcej</Button>
 						</Link>
 					</div>
 				</div>
@@ -87,7 +87,7 @@ export default function TemplateList({ loadTemplates, loadTemplatesData, loadTem
 					</div>
 					<div className="flex justify-center mt-5">
 						<Link href="/search?sort=createdAt">
-							<Button className="bg-alt-background-color px-10 border-border-color rounded-lg">Zobacz więcej</Button>
+							<Button className="bg-alt-background-color px-10 border-border-color rounded-lg cursor-pointer">Zobacz więcej</Button>
 						</Link>
 					</div>
 				</div>

@@ -4,14 +4,19 @@ import { ProviderIndex } from '../index/provider.store';
 import { SearchDto } from '../dto/search.dto';
 
 @Injectable()
-export class SearchService {
+export class SuggestService {
   constructor(private store: ProviderIndex) {}
 
-  async searchTemplate(
-    searchDto: SearchDto,
-  ): Promise<{ templates: Template[]; type: string }> {
+  async suggestTemplate(searchDto: SearchDto): Promise<{
+    suggestions: {
+      title: string;
+      usageCount: number;
+      category: string;
+      slugUrl: string;
+    }[];
+  }> {
     try {
-      const index = this.store.getIndex();
+      const index = this.store.getIndexSuggestions();
 
       if (!index) {
         throw new BadGatewayException(
@@ -20,21 +25,26 @@ export class SearchService {
       }
 
       const results = index.search(searchDto.name, {
-        limit: 50,
+        limit: 20,
         enrich: true,
       });
 
       const totalResults = (await results).length;
 
       if (totalResults === 0) {
-        return { templates: [], type: 'search' };
+        return { suggestions: [] };
       }
 
       const result = results[0].result.map((item: SearchResult) => {
-        return item.doc;
+        return {
+          title: item.doc.title,
+          usageCount: item.doc.usageCount,
+          category: item.doc.categories,
+          slugUrl: item.doc.slugUrl,
+        };
       });
 
-      return { templates: result, type: 'search' };
+      return { suggestions: result };
     } catch (err) {
       console.log(err);
       throw err;

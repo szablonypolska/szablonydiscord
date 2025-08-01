@@ -7,6 +7,8 @@ import { MigrationService } from './services/migration.service';
 import { SearchService } from './services/search.service';
 import { VerifyTemplateService } from './services/verify.service';
 import { TemplateIndexModule } from './index/template-index.module';
+import { SuggestService } from './services/suggest.service';
+
 
 @Module({
   imports: [SharedModule, FirebaseModule, HttpModule, TemplateIndexModule],
@@ -15,6 +17,7 @@ import { TemplateIndexModule } from './index/template-index.module';
     MigrationService,
     SearchService,
     VerifyTemplateService,
+    SuggestService
   ],
   controllers: [TemplateController],
 })

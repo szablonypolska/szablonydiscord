@@ -4,11 +4,13 @@ import { motion } from "framer-motion"
 import { Search as SearchItem, LoaderCircle } from "lucide-react"
 import { useRouter, useSearchParams } from "next/navigation"
 import { useEffect, useState, useTransition } from "react"
+import SearchSuggest from "./searchSuggest"
 
 export default function Search() {
 	const [name, setName] = useState<string>("")
 	const [initialize, setInitialize] = useState(false)
 	const [isPending, startTransition] = useTransition()
+	const [hasUserEdit, setHasUserEdit] = useState<boolean>(false)
 
 	const router = useRouter()
 	const searchParams = useSearchParams()
@@ -20,10 +22,16 @@ export default function Search() {
 		params.set("name", name)
 		params.delete("sort")
 		params.delete("category")
+		params.delete("page")
 
 		startTransition(() => {
 			router.push(`/search?${params.toString()}`)
 		})
+	}
+
+	const handleUpdate = (e: React.ChangeEvent<HTMLInputElement>) => {
+		setName(e.target.value)
+		setHasUserEdit(true)
 	}
 
 	useEffect(() => {
@@ -40,9 +48,23 @@ export default function Search() {
 				<p className="text-sm text-silver-color mt-2">Przeglądaj i filtruj szablony według kategorii lub użyj wyszukiwarki</p>
 			</div>
 			<div className="flex items-center gap-3 relative mt-5">
-				<input type="text" className="bg-alt-background-color border border-border-color w-full p-3.5 rounded-xl focus:ring-2 focus:ring-primary-dark focus:outline-hidden" placeholder="Wyszukaj po nazwie lub id..." defaultValue={name} onChange={e => setName(e.target.value)} />
+				<div className="w-full relative">
+					<input
+						type="text"
+						className="bg-alt-background-color border border-border-color w-full p-3.5 rounded-xl focus:ring-2 focus:ring-primary-dark focus:outline-hidden"
+						placeholder="Wyszukaj po nazwie lub id..."
+						defaultValue={name}
+						onChange={e => handleUpdate(e)}
+						onKeyDown={e => {
+							if (e.key === "Enter") {
+								handleSearch()
+							}
+						}}
+					/>
+					<SearchSuggest title={name} hasUserEdit={hasUserEdit} />
+				</div>
 
-				<Button className="flex items-center gap-2 bg-primary-dark text-primary-light rounded-xl px-6 py-7 text-sm transition-colors disabled:opacity-50" isDisabled={isPending || checkName} onPress={handleSearch}>
+				<Button className="flex items-center gap-2 bg-primary-dark text-primary-light rounded-xl px-6 py-7 text-sm transition-colors disabled:opacity-50 cursor-pointer" isDisabled={isPending || checkName} onPress={handleSearch}>
 					{isPending ? <LoaderCircle size="40" className="animate-spin" /> : <SearchItem size="37" />}
 					Wyszukaj
 				</Button>

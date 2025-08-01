@@ -30,11 +30,23 @@ export class UpdateIndexService {
       cache: true,
     });
 
+    const indexSuggestions = new Document<SearchResult, true>({
+      document: {
+        id: 'templateId',
+        field: ['title'],
+        store: true,
+      },
+      tokenize: 'forward',
+      cache: true,
+    });
+
     templates.forEach((template: Template) => {
       index.add(template);
+      indexSuggestions.add(template);
     });
 
     this.store.setIndex(index);
+    this.store.setIndexSuggestions(indexSuggestions);
 
     return this.store.getIndex();
   }

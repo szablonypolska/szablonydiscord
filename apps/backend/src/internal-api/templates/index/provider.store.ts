@@ -5,6 +5,7 @@ import { Injectable } from '@nestjs/common';
 @Injectable()
 export class ProviderIndex {
   private index: Document<SearchResult, true>;
+  private indexSuggestions: Document<SearchResult, true>;
 
   getIndex() {
     return this.index;
@@ -12,5 +13,13 @@ export class ProviderIndex {
 
   setIndex(index: Document<SearchResult, true>) {
     this.index = index;
+  }
+
+  getIndexSuggestions() {
+    return this.indexSuggestions;
+  }
+
+  setIndexSuggestions(indexSuggestions: Document<SearchResult, true>) {
+    this.indexSuggestions = indexSuggestions;
   }
 }

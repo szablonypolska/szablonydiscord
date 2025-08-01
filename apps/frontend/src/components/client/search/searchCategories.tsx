@@ -45,14 +45,14 @@ export default function SearchCategories({ categories }: TypeProps) {
 			<p className="font-medium text-lg px-5">Kategorie</p>
 			<div className="flex flex-col gap-2 px-5 mt-5">
 				{categories.slice(0, showLength).map((el, index) => (
-					<Button key={index} onPress={() => handleChange(el.categories)} className={`group flex items-center justify-between text-text-color my-0 py-0 px-3 rounded-xl hover:bg-border-color w-full ${el.categories == category && "bg-primary-dark text-primary-light hover:bg-primary-dark"}`}>
+					<Button key={index} onPress={() => handleChange(el.categories)} className={`group flex items-center justify-between text-text-color my-0 py-0 px-3 rounded-xl hover:bg-border-color w-full cursor-pointer ${el.categories == category && "bg-primary-dark text-primary-light hover:bg-primary-dark"}`}>
 						<p className={`${el.categories == category && "bg-primary-dark text-primary-light hover:bg-primary-dark"}`}>{el.categories}</p>
 						<p className={`${el.categories == category && "bg-primary-dark text-primary-light hover:bg-primary-dark"}`}>{el._count.categories}</p>
 					</Button>
 				))}
 			</div>
 			<div className="flex flex-col items-center gap-1 mt-10 text-dark-gray">
-				<button className="flex flex-col items-center gap-1" onClick={() => setShow(!show)}>
+				<button className="flex flex-col items-center gap-1 cursor-pointer" onClick={() => setShow(!show)}>
 					<p className="text-sm">Pokaż {show ? "mniej" : "wszystkie"}</p>
 					{show ? <ArrowUp size="20" /> : <ArrowDown size="20" />}
 				</button>

@@ -8,7 +8,7 @@ export default function WalletPopup() {
 	const [packages, setPackages] = useState<"custom" | "packagesList">("custom")
 
 	return (
-		<div className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-box-color w-120 border border-border-color  rounded-lg z-50">
+		<div className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-box-color w-120 border border-border-color  rounded-lg z-50 hidden">
 			<div className="flex items-center justify-between p-4">
 				<div className="flex items-center gap-2">
 					<Wallet className="text-primary-color" />

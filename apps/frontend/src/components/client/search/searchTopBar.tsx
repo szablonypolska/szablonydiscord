@@ -27,8 +27,6 @@ export default function SearchTopBar({ count, typeView, setTypeView }: Props) {
 		setSortBy("lack")
 	}, [searchParams])
 
-	console.log(searchParams.get("sort"))
-
 	const sortOptions = [
 		{
 			id: "lack",
@@ -63,7 +61,7 @@ export default function SearchTopBar({ count, typeView, setTypeView }: Props) {
 			</div>
 			<div className="flex gap-5 h-11 max-md:gap-2">
 				<div className="relative h-full">
-					<Button onPress={() => setShowSortDropdown(!showSortDropdown)} className="flex items-center gap-2 bg-alt-background-color border border-border-color rounded-xl px-4 py-2 text-sm hover:border-primary-color transition-colors h-full">
+					<Button onPress={() => setShowSortDropdown(!showSortDropdown)} className="flex items-center gap-2 bg-alt-background-color border border-border-color rounded-xl px-4 py-2 text-sm hover:border-primary-color transition-colors h-full cursor-pointer">
 						<ArrowUpDown size={16} />
 						{sortOptions.find(opt => opt.id === sortBy)?.label}
 						<ChevronDown size={14} className={`transition-transform duration-200 ${showSortDropdown ? "rotate-180" : ""}`} />
@@ -77,7 +75,7 @@ export default function SearchTopBar({ count, typeView, setTypeView }: Props) {
 											setSortBy(option.id as SortOption)
 											setShowSortDropdown(false)
 										}}
-										className="w-full flex items-center gap-2 px-4 py-3 text-sm hover:bg-border-color transition-colors">
+										className="w-full flex items-center gap-2 px-4 py-3 text-sm hover:bg-border-color transition-colors cursor-pointer">
 										<option.icon size={14} />
 										{option.label}
 										{sortBy === option.id && <Check size={14} className="ml-auto text-primary-light" />}
@@ -88,10 +86,10 @@ export default function SearchTopBar({ count, typeView, setTypeView }: Props) {
 					)}
 				</div>
 				<div className="flex items-center gap-1 border border-border-color rounded-xl px-1 py-1 bg-box-color h-full">
-					<Button className={`h-9 p-2 px-2 rounded-xl text-dark-gray hover:text-white ${typeView === "grid" && "bg-border-color text-white"}`} onPress={() => setTypeView("grid")}>
+					<Button className={`h-9 p-2 px-2 rounded-xl text-dark-gray hover:text-white cursor-pointer ${typeView === "grid" && "bg-border-color text-white"}`} onPress={() => setTypeView("grid")}>
 						<Grid size={20} />
 					</Button>
-					<Button className={`h-9 p-2 px-2 rounded-xl text-dark-gray hover:text-white  ${typeView === "list" && "bg-border-color text-white"}`} onPress={() => setTypeView("list")}>
+					<Button className={`h-9 p-2 px-2 rounded-xl text-dark-gray hover:text-white cursor-pointer ${typeView === "list" && "bg-border-color text-white"}`} onPress={() => setTypeView("list")}>
 						<List size={20} />
 					</Button>
 				</div>
