@@ -1,5 +1,4 @@
 import { Module } from '@nestjs/common';
-import { QueueModule } from './internal-api/queue/queue.module';
 import { TemplateModule } from './internal-api/templates/templates.module';
 import { ConfigModule } from '@nestjs/config';
 import { ApiKeysModule } from './internal-api/api-keys/api-keys.module';
@@ -15,24 +14,32 @@ import { ChatModule } from './internal-api/chat/chat.module';
 import { MailModule } from './mail/mail.module';
 import { ServerModule } from './internal-api/server/server.module';
 import { TemplateIndexModule } from './internal-api/templates/index/template-index.module';
+import { BullModule } from '@nestjs/bullmq';
+import { ProcessorModule } from './internal-api/queue/processor/processor.module';
 
 @Module({
   imports: [
     ConfigModule.forRoot(),
     CacheModule.registerAsync(RedisOptions),
     EventEmitterModule.forRoot(),
+    BullModule.forRoot({
+      connection: {
+        host: 'localhost',
+        port: 6379,
+      },
+    }),
     EventsModule,
     PublicModule,
     SchedulesModule,
     ChatModule,
     ServerModule,
     ModulePayments,
-    // QueueModule,
     TemplateModule,
     ApiKeysModule,
     NotificationsModule,
     MailModule,
     TemplateIndexModule,
+    ProcessorModule,
   ],
 })
 export class AppModule {}

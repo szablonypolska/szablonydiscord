@@ -35,10 +35,12 @@ export interface DiscordTemplate {
 }
 
 export interface BaseInforamtion {
+	templateId: string
 	title: string
 	description: string
 	categories: string
 	link: string
 	slugUrl: string
 	historyLength: number
+	code?: string
 }

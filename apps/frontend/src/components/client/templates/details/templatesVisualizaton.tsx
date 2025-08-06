@@ -58,7 +58,6 @@ export default function TemplatesVisuzalization({ filtredChannel, filtredRoles }
 		} else if (el.type === 4) {
 			return channelIcons[4]
 		} else {
-			console.log(el.permission_overwrites, "dla glosowego")
 			return channelIcons[2]
 		}
 	}

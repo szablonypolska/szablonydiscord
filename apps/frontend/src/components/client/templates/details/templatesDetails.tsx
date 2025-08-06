@@ -12,8 +12,6 @@ import { TemplatesUserCreator } from "./templatesCreator"
 import TemplatesPopup from "./templatesPopup"
 import { useState } from "react"
 
-
-
 interface Props {
 	data: DiscordTemplate
 	base: BaseInforamtion
@@ -21,6 +19,11 @@ interface Props {
 
 export default function TemplatesDetails({ data, base }: Props) {
 	const [popup, setPopup] = useState<boolean>(false)
+	const templateInfo = {
+		link: base.link,
+		templateId: base.templateId,
+		code: base.code,
+	}
 
 	const numbers = data.serialized_source_guild.channels.reduce(
 		(acc, value) => {
@@ -45,7 +48,7 @@ export default function TemplatesDetails({ data, base }: Props) {
 
 	return (
 		<>
-			<TemplatesPopup link={base.link} popup={popup} setPopup={setPopup} />
+			<TemplatesPopup popup={popup} setPopup={setPopup} templateInfo={templateInfo} />
 			<motion.main className="flex flex-col items-center my-32" initial="hidden" animate="visible" variants={containerVariants}>
 				<motion.section className="bg-alt-background-color w-280 max-xl:w-11/12 p-8 rounded-xl border border-border-color max-lg:p-5" variants={containerVariants}>
 					<header>
@@ -102,16 +105,14 @@ export default function TemplatesDetails({ data, base }: Props) {
 					</section>
 
 					<section className="flex items-center gap-3 mt-10 max-sm:flex-col max-sm:w-full max-sm:mt-5">
-						<Button className="flex items-center bg-primary-color px-8 py-6 rounded-xl max-sm:w-full cursor-pointer" onPress={() => setPopup(true)}>
+						<Button className="flex items-center bg-primary-color px-8 h-12 rounded-xl max-sm:w-full cursor-pointer" onPress={() => setPopup(true)}>
 							<Plus />
 							Użyj szablonu
 						</Button>
 
-						<Link href={`/preview/${base.slugUrl}`} className="max-sm:w-full">
-							<Button className="flex items-center bg-advice-bot px-8 py-6 rounded-xl max-sm:w-full cursor-pointer">
-								<Bot />
-								Przejdź do podglądu szablonu
-							</Button>
+						<Link href={`/preview/${base.slugUrl}`} className="max-sm:w-full flex gap-3 items-center bg-advice-bot px-8 h-12 rounded-xl max-sm:w-full cursor-pointer">
+							<Bot />
+							Przejdź do podglądu szablonu
 						</Link>
 					</section>
 				</motion.section>

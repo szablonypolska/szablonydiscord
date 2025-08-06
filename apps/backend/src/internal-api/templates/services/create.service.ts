@@ -7,51 +7,22 @@ import ShortUniqueId from 'short-unique-id';
 import { PrismaService } from '@repo/shared';
 import { HttpService } from '@nestjs/axios';
 import { lastValueFrom } from 'rxjs';
-import { GoogleGenerativeAI } from '@google/generative-ai';
-import { prompt } from '../instructions/ai-prompt.json';
-import { categoriesTemplate } from 'src/common/constants/categories.constans';
-import { DetailsTemplates } from '../interfaces/templates.interface';
-import { differenceInDays, format } from 'date-fns';
-import { pl } from 'date-fns/locale';
-import { slugify } from 'src/common/utils/slugify';
-import { generateText } from 'ai';
+import { differenceInDays } from 'date-fns';
+import { InjectQueue } from '@nestjs/bullmq';
+import { Queue } from 'bullmq';
 
 @Injectable()
 export class TemplatesService {
   constructor(
     private readonly prisma: PrismaService,
     private readonly httpService: HttpService,
+    @InjectQueue('addTemplateQueue') private templatesQueue: Queue,
   ) {}
 
   private uid = new ShortUniqueId({ length: 15 });
-  private channelName: string[] = [];
-  private rolesName: string[] = [];
-  private slugUrl: string = null;
-  private todayDate = format(new Date(), 'dd.MM.yyyy', { locale: pl });
 
-  private determinateCategory(text: string) {
-    const [firstCategory, description] = text.split(',').map((el) => el.trim());
-
-    const firstCategoryVaild = categoriesTemplate.includes(firstCategory);
-
-    const categories = [firstCategory];
-
-    const details: DetailsTemplates = {
-      category: categories.join(','),
-      description: description ? description : 'Brak opisu szablonu',
-    };
-
-    if (!firstCategoryVaild) {
-      details.category = 'Wszystkie';
-      return details;
-    }
-    if (firstCategoryVaild) return details;
-  }
-
-  async addTemplate(id: string): Promise<{ message: string }> {
+  async addTemplate(id: string): Promise<{ message: string; id: string }> {
     const link = `https://discord.com/api/v9/guilds/templates/${id}`;
-    const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
-    const model = genAI.getGenerativeModel({ model: 'gemini-2.0-flash-exp' });
 
     try {
       const fetchTemplates = await lastValueFrom(this.httpService.get(link));
@@ -61,6 +32,7 @@ export class TemplatesService {
         new Date(fetchTemplates.data.created_at),
       );
       const { roles, channels } = fetchTemplates.data.serialized_source_guild;
+      const templateId = this.uid.rnd();
 
       const templateRepeat = templates.find(
         (repeat: any) => repeat.link === `https://discord.new/${id}`,
@@ -71,7 +43,7 @@ export class TemplatesService {
 
       const checkReserveTemplate = await this.checkReserveTemplate(
         fetchTemplates.data.name,
-        fetchTemplates.data.description,
+        fetchTemplates.data.source_guild_id,
       );
 
       if (checkReserveTemplate)
@@ -87,58 +59,35 @@ export class TemplatesService {
         }
       }
 
-      if (roles.length < 15 && channels.length < 10) {
+      if (roles.length < 2 && channels.length < 2) {
         throw new BadRequestException('does not meet the requirements');
       }
 
-      this.channelName = channels.map((el) => el.name);
-      this.rolesName = roles.map((el) => el.name);
-
-      const promptGenerate = `${prompt}, oto nazwa tego szablonu ${fetchTemplates.data.name} oto kanały tego szablonu: ${this.channelName.join(',')}, oto role tego serwera ${this.rolesName}`;
-
-      const result = await model.generateContent(promptGenerate);
-      const text = result.response.text();
-      const category = this.determinateCategory(text);
-
-      const checkUserIsExists = await this.prisma.client.user.findUnique({
-        where: {
-          userId: fetchTemplates.data.creator.id,
+      await this.templatesQueue.add(
+        'addTemplate',
+        {
+          templateId: templateId,
+          templateData: fetchTemplates.data,
+          channels: fetchTemplates.data.serialized_source_guild.channels,
+          roles: fetchTemplates.data.serialized_source_guild.roles,
         },
-      });
-
-      if (!checkUserIsExists) {
-        await this.prisma.client.user.create({
-          data: {
-            avatar: fetchTemplates.data.creator.avatar,
-            slugUrl: fetchTemplates.data.creator.username.toLowerCase(),
-            userId: fetchTemplates.data.creator.id,
-            username: fetchTemplates.data.creator.username,
+        {
+          attempts: 2,
+          backoff: {
+            type: 'exponential',
+            delay: 5000,
           },
-        });
-      }
-
-      this.slugUrl = await slugify(fetchTemplates.data.name);
-
-      await this.prisma.client.templates.create({
-        data: {
-          templateId: this.uid.rnd(),
-          categories: category.category,
-          dateCreate: this.todayDate,
-          link: `https://discord.new/${id}`,
-          slugUrl: this.slugUrl,
-          title: fetchTemplates.data.name,
-          description: category.description,
-          sourceServerId: fetchTemplates.data.description,
-          usageCount: fetchTemplates.data.usage_count,
-          authorId: fetchTemplates.data.creator.id,
+          jobId: `${this.uid.rnd()}`,
         },
-      });
+      );
 
-      return { message: 'Templates is created' };
+      return { message: 'Templates is added to queue', id: templateId };
     } catch (err) {
       throw err;
     }
   }
+
+  
 
   private async checkReserveTemplate(name: string, serverId: string) {
     const reserveTemplates =

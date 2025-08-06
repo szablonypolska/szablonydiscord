@@ -1,8 +1,3 @@
-export interface DetailsTemplates {
-  category: string;
-  description: string;
-}
-
 export interface Template {
   in: number;
   templateId: string;

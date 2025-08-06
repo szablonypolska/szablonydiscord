@@ -20,7 +20,9 @@ export class TemplateController {
 
   @Post('/create')
   @HttpCode(201)
-  async addTemplate(@Body('id') id: string): Promise<{ message: string }> {
+  async addTemplate(
+    @Body('id') id: string,
+  ): Promise<{ message: string; id: string }> {
     return this.templates.addTemplate(id);
   }
 

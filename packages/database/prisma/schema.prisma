@@ -156,6 +156,7 @@ model Templates {
   description String?
   usageCount Int @default(0)
   authorId String?
+  code String?
   visitHistory VisitTemplateHistory[]
   author User? @relation(fields: [authorId], references: [userId])
 

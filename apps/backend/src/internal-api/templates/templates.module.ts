@@ -8,16 +8,22 @@ import { SearchService } from './services/search.service';
 import { VerifyTemplateService } from './services/verify.service';
 import { TemplateIndexModule } from './index/template-index.module';
 import { SuggestService } from './services/suggest.service';
-
+import { QueueModule } from '../queue/queue.module';
 
 @Module({
-  imports: [SharedModule, FirebaseModule, HttpModule, TemplateIndexModule],
+  imports: [
+    SharedModule,
+    FirebaseModule,
+    HttpModule,
+    TemplateIndexModule,
+    QueueModule,
+  ],
   providers: [
     TemplatesService,
     MigrationService,
     SearchService,
     VerifyTemplateService,
-    SuggestService
+    SuggestService,
   ],
   controllers: [TemplateController],
 })
