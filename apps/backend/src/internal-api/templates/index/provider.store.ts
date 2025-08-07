@@ -1,4 +1,4 @@
-import { SearchResult } from '../interfaces/templates.interface';
+import { SearchResult } from '../../../interfaces/template.interface';
 import { Document } from 'flexsearch';
 import { Injectable } from '@nestjs/common';
 

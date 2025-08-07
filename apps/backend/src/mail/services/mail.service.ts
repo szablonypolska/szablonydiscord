@@ -30,6 +30,23 @@ export class MailService {
     }
   }
 
+  async sendTemplateAddedEmail(
+    to: string,
+    templateId: string,
+    slugUrl: string,
+  ): Promise<boolean> {
+    return this.sendMail({
+      to,
+      subject: 'Twój szablon Discord został dodany',
+      template: 'templatesAdded',
+      context: {
+        templateId,
+        addedDate: new Date().toLocaleDateString(),
+        slugUrl,
+      },
+    });
+  }
+
   async sendPaidEmail(
     to: string,
     orderId: string,

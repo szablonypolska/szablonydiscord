@@ -10,6 +10,7 @@ export interface Template {
   usageCount: number;
   clickButtonUse?: number;
   authorId: string;
+  addingUserId: string;
 }
 
 export interface SearchResult extends Template {

@@ -7,10 +7,20 @@ import { google } from '@ai-sdk/google';
 import prompt from './instructions/ai-prompt.json';
 import { DetailsTemplates } from './interfaces/template.interface';
 import { categoriesTemplate } from 'src/common/constants/categories.constans';
+import { MailService } from 'src/mail/services/mail.service';
+import { User } from '../../../interfaces/user.interface';
+import { CACHE_MANAGER, Cache } from '@nestjs/cache-manager';
+import { Inject } from '@nestjs/common';
 
-@Processor('addTemplateQueue')
+@Processor('addTemplateQueue', {
+  concurrency: 1,
+})
 export class TemplateConsumer extends WorkerHost {
-  constructor(private readonly prisma: PrismaService) {
+  constructor(
+    private readonly prisma: PrismaService,
+    private readonly mailService: MailService,
+    @Inject(CACHE_MANAGER) private cacheManager: Cache,
+  ) {
     super();
   }
 
@@ -42,15 +52,22 @@ export class TemplateConsumer extends WorkerHost {
   }
 
   async process(job: Job): Promise<any> {
-    const { templateId, templateData, channels, roles } = job.data;
+    const {
+      templateId,
+      templateData,
+      channels,
+      roles,
+      addingUserId,
+      addingUserEmail,
+    } = job.data;
 
     try {
-      const user = await this.prisma.client.user.findUnique({
+      let user: User | null = await this.prisma.client.user.findUnique({
         where: { userId: templateData.creator.id },
       });
 
       if (!user) {
-        await this.prisma.client.user.create({
+        user = await this.prisma.client.user.create({
           data: {
             avatar: templateData.creator.avatar,
             slugUrl: templateData.creator.username.toLowerCase(),
@@ -81,8 +98,17 @@ export class TemplateConsumer extends WorkerHost {
           sourceServerId: templateData.description,
           usageCount: templateData.usage_count,
           authorId: templateData.creator.id,
+          addingUserId: addingUserId,
         },
       });
+
+      await this.mailService.sendTemplateAddedEmail(
+        addingUserEmail,
+        templateId,
+        slugUrl,
+      );
+
+      await this.cacheManager.del(`reserve:${templateData.code}`);
 
       return {};
     } catch (err) {

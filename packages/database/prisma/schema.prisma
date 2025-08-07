@@ -24,6 +24,7 @@ enum OrderStatus {
 model User {
   userId String @unique @id
   slugUrl String @unique
+  email String? @unique
   username String
   avatar String? 
   dateCreateAccount DateTime?
@@ -156,6 +157,7 @@ model Templates {
   description String?
   usageCount Int @default(0)
   authorId String?
+  addingUserId String @default("")
   code String?
   visitHistory VisitTemplateHistory[]
   author User? @relation(fields: [authorId], references: [userId])

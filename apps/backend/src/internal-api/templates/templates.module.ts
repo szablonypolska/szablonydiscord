@@ -1,5 +1,5 @@
 import { Module } from '@nestjs/common';
-import { TemplatesService } from './services/create.service';
+import { TemplatesAddService } from './services/create.service';
 import { TemplateController } from './templates.controller';
 import { SharedModule, FirebaseModule } from '@repo/shared';
 import { HttpModule } from '@nestjs/axios';
@@ -9,6 +9,8 @@ import { VerifyTemplateService } from './services/verify.service';
 import { TemplateIndexModule } from './index/template-index.module';
 import { SuggestService } from './services/suggest.service';
 import { QueueModule } from '../queue/queue.module';
+import { LocalSharedModule } from 'src/shared/shared.module';
+
 
 @Module({
   imports: [
@@ -17,9 +19,10 @@ import { QueueModule } from '../queue/queue.module';
     HttpModule,
     TemplateIndexModule,
     QueueModule,
+    LocalSharedModule,
   ],
   providers: [
-    TemplatesService,
+    TemplatesAddService,
     MigrationService,
     SearchService,
     VerifyTemplateService,

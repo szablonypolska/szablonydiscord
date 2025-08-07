@@ -36,6 +36,7 @@ export const authOptions: AuthOptions = {
 				await prisma.user.create({
 					data: {
 						userId: profile.id,
+						email: profile.email,
 						username: profile.username,
 						slugUrl: profile.username,
 						avatar: profile.avatar,

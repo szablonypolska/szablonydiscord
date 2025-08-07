@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { Cron, CronExpression } from '@nestjs/schedule';
 import { Document } from 'flexsearch';
 import { PrismaService } from '@repo/shared';
-import { Template, SearchResult } from '../interfaces/templates.interface';
+import { Template, SearchResult } from '../../../interfaces/template.interface';
 import { ProviderIndex } from './provider.store';
 
 @Injectable()
