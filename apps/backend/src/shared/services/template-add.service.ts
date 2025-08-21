@@ -13,6 +13,7 @@ import { InjectQueue } from '@nestjs/bullmq';
 import { Queue } from 'bullmq';
 import { Template } from '../../interfaces/template.interface';
 import { CACHE_MANAGER, Cache } from '@nestjs/cache-manager';
+import { slugify } from 'src/common/utils/slugify';
 
 @Injectable()
 export class TemplatesCoreService {
@@ -28,7 +29,13 @@ export class TemplatesCoreService {
   async addTemplate(
     id: string,
     addingUserId: string,
-  ): Promise<{ message: string; id: string; position?: number }> {
+  ): Promise<{
+    message: string;
+    id: string;
+    slugUrl: string;
+    position?: number;
+    waitingInQueue?: number;
+  }> {
     const link = `https://discord.com/api/v9/guilds/templates/${id}`;
     let fetchTemplates;
 
@@ -73,11 +80,13 @@ export class TemplatesCoreService {
       if (roles.length < 2 && channels.length < 2) {
         throw new BadRequestException('does not meet the requirements');
       }
+      const slugUrl = await slugify(fetchTemplates.data.name);
 
       const job = await this.templatesQueue.add(
         'addTemplate',
         {
           templateId: templateId,
+          slugUrl: slugUrl,
           templateData: fetchTemplates.data,
           channels: fetchTemplates.data.serialized_source_guild.channels,
           roles: fetchTemplates.data.serialized_source_guild.roles,
@@ -99,13 +108,15 @@ export class TemplatesCoreService {
       await this.cacheManager.set(
         `reserve:${fetchTemplates.data.code}`,
         true,
-        60 * 60 * 24,
+        24 * 60 * 60 * 1000,
       );
 
       return {
         message: 'Templates is added to queue',
         id: templateId,
-        position: position + 1,
+        slugUrl: slugUrl,
+        position: position === -1 ? 0 : position + 1,
+        waitingInQueue: waitingInQueue.length,
       };
     } catch (err) {
       throw err;

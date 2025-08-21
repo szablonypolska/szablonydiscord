@@ -11,9 +11,10 @@ import { DiscordAiGeneratorService } from './services/discord-ai-generator.servi
 import { DiscordServerCreatorService } from './services/discord-server-creator.service';
 import { DiscordChooseToken } from './services/authentication.service';
 import { PublishTemplate } from './services/publish.service';
+import { LocalSharedModule } from 'src/shared/shared.module';
 
 @Module({
-  imports: [WebsocketModule, SharedModule],
+  imports: [WebsocketModule, SharedModule, LocalSharedModule],
   providers: [
     GenerateServerSchema,
     DiscordCreateCategoryService,

@@ -2,7 +2,7 @@
 import { Button } from "@nextui-org/button"
 import { motion } from "framer-motion"
 import { ArrowRight, Check, Lock, Shield } from "lucide-react"
-import Link from "next/link"
+import { toast } from "sonner"
 
 export default function OfferList() {
 	const packages = [
@@ -11,6 +11,7 @@ export default function OfferList() {
 			icon: Shield,
 			price: 5.5,
 			title: "Podstawowa ochrona",
+			code: "basic_security",
 			description: "Dla pojedynczych serwerów",
 			features: ["Usunięcie szablonów ze strony", "Potwierdzenie email", "Natychmiastowa realizacja"],
 			popular: false,
@@ -22,6 +23,7 @@ export default function OfferList() {
 			icon: Shield,
 			price: 20.5,
 			title: "Zaawansowana ochrona",
+			code: "advanced_security",
 			description: "Brak możliwości dodania serwera",
 			features: ["Usunięcie szablonów ze strony", "Blokada klonowania na shizeclone.eu", "Blokada po ID serwera", "Potwierdzenie email", "Natychmiastowa realizacja"],
 			popular: true,
@@ -33,6 +35,7 @@ export default function OfferList() {
 			icon: Shield,
 			price: 12.5,
 			title: "Premium ochrona",
+			code: "premium_security",
 			description: "Średnia możliwość dodania serwera",
 			features: ["Usunięcie szablonów ze strony", "Blokada po nazwie serwera", "Potwierdzenie email", "Natychmiastowa realizacja"],
 			popular: false,
@@ -40,6 +43,30 @@ export default function OfferList() {
 			link: "/offers/premium",
 		},
 	]
+
+	const safeProductToCart = (code: string) => {
+		const cart = localStorage.getItem("cart")
+
+		if (!cart) {
+			localStorage.setItem("cart", JSON.stringify([code]))
+		} else {
+			const cartItems = JSON.parse(cart)
+
+			if (cartItems.includes(code)) {
+				toast.warning("Produkt jest już w koszyku", {
+					description: "Dodaj inny produkt lub przejdź do koszyka",
+				})
+				return
+			}
+
+			const newCartItem = [...cartItems, code]
+			localStorage.setItem("cart", JSON.stringify(newCartItem))
+		}
+
+		toast.success("Produkt został dodany do koszyka", {
+			description: "Przejdź do koszyka, aby sfinalizować zamówienie",
+		})
+	}
 
 	return (
 		<div className="flex flex-col items-center justify-center my-20">
@@ -84,20 +111,16 @@ export default function OfferList() {
 						</div>
 						<div className="grow"></div>
 						{!el.popular && (
-							<Link href={el.link} className="w-full ">
-								<Button className="bg-border-color h-14 w-full rounded-xl cursor-pointer">
-									<span>Wybierz pakiet</span>
-									<ArrowRight className="w-5 h-5" />
-								</Button>
-							</Link>
+							<Button className="bg-border-color h-14 w-full rounded-xl cursor-pointer" onPress={() => safeProductToCart(el.code)}>
+								<span>Wybierz pakiet</span>
+								<ArrowRight className="w-5 h-5" />
+							</Button>
 						)}
 						{el.popular && (
-							<Link href={el.link} className="w-full">
-								<Button className="bg-primary-color h-14 w-full rounded-xl cursor-pointer">
-									<Lock className="w-5 h-5" />
-									<span>Wybierz pakiet</span>
-								</Button>
-							</Link>
+							<Button className="bg-primary-color h-14 w-full rounded-xl cursor-pointer" onPress={() => safeProductToCart(el.code)}>
+								<Lock className="w-5 h-5" />
+								<span>Wybierz pakiet</span>
+							</Button>
 						)}
 					</motion.div>
 				))}

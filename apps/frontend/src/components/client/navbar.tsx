@@ -4,7 +4,7 @@ import Image from "next/image"
 import logo from "../../../public/logo.svg"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
-import { Menu, X, SparkleIcon, ChevronRight, LayoutTemplate, Code, Store, LogIn } from "lucide-react"
+import { Menu, X, SparkleIcon, ChevronRight, LayoutTemplate, Code, Store, LogIn, ShoppingCart } from "lucide-react"
 import { Button } from "@nextui-org/button"
 import { Dispatch, SetStateAction, useRef, useState } from "react"
 import { useOnClickOutside } from "usehooks-ts"
@@ -77,6 +77,9 @@ function NavbarMobile({ view, setView }: { view: boolean; setView: Dispatch<SetS
 					<Link href="/register">
 						<Button className="bg-border-color rounded-lg w-full py-6 cursor-pointer">Zarejestruj się</Button>
 					</Link>
+					<button>
+						<ShoppingCart />
+					</button>
 				</div>
 			</div>
 		</>
@@ -112,8 +115,15 @@ export default function Navbar() {
 							</li>
 						</ul>
 					</div>
-					<div className="">
-						<Link href="https://szablonydiscord.pl/register">Zarejestruj się</Link>
+					<div className="flex items-center">
+						<div className="relative">
+							<button>
+								<ShoppingCart />
+							</button>
+							<div className="absolute -top-1.5 -right-1.5 w-5 h-5 flex items-center justify-center rounded-full bg-primary-color">
+								<p className="text-xs">0</p>
+							</div>
+						</div>
 						<Link href="/login" className="ml-5 bg-primary-color py-3 px-5 rounded-full">
 							Logowanie
 						</Link>

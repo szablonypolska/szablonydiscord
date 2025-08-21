@@ -12,7 +12,7 @@ interface Props {
 
 export default function TemplatesProfile({ data }: Props) {
 	const [currentPage, setCurrentPage] = useState<number>(0)
-	const pageLength = Math.ceil(data.template.length / 4)
+	const pageLength = Math.ceil(data.authorTemplates.length / 4)
 	const startIndex = currentPage * 2
 	const endIndex = startIndex + 4
 
@@ -57,22 +57,11 @@ export default function TemplatesProfile({ data }: Props) {
 				<h2 className="text-xl p-7">Dodane szablony</h2>
 				<div className="w-full h-px bg-border-color"></div>
 				<div className="grid grid-cols-2 max-lg:grid-cols-1   gap-5 mt-6 w-full px-7">
-					{data.template.slice(startIndex, endIndex).map((el, index) => (
+					{data.authorTemplates.slice(startIndex, endIndex).map((el, index) => (
 						<CardProfile key={index} title={el.title} description={el.description as string} usageCount={el.usageCount} categories={el.categories} slugUrl={el.slugUrl} />
 					))}
 				</div>
-				<Pagination
-					disableCursorAnimation
-					showControls
-					isDisabled={pageLength == 1}
-					className="flex justify-center mt-5 gap-2"
-					initialPage={1}
-					radius="full"
-					renderItem={renderItem}
-					total={pageLength}
-					variant="light"
-					onChange={handlePageChange}
-				/>
+				<Pagination disableCursorAnimation showControls isDisabled={pageLength == 1} className="flex justify-center mt-5 gap-2" initialPage={1} radius="full" renderItem={renderItem} total={pageLength} variant="light" onChange={handlePageChange} />
 			</div>
 		</>
 	)

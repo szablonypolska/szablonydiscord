@@ -12,7 +12,7 @@ async function getUserData(id: string): Promise<User | null> {
 	return await prisma.user.findUnique({
 		where: { slugUrl: id },
 		include: {
-			template: true,
+			authorTemplates: true,
 		},
 	})
 }
@@ -33,7 +33,7 @@ export async function generateMetadata({ params }: { params: Promise<Params> }):
 		icons: `https://cdn.discordapp.com/avatars/${data?.userId}/${data?.avatar}.jpg`,
 		openGraph: {
 			title: `Profil użytkownika ${data.username}`,
-			description: `Ilosc wyslanych szablonow: ${data.template.length}`,
+			description: `Ilosc wyslanych szablonow: ${data.authorTemplates.length}`,
 			images: `https://cdn.discordapp.com/avatars/${data?.userId}/${data?.avatar}.jpg`,
 		},
 	}

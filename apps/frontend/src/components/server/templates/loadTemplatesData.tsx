@@ -19,15 +19,7 @@ export default async function LoadTemplatesData({ params }: Params) {
 			where: {
 				slugUrl: params,
 			},
-			select: {
-				title: true,
-				description: true,
-				categories: true,
-				link: true,
-				slugUrl: true,
-				code: true,
-				templateId: true,
-			},
+			include: { addingUser: { select: { avatar: true, username: true, userId: true } }, author: { select: { avatar: true, username: true, userId: true } } },
 		}),
 	])
 

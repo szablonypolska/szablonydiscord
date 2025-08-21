@@ -79,6 +79,6 @@ export interface User {
 	warnings: number
 	status?: boolean
 	api: ApiKey[]
-	template: Template[]
+	authorTemplates: Template[]
 	notification: Notification[]
 }

@@ -2,9 +2,15 @@ import Navbar from "@/components/client/navbar"
 import decorationElement from "../../../public/templatesDecoration.svg"
 import Image from "next/image"
 import Footer from "@/components/client/footer"
-import MainContentBuilder from "@/components/client/builder/mainContent"
+import MainContentBox from "@/components/client/builder/mainContentBox"
+import MainContentHeader from "@/components/client/builder/mainContentHeader"
+import MainContentInput from "@/components/client/builder/mainContentInput"
+import { prisma } from "@repo/db"
 
-export default function Builder() {
+export default async function Builder() {
+	const decorationChannel = await prisma.decorationChannel.findMany({})
+	const decorationCategory = await prisma.decorationCategory.findMany({})
+
 	return (
 		<>
 			<div
@@ -17,7 +23,14 @@ export default function Builder() {
 			<div className="max-w-(--breakpoint-2xl) mx-auto w-full py-4 p-2">
 				<Image src={decorationElement} alt="dekoracyjny element" className="absolute top-0 left-0 pointer-events-none z-50" />
 				<Navbar />
-				<MainContentBuilder />
+				<div className="flex flex-col items-center justify-center mt-24 relative scale-105">
+					<div className="absolute -left-32 bg-primary-color w-28 h-28 blur-[100px]  max-md:blur-[100px] max-md:left-1/2 z-10"></div>
+					<div className="absolute -right-32 top-96 bg-primary-color w-28 h-28 blur-[100px]  max-md:right-0 max-md:hidden z-10"></div>
+
+					<MainContentHeader />
+					<MainContentInput decorationChannel={decorationChannel} decorationCategory={decorationCategory} />
+					<MainContentBox />
+				</div>
 			</div>
 			<Footer />
 		</>

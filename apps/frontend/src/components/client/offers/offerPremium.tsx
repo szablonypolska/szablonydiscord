@@ -23,7 +23,7 @@ function Benefits({ icon, title, description }: { icon: React.ElementType; title
 
 export default function OfferPremium() {
 	return (
-		<motion.div initial={{ opacity: 0, y: 50 }} whileInView={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, ease: "easeOut" }} viewport={{ once: true, amount: 0.5 }} className="flex items-center justify-center  w-full mt-32">
+		<motion.div initial={{ opacity: 0, y: 50 }} whileInView={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, ease: "easeOut" }} viewport={{ once: true, amount: 0.3 }} className="flex items-center justify-center  w-full mt-32">
 			<div className="flex items-stretch w-[67rem] border border-border-color rounded-lg ">
 				<div className="w-1/2 bg-box-color  p-10">
 					<div className="flex items-center gap-2 bg-primary-dark/30  border border-primary-dark text-primary-color p-1.5 px-3 rounded-full w-fit">

@@ -20,261 +20,275 @@ enum OrderStatus {
   CANCELED
 }
 
-
 model User {
-  userId String @unique @id
-  slugUrl String @unique
-  email String? @unique
-  username String
-  avatar String? 
+  userId            String         @id @unique
+  slugUrl           String         @unique
+  email             String?        @unique
+  username          String
+  avatar            String?
   dateCreateAccount DateTime?
-  register Boolean @default(false)
-  reports Int @default(0)
-  warnings Int @default(0)
-  limitApiKey Int @default(2)
-  trustScore Int @default(100)
-  walletBalance Int @default(0)
-  builderAiUsage Int @default(0)
-  builderAiLimit Int @default(3)
-  notificationApi Boolean @default(false)
-  emailVerified Boolean @default(false)
-  permission String @default("user")
-  template Templates[]
-  notification Notification[]
-  api Api[]
-  order Order[]
-  chat Chat[]
-  transaction Transaction[]
+  register          Boolean        @default(false)
+  reports           Int            @default(0)
+  warnings          Int            @default(0)
+  limitApiKey       Int            @default(2)
+  trustScore        Int            @default(100)
+  walletBalance     Int            @default(0)
+  builderAiUsage    Int            @default(0)
+  builderAiLimit    Int            @default(3)
+  notificationApi   Boolean        @default(false)
+  emailVerified     Boolean        @default(false)
+  permission        String         @default("user")
+  notification      Notification[]
+  api               Api[]
+  order             Order[]
+  chat              Chat[]
+  transaction       Transaction[]
+
+  addedTemplates  Templates[] @relation("AddedTemplates")
+  authorTemplates Templates[] @relation("AuthorTemplates")
 }
 
 model Transaction {
-  id Int @id @default(autoincrement())
-  transactionId String @unique
-  userId String
-  amount Int @default(0)
-  date DateTime @default(now())
-  type String 
-  description String?
-  user User @relation(fields: [userId], references: [userId], onDelete: Cascade, onUpdate: Cascade)
+  id            Int      @id @default(autoincrement())
+  transactionId String   @unique
+  userId        String
+  amount        Int      @default(0)
+  date          DateTime @default(now())
+  type          String
+  description   String?
+  user          User     @relation(fields: [userId], references: [userId], onDelete: Cascade, onUpdate: Cascade)
 }
 
 model Chat {
-  id String @id @default(uuid())
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  subject String
-  status String @default("OPEN")
+  id          String    @id @default(uuid())
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  subject     String
+  status      String    @default("OPEN")
   description String
-  userId String
-  agent String?
-  user User @relation(fields: [userId], references: [userId], onDelete: Cascade)
-  message Message[]
+  userId      String
+  agent       String?
+  user        User      @relation(fields: [userId], references: [userId], onDelete: Cascade)
+  message     Message[]
 }
 
 model Message {
-  id Int @id @default(autoincrement())
-  content String
-  type String @default("USER")
+  id        Int      @id @default(autoincrement())
+  content   String
+  type      String   @default("USER")
   createdAt DateTime @default(now())
-  author String?
-  authorId String?
-  chatId String
-  chat Chat @relation(fields: [chatId], references: [id], onDelete: Cascade)
+  author    String?
+  authorId  String?
+  chatId    String
+  chat      Chat     @relation(fields: [chatId], references: [id], onDelete: Cascade)
 }
 
 model Notification {
-  id Int @id @default(autoincrement())
-  type String
-  title String
+  id          Int      @id @default(autoincrement())
+  type        String
+  title       String
   description String
-  dateAdd DateTime @default(now())
-  userId String
-  user User @relation(fields: [userId], references: [userId], onDelete: Cascade, onUpdate: Cascade)
+  dateAdd     DateTime @default(now())
+  userId      String
+  user        User     @relation(fields: [userId], references: [userId], onDelete: Cascade, onUpdate: Cascade)
 }
 
 model Api {
-  apiKeyId String @unique @id
-  secretKey String @unique
-  name String
-  dateCreate DateTime @default(now())
-  status Boolean @default(true)
-  reqCount Int @default(0)
-  successCount Int @default(0)
-  errorCount Int @default(0)
-  lastUsed DateTime?
-  monthlyCount Int @default(0)
-  monthlyLimit Int @default(20000)
-  dailyCount Int @default(0)
-  dailyLimit Int @default(500)
-  userId String
-  webhook Webhook[]
-  user User @relation(fields: [userId], references: [userId], onDelete: Cascade, onUpdate: Cascade)
+  apiKeyId     String    @id @unique
+  secretKey    String    @unique
+  name         String
+  dateCreate   DateTime  @default(now())
+  status       Boolean   @default(true)
+  reqCount     Int       @default(0)
+  successCount Int       @default(0)
+  errorCount   Int       @default(0)
+  lastUsed     DateTime?
+  monthlyCount Int       @default(0)
+  monthlyLimit Int       @default(20000)
+  dailyCount   Int       @default(0)
+  dailyLimit   Int       @default(500)
+  userId       String
+  webhook      Webhook[]
+  user         User      @relation(fields: [userId], references: [userId], onDelete: Cascade, onUpdate: Cascade)
 }
 
 model Order {
-  Id Int @id @default(autoincrement())
-  orderCode String @unique
-  dateCreate DateTime @default(now())
-  status OrderStatus @default(NEW)
-  offer String
-  userId String
-  orderAmount Int @default(0)
+  Id               Int          @id @default(autoincrement())
+  orderCode        String       @unique
+  dateCreate       DateTime     @default(now())
+  status           OrderStatus  @default(NEW)
+  offer            String
+  userId           String
+  orderAmount      Int          @default(0)
   orderPaymentLink String
-  templateId String?
-  serverId String?
-  serverName String?
-  user User @relation(fields: [userId], references: [userId], onDelete: Cascade, onUpdate: Cascade) 
-  events OrderEvent[]
+  templateId       String?
+  serverId         String?
+  serverName       String?
+  user             User         @relation(fields: [userId], references: [userId], onDelete: Cascade, onUpdate: Cascade)
+  events           OrderEvent[]
 }
 
 model OrderEvent {
-  Id Int @id @default(autoincrement())
-  orderCode String 
-  status OrderStatus
-  date DateTime @default(now())
-  order Order @relation(fields: [orderCode], references: [orderCode], onDelete: Cascade, onUpdate: Cascade)
+  Id        Int         @id @default(autoincrement())
+  orderCode String
+  status    OrderStatus
+  date      DateTime    @default(now())
+  order     Order       @relation(fields: [orderCode], references: [orderCode], onDelete: Cascade, onUpdate: Cascade)
 }
 
 model Webhook {
-  id Int @id @default(autoincrement())
-  webhookUrl String
-  type String
-  color Int
-  title String
+  id          Int    @id @default(autoincrement())
+  webhookUrl  String
+  type        String
+  color       Int
+  title       String
   description String
-  apiKeyId String
-  api Api @relation(fields: [apiKeyId], references: [apiKeyId], onDelete: Cascade, onUpdate: Cascade)
+  apiKeyId    String
+  api         Api    @relation(fields: [apiKeyId], references: [apiKeyId], onDelete: Cascade, onUpdate: Cascade)
 }
 
 model Templates {
-  templateId String @unique @id
-  link String @unique
-  slugUrl String @unique
-  categories String
-  dateCreate DateTime @default(now())
-  title String
+  templateId     String                 @id @unique
+  link           String                 @unique
+  slugUrl        String                 @unique
+  categories     String
+  dateCreate     DateTime               @default(now())
+  title          String
   sourceServerId String?
-  description String?
-  usageCount Int @default(0)
-  authorId String?
-  addingUserId String @default("")
-  code String?
-  visitHistory VisitTemplateHistory[]
-  author User? @relation(fields: [authorId], references: [userId])
+  description    String?
+  usageCount     Int                    @default(0)
+  authorId       String?
+  addingUserId   String?
+  code           String?
+  visitHistory   VisitTemplateHistory[]
+  author         User?                  @relation("AuthorTemplates", fields: [authorId], references: [userId])
+  addingUser     User?                  @relation("AddedTemplates", fields: [addingUserId], references: [userId])
+  userUserId     String?
 
   @@index([usageCount])
   @@index([dateCreate])
+  @@index([authorId])
+  @@index([addingUserId])
 }
 
 model VisitTemplateHistory {
-  id Int @id @default(autoincrement())
-  uuid String 
+  id      Int       @id @default(autoincrement())
+  uuid    String
   slugUrl String
-  date DateTime @default(now())
-  url Templates @relation(fields: [slugUrl], references: [slugUrl], onDelete: Cascade, onUpdate: Cascade)
+  date    DateTime  @default(now())
+  url     Templates @relation(fields: [slugUrl], references: [slugUrl], onDelete: Cascade, onUpdate: Cascade)
 
   @@index([slugUrl])
 }
 
-
 model SearchHistory {
-  id Int @id @default(autoincrement())
-  title String
+  id         Int      @id @default(autoincrement())
+  title      String
   dateSearch DateTime @default(now())
 }
 
 model PromoCode {
-  id Int @id @default(autoincrement())
-  code String @unique
-  usageCount Int @default(0)
-  maxUsageCount Int @default(1)
-  discount Int @default(0)
-  expiredDate DateTime
+  id            Int      @id @default(autoincrement())
+  code          String   @unique
+  usageCount    Int      @default(0)
+  maxUsageCount Int      @default(1)
+  discount      Int      @default(0)
+  expiredDate   DateTime
 }
 
 model ReserveTemplate {
-  id Int @id @default(autoincrement())
-  name String?
+  id       Int     @id @default(autoincrement())
+  name     String?
   serverId String?
-} 
+}
 
 model GenerateStatus {
-  sessionId String @unique
-  templateCode String?
-  templateUrl String?
-  hasError Boolean @default(false)
-  rolesNumber Int @default(0)
-  categoryNumber Int @default(0)
-  channelNumber Int @default(0)
-  title String?
-  description String?
-  rules String?
-  tariff String?
-  privacyPolicy String?
-  faq String?
-  code String @default("")
+  sessionId      String  @unique
+  templateCode   String?
+  templateUrl    String?
+  hasError       Boolean @default(false)
+  rolesNumber    Int     @default(0)
+  categoryNumber Int     @default(0)
+  channelNumber  Int     @default(0)
+  title          String?
+  description    String?
+  rules          String?
+  tariff         String?
+  privacyPolicy  String?
+  faq            String?
+  code           String  @default("")
 
+  aiAnalysisStatus String  @default("waiting")
+  aiAnalysisError  Boolean @default(false)
 
-  aiAnalysisStatus      String     @default("waiting")
-  aiAnalysisError       Boolean @default(false)
+  authenticationStatus String  @default("waiting")
+  authenticationError  Boolean @default(false)
 
-  authenticationStatus String @default("waiting")
-  authenticationError Boolean @default(false)
+  configureServerStatus String  @default("waiting")
+  configureServerError  Boolean @default(false)
 
-  configureServerStatus String @default("waiting")
-  configureServerError Boolean @default(false)
+  rolesStatus String  @default("waiting")
+  rolesError  Boolean @default(false)
+  roles       Role[]
 
-  rolesStatus String @default("waiting")
-  rolesError Boolean @default(false)
-  roles Role[]
+  categoryStatus String     @default("waiting")
+  categoryError  Boolean    @default(false)
+  category       Category[]
 
-  categoryStatus String @default("waiting")
-  categoryError Boolean @default(false)
-  category Category[]
-
-  channelStatus String @default("waiting")
-  channelError Boolean @default(false)
-  channel Channel[]
+  channelStatus String    @default("waiting")
+  channelError  Boolean   @default(false)
+  channel       Channel[]
 }
 
 model Category {
-  id String @id
-  sessionId String
-  name String
-  type Int @default(4)
+  id             String         @id
+  sessionId      String
+  name           String
+  type           Int            @default(4)
   generateStatus GenerateStatus @relation(fields: [sessionId], references: [sessionId], onDelete: Cascade, onUpdate: Cascade)
 }
 
 model Channel {
-  id String @id
-  sessionId String
-  name String
-  type Int @default(0)
-  parentId String
-  position Int
-  private Boolean @default(false)
+  id             String         @id
+  sessionId      String
+  name           String
+  type           Int            @default(0)
+  parentId       String
+  position       Int
+  private        Boolean        @default(false)
   generateStatus GenerateStatus @relation(fields: [sessionId], references: [sessionId], onDelete: Cascade, onUpdate: Cascade)
 }
 
 model Token {
-  id Int @id @default(autoincrement())
+  id    Int    @id @default(autoincrement())
   token String
 }
 
 model Role {
-  id Int @id @default(autoincrement())
-  sessionId String
-  name String
-  color String
+  id             Int            @id @default(autoincrement())
+  sessionId      String
+  name           String
+  color          String
   generateStatus GenerateStatus @relation(fields: [sessionId], references: [sessionId], onDelete: Cascade, onUpdate: Cascade)
 }
 
 model DecorationChannel {
-  id Int @id @default(autoincrement())
+  id    Int    @id @default(autoincrement())
   style String
 }
 
 model DecorationCategory {
-  id Int @id @default(autoincrement())
+  id    Int    @id @default(autoincrement())
   style String
+}
+
+model Offer {
+  id Int @id @default(autoincrement())
+  title String
+  code String
+  description String?
+  price Float
+  inStock Int @default(0)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }

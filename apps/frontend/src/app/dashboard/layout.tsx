@@ -6,8 +6,6 @@ import { getServerSession } from "next-auth/next"
 import { authOptions } from "../../lib/authOptions"
 import { prisma } from "@repo/db"
 import { redirect } from "next/navigation"
-import { Toaster } from "sonner"
-import { CircleCheckBig, CircleAlert } from "lucide-react"
 import NotificationsSidebar from "@/components/client/dashboard/notifications-ui/notificationsSidebar"
 
 export default async function Layout({ children }: { children: React.ReactNode }) {
@@ -32,15 +30,6 @@ export default async function Layout({ children }: { children: React.ReactNode }
 
 	return (
 		<DashboardProvider user={user}>
-			<Toaster
-				toastOptions={{
-					className: "bg-sidebar-color border border-border-color text-white ml-5 flex items-center  gap-5 py-5",
-				}}
-				icons={{
-					success: <CircleCheckBig size="35" className="bg-darknes-primary-color text-primary-color p-1.5 rounded-lg" />,
-					error: <CircleAlert size="35" className="bg-darknes-error-color text-error-color p-1.5 rounded-lg" />,
-				}}
-			/>
 			<NotificationsSidebar />
 
 			<div className="flex w-full h-screen ">

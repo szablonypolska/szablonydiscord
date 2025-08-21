@@ -8,13 +8,11 @@ import prompt from './instructions/ai-prompt.json';
 import { DetailsTemplates } from './interfaces/template.interface';
 import { categoriesTemplate } from 'src/common/constants/categories.constans';
 import { MailService } from 'src/mail/services/mail.service';
-import { User } from '../../../interfaces/user.interface';
+import { User } from '../../interfaces/user.interface';
 import { CACHE_MANAGER, Cache } from '@nestjs/cache-manager';
 import { Inject } from '@nestjs/common';
 
-@Processor('addTemplateQueue', {
-  concurrency: 1,
-})
+@Processor('addTemplateQueue', { concurrency: 1 })
 export class TemplateConsumer extends WorkerHost {
   constructor(
     private readonly prisma: PrismaService,
@@ -24,36 +22,10 @@ export class TemplateConsumer extends WorkerHost {
     super();
   }
 
-  private determinateCategory(text: string) {
-    try {
-      const [firstCategory, description, json] = text
-        .split('<>')
-        .map((el) => el.trim());
-
-      const firstCategoryVaild = categoriesTemplate.includes(firstCategory);
-
-      const categories = [firstCategory];
-
-      const details: DetailsTemplates = {
-        category: categories.join(','),
-        description: description ? description : 'Brak opisu szablonu',
-        code: JSON.stringify(json),
-      };
-
-      if (!firstCategoryVaild) {
-        details.category = 'Wszystkie';
-        return details;
-      }
-      if (firstCategoryVaild) return details;
-    } catch (err) {
-      console.log(err);
-      throw err;
-    }
-  }
-
   async process(job: Job): Promise<any> {
     const {
       templateId,
+      slugUrl,
       templateData,
       channels,
       roles,
@@ -78,13 +50,12 @@ export class TemplateConsumer extends WorkerHost {
       }
 
       const promptGenerate = await generateText({
-        model: google('gemini-2.5-pro'),
+        model: google('gemini-2.5-flash'),
 
         prompt: `${prompt.prompt}, oto nazwa tego szablonu ${templateData.name}, oto kanały i kategorie ${JSON.stringify(channels)}, role ${JSON.stringify(roles)}, `,
       });
 
       const category = this.determinateCategory(promptGenerate.text);
-      const slugUrl = await slugify(templateData.name);
 
       await this.prisma.client.templates.create({
         data: {
@@ -111,6 +82,33 @@ export class TemplateConsumer extends WorkerHost {
       await this.cacheManager.del(`reserve:${templateData.code}`);
 
       return {};
+    } catch (err) {
+      console.log(err);
+      throw err;
+    }
+  }
+
+  private determinateCategory(text: string) {
+    try {
+      const [firstCategory, description, json] = text
+        .split('<>')
+        .map((el) => el.trim());
+
+      const firstCategoryVaild = categoriesTemplate.includes(firstCategory);
+
+      const categories = [firstCategory];
+
+      const details: DetailsTemplates = {
+        category: categories.join(','),
+        description: description ? description : 'Brak opisu szablonu',
+        code: JSON.stringify(json),
+      };
+
+      if (!firstCategoryVaild) {
+        details.category = 'Wszystkie';
+        return details;
+      }
+      if (firstCategoryVaild) return details;
     } catch (err) {
       console.log(err);
       throw err;

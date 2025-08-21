@@ -8,9 +8,8 @@ import { SearchService } from './services/search.service';
 import { VerifyTemplateService } from './services/verify.service';
 import { TemplateIndexModule } from './index/template-index.module';
 import { SuggestService } from './services/suggest.service';
-import { QueueModule } from '../queue/queue.module';
+import { QueueModule } from '../../queue/queue.module';
 import { LocalSharedModule } from 'src/shared/shared.module';
-
 
 @Module({
   imports: [

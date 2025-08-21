@@ -7,7 +7,7 @@ interface Props {
 }
 
 export default function StatisticsProfile({ data }: Props) {
-	const usageCount = data.template.reduce(
+	const usageCount = data.authorTemplates.reduce(
 		(acc, val) => {
 			acc.usage += val.usageCount
 			return acc
@@ -40,7 +40,7 @@ export default function StatisticsProfile({ data }: Props) {
 					<LayoutPanelTop className="text-primary-color" />
 					<div className="">
 						<p className="text-sm text-silver-color">Dodane szablony</p>
-						<p className="text-sm font-medium">{data.template.length}</p>
+						<p className="text-sm font-medium">{data.authorTemplates.length}</p>
 					</div>
 				</div>
 			</div>

@@ -43,4 +43,14 @@ export interface BaseInforamtion {
 	slugUrl: string
 	historyLength: number
 	code?: string
+	addingUser: {
+		avatar: string
+		username: string
+		userId: string
+	}
+	author: {
+		avatar: string
+		username: string
+		userId: string
+	}
 }

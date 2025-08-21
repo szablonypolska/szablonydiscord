@@ -81,7 +81,7 @@ export default function TemplatesDetails({ data, base }: Props) {
 					</header>
 
 					<section className="flex items-center gap-2 mt-5 max-sm:flex-col">
-						<TemplatesUserCreator avatar={data.creator.avatar} username={data.creator.username} id={data.creator.id} />
+						<TemplatesUserCreator author={base.author} addingUser={base.addingUser} />
 						<div className="flex gap-2 max-sm:mt-2 max-sm:w-full">
 							<Tooltip content="Kanały tekstowe" className="p-1 px-3 bg-border-color rounded-xl" delay={300}>
 								<div className="flex items-center gap-1 px-3 h-12 bg-border-color w-fit rounded-xl max-sm:grow max-sm:justify-center">

@@ -3,6 +3,9 @@ import { Inter } from "next/font/google"
 import "./globals.css"
 import SeesionWrapper from "@/components/client/wrappers/sessionWrapper"
 import HandleView from "@/components/client/chat/handleView"
+import BasketPopup from "@/components/client/ShoppingCart/ShoppingCartPopup"
+import { Toaster } from "sonner"
+import { CircleAlert, CircleCheckBig } from "lucide-react"
 
 export const dynamic = "force-dynamic"
 
@@ -28,9 +31,29 @@ export default function RootLayout({
 		<>
 			<html lang="pl">
 				<body className={inter.className}>
+					<Toaster
+						expand={false}
+						toastOptions={{
+							className: "",
+							style: {
+								backgroundColor: "#1c1c1c",
+								border: "1px solid #262626",
+								color: "#ffffff",
+								display: "flex",
+								alignItems: "center",
+								gap: "12px",
+								padding: "12px",
+							},
+						}}
+						icons={{
+							success: <CircleCheckBig size="24" className="bg-darknes-primary-color text-primary-color p-1 rounded-lg flex-shrink-0" />,
+							error: <CircleAlert size="24" className="bg-darknes-error-color text-error-color p-1 rounded-lg flex-shrink-0" />,
+						}}
+					/>
 					<SeesionWrapper>
 						{" "}
 						<HandleView />
+						<BasketPopup />
 						{children}
 					</SeesionWrapper>
 				</body>

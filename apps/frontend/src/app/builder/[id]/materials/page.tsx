@@ -1,6 +1,6 @@
-import ContentBuilderMaterials from "@/components/client/builder/materials/content"
-import SidebarBuilderMaterials from "@/components/client/builder/materials/sidebarBuilderMaterials"
-import TopSidebarBuilderMaterials from "@/components/client/builder/materials/topSidebarBuilderMaterials"
+import ContentBuilderMaterials from "@/components/client/builder/details/materials/content"
+import SidebarBuilderMaterials from "@/components/client/builder/details/materials/sidebarBuilderMaterials"
+import TopSidebarBuilderMaterials from "@/components/client/builder/details/materials/topSidebarBuilderMaterials"
 
 export default async function BuilderMaterialsDashboard() {
 	return (

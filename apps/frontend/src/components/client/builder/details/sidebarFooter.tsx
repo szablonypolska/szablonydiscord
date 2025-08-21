@@ -7,11 +7,13 @@ import { Loader2, Crown, MoveRight } from "lucide-react"
 import { useSession } from "next-auth/react"
 import Link from "next/link"
 import { useState } from "react"
+import PopupStatus from "./popup/popupStatus"
 
 export default function SidebarFooter() {
 	const { builderData, setBuilderData } = useBuilderContext()
 	const [loader, setLoader] = useState<boolean>(false)
 	const { data: session } = useSession()
+	const [data, setData] = useState<{ visible: boolean; position: number; waitingInQueue: number }>({ visible: false, position: 1, waitingInQueue: 1 })
 
 	const hasError = builderData.aiAnalysisError || builderData.authenticationError || builderData.categoryError || builderData.rolesError || builderData.channelError || builderData.configureServerError
 
@@ -25,51 +27,54 @@ export default function SidebarFooter() {
 				templateUrl: data.id,
 			}))
 
-			console.log(data)
 			setLoader(false)
+			setData({ visible: true, position: data.position, waitingInQueue: data.waitingInQueue })
 		} catch (err) {
 			console.log(err)
 		}
 	}
 
 	return (
-		<div className="">
-			<div className="w-full h-px bg-border-color rounded-full my-4"></div>
-			{hasError && (
-				<div className="my-5 p-4 bg-darknes-error-color rounded-xl">
-					<h2 className="text-red-600 font-semibold">Błąd generowania</h2>
-					<p className="text-error-color text-sm mt-0.5">Wystąpił błąd podczas generowania, spróbuj ponownie później.</p>
-				</div>
-			)}
-			{!builderData.templateCode && !hasError && (
-				<div className="flex items-center gap-3 rounded-lg ">
-					<Loader2 className="animate-spin w-5 h-5 text-primary-color" />
-					<p className="text-sm text-text-color">Trwa generowanie szablonu</p>
-				</div>
-			)}
-			{builderData.templateCode && !builderData.templateUrl && (
-				<Button className="w-full rounded-xl bg-border-color opacity-90 hover:opacity-100 disabled:opacity-80 cursor-pointer" onPress={publishTemplate} disabled={loader}>
-					{!loader && (
-						<>
-							<Crown className="w-5 h-5" />
-							<span className="text-sm">Opublikuj szablon</span>
-						</>
-					)}
-					{loader && <Loader2 className="text-text-color animate-spin" />}
-				</Button>
-			)}
-			{hasError && (
-				<Link href="/builder">
-					<Button className="w-full rounded-xl bg-border-color text-sm cursor-pointer">Spróbuj ponownie</Button>
-				</Link>
-			)}
-			{builderData.templateUrl && (
-				<Link href={`/templates/${builderData.templateUrl}`}>
-					<Button className="w-full rounded-xl bg-primary-color text-sm cursor-pointer">
-						<span>Przejdz do szablonu</span> <MoveRight />
+		<>
+			<PopupStatus position={data.position} waitingInQueue={data.waitingInQueue} visible={data.visible} setVisible={setData} />
+			<div className="">
+				<div className="w-full h-px bg-border-color rounded-full my-4"></div>
+				{hasError && (
+					<div className="my-5 p-4 bg-darknes-error-color rounded-xl">
+						<h2 className="text-red-600 font-semibold">Błąd generowania</h2>
+						<p className="text-error-color text-sm mt-0.5">Wystąpił błąd podczas generowania, spróbuj ponownie później.</p>
+					</div>
+				)}
+				{!builderData.templateCode && !hasError && (
+					<div className="flex items-center gap-3 rounded-lg ">
+						<Loader2 className="animate-spin w-5 h-5 text-primary-color" />
+						<p className="text-sm text-text-color">Trwa generowanie szablonu</p>
+					</div>
+				)}
+				{builderData.templateCode && !builderData.templateUrl && (
+					<Button className="w-full rounded-xl bg-border-color opacity-90 hover:opacity-100 disabled:opacity-80 cursor-pointer" onPress={publishTemplate} disabled={loader}>
+						{!loader && (
+							<>
+								<Crown className="w-5 h-5" />
+								<span className="text-sm">Opublikuj szablon</span>
+							</>
+						)}
+						{loader && <Loader2 className="text-text-color animate-spin" />}
 					</Button>
-				</Link>
-			)}
-		</div>
+				)}
+				{hasError && (
+					<Link href="/builder">
+						<Button className="w-full rounded-xl bg-border-color text-sm cursor-pointer">Spróbuj ponownie</Button>
+					</Link>
+				)}
+				{builderData.templateUrl && (
+					<Link href={`/templates/${builderData.templateUrl}`}>
+						<Button className="w-full rounded-xl bg-primary-color text-sm cursor-pointer">
+							<span>Przejdz do szablonu</span> <MoveRight />
+						</Button>
+					</Link>
+				)}
+			</div>
+		</>
 	)
 }

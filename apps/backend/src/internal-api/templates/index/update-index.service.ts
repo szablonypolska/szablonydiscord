@@ -16,7 +16,7 @@ export class UpdateIndexService {
     this.updateIndex();
   }
 
-  @Cron(CronExpression.EVERY_10_SECONDS)
+  @Cron(CronExpression.EVERY_MINUTE)
   async updateIndex(): Promise<Document<SearchResult, true>> {
     const templates = await this.prisma.client.templates.findMany({});
 

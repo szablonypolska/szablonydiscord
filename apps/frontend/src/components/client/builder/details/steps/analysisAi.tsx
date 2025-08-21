@@ -23,6 +23,8 @@ export default function AnalysisAi() {
 		}
 	}, [progress, builderData])
 
+	console.log(builderData.aiAnalysisStatus, builderData)
+
 	return (
 		<>
 			<Progress Icon={Bot} title="Analiza AI" description="Przygotowywanie danych przez AI" width={builderData.aiAnalysisStatus === "done" ? 100 : progress} active={builderData.aiAnalysisStatus === "done" || builderData.aiAnalysisStatus === "in_progress"} success={progress === 100 || builderData.aiAnalysisStatus === "done"} error={builderData.aiAnalysisError} />
