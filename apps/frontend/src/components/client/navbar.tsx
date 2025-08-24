@@ -9,6 +9,7 @@ import { Button } from "@nextui-org/button"
 import { Dispatch, SetStateAction, useRef, useState } from "react"
 import { useOnClickOutside } from "usehooks-ts"
 import { useEffect } from "react"
+import { useCartContext } from "@/context/CartContext"
 
 export function Logo() {
 	return (
@@ -89,6 +90,7 @@ function NavbarMobile({ view, setView }: { view: boolean; setView: Dispatch<SetS
 export default function Navbar() {
 	const [view, setView] = useState<boolean>(false)
 	const pathname = usePathname()
+	const { cartItem } = useCartContext()
 
 	useEffect(() => {
 		setView(false)
@@ -121,7 +123,7 @@ export default function Navbar() {
 								<ShoppingCart />
 							</button>
 							<div className="absolute -top-1.5 -right-1.5 w-5 h-5 flex items-center justify-center rounded-full bg-primary-color">
-								<p className="text-xs">0</p>
+								<p className="text-xs">{cartItem ? cartItem.length : 0}</p>
 							</div>
 						</div>
 						<Link href="/login" className="ml-5 bg-primary-color py-3 px-5 rounded-full">

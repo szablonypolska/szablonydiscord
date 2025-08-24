@@ -1,17 +1,23 @@
 "use client"
+import { useCartContext } from "@/context/CartContext"
+import addToCart from "@/lib/cart/addCart"
 import { Button } from "@nextui-org/button"
 import { motion } from "framer-motion"
 import { ArrowRight, Check, Lock, Shield } from "lucide-react"
+import { useSession } from "next-auth/react"
 import { toast } from "sonner"
 
 export default function OfferList() {
+	const { data: session } = useSession()
+	const { setCartItem } = useCartContext()
+
 	const packages = [
 		{
 			id: 1,
 			icon: Shield,
 			price: 5.5,
 			title: "Podstawowa ochrona",
-			code: "basic_security",
+			code: "basic",
 			description: "Dla pojedynczych serwerów",
 			features: ["Usunięcie szablonów ze strony", "Potwierdzenie email", "Natychmiastowa realizacja"],
 			popular: false,
@@ -23,7 +29,7 @@ export default function OfferList() {
 			icon: Shield,
 			price: 20.5,
 			title: "Zaawansowana ochrona",
-			code: "advanced_security",
+			code: "premium",
 			description: "Brak możliwości dodania serwera",
 			features: ["Usunięcie szablonów ze strony", "Blokada klonowania na shizeclone.eu", "Blokada po ID serwera", "Potwierdzenie email", "Natychmiastowa realizacja"],
 			popular: true,
@@ -35,7 +41,7 @@ export default function OfferList() {
 			icon: Shield,
 			price: 12.5,
 			title: "Premium ochrona",
-			code: "premium_security",
+			code: "premium",
 			description: "Średnia możliwość dodania serwera",
 			features: ["Usunięcie szablonów ze strony", "Blokada po nazwie serwera", "Potwierdzenie email", "Natychmiastowa realizacja"],
 			popular: false,
@@ -44,28 +50,48 @@ export default function OfferList() {
 		},
 	]
 
-	const safeProductToCart = (code: string) => {
-		const cart = localStorage.getItem("cart")
+	const safeProductToCart = async (code: string) => {
+		try {
+			const data = await addToCart(code, "")
 
-		if (!cart) {
-			localStorage.setItem("cart", JSON.stringify([code]))
-		} else {
-			const cartItems = JSON.parse(cart)
-
-			if (cartItems.includes(code)) {
+			if (data.code === "ITEM_ALREADY_IN_CART") {
 				toast.warning("Produkt jest już w koszyku", {
 					description: "Dodaj inny produkt lub przejdź do koszyka",
 				})
 				return
 			}
 
-			const newCartItem = [...cartItems, code]
-			localStorage.setItem("cart", JSON.stringify(newCartItem))
+			if (data.ok) {
+				setCartItem(prev => [...prev, data.details])
+				toast.success("Produkt został dodany do koszyka", {
+					description: "Przejdź do koszyka, aby sfinalizować zamówienie",
+				})
+			}
+		} catch (err) {
+			console.log(err)
 		}
 
-		toast.success("Produkt został dodany do koszyka", {
-			description: "Przejdź do koszyka, aby sfinalizować zamówienie",
-		})
+		// const cart = localStorage.getItem("cart")
+
+		// if (!cart) {
+		// 	localStorage.setItem("cart", JSON.stringify([code]))
+		// } else {
+		// 	const cartItems = JSON.parse(cart)
+
+		// 	if (cartItems.includes(code)) {
+		// 		toast.warning("Produkt jest już w koszyku", {
+		// 			description: "Dodaj inny produkt lub przejdź do koszyka",
+		// 		})
+		// 		return
+		// 	}
+
+		// 	const newCartItem = [...cartItems, code]
+		// 	localStorage.setItem("cart", JSON.stringify(newCartItem))
+		// }
+
+		// toast.success("Produkt został dodany do koszyka", {
+		// 	description: "Przejdź do koszyka, aby sfinalizować zamówienie",
+		// })
 	}
 
 	return (

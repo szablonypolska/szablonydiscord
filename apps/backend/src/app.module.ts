@@ -17,6 +17,7 @@ import { TemplateIndexModule } from './internal-api/templates/index/template-ind
 import { BullModule } from '@nestjs/bullmq';
 import { ProcessorModule } from './queue/processor/processor.module';
 import { LocalSharedModule } from './shared/shared.module';
+import { ShoppingModule } from './internal-api/shopping-cart/shopping.module';
 
 @Module({
   imports: [
@@ -42,6 +43,7 @@ import { LocalSharedModule } from './shared/shared.module';
     TemplateIndexModule,
     ProcessorModule,
     LocalSharedModule,
+    ShoppingModule,
   ],
 })
 export class AppModule {}

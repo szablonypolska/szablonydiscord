@@ -3,7 +3,7 @@ import { Inter } from "next/font/google"
 import "./globals.css"
 import SeesionWrapper from "@/components/client/wrappers/sessionWrapper"
 import HandleView from "@/components/client/chat/handleView"
-import BasketPopup from "@/components/client/ShoppingCart/ShoppingCartPopup"
+import ShoppingCartPopup from "@/components/client/shoppingCart/ShoppingCartPopup"
 import { Toaster } from "sonner"
 import { CircleAlert, CircleCheckBig } from "lucide-react"
 
@@ -53,7 +53,7 @@ export default function RootLayout({
 					<SeesionWrapper>
 						{" "}
 						<HandleView />
-						<BasketPopup />
+						{/* <ShoppingCartPopup /> */}
 						{children}
 					</SeesionWrapper>
 				</body>

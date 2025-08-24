@@ -1,10 +1,10 @@
 "use client"
 
 import { Button } from "@nextui-org/button"
-import { ShoppingCart, X, Shield, Trash2, SquareArrowOutUpRight, } from "lucide-react"
+import { ShoppingCart, X, Shield, Trash2, SquareArrowOutUpRight } from "lucide-react"
 import ShoppingCartDiscountCode from "./ShoppingCartDiscountCode"
 
-export default function BasketPopup() {
+export default function ShoppingCartPopup() {
 	return (
 		<>
 			<div className="fixed top-0 left-0 w-full h-full bg-black/50 z-[120]"></div>

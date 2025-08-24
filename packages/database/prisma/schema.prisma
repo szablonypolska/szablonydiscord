@@ -43,10 +43,34 @@ model User {
   order             Order[]
   chat              Chat[]
   transaction       Transaction[]
+  cart              CartItem[]
 
   addedTemplates  Templates[] @relation("AddedTemplates")
   authorTemplates Templates[] @relation("AuthorTemplates")
 }
+
+
+model Offer {
+  id Int @id @default(autoincrement())
+  title String
+  code String @unique
+  description String?
+  price Float
+  inStock Int @default(0)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  cartItems   CartItem[]
+}
+
+model CartItem {
+  id        Int      @id @default(autoincrement())
+  userId    String
+  offerId String @unique
+  user      User     @relation(fields: [userId], references: [userId], onDelete: Cascade)
+  offer   Offer  @relation(fields: [offerId], references: [code], onDelete: Cascade)
+}
+
+
 
 model Transaction {
   id            Int      @id @default(autoincrement())
@@ -92,6 +116,8 @@ model Notification {
   userId      String
   user        User     @relation(fields: [userId], references: [userId], onDelete: Cascade, onUpdate: Cascade)
 }
+
+
 
 model Api {
   apiKeyId     String    @id @unique
@@ -282,13 +308,3 @@ model DecorationCategory {
   style String
 }
 
-model Offer {
-  id Int @id @default(autoincrement())
-  title String
-  code String
-  description String?
-  price Float
-  inStock Int @default(0)
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-}
