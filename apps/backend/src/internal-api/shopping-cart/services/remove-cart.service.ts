@@ -22,6 +22,18 @@ export class RemoveCartService {
 
       if (!user) return this.guest(data, req);
 
+      if (data.reset) {
+        await this.prisma.client.cartItem.deleteMany({
+          where: { userId: data.userId },
+        });
+
+        return {
+          ok: true,
+          message: 'Cart reset',
+          code: 'CART_RESET',
+        };
+      }
+
       const searchCart = user.cart.find(
         (item: { offerId: string }) => item.offerId === data.itemId,
       );
@@ -30,7 +42,11 @@ export class RemoveCartService {
         where: { id: searchCart.id },
       });
 
-      return { message: 'Item removed from cart' };
+      return {
+        ok: true,
+        message: 'Item removed from cart',
+        offer: data.itemId,
+      };
     } catch (err) {
       console.log(err);
       throw err;
@@ -39,7 +55,7 @@ export class RemoveCartService {
 
   async guest(data: CartDto, req: Request) {
     try {
-      const cartId = req.cookies['cartId'];
+      const cartId = req.cookies['cartId'].value;
 
       if (!cartId) throw new BadGatewayException('No cart found');
 
@@ -48,6 +64,20 @@ export class RemoveCartService {
       const cartItems = JSON.parse(cart as string);
 
       if (!cart) throw new BadGatewayException('No cart found');
+
+      if (data.reset) {
+        await this.cacheManager.set(
+          `cartId:${cartId}`,
+          JSON.stringify([]),
+          30 * 24 * 60 * 60 * 1000,
+        );
+
+        return {
+          ok: true,
+          message: 'Cart reset',
+          code: 'CART_RESET',
+        };
+      }
 
       const checkItem = cartItems.some((el: string) => el === data.itemId);
 
@@ -63,7 +93,11 @@ export class RemoveCartService {
         30 * 24 * 60 * 60 * 1000,
       );
 
-      return { message: 'Item removed from cart' };
+      return {
+        ok: true,
+        message: 'Item removed from cart',
+        offer: data.itemId,
+      };
     } catch (err) {
       console.log(err);
       throw err;

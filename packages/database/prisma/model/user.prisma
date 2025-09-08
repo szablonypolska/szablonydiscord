@@ -1,0 +1,48 @@
+model User {
+  userId            String         @id @unique
+  slugUrl           String         @unique
+  email             String?        @unique
+  username          String
+  avatar            String?
+  dateCreateAccount DateTime?
+  register          Boolean        @default(false)
+  reports           Int            @default(0)
+  warnings          Int            @default(0)
+  limitApiKey       Int            @default(2)
+  trustScore        Int            @default(100)
+  walletBalance     Int            @default(0)
+  builderAiUsage    Int            @default(0)
+  builderAiLimit    Int            @default(3)
+  notificationApi   Boolean        @default(false)
+  emailVerified     Boolean        @default(false)
+  notification      Notification[]
+  api               Api[]
+  order             Order[]
+  chat              Chat[]
+  transaction       Transaction[]
+  cart              CartItem[]
+  roles             Roles[]
+
+  addedTemplates  Templates[] @relation("AddedTemplates")
+  authorTemplates Templates[] @relation("AuthorTemplates")
+}
+
+model Roles {
+  id    Int    @id @default(autoincrement())
+  value RolesPossible @default(USER)
+  userId String
+  user   User   @relation(fields: [userId], references: [userId], onDelete: Cascade, onUpdate: Cascade)
+
+  @@index([userId, value])
+}
+
+
+model Notification {
+  id          Int      @id @default(autoincrement())
+  type        String
+  title       String
+  description String
+  dateAdd     DateTime @default(now())
+  userId      String
+  user        User     @relation(fields: [userId], references: [userId], onDelete: Cascade, onUpdate: Cascade)
+}

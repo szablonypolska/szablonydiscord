@@ -53,7 +53,7 @@ export default function RootLayout({
 					<SeesionWrapper>
 						{" "}
 						<HandleView />
-						{/* <ShoppingCartPopup /> */}
+						<ShoppingCartPopup />
 						{children}
 					</SeesionWrapper>
 				</body>

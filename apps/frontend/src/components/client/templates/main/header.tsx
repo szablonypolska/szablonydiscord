@@ -11,7 +11,7 @@ import { Search } from "lucide-react"
 import { BlurFade } from "@/components/ui/blur-fade"
 import { motion } from "framer-motion"
 
-export default function HeaderTemplates({ searchHistory }: { searchHistory: string[] }) {
+export default function HeaderTemplates({ lastAddedTemplate }: { lastAddedTemplate: string[] }) {
 	const [text, setText] = useState<string>("")
 
 	const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -37,7 +37,7 @@ export default function HeaderTemplates({ searchHistory }: { searchHistory: stri
 					<div className="flex items-center gap-3 max-sm:flex-col  w-9/12 max-xl:w-11/12 max-md:w-full z-50 relative">
 						<div className="grow relative w-full">
 							<div className="relative flex flex-col justify-center  items-center w-full ">
-								<PlaceholdersAndVanishInput placeholders={searchHistory} onChange={handleChange} onSubmit={onSubmit} />
+								<PlaceholdersAndVanishInput placeholders={lastAddedTemplate} onChange={handleChange} onSubmit={onSubmit} />
 								<span className="material-symbols-outlined absolute left-7 top-1/2 -translate-y-1/2 -translate-x-1/2">
 									<Search size={20} />
 								</span>

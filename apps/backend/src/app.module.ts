@@ -18,6 +18,8 @@ import { BullModule } from '@nestjs/bullmq';
 import { ProcessorModule } from './queue/processor/processor.module';
 import { LocalSharedModule } from './shared/shared.module';
 import { ShoppingModule } from './internal-api/shopping-cart/shopping.module';
+import { RoleModule } from './internal-api/guard/role.module';
+
 
 @Module({
   imports: [
@@ -44,6 +46,7 @@ import { ShoppingModule } from './internal-api/shopping-cart/shopping.module';
     ProcessorModule,
     LocalSharedModule,
     ShoppingModule,
+    RoleModule,
   ],
 })
 export class AppModule {}

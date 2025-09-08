@@ -17,12 +17,15 @@ export class CartService {
 
     const user = await this.prisma.client.user.findUnique({
       where: { userId: data.userId },
-      include: { cart: { include: { offer: true } } },
+      include: { cart: true },
     });
 
     if (!user) return this.guest(req, res);
 
-    return { items: user.cart.map((item) => item.offer) };
+    return {
+      ok: true,
+      items: user.cart.map((item: { offerId: string }) => item.offerId),
+    };
   }
 
   async guest(req: Request, res: Response) {
@@ -38,20 +41,14 @@ export class CartService {
         });
       }
 
+      const cartIdValue = req.cookies['cartId'].value || generatedCartId;
+
       const cachedData = await this.cacheManager.get(
-        `cartId:${cartId || generatedCartId}`,
+        `cartId:${cartIdValue || generatedCartId}`,
       );
       const items = JSON.parse(cachedData as string);
 
-      if (!items) throw new BadGatewayException('No cart found');
-
-      const offers = await this.prisma.client.offer.findMany({
-        where: {
-          code: { in: items },
-        },
-      });
-
-      return { items: offers };
+      return { ok: true, items };
     } catch (err) {
       console.log(err);
       throw err;

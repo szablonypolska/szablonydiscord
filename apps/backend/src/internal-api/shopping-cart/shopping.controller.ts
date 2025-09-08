@@ -1,10 +1,22 @@
-import { Controller, Post, HttpCode, Body, Req, Res } from '@nestjs/common';
+import {
+  Controller,
+  Post,
+  HttpCode,
+  Body,
+  Req,
+  Res,
+  Get,
+  Query,
+} from '@nestjs/common';
 import { AddCartService } from './services/add-cart.service';
 import { CartDto } from './dto/cart.dto';
 import { Request, Response } from 'express';
 import { RemoveCartService } from './services/remove-cart.service';
 import { CartService } from './services/cart.service';
 import { GetCartDto } from './dto/get-cart.dto';
+import { LoadCartOfferData } from './services/cart-item.service';
+import { LoadCartDto } from './dto/load-cart.dto';
+
 
 @Controller('/api/internal/shop')
 export class ShoppingController {
@@ -12,6 +24,7 @@ export class ShoppingController {
     private readonly addCartService: AddCartService,
     private readonly removeCartService: RemoveCartService,
     private readonly cartService: CartService,
+    private readonly loadCartOfferData: LoadCartOfferData,
   ) {}
 
   @Post('/add')
@@ -38,5 +51,11 @@ export class ShoppingController {
     @Res({ passthrough: true }) res: Response,
   ) {
     return this.cartService.getCartItems(data, req, res);
+  }
+
+  @Get('/cart/item')
+  @HttpCode(200)
+  loadCartItem(@Query() data: LoadCartDto) {
+    return this.loadCartOfferData.loadCartData(data);
   }
 }

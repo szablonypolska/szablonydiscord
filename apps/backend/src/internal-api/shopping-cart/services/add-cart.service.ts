@@ -35,20 +35,17 @@ export class AddCartService {
         };
       }
 
-      const offerDetails = await this.prisma.client.cartItem.create({
+      await this.prisma.client.cartItem.create({
         data: {
           userId: data.userId,
           offerId: data.itemId,
-        },
-        include: {
-          offer: true,
         },
       });
 
       return {
         ok: true,
         message: 'Item added to cart successfully',
-        details: offerDetails.Offer,
+        offer: data.itemId,
       };
     } catch (err) {
       console.log(err);
@@ -58,7 +55,7 @@ export class AddCartService {
 
   async guest(data: CartDto, req: Request, res: Response) {
     try {
-      const cartId = req.cookies['cartId'];
+      const cartId = req.cookies['cartId'].value;
       let generatedCartId: string = randomUUID();
       let scaleData: string[] = [];
 
@@ -95,14 +92,10 @@ export class AddCartService {
         30 * 24 * 60 * 60 * 1000,
       );
 
-      const offerDetails = await this.prisma.client.offer.findUnique({
-        where: { code: data.itemId },
-      });
-
       return {
         ok: true,
         message: 'Item added to cart successfully',
-        details: offerDetails,
+        offer: data.itemId,
       };
     } catch (err) {
       console.log(err);

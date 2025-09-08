@@ -1,4 +1,10 @@
-import { IsEnum, IsIn, IsNotEmpty, IsOptional } from 'class-validator';
+import {
+  IsEnum,
+  IsIn,
+  IsNotEmpty,
+  IsOptional,
+  IsString,
+} from 'class-validator';
 import { OfferType } from 'src/types/offer.types';
 
 const OFFER_TYPE_VALUES: OfferType[] = [
@@ -15,4 +21,7 @@ export class CartDto {
 
   @IsOptional()
   userId: string;
+ 
+  @IsOptional()
+  reset: boolean;
 }

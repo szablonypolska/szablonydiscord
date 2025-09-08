@@ -1,14 +1,13 @@
 "use client"
 
 import { ArrowRight, Calendar, CircleAlert } from "lucide-react"
-import { useState, useEffect } from "react"
-import OfferUpgradeDiscountCode from "./offerUpgradeDiscountCode"
+import { useState } from "react"
 import { Button } from "@nextui-org/button"
 
 export function OfferUpgradeSelectPlans() {
 	const [selectedPlan, setSelectedPlan] = useState<"monthly" | "annually">("monthly")
-	const [discountValue, setDiscountValue] = useState<number>(0)
-	const [plansOptions, setPlansOptions] = useState<{ id: string; label: string; description: string; price: number; frequency: string; priceAfterDiscount: number }[]>([
+
+	const plansOptions: { id: string; label: string; description: string; price: number; frequency: string; priceAfterDiscount: number }[] = [
 		{
 			id: "monthly",
 			label: "Miesięczny",
@@ -25,16 +24,7 @@ export function OfferUpgradeSelectPlans() {
 			frequency: "rocznie",
 			priceAfterDiscount: 107.99,
 		},
-	])
-
-	useEffect(() => {
-		setPlansOptions(prev =>
-			prev.map(plan => ({
-				...plan,
-				priceAfterDiscount: parseFloat((plan.price - (plan.price * discountValue) / 100).toFixed(2)),
-			}))
-		)
-	}, [discountValue])
+	]
 
 	return (
 		<div className="bg-section-color rounded-xl p-6">
@@ -60,7 +50,6 @@ export function OfferUpgradeSelectPlans() {
 						</div>
 						<div className="flex items-center gap-6 pr-3 text-right">
 							<div className="flex flex-col">
-								{discountValue > 0 && <p className="text-text-color text-sm line-through">{plan.price}</p>}
 								<p className="font-medium text-lg">{plan.priceAfterDiscount.toFixed(2)} zł</p>
 								<span className="text-text-color text-xs">{plan.frequency}</span>
 							</div>
@@ -69,7 +58,7 @@ export function OfferUpgradeSelectPlans() {
 					</button>
 				))}
 			</div>
-			<OfferUpgradeDiscountCode setDiscountValue={setDiscountValue} />
+			{/* <OfferUpgradeDiscountCode setDiscountValue={setDiscountValue} /> */}
 			<div className="mt-5">
 				<Button className="bg-primary-color w-full rounded-lg py-5.5 font-medium">
 					<span>Rozpocznij subskrybcję</span> <ArrowRight className="w-4.5 h-4.5" />

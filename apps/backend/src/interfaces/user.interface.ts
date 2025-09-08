@@ -16,4 +16,11 @@ export interface User {
   notificationApi: boolean;
   emailVerified: boolean;
   permission: string;
+  roles: Role[];
+}
+
+interface Role {
+  id: number;
+  value: 'ADMIN' | 'USER' | 'SUPPORT' | 'PREMIUM';
+  userId: string;
 }

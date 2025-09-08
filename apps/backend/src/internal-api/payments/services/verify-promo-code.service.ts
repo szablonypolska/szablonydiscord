@@ -5,7 +5,6 @@ import {
 } from '@nestjs/common';
 import { PrismaService } from '@repo/shared';
 import { VerifyPromoCodeDto } from '../dto/verify-promo-code.dto';
-import { offerList } from 'src/common/constants/offerList.constans';
 
 @Injectable()
 export class VerifyPromoCodeService {
@@ -13,34 +12,37 @@ export class VerifyPromoCodeService {
 
   async verifyPromoCode(promoCodeBody: VerifyPromoCodeDto) {
     try {
-      const offer = offerList(promoCodeBody.offer);
-
-      if (!offer) throw new BadGatewayException('This option is not avaiable');
-
       const checkPromocode = await this.prisma.client.promoCode.findUnique({
         where: { code: promoCodeBody.code },
+        include: { promoProducts: true },
       });
 
       if (!checkPromocode)
-        throw new NotFoundException('This promocode is not avaiable');
+        throw new NotFoundException({
+          ok: false,
+          message: 'promo code not found',
+          type: 'notFound',
+        });
 
       if (checkPromocode.usageCount >= checkPromocode.maxUsageCount)
         throw new BadGatewayException({
+          ok: false,
           message: 'exceeded usage count limit',
           type: 'exceededLimit',
         });
 
-      const newPrice =
-        offer.price - (offer.price * checkPromocode.discount) / 100;
-
-      if (newPrice < 2.5)
-        throw new BadGatewayException({
-          message: 'The order amount cannot be less than 2.50 zł',
-          type: 'lowPrice',
-        });
+      const promoProductsId = checkPromocode.promoProducts.map(
+        (item: { offerId: string }) => {
+          return item.offerId;
+        },
+      );
 
       return {
-        percentDiscount: checkPromocode.discount,
+        ok: true,
+        discount: checkPromocode.discount,
+        discountType: checkPromocode.type,
+        discountScope: checkPromocode.scope,
+        promoProductsId: promoProductsId,
         code: promoCodeBody.code,
       };
     } catch (err) {

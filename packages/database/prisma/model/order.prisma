@@ -1,0 +1,40 @@
+model Order {
+  id               String          @id @unique
+  dateCreate       DateTime     @default(now())
+  status           OrderStatus  @default(NEW)
+  offer            String
+  userId           String
+  orderAmount      Int          @default(0)
+  orderPaymentLink String
+  user             User         @relation(fields: [userId], references: [userId], onDelete: Cascade, onUpdate: Cascade)
+  events           OrderEvent[]
+  orderItem        OrderItem[]
+  products         Products[]
+}
+
+model Products {
+  id        Int    @id @default(autoincrement())
+  offerId String
+  priceAfterDiscount Int
+  orderId String
+  offer Offer @relation(fields: [offerId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  order Order @relation(fields: [orderId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+
+  @@index([offerId, orderId])
+}
+
+model OrderItem {
+  id Int @id @default(autoincrement())
+  orderId String
+  offerId String
+  order Order @relation(fields: [orderId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  offer Offer @relation(fields: [offerId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+}
+
+model OrderEvent {
+  id        Int         @id @default(autoincrement())
+  orderCode String
+  status    OrderStatus
+  date      DateTime    @default(now())
+  order     Order       @relation(fields: [orderCode], references: [id], onDelete: Cascade, onUpdate: Cascade)
+}

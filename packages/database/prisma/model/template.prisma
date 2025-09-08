@@ -1,0 +1,39 @@
+model Templates {
+  templateId     String                 @id @unique
+  link           String                 @unique
+  slugUrl        String                 @unique
+  categories     String
+  dateCreate     DateTime               @default(now())
+  title          String
+  sourceServerId String?
+  description    String?
+  usageCount     Int                    @default(0)
+  authorId       String?
+  addingUserId   String?
+  code           String?
+  visitHistory   VisitTemplateHistory[]
+  author         User?                  @relation("AuthorTemplates", fields: [authorId], references: [userId])
+  addingUser     User?                  @relation("AddedTemplates", fields: [addingUserId], references: [userId])
+  userUserId     String?
+
+  @@index([usageCount])
+  @@index([dateCreate])
+  @@index([authorId])
+  @@index([addingUserId])
+}
+
+model VisitTemplateHistory {
+  id      Int       @id @default(autoincrement())
+  uuid    String
+  slugUrl String
+  date    DateTime  @default(now())
+  url     Templates @relation(fields: [slugUrl], references: [slugUrl], onDelete: Cascade, onUpdate: Cascade)
+
+  @@index([slugUrl])
+}
+
+model ReserveTemplate {
+  id       Int     @id @default(autoincrement())
+  name     String?
+  serverId String?
+}

@@ -9,7 +9,7 @@ import { toast } from "sonner"
 
 export default function OfferList() {
 	const { data: session } = useSession()
-	const { setCartItem } = useCartContext()
+	const { setCart } = useCartContext()
 
 	const packages = [
 		{
@@ -22,19 +22,17 @@ export default function OfferList() {
 			features: ["Usunięcie szablonów ze strony", "Potwierdzenie email", "Natychmiastowa realizacja"],
 			popular: false,
 			label: "popularny",
-			link: "/offers/basic",
 		},
 		{
 			id: 2,
 			icon: Shield,
 			price: 20.5,
 			title: "Zaawansowana ochrona",
-			code: "premium",
+			code: "advanced",
 			description: "Brak możliwości dodania serwera",
 			features: ["Usunięcie szablonów ze strony", "Blokada klonowania na shizeclone.eu", "Blokada po ID serwera", "Potwierdzenie email", "Natychmiastowa realizacja"],
 			popular: true,
 			label: "polecany",
-			link: "/offers/basic",
 		},
 		{
 			id: 3,
@@ -46,13 +44,12 @@ export default function OfferList() {
 			features: ["Usunięcie szablonów ze strony", "Blokada po nazwie serwera", "Potwierdzenie email", "Natychmiastowa realizacja"],
 			popular: false,
 			label: "premium",
-			link: "/offers/premium",
 		},
 	]
 
 	const safeProductToCart = async (code: string) => {
 		try {
-			const data = await addToCart(code, "")
+			const data = await addToCart(code, session?.user?.id || "")
 
 			if (data.code === "ITEM_ALREADY_IN_CART") {
 				toast.warning("Produkt jest już w koszyku", {
@@ -62,7 +59,7 @@ export default function OfferList() {
 			}
 
 			if (data.ok) {
-				setCartItem(prev => [...prev, data.details])
+				setCart(prev => (prev ? [...prev, data.offer] : [data.offer]))
 				toast.success("Produkt został dodany do koszyka", {
 					description: "Przejdź do koszyka, aby sfinalizować zamówienie",
 				})
@@ -70,28 +67,6 @@ export default function OfferList() {
 		} catch (err) {
 			console.log(err)
 		}
-
-		// const cart = localStorage.getItem("cart")
-
-		// if (!cart) {
-		// 	localStorage.setItem("cart", JSON.stringify([code]))
-		// } else {
-		// 	const cartItems = JSON.parse(cart)
-
-		// 	if (cartItems.includes(code)) {
-		// 		toast.warning("Produkt jest już w koszyku", {
-		// 			description: "Dodaj inny produkt lub przejdź do koszyka",
-		// 		})
-		// 		return
-		// 	}
-
-		// 	const newCartItem = [...cartItems, code]
-		// 	localStorage.setItem("cart", JSON.stringify(newCartItem))
-		// }
-
-		// toast.success("Produkt został dodany do koszyka", {
-		// 	description: "Przejdź do koszyka, aby sfinalizować zamówienie",
-		// })
 	}
 
 	return (

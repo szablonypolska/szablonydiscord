@@ -1,0 +1,33 @@
+model Transaction {
+  id            Int      @id @default(autoincrement())
+  transactionId String   @unique
+  userId        String
+  amount        Int      @default(0)
+  date          DateTime @default(now())
+  type          String
+  description   String?
+  user          User     @relation(fields: [userId], references: [userId], onDelete: Cascade, onUpdate: Cascade)
+}
+
+
+model SearchHistory {
+  id         Int      @id @default(autoincrement())
+  title      String
+  dateSearch DateTime @default(now())
+}
+
+
+model Token {
+  id    Int    @id @default(autoincrement())
+  token String
+}
+
+model DecorationChannel {
+  id    Int    @id @default(autoincrement())
+  style String
+}
+
+model DecorationCategory {
+  id    Int    @id @default(autoincrement())
+  style String
+}

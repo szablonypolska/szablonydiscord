@@ -1,24 +1,22 @@
-import vetifyDiscountCode from "@/lib/payments/verifyPromoCode"
+import verifyDiscountCode from "@/lib/payments/verifyPromoCode"
 
-export const applyCode = async (offer: string, code: string) => {
+export const applyCode = async (code: string) => {
 	try {
-		const checkCode = await vetifyDiscountCode(offer, code)
+		const checkCode = await verifyDiscountCode(code)
 
-		if (checkCode.statusCode === 404) {
-			return { message: "Wpisany kod promocyjny nie istnieje", success: false }
-		}
-
-		if (checkCode.type === "lowPrice") {
-			return { message: "Kwota zamówienia nie moze byc nizsza niz 2.50 zł", success: false }
+		if (checkCode.type === "notFound") {
+			return { message: "Wpisany kod promocyjny nie istnieje", ok: false }
 		}
 
 		if (checkCode.type === "exceededLimit") {
-			return { message: "Wykorzystano limit użyć kodu promocyjnego", success: false }
+			return { message: "Wykorzystano limit użyć kodu promocyjnego", ok: false }
 		}
 
-		return { message: "Kod promocyjny został pomyślnie zastosowany", success: true, code: checkCode.code, percentDiscount: checkCode.percentDiscount }
+		const { ...rest } = checkCode
+
+		return { message: "Kod promocyjny został pomyślnie zastosowany", ok: true, data: { ...rest } }
 	} catch (err) {
 		console.log(err)
-		return { message: "Wystąpił błąd serwera, spróbuj ponownie później", success: false }
+		return { message: "Wystąpił błąd serwera, spróbuj ponownie później", ok: false }
 	}
 }

@@ -1,38 +1,75 @@
 "use client"
-import React, { createContext, useContext, useState, SetStateAction, Dispatch, useEffect, useCallback } from "react"
+import React, { createContext, useContext, useState, SetStateAction, Dispatch, useEffect, useCallback, useMemo } from "react"
 import { Offer } from "@/components/interfaces/offer/common"
 import loadCart from "@/lib/cart/loadCart"
 import { useSession } from "next-auth/react"
+import { DiscountProduct } from "@/components/interfaces/discount/common"
+import getDiscountedPrice from "@/utils/discount/getDiscountedPrice"
 
 interface CartContextType {
-	view: boolean
-	setView: Dispatch<SetStateAction<boolean>>
-	cartItem: Offer[]
-	setCartItem: Dispatch<SetStateAction<Offer[]>>
+	viewCart: boolean
+	setViewCart: Dispatch<SetStateAction<boolean>>
+	cart: string[]
+	setCart: Dispatch<SetStateAction<string[]>>
+	item: Offer[]
+	setItem: Dispatch<SetStateAction<Offer[]>>
+	promoCode: DiscountProduct
+	setPromoCode: Dispatch<SetStateAction<DiscountProduct>>
+	getPrice: (offer: Offer) => number | undefined
+	total: { beforeDiscounted: number; afterDiscounted: number }
 }
 
 export const CartContext = createContext<CartContextType | null>(null)
 
 export const CartProvider = ({ children }: { children: React.ReactNode }) => {
-	const [view, setView] = useState<boolean>(false)
-	const [cartItem, setCartItem] = useState<Offer[]>([])
+	const [viewCart, setViewCart] = useState<boolean>(false)
+	const [cart, setCart] = useState<string[]>([])
+	const [item, setItem] = useState<Offer[]>([])
+	const [promoCode, setPromoCode] = useState<DiscountProduct>({
+		code: "",
+		discount: 0,
+		discountType: "PERCENTAGE",
+		discountScope: "CART",
+		promoProductsId: [],
+	})
 	const { data: session } = useSession()
 
-	const fetchCart = async () => {
+	const fetchCart = useCallback(async () => {
 		try {
-			const cart = await loadCart("")
+			const cart = await loadCart(session?.user.id || "")
 
-			setCartItem(cart.items)
+			setCart(cart.items)
 		} catch (err) {
 			console.log(err)
 		}
-	}
+	}, [session?.user.id])
+
+	const getPrice = useCallback(
+		(offer: Offer) => {
+			return getDiscountedPrice(offer.id, offer.price, promoCode)
+		},
+		[promoCode]
+	)
+
+	const total = useMemo(() => {
+		let before = 0
+		let after = 0
+
+		for (const o of item) {
+			const price = getPrice(o)
+
+			before += o.price
+			after += price || 0
+		}
+
+		return { beforeDiscounted: before / 100, afterDiscounted: after / 100 }
+	}, [item, getPrice])
 
 	useEffect(() => {
 		fetchCart()
-	}, [session?.user.id])
+	}, [session?.user.id, fetchCart])
 
-	return <CartContext.Provider value={{ view, setView, cartItem, setCartItem }}>{children}</CartContext.Provider>
+	return <CartContext.Provider value={{ viewCart, setViewCart, cart, setCart, item, setItem, promoCode, setPromoCode, getPrice, total }}>{children}</CartContext.Provider>
 }
 
 export function useCartContext() {

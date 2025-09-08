@@ -1,132 +1,42 @@
-import {
-  BadRequestException,
-  Injectable,
-  UnauthorizedException,
-} from '@nestjs/common';
-import { ConfigService } from '@nestjs/config';
-import Stripe from 'stripe';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { CreatePaymentsDto } from '../dto/create-payments.dto';
-import { offerList } from 'src/common/constants/offerList.constans';
 import { PrismaService } from '@repo/shared';
-import ShortUniqueId from 'short-unique-id';
-import { EventEmitter2 } from '@nestjs/event-emitter';
+import { Offer } from '../../../interfaces/offer.interface';
+import { getDiscountPrice } from 'src/common/utils/discount/getDiscountPrice';
+import { FinalPrice } from 'src/interfaces/discount.interface';
 
 @Injectable()
-export class CreatePayments {
-  private stripe: Stripe;
-  private hostname: string;
-  private uid = new ShortUniqueId({ dictionary: 'number', length: 3 });
+export class CreatePaymentsService {
+  constructor(private readonly prisma: PrismaService) {}
 
-  constructor(
-    configService: ConfigService,
-    private prisma: PrismaService,
-    private eventEmitter: EventEmitter2,
-  ) {
-    this.stripe = new Stripe(
-      configService.get<string>('SECRET_API_KEY_STRIPE'),
-    );
-
-    this.hostname = configService.get<string>('HOSTNAME');
-  }
-
-  async createPayments(dto: CreatePaymentsDto) {
+  async createPayments(create: CreatePaymentsDto) {
     try {
-      const offer = offerList(dto.offer);
-      console.log(dto);
-      if (!offer) throw new BadRequestException('There is no such offer');
-
-      let templateData;
-
-      const user = await this.prisma.client.user.findUnique({
-        where: { userId: dto.userId },
+      let finalProductPrice: FinalPrice = {
+        id: '',
+        price: 0,
+        priceDiscount: 0,
+        products: [],
+      };
+      const products: Offer[] = await this.prisma.client.offer.findMany({
+        where: { id: { in: create.item } },
       });
 
-      if (dto.link) {
-        templateData = await this.prisma.client.templates.findUnique({
-          where: { slugUrl: dto.link.split(`${this.hostname}/templates/`)[1] },
+      if (products.length === 0)
+        throw new BadRequestException({
+          ok: false,
+          message: 'No products found',
         });
+
+      try {
+        finalProductPrice = await getDiscountPrice(create.promoCode, products);
+      } catch (err) {
+        throw err;
       }
 
-      if (!user) throw new UnauthorizedException('You are not login');
-
-      let finalPrice = offer.price;
-      if (dto.code) {
-        const promo = await this.prisma.client.promoCode.findUnique({
-          where: { code: dto.code },
-        });
-        if (promo.usageCount >= promo.maxUsageCount)
-          throw new BadRequestException('usage limit reached');
-        if (!promo) throw new BadRequestException('Promocode is not exists');
-        finalPrice = (offer.price * (100 - promo.discount)) / 100;
-      }
-
-      const orderCode = this.uid.rnd();
-      const session =
-        finalPrice > 0
-          ? await this.createStripeSession(
-              finalPrice,
-              dto.offer,
-              orderCode,
-              dto.code,
-            )
-          : null;
-
-      await this.prisma.client.$transaction([
-        this.prisma.client.order.create({
-          data: {
-            orderCode,
-            offer: dto.offer,
-            orderAmount: finalPrice * 100,
-            userId: user.userId,
-            orderPaymentLink: session?.url ?? '',
-            templateId: templateData ? templateData.templateId : '',
-            serverId: dto.offer === 'advanced' ? dto.serverId : null,
-            serverName: dto.offer === 'premium' ? dto.serverName : null,
-          },
-        }),
-        this.prisma.client.orderEvent.create({
-          data: { orderCode, status: 'NEW' },
-        }),
-      ]);
-
-      if (finalPrice === 0) {
-        await this.eventEmitter.emitAsync('order_paid', {
-          code: orderCode,
-          promoCode: dto.code,
-        });
-        await this.eventEmitter.emitAsync(
-          `pucharsed_successfull_${dto.offer}`,
-          {
-            code: orderCode,
-          },
-        );
-      }
-
-      return { link: finalPrice === 0 ? `/order/${orderCode}` : session.url };
+      console.log(finalProductPrice);
     } catch (err) {
       console.log(err);
+      throw err;
     }
-  }
-
-  private async createStripeSession(
-    amount: number,
-    offer: string,
-    orderCode: string,
-    promoCode: string,
-  ) {
-    const price = await this.stripe.prices.create({
-      unit_amount: Math.floor(amount * 100),
-      currency: 'pln',
-      product: 'prod_S8ABOWqGVSN6MD',
-      metadata: { orderCode },
-    });
-    return this.stripe.checkout.sessions.create({
-      line_items: [{ price: price.id, quantity: 1 }],
-      metadata: { orderCode, offer, promoCode },
-      payment_intent_data: { metadata: { orderCode, promoCode } },
-      mode: 'payment',
-      success_url: `${this.hostname}/payments/{CHECKOUT_SESSION_ID}`,
-      cancel_url: `${this.hostname}/payments/{CHECKOUT_SESSION_ID}`,
-    });
   }
 }

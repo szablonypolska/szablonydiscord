@@ -1,8 +1,10 @@
 export interface Offer {
+	id: string
 	title: string
-	code: string
 	description?: string
 	price: number
 	inStock: number
 	createdAt: Date
+	deliveryMethod: "EMAIL" | "AUTOMATIC"
+	status: "ACTIVE" | "INACTIVE" | "SOLD"
 }

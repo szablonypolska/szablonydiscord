@@ -13,3 +13,12 @@ declare module "next-auth" {
 		} & DefaultSession["user"]
 	}
 }
+
+declare module "next-auth/jwt" {
+	export interface JWT {
+		id?: string
+		accessToken?: string
+		refreshToken?: string
+		expiresAt?: number
+	}
+}

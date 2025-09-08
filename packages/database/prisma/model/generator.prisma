@@ -1,0 +1,64 @@
+model GenerateStatus {
+  sessionId      String  @unique
+  templateCode   String?
+  templateUrl    String?
+  hasError       Boolean @default(false)
+  rolesNumber    Int     @default(0)
+  categoryNumber Int     @default(0)
+  channelNumber  Int     @default(0)
+  title          String?
+  description    String?
+  rules          String?
+  tariff         String?
+  privacyPolicy  String?
+  faq            String?
+  code           String  @default("")
+
+  aiAnalysisStatus String  @default("waiting")
+  aiAnalysisError  Boolean @default(false)
+
+  authenticationStatus String  @default("waiting")
+  authenticationError  Boolean @default(false)
+
+  configureServerStatus String  @default("waiting")
+  configureServerError  Boolean @default(false)
+
+  rolesStatus String  @default("waiting")
+  rolesError  Boolean @default(false)
+  roles       Role[]
+
+  categoryStatus String     @default("waiting")
+  categoryError  Boolean    @default(false)
+  category       Category[]
+
+  channelStatus String    @default("waiting")
+  channelError  Boolean   @default(false)
+  channel       Channel[]
+}
+
+model Category {
+  id             String         @id
+  sessionId      String
+  name           String
+  type           Int            @default(4)
+  generateStatus GenerateStatus @relation(fields: [sessionId], references: [sessionId], onDelete: Cascade, onUpdate: Cascade)
+}
+
+model Channel {
+  id             String         @id
+  sessionId      String
+  name           String
+  type           Int            @default(0)
+  parentId       String
+  position       Int
+  private        Boolean        @default(false)
+  generateStatus GenerateStatus @relation(fields: [sessionId], references: [sessionId], onDelete: Cascade, onUpdate: Cascade)
+}
+
+model Role {
+  id             Int            @id @default(autoincrement())
+  sessionId      String
+  name           String
+  color          String
+  generateStatus GenerateStatus @relation(fields: [sessionId], references: [sessionId], onDelete: Cascade, onUpdate: Cascade)
+}

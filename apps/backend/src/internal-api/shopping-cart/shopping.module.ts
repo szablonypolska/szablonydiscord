@@ -4,12 +4,14 @@ import { AddCartService } from './services/add-cart.service';
 import { SharedModule } from '@repo/shared';
 import { RemoveCartService } from './services/remove-cart.service';
 import { CartService } from './services/cart.service';
+import { LoadCartOfferData } from './services/cart-item.service';
+
 
 
 
 @Module({
   imports: [SharedModule],
   controllers: [ShoppingController],
-  providers: [AddCartService, RemoveCartService, CartService],
+  providers: [AddCartService, RemoveCartService, CartService, LoadCartOfferData],
 })
 export class ShoppingModule {}

@@ -90,7 +90,7 @@ function NavbarMobile({ view, setView }: { view: boolean; setView: Dispatch<SetS
 export default function Navbar() {
 	const [view, setView] = useState<boolean>(false)
 	const pathname = usePathname()
-	const { cartItem } = useCartContext()
+	const { cart, setViewCart } = useCartContext()
 
 	useEffect(() => {
 		setView(false)
@@ -118,12 +118,12 @@ export default function Navbar() {
 						</ul>
 					</div>
 					<div className="flex items-center">
-						<div className="relative">
-							<button>
+						<div className="relative cursor-pointer" onClick={() => setViewCart(true)}>
+							<button className="cursor-pointer" onClick={() => setViewCart(true)}>
 								<ShoppingCart />
 							</button>
 							<div className="absolute -top-1.5 -right-1.5 w-5 h-5 flex items-center justify-center rounded-full bg-primary-color">
-								<p className="text-xs">{cartItem ? cartItem.length : 0}</p>
+								<p className="text-xs">{cart ? cart.length : 0}</p>
 							</div>
 						</div>
 						<Link href="/login" className="ml-5 bg-primary-color py-3 px-5 rounded-full">

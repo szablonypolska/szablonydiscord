@@ -1,0 +1,29 @@
+model Api {
+  apiKeyId     String    @id @unique
+  secretKey    String    @unique
+  name         String
+  dateCreate   DateTime  @default(now())
+  status       Boolean   @default(true)
+  reqCount     Int       @default(0)
+  successCount Int       @default(0)
+  errorCount   Int       @default(0)
+  lastUsed     DateTime?
+  monthlyCount Int       @default(0)
+  monthlyLimit Int       @default(20000)
+  dailyCount   Int       @default(0)
+  dailyLimit   Int       @default(500)
+  userId       String
+  webhook      Webhook[]
+  user         User      @relation(fields: [userId], references: [userId], onDelete: Cascade, onUpdate: Cascade)
+}
+
+model Webhook {
+  id          Int    @id @default(autoincrement())
+  webhookUrl  String
+  type        String
+  color       Int
+  title       String
+  description String
+  apiKeyId    String
+  api         Api    @relation(fields: [apiKeyId], references: [apiKeyId], onDelete: Cascade, onUpdate: Cascade)
+}

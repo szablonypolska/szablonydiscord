@@ -1,4 +1,4 @@
-export default async function vetifyDiscountCode(offer: string, code: string) {
+export default async function verifyDiscountCode(code: string) {
 	try {
 		const fetchData = await fetch(process.env.NEXT_PUBLIC_INTERNAL_VERIFY_DISCOUNT_CODE!, {
 			method: "POST",
@@ -6,7 +6,6 @@ export default async function vetifyDiscountCode(offer: string, code: string) {
 				"Content-Type": "application/json",
 			},
 			body: JSON.stringify({
-				offer,
 				code,
 			}),
 		})
