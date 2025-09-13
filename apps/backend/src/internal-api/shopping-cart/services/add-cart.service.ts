@@ -16,10 +16,17 @@ export class AddCartService {
     try {
       if (!data.userId) return this.guest(data, req, res);
 
-      const user = await this.prisma.client.user.findUnique({
-        where: { userId: data.userId },
-        include: { cart: true },
-      });
+      const [user, offer] = await this.prisma.client.$transaction([
+        this.prisma.client.user.findUnique({
+          where: { userId: data.userId },
+          include: { cart: true },
+        }),
+        this.prisma.client.offer.findUnique({
+          where: { id: data.itemId },
+        }),
+      ]);
+
+      if (!offer) throw new BadRequestException('Offer not found');
 
       if (!user) return this.guest(data, req, res);
 

@@ -2,7 +2,6 @@ import { CACHE_MANAGER, Cache } from '@nestjs/cache-manager';
 import { BadGatewayException, Inject, Injectable } from '@nestjs/common';
 import { PrismaService } from '@repo/shared';
 import { Request, Response } from 'express';
-import { CartDto } from '../dto/cart.dto';
 import { randomUUID } from 'crypto';
 import { GetCartDto } from '../dto/get-cart.dto';
 

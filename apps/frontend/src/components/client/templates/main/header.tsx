@@ -66,7 +66,7 @@ export default function HeaderTemplates({ lastAddedTemplate }: { lastAddedTempla
 					</div>
 					<Image src={decorationTemplatesElement} alt="dekoracyjny wykresowy element" className="absolute -top-20 right-5 z-10" />
 				</div>
-				<motion.div initial={{ opacity: 0, x: 50 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1, duration: 0.3 }} className="w-1/2 h-full max-lg:w-full max-md:hidden relative">
+				<motion.div initial={{ opacity: 0, x: 50 }} animate={{ opacity: 1, x: 0 }} transition={{ type: "spring", stiffness: 100, damping: 12, delay: 0.1, duration: 0.3 }} className="w-1/2 h-full max-lg:w-full max-md:hidden relative">
 					<Image src={searchDecoration} alt="zdjecie z czlowiekiem" className="flex justify-center w-full h-96 max-lg:w-5/12 max-lg:hidden "></Image>
 				</motion.div>
 			</header>

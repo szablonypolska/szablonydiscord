@@ -1,11 +1,13 @@
 import { Button } from "@nextui-org/button"
 import { CircleAlert, Clock, Loader2 } from "lucide-react"
+import { OrderEvent } from "@/components/interfaces/order/common"
 import Link from "next/link"
 
-export default function OrderCardInfo({ status, orderPaymentLink }: { status: string; orderPaymentLink: string }) {
+export default function OrderCardInfo({ status, orderPaymentLink }: { status: OrderEvent[]; orderPaymentLink: string }) {
+	const lastStatus = status[status.length - 1]?.status
 	return (
 		<>
-			{status === "COMPLETED" && (
+			{lastStatus === "COMPLETED" && (
 				<div className="bg-box-color p-5 border border-border-color w-full rounded-lg mt-20">
 					<div className="flex items-center gap-3">
 						<Clock className="text-primary-color" />
@@ -13,7 +15,7 @@ export default function OrderCardInfo({ status, orderPaymentLink }: { status: st
 					</div>
 				</div>
 			)}
-			{status === "NEW" && (
+			{lastStatus === "NEW" && (
 				<div className="bg-box-color p-5 border border-border-color w-full rounded-lg mt-20">
 					<div className="flex items-center justify-between gap-3">
 						<div className="flex items-center gap-3">
@@ -27,7 +29,7 @@ export default function OrderCardInfo({ status, orderPaymentLink }: { status: st
 				</div>
 			)}
 
-			{status === "PAID" && (
+			{lastStatus === "PAID" && (
 				<div className="bg-box-color p-5 border border-border-color w-full rounded-lg mt-20">
 					<div className="flex items-center gap-3">
 						<Loader2 className="text-primary-color animate-spin" />

@@ -3,11 +3,11 @@
 import React, { useEffect, useRef, useState } from "react"
 import { Check, BadgePlus, CreditCard, Handshake } from "lucide-react"
 import gsap from "gsap"
-import { PropsOrder } from "@/components/interfaces/order/status/common"
 import { format } from "date-fns"
 import { pl } from "date-fns/locale"
+import { OrderEvent } from "@/components/interfaces/order/common"
 
-export default function OrderTimeline({ events }: { events: PropsOrder[] }) {
+export default function OrderTimeline({ events }: { events: OrderEvent[] }) {
 	const [activeStep, setActiveStep] = useState(0)
 	const progressAnimation = useRef<HTMLDivElement>(null)
 

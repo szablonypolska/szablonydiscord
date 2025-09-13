@@ -22,6 +22,7 @@ model User {
   transaction       Transaction[]
   cart              CartItem[]
   roles             Roles[]
+  offers            Offer[]
 
   addedTemplates  Templates[] @relation("AddedTemplates")
   authorTemplates Templates[] @relation("AuthorTemplates")

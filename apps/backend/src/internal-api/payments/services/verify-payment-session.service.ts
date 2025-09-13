@@ -16,10 +16,12 @@ export class VerifyPaymentSessionService {
         session.sessionId,
       );
 
+      console.log(verifySession);
+
       if (!verifySession)
         throw new UnauthorizedException('This session in not exists');
 
-      return { orderCode: verifySession.metadata.orderCode };
+      return { orderCode: verifySession.metadata.orderId };
     } catch (err) {
       console.log(err);
       throw err;

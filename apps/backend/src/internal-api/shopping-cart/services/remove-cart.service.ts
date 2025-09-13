@@ -3,6 +3,7 @@ import { PrismaService } from '@repo/shared';
 import { Request, Response } from 'express';
 import { CartDto } from '../dto/cart.dto';
 import { CACHE_MANAGER, Cache } from '@nestjs/cache-manager';
+import { BadRequestException } from '@nestjs/common';
 
 @Injectable()
 export class RemoveCartService {
@@ -15,10 +16,17 @@ export class RemoveCartService {
     try {
       if (!data.userId) return this.guest(data, req);
 
-      const user = await this.prisma.client.user.findUnique({
-        where: { userId: data.userId },
-        include: { cart: true },
-      });
+      const [user, offer] = await this.prisma.client.$transaction([
+        this.prisma.client.user.findUnique({
+          where: { userId: data.userId },
+          include: { cart: true },
+        }),
+        this.prisma.client.offer.findUnique({
+          where: { id: data.itemId },
+        }),
+      ]);
+
+      if (!offer) throw new BadRequestException('Offer not found');
 
       if (!user) return this.guest(data, req);
 

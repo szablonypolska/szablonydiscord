@@ -55,6 +55,8 @@ export const CartProvider = ({ children }: { children: React.ReactNode }) => {
 		let before = 0
 		let after = 0
 
+		console.log(item)
+
 		for (const o of item) {
 			const price = getPrice(o)
 

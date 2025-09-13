@@ -4,18 +4,13 @@ import { useEffect, useRef } from "react"
 import OrderCardInfo from "./orderCardInfo"
 import OrderHeader from "./orderHeader"
 import OrderTimeline from "./orderTimeline"
-import { PropsOrder } from "@/components/interfaces/order/status/common"
+import { Order } from "@/components/interfaces/order/common"
 import gsap from "gsap"
 
-interface Props {
-	code: string
-	events: PropsOrder[]
-	status: string
-	orderPaymentLink: string
-}
-
-export default function OrderAnimationWrapper({ code, events, status, orderPaymentLink }: Props) {
+export default function OrderAnimationWrapper({ data }: { data: Order }) {
 	const animation = useRef<HTMLDivElement>(null)
+
+	console.log(data)
 
 	useEffect(() => {
 		gsap.to(animation.current, {
@@ -28,11 +23,11 @@ export default function OrderAnimationWrapper({ code, events, status, orderPayme
 	return (
 		<>
 			<div className="opacity-0" ref={animation}>
-				<OrderHeader code={code} />
+				<OrderHeader code={data.id} />
 
-				<OrderTimeline events={events} />
+				<OrderTimeline events={data.events || []} />
 
-				<OrderCardInfo status={status} orderPaymentLink={orderPaymentLink} />
+				<OrderCardInfo status={data.events || []} orderPaymentLink={data.orderPaymentLink || ""} />
 			</div>
 		</>
 	)

@@ -1,17 +1,28 @@
+enum CategoryOffer {
+  PROTECTION
+  SUBSCRIPTION
+  OTHER
+}
+
 model Offer {
   id String @id 
   title String
-  description String?
+  description String
+  image String
+  benefits String[]
+  recommended Boolean @default(false)
   price Int @default(0)
   inStock Int @default(0)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+  userId String?
+  user User? @relation(fields: [userId], references: [userId], onDelete: Cascade)
+  category CategoryOffer @default(OTHER)
   deliveryMethod DeliveryMethod @default(EMAIL)
   status StatusOffer @default(ACTIVE)
   cartItems   CartItem[]
-  orderItem  OrderItem[]
   promoProducts PromoProduct[]
-  products   Products[]
+  products   OrderProduct[]
 }
 
 model CartItem {

@@ -1,12 +1,19 @@
 "use client"
 
 import { Button } from "@nextui-org/button"
-import { SquareArrowOutUpRight } from "lucide-react"
+import { Loader2, SquareArrowOutUpRight } from "lucide-react"
 import ShoppingCartRemoveAllItem from "./button/StoppingCartRemoveAllItem"
 import { useCartContext } from "@/context/CartContext"
+import createPayments from "@/lib/payments/createPayments"
+import { useSession } from "next-auth/react"
+import { useRouter } from "next/navigation"
+import { useState } from "react"
 
 export default function ShoppingCartFinalization({ cartLength }: { cartLength: number }) {
-	const { item, promoCode, total } = useCartContext()
+	const { item, promoCode, total, cart } = useCartContext()
+	const { data: session } = useSession()
+	const router = useRouter()
+	const [loader, setLoader] = useState<boolean>(false)
 	const unvavailableItems = item.reduce(
 		(acc, curr) => {
 			if (curr.status !== "ACTIVE" || curr.inStock == 0) {
@@ -19,6 +26,22 @@ export default function ShoppingCartFinalization({ cartLength }: { cartLength: n
 		},
 		{ unavailable: 0, available: 0 }
 	)
+
+	const handleCreatePayment = async () => {
+		try {
+			if (!item || !item.length) return
+			setLoader(true)
+
+			const data = await createPayments(cart, session?.user.id || "", promoCode.code)
+
+			setLoader(false)
+			if (data.ok) {
+				router.push(data.paymentLink)
+			}
+		} catch (err) {
+			console.log(err)
+		}
+	}
 
 	return (
 		<div className="">
@@ -40,9 +63,14 @@ export default function ShoppingCartFinalization({ cartLength }: { cartLength: n
 					</div>
 				</div>
 			</div>
-			<Button className="gap-3 bg-primary-color w-full rounded-lg mt-6 cursor-pointer disabled:bg-border-color  disabled:cursor-not-allowed disabled:text-text-color" disabled={!cartLength || !item.length || unvavailableItems.unavailable > 0}>
-				<SquareArrowOutUpRight className="w-5 h-5" />
-				<p>Przejdź do kasy</p>
+			<Button className="gap-3 bg-primary-color w-full rounded-lg mt-6 cursor-pointer disabled:bg-border-color  disabled:cursor-not-allowed disabled:text-text-color" disabled={!cartLength || !item.length || unvavailableItems.unavailable > 0 || loader} onPress={handleCreatePayment}>
+				{!loader && (
+					<>
+						<SquareArrowOutUpRight className="w-5 h-5" />
+						<p>Przejdź do kasy</p>
+					</>
+				)}
+				{loader && <Loader2 className="w-5 h-5 animate-spin" />}
 			</Button>
 			{unvavailableItems.unavailable > 0 && <p className="text-xs text-red-400 text-center mt-3">Nie możesz przejść do koszyka z niedostępnymi przedmiotami</p>}
 			<p className="text-xs text-text-color text-center mt-3">Płatności są obslugiwane przez operatora stripe</p>

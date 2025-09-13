@@ -1,4 +1,4 @@
-export default async function createPayments(offer: string, userId: string, code?: string, serverLink?: string, serverId?: string, serverName?: string) {
+export default async function createPayments(item: string[], userId: string, promoCode?: string) {
 	try {
 		const fetchData = await fetch(process.env.NEXT_PUBLIC_INTERNAL_CREATE_PAYMENT!, {
 			method: "POST",
@@ -6,12 +6,9 @@ export default async function createPayments(offer: string, userId: string, code
 				"Content-Type": "application/json",
 			},
 			body: JSON.stringify({
-				offer,
+				item,
 				userId,
-				code,
-				link: serverLink,
-				serverId: serverId,
-				serverName: serverName,
+				promoCode: promoCode || null,
 			}),
 		})
 

@@ -16,7 +16,7 @@ interface PromoProducts {
 export interface FinalPrice {
   id: string;
   price: number;
-  priceDiscount?: number;
+  priceAfterDiscount?: number;
   products?: DiscountResultProduct[];
 }
 

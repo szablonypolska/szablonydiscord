@@ -15,7 +15,7 @@ export default function ShoppingCartPopup() {
 			{viewCart && (
 				<>
 					<motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="fixed top-0 left-0 w-full h-full bg-black/60 z-[120]"></motion.div>
-					<motion.div initial={{ scale: 0.8 }} animate={{ scale: 1 }} exit={{ scale: 0.8 }} className="absolute top-1/2 left-1/2 -translate-1/2 bg-alt-background-color border border-border-color px-5 py-6 rounded-lg z-[130] w-[35rem] max-md:w-11/12 scale-105">
+					<motion.div initial={{ scale: 0.8 }} animate={{ scale: 1 }} exit={{ scale: 0.8 }} className="fixed top-1/2 left-1/2 -translate-1/2 bg-alt-background-color border border-border-color px-5 py-6 rounded-lg z-[200] w-[35rem] max-md:w-11/12 scale-105">
 						<div className="flex justify-between items-center">
 							<div className="flex items-center  gap-3">
 								<ShoppingCart className="w-5 h-5 font-semibold" />

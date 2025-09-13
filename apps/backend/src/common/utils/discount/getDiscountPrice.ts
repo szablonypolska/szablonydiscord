@@ -10,7 +10,7 @@ import { BadRequestException } from '@nestjs/common';
 let finalProductPrice: FinalPrice = {
   id: '',
   price: 0,
-  priceDiscount: 0,
+  priceAfterDiscount: 0,
   products: [],
 };
 
@@ -19,12 +19,12 @@ const calculateFinalPrice = (
   title: string,
   checkCode: DiscountProduct,
   productIsPromo: boolean,
-  offerId?: string
+  offerId?: string,
 ) => {
   const promoPrice = discountHelper(price, checkCode);
 
   finalProductPrice.price += price;
-  finalProductPrice.priceDiscount += productIsPromo ? promoPrice : price;
+  finalProductPrice.priceAfterDiscount += productIsPromo ? promoPrice : price;
   finalProductPrice.products = [
     ...finalProductPrice.products,
     {
@@ -43,8 +43,9 @@ const calculateFinalPrice = (
 export const getDiscountPrice = async (
   promoCode: string,
   products: Offer[],
+  orderId: string,
 ) => {
-  finalProductPrice = { id: '', price: 0, priceDiscount: 0, products: [] };
+  finalProductPrice = { id: '', price: 0, priceAfterDiscount: 0, products: [] };
   try {
     const checkCode: DiscountProduct = await prisma.promoCode.findUnique({
       where: { code: promoCode },
@@ -71,7 +72,9 @@ export const getDiscountPrice = async (
       });
       const promoPrice = discountHelper(finalProductPrice.price, checkCode);
 
-      finalProductPrice.priceDiscount = promoPrice;
+      await safeProducts(finalProductPrice, orderId);
+
+      finalProductPrice.priceAfterDiscount = promoPrice;
 
       return finalProductPrice;
     }
@@ -82,16 +85,53 @@ export const getDiscountPrice = async (
       );
 
       if (!promoProducts) {
-        calculateFinalPrice(products.price, products.title, checkCode, false, products.id);
+        calculateFinalPrice(
+          products.price,
+          products.title,
+          checkCode,
+          false,
+          products.id,
+        );
         return finalProductPrice;
       }
 
-      calculateFinalPrice(products.price, products.title, checkCode, true, products.id);
+      calculateFinalPrice(
+        products.price,
+        products.title,
+        checkCode,
+        true,
+        products.id,
+      );
     });
+
+    if (finalProductPrice.products.length === 0)
+      throw new BadRequestException({
+        ok: false,
+        message: 'No products found for this promocode',
+      });
+
+    await safeProducts(finalProductPrice, orderId);
 
     return finalProductPrice;
   } catch (err) {
     console.log(err);
     throw err;
+  }
+};
+
+const safeProducts = async (data: FinalPrice, orderId: string) => {
+  try {
+    if (data.products.length === 0) return;
+
+    await prisma.products.createMany({
+      data: data.products.map((item) => ({
+        offerId: item.id,
+        price: item.priceAfter,
+        priceAfterDiscount: item.priceBefore || item.priceAfter,
+        orderId,
+      })),
+    });
+  } catch (err) {
+    console.log(err);
   }
 };

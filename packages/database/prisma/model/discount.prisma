@@ -18,6 +18,7 @@ model PromoCode {
   scope        DiscountScope @default(CART)
   expiredDate   DateTime?
   promoProducts PromoProduct[]
+  order Order[]
 }
 
 model PromoProduct {

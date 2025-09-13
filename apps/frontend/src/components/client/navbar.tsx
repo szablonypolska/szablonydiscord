@@ -10,15 +10,57 @@ import { Dispatch, SetStateAction, useRef, useState } from "react"
 import { useOnClickOutside } from "usehooks-ts"
 import { useEffect } from "react"
 import { useCartContext } from "@/context/CartContext"
+import { AnimatePresence } from "framer-motion"
+import { motion } from "framer-motion"
 
-export function Logo() {
+export function Logo({ fontSize, imageSize }: { fontSize?: string; imageSize?: string }) {
 	return (
 		<Link href="/">
 			<div className="flex items-center gap-2">
-				<Image src={logo} alt="logo" />
-				<h2 className="text-xl font-medium">SzablonyDiscord</h2>
+				<Image src={logo} alt="logo" className={imageSize} />
+				<h2 className={`font-medium ${fontSize ? fontSize : "text-xl"}`}>SzablonyDiscord</h2>
 			</div>
 		</Link>
+	)
+}
+
+function NavbarElement({ active, noActive }: { active?: string; noActive?: string }) {
+	const pathname = usePathname()
+	return (
+		<ul className="flex items-center gap-5">
+			<li className={`${pathname === "/builder" ? `${active ? active : "py-3 px-5"} bg-border-color rounded-full` : noActive || ""}`}>
+				<Link href="/builder">Builder</Link>
+			</li>
+			<li className={`${pathname === "/templates" ? `${active ? active : "py-3 px-5"} bg-border-color rounded-full` : noActive || ""}`}>
+				<Link href="/templates">Szablony</Link>
+			</li>
+			<li>
+				<Link href="https://szablonydiscord.pl/api/docs">API</Link>
+			</li>
+			<li className={`${pathname === "/offers" ? `${active ? active : "py-3 px-5"} bg-border-color rounded-full` : noActive || ""}`}>
+				<Link href="/offers">Oferta</Link>
+			</li>
+		</ul>
+	)
+}
+
+function NavbarCart({ buttonStyle, iconStyle, iconTextStyle }: { buttonStyle?: string; iconStyle?: string; iconTextStyle?: string }) {
+	const { cart, setViewCart } = useCartContext()
+
+	return (
+		<div className="flex items-center">
+			<div className="relative cursor-pointer" onClick={() => setViewCart(true)}>
+				<button className="cursor-pointer" onClick={() => setViewCart(true)}>
+					<ShoppingCart className={iconStyle} />
+				</button>
+				<div className={`absolute -top-1.5 -right-1.5 ${iconTextStyle ? iconTextStyle : "w-5 h-5"} flex items-center justify-center rounded-full bg-primary-color`}>
+					<p className="text-xs">{cart ? cart.length : 0}</p>
+				</div>
+			</div>
+			<Link href="/login" className={`ml-5 ${buttonStyle ? buttonStyle : "py-3 px-5"} bg-primary-color  rounded-full`}>
+				Logowanie
+			</Link>
+		</div>
 	)
 }
 
@@ -90,7 +132,6 @@ function NavbarMobile({ view, setView }: { view: boolean; setView: Dispatch<SetS
 export default function Navbar() {
 	const [view, setView] = useState<boolean>(false)
 	const pathname = usePathname()
-	const { cart, setViewCart } = useCartContext()
 
 	useEffect(() => {
 		setView(false)
@@ -98,38 +139,14 @@ export default function Navbar() {
 
 	return (
 		<>
+			<ScrollNavbar />
 			<nav className="bg-alt-background-color w-full z-100 relative border-border-color border py-5 px-7 rounded-full mt-8 max-lg:py-4 shadow-[0_0_100px_10px_rgba(23,128,119,0.08)]">
 				<div className="flex items-center justify-between max-lg:hidden">
 					<Logo />
 					<div className="">
-						<ul className="flex items-center gap-5">
-							<li className={`${pathname === "/builder" ? "py-2 px-6 bg-border-color rounded-full" : ""}`}>
-								<Link href="/builder">Builder</Link>
-							</li>
-							<li className={`${pathname === "/templates" ? "py-2 px-6 bg-border-color rounded-full" : ""}`}>
-								<Link href="/templates">Szablony</Link>
-							</li>
-							<li>
-								<Link href="https://szablonydiscord.pl/api/docs">API</Link>
-							</li>
-							<li className={`${pathname === "/offers" ? "py-2 px-6 bg-border-color rounded-full" : ""}`}>
-								<Link href="/offers">Oferta</Link>
-							</li>
-						</ul>
+						<NavbarElement />
 					</div>
-					<div className="flex items-center">
-						<div className="relative cursor-pointer" onClick={() => setViewCart(true)}>
-							<button className="cursor-pointer" onClick={() => setViewCart(true)}>
-								<ShoppingCart />
-							</button>
-							<div className="absolute -top-1.5 -right-1.5 w-5 h-5 flex items-center justify-center rounded-full bg-primary-color">
-								<p className="text-xs">{cart ? cart.length : 0}</p>
-							</div>
-						</div>
-						<Link href="/login" className="ml-5 bg-primary-color py-3 px-5 rounded-full">
-							Logowanie
-						</Link>
-					</div>
+					<NavbarCart />
 				</div>
 				<div className="max-lg:block lg:hidden">
 					<div className="flex items-center justify-between">
@@ -142,6 +159,47 @@ export default function Navbar() {
 				</div>
 			</nav>
 			<NavbarMobile view={view} setView={setView} />
+		</>
+	)
+}
+
+export function ScrollNavbar() {
+	const [visible, setVisible] = useState<boolean>(false)
+	const [scrollY, setScrollY] = useState<number>(0)
+
+	useEffect(() => {
+		const handleScroll = () => {
+			const currentScrollY = window.scrollY
+
+			if (currentScrollY > 130) {
+				if (currentScrollY < scrollY) {
+					setVisible(true)
+				} else {
+					setVisible(false)
+				}
+			} else {
+				setVisible(false)
+			}
+			setScrollY(currentScrollY)
+		}
+
+		window.addEventListener("scroll", handleScroll, { passive: true })
+		return () => window.removeEventListener("scroll", handleScroll)
+	}, [scrollY])
+
+	return (
+		<>
+			<AnimatePresence>
+				{visible && (
+					<motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -10 }} className=" fixed top-0 left-0 z-[100] bg-alt-background-color/95 p-3  border-b border-border-color w-full max-lg:hidden">
+						<div className="flex justify-between max-w-(--breakpoint-2xl) mx-auto px-7">
+							<Logo fontSize="text-lg" imageSize="w-6 h-6" />
+							<NavbarElement active="py-1 px-4 text-sm" noActive="text-sm" />
+							<NavbarCart buttonStyle="py-1 px-4 text-sm" iconStyle="w-5 h-5" iconTextStyle="w-4 h-4" />
+						</div>
+					</motion.div>
+				)}
+			</AnimatePresence>
 		</>
 	)
 }

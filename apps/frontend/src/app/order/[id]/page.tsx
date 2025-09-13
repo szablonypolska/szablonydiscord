@@ -13,9 +13,11 @@ export default async function Order(props: { params: Promise<Params> }) {
 	const { id } = params
 
 	const getDataOrder = await prisma.order.findUnique({
-		where: { orderCode: id },
+		where: { id },
 		include: { events: true },
 	})
+
+	
 
 	if (!getDataOrder) return notFound()
 
@@ -23,7 +25,7 @@ export default async function Order(props: { params: Promise<Params> }) {
 		<>
 			<div className="flex items-center justify-center gap-24 max-xl:gap-10 mt-20 max-w-(--breakpoint-xl) mx-auto px-5">
 				<div className="flex flex-col  w-full">
-					<OrderAnimationWrapper code={getDataOrder.orderCode} events={getDataOrder.events} status={getDataOrder.status} orderPaymentLink={getDataOrder.orderPaymentLink} />
+					<OrderAnimationWrapper data={getDataOrder} />
 				</div>
 				<OrderImage />
 			</div>

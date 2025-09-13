@@ -42,6 +42,8 @@ export async function generateMetadata({ params }: { params: Promise<Params> }):
 export default async function User({ params }: { params: Promise<Params> }) {
 	const { id } = await params
 
+	console.log(id)
+
 	const searchUser = await getUserData(id)
 
 	if (!searchUser) {

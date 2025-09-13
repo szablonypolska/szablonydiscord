@@ -12,11 +12,10 @@ export default async function ProfileRedirect(props: { params: Promise<Params> }
 
 	const { id } = params
 
+	console.log(id)
+
 	const searchUser: User = await prisma.user.findUnique({
 		where: { userId: id },
-		include: {
-			template: true,
-		},
 	})
 
 	if (!searchUser) {
