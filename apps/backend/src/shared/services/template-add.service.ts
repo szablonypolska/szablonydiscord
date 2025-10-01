@@ -88,8 +88,6 @@ export class TemplatesCoreService {
           templateId: templateId,
           slugUrl: slugUrl,
           templateData: fetchTemplates.data,
-          channels: fetchTemplates.data.serialized_source_guild.channels,
-          roles: fetchTemplates.data.serialized_source_guild.roles,
           addingUserId: user.userId,
           addingUserEmail: user.email,
         },

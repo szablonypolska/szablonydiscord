@@ -4,12 +4,13 @@ import Cards from "../cards/card"
 import { cn, Pagination, PaginationItemType, PaginationItemRenderProps } from "@heroui/react"
 import { ArrowRight, ArrowLeft } from "lucide-react"
 import { useEffect, useState } from "react"
-import { Template } from "../../interfaces/common"
+import { Template } from "../../interfaces/templates/common"
 import { useSearchParams, useRouter } from "next/navigation"
 import SearchTopBar from "./searchTopBar"
 import useWindowSize from "@/hooks/useWindowSize"
 import SearchError from "./searchError"
 import { motion } from "framer-motion"
+import { useSettingsContext } from "@/context/SettingsContext"
 
 interface Props {
 	templates: {
@@ -26,6 +27,7 @@ export default function SearchTemplate({ templates }: Props) {
 	const currentPage = searchParams.get("page") ?? "1"
 	const [typeView, setTypeView] = useState<"grid" | "list">("grid")
 	const { width } = useWindowSize()
+	const { settingsData } = useSettingsContext()
 
 	useEffect(() => {
 		if (width <= 768) setTypeView("list")
@@ -80,7 +82,7 @@ export default function SearchTemplate({ templates }: Props) {
 					{templates.templates &&
 						templates.templates.map(el => (
 							<motion.div initial={{ opacity: 0, y: -30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5, ease: "easeOut", delay: 0.2 }} key={el.templateId}>
-								<Cards title={el.title} description={el.description as string} usageCount={el.usageCount} categories={el.categories} templateId={el.templateId} key={el.templateId} slugUrl={el.slugUrl} />
+								<Cards data={el} settingsData={settingsData} />
 							</motion.div>
 						))}
 				</div>

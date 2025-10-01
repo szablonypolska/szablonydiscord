@@ -1,4 +1,4 @@
-import { Template } from "@/components/interfaces/common"
+import { Template } from "@/components/interfaces/templates/common"
 import getTemplateByName from "@/lib/search/by/getTemplateByName"
 import getTemplateBySort from "@/lib/search/by/getTemplateBySort"
 import getTemplateByCategory from "@/lib/search/by/getTemplateCategory"

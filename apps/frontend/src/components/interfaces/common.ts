@@ -1,18 +1,4 @@
-export interface TemplatesProps {
-	authorId: string
-	categories: string
-	slugUrl: string
-	clickButtonUse?: number
-	dateCreate: string
-	description: string
-	id: number
-	link: string
-	server?: string
-	serverLink?: string
-	templateId: string
-	title: string
-	usageCount: number
-}
+import { Template } from "./templates/common"
 
 interface ApiKey {
 	id: number
@@ -32,29 +18,6 @@ interface ApiKey {
 	userId: string
 }
 
-export interface Template {
-	id: number
-	templateId: string
-	slugUrl: string
-	link: string
-	categories: string
-	dateCreate: string
-	dateCreateSystem: Date
-	title: string
-	description?: string
-	usageCount: number
-	clickButtonUse?: number
-	authorId: string
-	visitHistory: HistoryVisitTemplate[]
-}
-
-export interface HistoryVisitTemplate {
-	id: number
-	uuid: string
-	slugUrl: string
-	date: Date
-}
-
 export interface Notification {
 	id: number
 	type: "error" | "success" | "warning"
@@ -62,6 +25,13 @@ export interface Notification {
 	description: string
 	userId: string
 	dateAdd: string
+}
+
+export interface UserSettings {
+	id: number
+	userId: string
+	templatesDetail: boolean
+	monitoring: boolean
 }
 
 export interface User {
@@ -81,4 +51,5 @@ export interface User {
 	api: ApiKey[]
 	authorTemplates: Template[]
 	notification: Notification[]
+	settings: UserSettings
 }

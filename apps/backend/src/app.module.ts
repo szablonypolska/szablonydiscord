@@ -19,7 +19,8 @@ import { ProcessorModule } from './queue/processor/processor.module';
 import { LocalSharedModule } from './shared/shared.module';
 import { ShoppingModule } from './internal-api/shopping-cart/shopping.module';
 import { RoleModule } from './internal-api/guard/role.module';
-
+import { SettingsModule } from './internal-api/settings/settings.module';
+import { RefundModule } from './internal-api/payments/refunds/refund.module';
 
 @Module({
   imports: [
@@ -47,6 +48,8 @@ import { RoleModule } from './internal-api/guard/role.module';
     LocalSharedModule,
     ShoppingModule,
     RoleModule,
+    SettingsModule,
+    RefundModule,
   ],
 })
 export class AppModule {}

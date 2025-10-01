@@ -71,6 +71,7 @@ export const authOptions: AuthOptions = {
 					data: {
 						register: true,
 						dateCreateAccount: new Date(),
+						settings: { create: {} },
 					},
 				})
 			}
@@ -85,6 +86,7 @@ export const authOptions: AuthOptions = {
 						avatar: profile.avatar,
 						register: true,
 						dateCreateAccount: new Date(),
+						settings: { create: {} },
 					},
 				})
 			}

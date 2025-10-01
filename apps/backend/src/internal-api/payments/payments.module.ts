@@ -8,10 +8,15 @@ import { WebhookService } from './services/webhook-service.service';
 import { VerifyPaymentSessionService } from './services/verify-payment-session.service';
 import { CreatePromoCodeService } from './services/create-promo-code.service';
 import { RoleModule } from '../guard/role.module';
-
+import { EventEmitterModule } from '@nestjs/event-emitter';
 
 @Module({
-  imports: [ConfigModule, SharedModule, RoleModule],
+  imports: [
+    ConfigModule,
+    SharedModule,
+    RoleModule,
+    EventEmitterModule.forRoot(),
+  ],
   controllers: [PaymentsController],
   providers: [
     CreatePaymentsService,

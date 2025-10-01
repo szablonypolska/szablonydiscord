@@ -8,7 +8,8 @@ import { VerifyTemplateDto } from './dto/verify.dto';
 import { SearchDto } from './dto/search.dto';
 import { SuggestService } from './services/suggest.service';
 import { AddTemplateDto } from './dto/add.dto';
-
+import { TemplatesSimiliarService } from './services/similiar.service';
+import { SimiliarDto } from './dto/similiar.dto';
 
 @Controller('/api/internal/templates')
 export class TemplateController {
@@ -18,6 +19,7 @@ export class TemplateController {
     private readonly search: SearchService,
     private readonly verify: VerifyTemplateService,
     private readonly suggest: SuggestService,
+    private readonly similiar: TemplatesSimiliarService,
   ) {}
 
   @Post('/create')
@@ -46,6 +48,12 @@ export class TemplateController {
     @Body() searchDto: SearchDto,
   ): Promise<{ templates: Template[]; type: string }> {
     return this.search.searchTemplate(searchDto);
+  }
+
+  @Post('/similiar')
+  @HttpCode(200)
+  similiarTemplate(@Body() similiar: SimiliarDto) {
+    return this.similiar.similiarTemplates(similiar);
   }
 
   @Post('/suggest')

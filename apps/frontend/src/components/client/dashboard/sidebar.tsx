@@ -38,10 +38,10 @@ export default function Sidebar() {
 						</Link>
 					</div>
 					<div className="">
-						<Link href="/dashboard/profile">
-							<div className={`${pathname === "/dashboard/profile" ? "bg-primary-color text-white" : "text-silver-color hover:bg-border-color"} px-2 w-full rounded-lg py-2 flex ${!showSidebar && "justify-center max-lg:justify-start"}  items-center gap-4 text-lg`}>
+						<Link href="/dashboard/account">
+							<div className={`${pathname.includes("/dashboard/account") ? "bg-primary-color text-white" : "text-silver-color hover:bg-border-color"} px-2 w-full rounded-lg py-2 flex ${!showSidebar && "justify-center max-lg:justify-start"}  items-center gap-4 text-lg`}>
 								<User size={showSidebar ? "25" : "30"} />
-								<p className={`${showSidebar ? "block" : "hidden max-lg:block"}`}>Publiczny profil</p>
+								<p className={`${showSidebar ? "block" : "hidden max-lg:block"}`}>Konto</p>
 							</div>
 						</Link>
 					</div>

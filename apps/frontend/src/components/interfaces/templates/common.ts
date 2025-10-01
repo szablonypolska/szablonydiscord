@@ -54,3 +54,29 @@ export interface BaseInforamtion {
 		userId: string
 	}
 }
+
+export interface Template {
+	id: number
+	templateId: string
+	slugUrl: string
+	link: string
+	categories: string
+	dateCreate: string
+	dateCreateSystem: Date
+	title: string
+	description?: string
+	usageCount: number
+	rolesCount: number
+	categoriesCount: number
+	channelsCount: number
+	clickButtonUse?: number
+	authorId: string
+	visitHistory: HistoryVisitTemplate[]
+}
+
+export interface HistoryVisitTemplate {
+	id: number
+	uuid: string
+	slugUrl: string
+	date: Date
+}

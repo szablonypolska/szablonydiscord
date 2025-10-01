@@ -3,7 +3,7 @@ import { CircleAlert, Clock, Loader2 } from "lucide-react"
 import { OrderEvent } from "@/components/interfaces/order/common"
 import Link from "next/link"
 
-export default function OrderCardInfo({ status, orderPaymentLink }: { status: OrderEvent[]; orderPaymentLink: string }) {
+export default function OrderCardInfo({ status }: { status: OrderEvent[] }) {
 	const lastStatus = status[status.length - 1]?.status
 	return (
 		<>
@@ -22,7 +22,7 @@ export default function OrderCardInfo({ status, orderPaymentLink }: { status: Or
 							<CircleAlert className="text-primary-color" />
 							<p className="text-primary-color font-semibold">Oczekiwanie na płatność</p>
 						</div>
-						<Link href={orderPaymentLink}>
+						<Link href={""}>
 							<Button className="bg-primary-color rounded-full px-4 h-8 text-sm">Zapłać teraz</Button>
 						</Link>
 					</div>

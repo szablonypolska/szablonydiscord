@@ -2,7 +2,7 @@ model Order {
   id               String          @id @unique
   dateCreate       DateTime     @default(now())
   userId           String     
-  orderPaymentLink String?
+  paymentIntentId String?
   promoCodeId String?
   user             User         @relation(fields: [userId], references: [userId], onDelete: Cascade, onUpdate: Cascade)
   events           OrderEvent[]
@@ -14,10 +14,11 @@ model OrderProduct {
   id        Int    @id @default(autoincrement())
   offerId String
   price Int
-  priceAfterDiscount Int
+  priceAfterDiscount Int?
   orderId String
   offer Offer @relation(fields: [offerId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   order Order @relation(fields: [orderId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  protections   Protection[]
 
   @@index([offerId, orderId])
 }
@@ -26,8 +27,19 @@ model OrderEvent {
   id        Int         @id @default(autoincrement())
   orderId String 
   status    OrderStatus @default(NEW)
-  date      DateTime    @default(now())
+  dateCreate      DateTime    @default(now())
   order     Order       @relation(fields: [orderId], references: [id], onDelete: Cascade, onUpdate: Cascade)
 
   @@index([orderId])
+}
+
+model Protection {
+  id String @id  @default(uuid())
+  dateCreate DateTime @default(now())
+  idServer String?
+  name String?
+  type ProtectionType
+  orderProductId Int
+  orderProduct   OrderProduct   @relation(fields: [orderProductId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+
 }

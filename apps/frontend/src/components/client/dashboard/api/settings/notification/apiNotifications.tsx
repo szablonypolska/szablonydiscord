@@ -31,7 +31,7 @@ export default function ApiSettingsNotifications(params: { params: string }) {
 			return
 		}
 
-		if (!formData.webhookUrl.includes("https://discord.com/api/webhooks/") && formData.webhookUrl !== "") {
+		if (!formData.webhookUrl.includes("https://discordapp.com/api/webhooks/") && formData.webhookUrl !== "") {
 			setError(true)
 		} else {
 			setError(false)

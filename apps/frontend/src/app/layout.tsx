@@ -6,6 +6,7 @@ import HandleView from "@/components/client/chat/handleView"
 import ShoppingCartPopup from "@/components/client/shoppingCart/ShoppingCartPopup"
 import { Toaster } from "sonner"
 import { CircleAlert, CircleCheckBig } from "lucide-react"
+import SettingsFetcher from "@/components/client/settings/SettingsFetcher"
 
 export const dynamic = "force-dynamic"
 
@@ -52,6 +53,7 @@ export default function RootLayout({
 					/>
 					<SeesionWrapper>
 						{" "}
+						<SettingsFetcher />
 						<HandleView />
 						<ShoppingCartPopup />
 						{children}

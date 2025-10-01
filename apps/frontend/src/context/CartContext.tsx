@@ -17,6 +17,7 @@ interface CartContextType {
 	setPromoCode: Dispatch<SetStateAction<DiscountProduct>>
 	getPrice: (offer: Offer) => number | undefined
 	total: { beforeDiscounted: number; afterDiscounted: number }
+	loadingCart: boolean
 }
 
 export const CartContext = createContext<CartContextType | null>(null)
@@ -25,6 +26,7 @@ export const CartProvider = ({ children }: { children: React.ReactNode }) => {
 	const [viewCart, setViewCart] = useState<boolean>(false)
 	const [cart, setCart] = useState<string[]>([])
 	const [item, setItem] = useState<Offer[]>([])
+	const [loadingCart, setLoadingCart] = useState<boolean>(false)
 	const [promoCode, setPromoCode] = useState<DiscountProduct>({
 		code: "",
 		discount: 0,
@@ -41,6 +43,7 @@ export const CartProvider = ({ children }: { children: React.ReactNode }) => {
 			setCart(cart.items)
 		} catch (err) {
 			console.log(err)
+			setLoadingCart(true)
 		}
 	}, [session?.user.id])
 
@@ -71,7 +74,7 @@ export const CartProvider = ({ children }: { children: React.ReactNode }) => {
 		fetchCart()
 	}, [session?.user.id, fetchCart])
 
-	return <CartContext.Provider value={{ viewCart, setViewCart, cart, setCart, item, setItem, promoCode, setPromoCode, getPrice, total }}>{children}</CartContext.Provider>
+	return <CartContext.Provider value={{ viewCart, setViewCart, cart, setCart, item, setItem, promoCode, setPromoCode, getPrice, total, loadingCart }}>{children}</CartContext.Provider>
 }
 
 export function useCartContext() {

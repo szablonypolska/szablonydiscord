@@ -10,8 +10,6 @@ import gsap from "gsap"
 export default function OrderAnimationWrapper({ data }: { data: Order }) {
 	const animation = useRef<HTMLDivElement>(null)
 
-	console.log(data)
-
 	useEffect(() => {
 		gsap.to(animation.current, {
 			duration: 0.5,
@@ -27,7 +25,7 @@ export default function OrderAnimationWrapper({ data }: { data: Order }) {
 
 				<OrderTimeline events={data.events || []} />
 
-				<OrderCardInfo status={data.events || []} orderPaymentLink={data.orderPaymentLink || ""} />
+				<OrderCardInfo status={data.events || []}  />
 			</div>
 		</>
 	)

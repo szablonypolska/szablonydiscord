@@ -23,9 +23,18 @@ model User {
   cart              CartItem[]
   roles             Roles[]
   offers            Offer[]
+  settings          Settings?
 
   addedTemplates  Templates[] @relation("AddedTemplates")
   authorTemplates Templates[] @relation("AuthorTemplates")
+}
+
+model Settings {
+  id                Int      @id @default(autoincrement())
+  userId            String   @unique
+  templatesDetail Boolean  @default(false)
+  monitoring       Boolean  @default(false)
+  user              User     @relation(fields: [userId], references: [userId], onDelete: Cascade, onUpdate: Cascade)
 }
 
 model Roles {

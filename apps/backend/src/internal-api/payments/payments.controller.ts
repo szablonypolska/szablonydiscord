@@ -32,7 +32,6 @@ export class PaymentsController {
   ) {}
 
   @Post('/create')
-  @UseGuards(RoleGuard)
   @HttpCode(200)
   createPayments(@Body() create: CreatePaymentsDto) {
     return this.servicePayment.createPayments(create);
@@ -57,6 +56,7 @@ export class PaymentsController {
   }
 
   @Post('/promo/create')
+  @UseGuards(RoleGuard)
   @HttpCode(200)
   createPromoCode(@Body() create: CreatePromoCodeDto) {
     return this.promoCode.createPromoCode(create);

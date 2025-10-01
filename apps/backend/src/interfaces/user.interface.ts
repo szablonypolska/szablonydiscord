@@ -16,7 +16,14 @@ export interface User {
   notificationApi: boolean;
   emailVerified: boolean;
   permission: string;
+  settings: Settings;
   roles: Role[];
+}
+
+export interface Settings {
+  id: number;
+  templatesDetail: boolean;
+  monitoring: boolean;
 }
 
 interface Role {

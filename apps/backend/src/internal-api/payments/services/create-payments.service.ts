@@ -23,7 +23,16 @@ export class CreatePaymentsService {
   private stripe: Stripe;
 
   async createPayments(create: CreatePaymentsDto) {
+    const uniqueId = this.uid.rnd();
     try {
+      const user = await this.prisma.client.user.findUnique({
+        where: { userId: create.userId },
+      });
+
+      if (!user) {
+        throw new BadRequestException({ ok: false, message: 'No user found' });
+      }
+
       let finalProductPrice: FinalPrice = {
         id: '',
         price: 0,
@@ -40,25 +49,22 @@ export class CreatePaymentsService {
           message: 'No products found',
         });
 
-      const uniqueId = this.uid.rnd();
-
-      await this.createOrder(uniqueId, create.userId);
-
       try {
-        finalProductPrice = await getDiscountPrice(
-          create.promoCode,
-          products,
-          uniqueId,
-        );
+        finalProductPrice = await getDiscountPrice(create.promoCode, products);
       } catch (err) {
         throw err;
       }
 
-      console.log(finalProductPrice);
-
       const paymentLink = await this.createStripeSession(
         finalProductPrice.priceAfterDiscount || finalProductPrice.price,
         uniqueId,
+      );
+
+      await this.createOrder(
+        uniqueId,
+        create.userId,
+        finalProductPrice,
+        create.promoCode,
       );
 
       return { ok: true, paymentLink: paymentLink.url };
@@ -80,21 +86,39 @@ export class CreatePaymentsService {
       metadata: { orderId },
       payment_intent_data: { metadata: { orderId } },
       mode: 'payment',
-      success_url: `${this.hostname}/payments/{CHECKOUT_SESSION_ID}`,
+      success_url: `${this.hostname}/order/${orderId}/success`,
       cancel_url: `${this.hostname}/payments/{CHECKOUT_SESSION_ID}`,
     });
   }
 
-  private async createOrder(id: string, userId: string) {
+  private async createOrder(
+    id: string,
+    userId: string,
+    finalProductPrice: FinalPrice,
+    promoCode?: string,
+  ) {
     try {
       await this.prisma.client.order.create({
         data: {
           id,
           userId,
+          promoCodeId: promoCode || null,
           events: {
             create: {
               status: 'NEW',
             },
+          },
+          products: {
+            create: finalProductPrice.products.map((product) => ({
+              offerId: product.id,
+              price: product.price,
+              priceAfterDiscount: product.priceAfterDiscount,
+              protections: {
+                create: {
+                  type: product.id.toUpperCase(),
+                },
+              },
+            })),
           },
         },
       });

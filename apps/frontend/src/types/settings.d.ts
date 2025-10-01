@@ -1,0 +1,1 @@
+export type SettingsViewOptionType = "account" | "templates" | "token"

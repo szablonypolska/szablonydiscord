@@ -49,31 +49,16 @@ export class MailService {
 
   async sendPaidEmail(
     to: string,
-    orderId: string,
-    customerName: string,
-    productName: string,
-    productPrice: string,
-    subtotal: string,
-    totalAmount: string,
-    trackingUrl: string,
-    discountCode?: string,
-    discountAmount?: string,
+    products: any[],
+    totalPrice: number,
   ): Promise<boolean> {
     return this.sendMail({
       to,
       subject: 'Zamówienie zostało opłacone',
       template: 'paid',
       context: {
-        orderId,
-        customerName,
-        orderDate: '20.15.2025',
-        productName,
-        productPrice,
-        subtotal,
-        totalAmount,
-        trackingUrl,
-        discountCode,
-        discountAmount,
+        products,
+        totalPrice
       },
     });
   }

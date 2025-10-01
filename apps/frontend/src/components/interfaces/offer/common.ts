@@ -8,7 +8,9 @@ export interface Offer {
 	inStock: number
 	recommended: boolean
 	createdAt: Date
-	category: "PROTECTION" | "SUBSCRIPTION" | "OTHER"
+	category: OfferCategory
 	deliveryMethod: "EMAIL" | "AUTOMATIC"
 	status: "ACTIVE" | "INACTIVE" | "SOLD"
 }
+
+export type OfferCategory = "PROTECTION" | "SUBSCRIPTION" | "OTHER"

@@ -10,6 +10,7 @@ import { TemplateIndexModule } from './index/template-index.module';
 import { SuggestService } from './services/suggest.service';
 import { QueueModule } from '../../queue/queue.module';
 import { LocalSharedModule } from 'src/shared/shared.module';
+import { TemplatesSimiliarService } from './services/similiar.service';
 
 @Module({
   imports: [
@@ -23,6 +24,7 @@ import { LocalSharedModule } from 'src/shared/shared.module';
   providers: [
     TemplatesAddService,
     MigrationService,
+    TemplatesSimiliarService,
     SearchService,
     VerifyTemplateService,
     SuggestService,

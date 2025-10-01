@@ -23,11 +23,11 @@ export class WebhookService {
       this.configService.get('SECRET_WEBHOOK_STRIPE'),
     );
 
-    if (event.type === 'charge.succeeded') {
-      const session = event.data.object as Stripe.Charge;
+    if (event.type === 'payment_intent.succeeded') {
+      const session = event.data.object as Stripe.PaymentIntent;
       this.eventEmitter.emitAsync(`order_paid`, {
-        code: session.metadata.orderCode,
-        promoCode: session.metadata.promoCode,
+        orderId: session.metadata.orderId,
+        paymentIntentId: session.id,
       });
     }
 

@@ -23,6 +23,6 @@ export interface FinalPrice {
 export interface DiscountResultProduct {
   id: string;
   title: string;
-  priceAfter: number;
-  priceBefore?: number;
+  price: number;
+  priceAfterDiscount?: number;
 }

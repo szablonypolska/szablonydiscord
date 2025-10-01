@@ -1,72 +1,69 @@
 import { Injectable } from '@nestjs/common';
-import { ConfigService } from '@nestjs/config';
 import { OnEvent } from '@nestjs/event-emitter';
 import { PrismaService } from '@repo/shared';
 import { MailService } from 'src/mail/services/mail.service';
-import { WebsocketGateway } from 'src/websocket/websocket.gateway';
+import { Products } from 'src/interfaces/order.interface';
 
 @Injectable()
 export class StatusPaidHandler {
   constructor(
     private prisma: PrismaService,
     private readonly mailService: MailService,
-    private configService: ConfigService,
-    private websocket: WebsocketGateway,
   ) {}
 
   @OnEvent('order_paid', { async: true, promisify: true })
-  async handleBasic(payload: { code: string; promoCode: string }) {
+  async handleBasic(payload: { orderId: string; paymentIntentId: string }) {
     try {
-      const dataOrder = await this.prisma.client.order.findUnique({
-        where: { orderCode: payload.code },
+      const getOrder = await this.prisma.client.order.findUnique({
+        where: { id: payload.orderId },
+        include: { products: { include: { offer: true } } },
       });
 
-      if (payload.promoCode) {
-        await this.prisma.client.promoCode.update({
-          where: { code: payload.promoCode },
-          data: {
-            usageCount: {
-              increment: 1,
-            },
-          },
-        });
-      }
+      if (!getOrder) return;
+
+      const dataEmail = getOrder.products.map((product: Products) => {
+        return {
+          title: product.offer.title,
+          description: product.offer.description,
+          price: product.offer.price / 100,
+          priceAfterDiscount: product.priceAfterDiscount / 100,
+        };
+      });
+
+      const totalPrice = getOrder.products.reduce(
+        (acc: number, product: Products) => {
+          return acc + (product.priceAfterDiscount || product.offer.price);
+        },
+        0,
+      );
 
       await this.mailService.sendPaidEmail(
         'karol.krawczyk205@gmail.com',
-        payload.code,
-        'TheProShizer',
-        dataOrder.offer,
-        (dataOrder.orderAmount / 100).toFixed(2),
-        '23',
-        '23',
-        `${this.configService.get('HOSTNAME')}/order/${payload.code}`,
-        '23',
-        '2',
+        dataEmail,
+        totalPrice / 100,
       );
 
       await this.prisma.client.$transaction([
         this.prisma.client.order.update({
-          where: { orderCode: payload.code },
-          data: {
-            status: 'PAID',
-          },
+          where: { id: getOrder.id },
+          data: { paymentIntentId: payload.paymentIntentId },
+        }),
+        this.prisma.client.protection.createMany({
+          data: getOrder.products.map((product: Products) => ({
+            orderId: getOrder.id,
+            type: product.offer.id.toUpperCase(),
+          })),
         }),
         this.prisma.client.orderEvent.create({
           data: {
-            orderCode: payload.code,
+            orderId: getOrder.id,
             status: 'PAID',
           },
         }),
+        this.prisma.client.cartItem.deleteMany({
+          where: { userId: getOrder.userId },
+        }),
       ]);
-
-      this.websocket.server.emit('order_status', {
-        status: 'PAID',
-        orderCode: payload.code,
-        events: { date: new Date(), status: 'PAID' },
-      });
-
-      console.log('poszlo');
     } catch (err) {
       console.log(err);
     }

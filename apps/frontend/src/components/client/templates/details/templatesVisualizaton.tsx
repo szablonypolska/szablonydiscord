@@ -64,9 +64,9 @@ export default function TemplatesVisuzalization({ filtredChannel, filtredRoles }
 
 	return (
 		<>
-			<section className="items-center mt-5 max-xl:w-11/12">
-				<div className="flex w-280 max-xl:w-full gap-5 rounded-xl max-lg:flex-col max-lg:w-full">
-					<article className="bg-alt-background-color border border-border-color rounded-xl w-1/2 p-8 max-lg:w-full">
+			<section className="items-center mt-5">
+				<div className="flex gap-5  rounded-xl max-lg:flex-col ">
+					<article className="bg-alt-background-color border border-border-color rounded-xl  p-8 flex-1 flex-grow flex-shrink-0">
 						{filtredChannel.map((el: Channel) => (
 							<div className={`flex items-center w-96 max-md:w-full ${el.type !== 4 && "hover:bg-border-color"} truncate rounded-lg group`} key={el.id}>
 								<div className={`flex items-center   ${el.type !== 4 && "hover:bg-border-color"}  rounded-lg group w-full`} key={el.id}>
@@ -89,7 +89,7 @@ export default function TemplatesVisuzalization({ filtredChannel, filtredRoles }
 							</div>
 						))}
 					</article>
-					<article className="bg-alt-background-color border border-border-color rounded-xl w-1/2 p-8 max-lg:w-full">
+					<article className="bg-alt-background-color border border-border-color rounded-xl  p-8 max-lg:w-full flex-1 flex-shrink-0">
 						<div className="flex flex-wrap gap-2">
 							{filtredRoles.map((el: Roles) => {
 								const hexColor = `#${el.color.toString(16).padStart(6, "0")}`

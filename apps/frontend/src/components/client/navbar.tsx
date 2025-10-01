@@ -12,6 +12,7 @@ import { useEffect } from "react"
 import { useCartContext } from "@/context/CartContext"
 import { AnimatePresence } from "framer-motion"
 import { motion } from "framer-motion"
+import clsx from "clsx"
 
 export function Logo({ fontSize, imageSize }: { fontSize?: string; imageSize?: string }) {
 	return (
@@ -45,7 +46,7 @@ function NavbarElement({ active, noActive }: { active?: string; noActive?: strin
 }
 
 function NavbarCart({ buttonStyle, iconStyle, iconTextStyle }: { buttonStyle?: string; iconStyle?: string; iconTextStyle?: string }) {
-	const { cart, setViewCart } = useCartContext()
+	const { cart, setViewCart, loadingCart } = useCartContext()
 
 	return (
 		<div className="flex items-center">
@@ -53,8 +54,9 @@ function NavbarCart({ buttonStyle, iconStyle, iconTextStyle }: { buttonStyle?: s
 				<button className="cursor-pointer" onClick={() => setViewCart(true)}>
 					<ShoppingCart className={iconStyle} />
 				</button>
-				<div className={`absolute -top-1.5 -right-1.5 ${iconTextStyle ? iconTextStyle : "w-5 h-5"} flex items-center justify-center rounded-full bg-primary-color`}>
-					<p className="text-xs">{cart ? cart.length : 0}</p>
+				<div className={clsx("absolute -top-1.5 -right-1.5 flex items-center justify-center rounded-full ", loadingCart ? "bg-error-color" : "bg-primary-color", iconTextStyle ? iconTextStyle : "w-4 h-4", "text-[10px] text-white font-medium")}>
+					{!loadingCart && <p className="text-xs">{cart ? cart.length : 0}</p>}
+					{loadingCart && <p className="text-xs">!</p>}
 				</div>
 			</div>
 			<Link href="/login" className={`ml-5 ${buttonStyle ? buttonStyle : "py-3 px-5"} bg-primary-color  rounded-full`}>

@@ -7,6 +7,7 @@ import { authOptions } from "../../lib/authOptions"
 import { prisma } from "@repo/db"
 import { redirect } from "next/navigation"
 import NotificationsSidebar from "@/components/client/dashboard/notifications-ui/notificationsSidebar"
+import SettingsPopup from "@/components/client/dashboard/settings/settingsPopup"
 
 export default async function Layout({ children }: { children: React.ReactNode }) {
 	const session = await getServerSession(authOptions)
@@ -19,6 +20,7 @@ export default async function Layout({ children }: { children: React.ReactNode }
 		where: { userId: session?.user.id },
 		include: {
 			api: true,
+			settings: true,
 			notification: {
 				take: 4,
 				orderBy: {
@@ -31,6 +33,7 @@ export default async function Layout({ children }: { children: React.ReactNode }
 	return (
 		<DashboardProvider user={user}>
 			<NotificationsSidebar />
+			<SettingsPopup settings={user.settings} />
 
 			<div className="flex w-full h-screen ">
 				<div className="shrink-0">
@@ -39,7 +42,7 @@ export default async function Layout({ children }: { children: React.ReactNode }
 
 				<div className="flex flex-col w-full ">
 					<TopSidebar />
-					<div className="scrollbar scrollbar-thumb-alt-border-color scrollbar-track-border-color overflow-y-auto">{children}</div>
+					<div className="scrollbar scrollbar-thumb-alt-border-color scrollbar-track-border-color overflow-y-auto p-10">{children}</div>
 				</div>
 			</div>
 		</DashboardProvider>

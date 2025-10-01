@@ -7,20 +7,24 @@ model Templates {
   title          String
   sourceServerId String?
   description    String?
-  usageCount     Int                    @default(0)
   authorId       String?
   addingUserId   String?
   code           String?
+  usageCount     Int                    @default(0)
+  channelsCount  Int                    @default(0)
+  rolesCount     Int                    @default(0)
+  categoriesCount Int                    @default(0)
   visitHistory   VisitTemplateHistory[]
   author         User?                  @relation("AuthorTemplates", fields: [authorId], references: [userId])
   addingUser     User?                  @relation("AddedTemplates", fields: [addingUserId], references: [userId])
-  userUserId     String?
 
   @@index([usageCount])
   @@index([dateCreate])
   @@index([authorId])
   @@index([addingUserId])
 }
+
+
 
 model VisitTemplateHistory {
   id      Int       @id @default(autoincrement())
@@ -31,6 +35,7 @@ model VisitTemplateHistory {
 
   @@index([slugUrl])
 }
+
 
 model ReserveTemplate {
   id       Int     @id @default(autoincrement())

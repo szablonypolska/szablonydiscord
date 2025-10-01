@@ -23,15 +23,8 @@ export class TemplateConsumer extends WorkerHost {
   }
 
   async process(job: Job): Promise<any> {
-    const {
-      templateId,
-      slugUrl,
-      templateData,
-      channels,
-      roles,
-      addingUserId,
-      addingUserEmail,
-    } = job.data;
+    const { templateId, slugUrl, templateData, addingUserId, addingUserEmail } =
+      job.data;
 
     try {
       let user: User | null = await this.prisma.client.user.findUnique({
@@ -52,24 +45,35 @@ export class TemplateConsumer extends WorkerHost {
       const promptGenerate = await generateText({
         model: google('gemini-2.5-flash'),
 
-        prompt: `${prompt.prompt}, oto nazwa tego szablonu ${templateData.name}, oto kanały i kategorie ${JSON.stringify(channels)}, role ${JSON.stringify(roles)}, `,
+        prompt: `${prompt.prompt}, oto nazwa tego szablonu ${templateData.name}, oto kanały i kategorie ${JSON.stringify(templateData.serialized_source_guild.channels)}, role ${JSON.stringify(templateData.serialized_source_guild.roles)}, `,
       });
 
       const category = this.determinateCategory(promptGenerate.text);
 
+      const categoriesCount =
+        templateData.serialized_source_guild.channels.reduce((acc, channel) => {
+          if (channel.type === 4) return acc + 1;
+          return acc;
+        }, 0);
+
       await this.prisma.client.templates.create({
         data: {
-          templateId: templateId,
+          templateId,
           categories: category.category,
           link: `https://discord.new/${templateData.code}`,
-          slugUrl: slugUrl,
+          slugUrl,
           title: templateData.name,
           description: category.description,
           code: category.code,
           sourceServerId: templateData.description,
-          usageCount: templateData.usage_count,
           authorId: templateData.creator.id,
-          addingUserId: addingUserId,
+          addingUserId,
+          usageCount: templateData.usage_count,
+          channelsCount:
+            templateData.serialized_source_guild.channels.length -
+            categoriesCount,
+          rolesCount: templateData.serialized_source_guild.roles.length,
+          categoriesCount,
         },
       });
 

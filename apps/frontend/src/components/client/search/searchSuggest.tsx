@@ -16,6 +16,7 @@ export default function SearchSuggest({ title, hasUserEdit }: { title: string; h
 	const nameParams = searchParams.get("name") || ""
 
 	const handleSuggest = useCallback(async () => {
+		if (!title) return
 		const data = await suggestTemplate(title)
 		setSuggestions(data.suggestions)
 	}, [title])

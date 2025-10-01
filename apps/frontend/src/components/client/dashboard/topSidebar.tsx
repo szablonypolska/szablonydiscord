@@ -9,9 +9,7 @@ import { useDashboardContext } from "@/context/DashboardContext"
 
 export default function TopSidebar() {
 	const { data: session } = useSession()
-	const { user, toggleView, toggleViewNotification, showSidebar, numberPeopleOnline } = useDashboardContext()
-
-	console.log(user.status)
+	const { user, toggleView, toggleViewNotification, showSidebar, numberPeopleOnline, setSettingsVisible } = useDashboardContext()
 
 	return (
 		<>
@@ -50,7 +48,7 @@ export default function TopSidebar() {
 						</Button>
 						{user.notification.length > 0 && <div className="absolute top-1 right-0.5 w-2.5 h-2.5 bg-primary-color rounded-full"></div>}
 					</div>
-					<Button className="hover:bg-border-color px-2 rounded-lg">
+					<Button className="hover:bg-border-color px-2 rounded-lg cursor-pointer" onPress={() => setSettingsVisible(true)}>
 						<Settings />
 					</Button>
 					<div className="h-3/6 w-0.5 bg-border-color max-lg:hidden"></div>

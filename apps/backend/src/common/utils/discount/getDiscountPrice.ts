@@ -30,8 +30,8 @@ const calculateFinalPrice = (
     {
       id: offerId,
       title: title,
-      priceAfter: price,
-      priceBefore: productIsPromo
+      price: price,
+      priceAfterDiscount: productIsPromo
         ? checkCode.scope === 'CART'
           ? null
           : promoPrice || null
@@ -40,13 +40,31 @@ const calculateFinalPrice = (
   ];
 };
 
+const calculateFinalWithautDiscount = (products: Offer[]) => {
+  products.forEach((product) => {
+    finalProductPrice.price += product.price;
+    finalProductPrice.products = [
+      ...finalProductPrice.products,
+      {
+        id: product.id,
+        title: product.title,
+        price: product.price,
+        priceAfterDiscount: null,
+      },
+    ];
+  });
+
+  return finalProductPrice;
+};
+
 export const getDiscountPrice = async (
   promoCode: string,
   products: Offer[],
-  orderId: string,
 ) => {
   finalProductPrice = { id: '', price: 0, priceAfterDiscount: 0, products: [] };
   try {
+    if (!promoCode) return calculateFinalWithautDiscount(products);
+
     const checkCode: DiscountProduct = await prisma.promoCode.findUnique({
       where: { code: promoCode },
       include: {
@@ -71,8 +89,6 @@ export const getDiscountPrice = async (
         calculateFinalPrice(product.price, product.title, checkCode, false);
       });
       const promoPrice = discountHelper(finalProductPrice.price, checkCode);
-
-      await safeProducts(finalProductPrice, orderId);
 
       finalProductPrice.priceAfterDiscount = promoPrice;
 
@@ -110,28 +126,9 @@ export const getDiscountPrice = async (
         message: 'No products found for this promocode',
       });
 
-    await safeProducts(finalProductPrice, orderId);
-
     return finalProductPrice;
   } catch (err) {
     console.log(err);
     throw err;
-  }
-};
-
-const safeProducts = async (data: FinalPrice, orderId: string) => {
-  try {
-    if (data.products.length === 0) return;
-
-    await prisma.products.createMany({
-      data: data.products.map((item) => ({
-        offerId: item.id,
-        price: item.priceAfter,
-        priceAfterDiscount: item.priceBefore || item.priceAfter,
-        orderId,
-      })),
-    });
-  } catch (err) {
-    console.log(err);
   }
 };

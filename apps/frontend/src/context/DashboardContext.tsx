@@ -3,6 +3,7 @@ import React, { createContext, useContext, useEffect, useState } from "react"
 import { User } from "@/components/interfaces/common"
 import useWindowSize from "@/hooks/useWindowSize"
 import useSocketListener from "@/hooks/useSocketListener"
+import { SettingsViewOptionType } from "@/types/settings"
 
 interface DashboardContextType {
 	toggleView: () => void
@@ -12,6 +13,10 @@ interface DashboardContextType {
 	user: User
 	numberPeopleOnline: number
 	updateUser: (newUser: User) => void
+	settingsViewOption: SettingsViewOptionType
+	setSettingsViewOption: React.Dispatch<React.SetStateAction<SettingsViewOptionType>>
+	settingsVisible: boolean
+	setSettingsVisible: React.Dispatch<React.SetStateAction<boolean>>
 }
 
 export const DashboardContext = createContext<DashboardContextType | null>(null)
@@ -21,6 +26,8 @@ export const DashboardProvider = ({ children, user: initialUser }: { children: R
 	const [notification, setNotification] = useState<boolean>(false)
 	const [user, setUser] = useState<User>(initialUser)
 	const [numberPeopleOnline, setNumberPeopleOnline] = useState<number>(0)
+	const [settingsVisible, setSettingsVisible] = useState<boolean>(false)
+	const [settingsViewOption, setSettingsViewOption] = useState<SettingsViewOptionType>("account")
 	const { width } = useWindowSize()
 
 	useSocketListener({ user, setUser, setNumberPeopleOnline })
@@ -45,7 +52,7 @@ export const DashboardProvider = ({ children, user: initialUser }: { children: R
 		setUser(data)
 	}
 
-	return <DashboardContext.Provider value={{ showSidebar, toggleView, user, updateUser, notification, toggleViewNotification, numberPeopleOnline }}>{children}</DashboardContext.Provider>
+	return <DashboardContext.Provider value={{ showSidebar, toggleView, user, updateUser, notification, toggleViewNotification, numberPeopleOnline, settingsViewOption, setSettingsViewOption, settingsVisible, setSettingsVisible }}>{children}</DashboardContext.Provider>
 }
 
 export function useDashboardContext() {

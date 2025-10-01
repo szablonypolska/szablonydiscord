@@ -4,26 +4,32 @@ import { Button } from "@nextui-org/button"
 import recommendIcon from "../../../../../public/recomendIcon.svg"
 import addIcon from "../../../../../public/addIcon.svg"
 import Image from "next/image"
-import { TemplatesProps } from "../../../interfaces/common"
+import { Template } from "@/components/interfaces/templates/common"
 import Cards from "@/components/client/cards/card"
 import Link from "next/link"
 import animateCards from "@/utils/animations/animateCards"
 import { useEffect, useRef } from "react"
 import popularIcon from "../../../../../public/popularIcon.svg"
 import { motion } from "framer-motion"
+import { useSession } from "next-auth/react"
+import { useSettingsContext } from "@/context/SettingsContext"
 
 interface TemplateListProps {
-	loadTemplates: TemplatesProps[]
-	loadTemplatesData: TemplatesProps[]
-	loadTemplatesPopularData: TemplatesProps[]
+	loadTemplates: Template[]
+	loadTemplatesData: Template[]
+	loadTemplatesPopularData: Template[]
 }
 
 export default function TemplateList({ loadTemplates, loadTemplatesData, loadTemplatesPopularData }: TemplateListProps) {
 	const animation = useRef<HTMLDivElement>(null)
+	const { data: session } = useSession()
+	const { settingsData } = useSettingsContext()
 
 	useEffect(() => {
 		animateCards(animation.current)
 	}, [])
+
+	console.log("session", session)
 
 	return (
 		<>
@@ -39,7 +45,7 @@ export default function TemplateList({ loadTemplates, loadTemplatesData, loadTem
 					<div className="grid grid-cols-3 max-xl:grid-cols-2 max-md:grid-cols-1 gap-10 max-lg:gap-5 mt-5">
 						{loadTemplates.map(el => (
 							<motion.div key={el.templateId} initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, amount: 0.4 }} transition={{ type: "spring", stiffness: 100, damping: 12, duration: 0.5, ease: "easeOut" }}>
-								<Cards title={el.title} description={el.description} usageCount={el.usageCount} categories={el.categories} templateId={el.templateId} slugUrl={el.slugUrl} />
+								<Cards data={el} settingsData={settingsData} />
 							</motion.div>
 						))}
 					</div>
@@ -60,7 +66,7 @@ export default function TemplateList({ loadTemplates, loadTemplatesData, loadTem
 					<div className="grid grid-cols-3 max-xl:grid-cols-2 max-md:grid-cols-1 gap-10 max-lg:gap-5 mt-5">
 						{loadTemplatesPopularData.map(el => (
 							<motion.div key={el.templateId} initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, amount: 0.4 }} transition={{ duration: 0.5, ease: "easeOut" }}>
-								<Cards title={el.title} description={el.description} usageCount={el.usageCount} categories={el.categories} templateId={el.templateId} slugUrl={el.slugUrl} />
+								<Cards data={el} settingsData={settingsData} />
 							</motion.div>
 						))}
 					</div>
@@ -81,7 +87,7 @@ export default function TemplateList({ loadTemplates, loadTemplatesData, loadTem
 					<div className="grid grid-cols-3 max-xl:grid-cols-2 max-md:grid-cols-1 gap-10 max-lg:gap-5 mt-5">
 						{loadTemplatesData.map(el => (
 							<motion.div key={el.templateId} initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, amount: 0.4 }} transition={{ duration: 0.5, ease: "easeOut" }}>
-								<Cards title={el.title} description={el.description} usageCount={el.usageCount} categories={el.categories} templateId={el.templateId} slugUrl={el.slugUrl} />
+								<Cards data={el} settingsData={settingsData} />
 							</motion.div>
 						))}
 					</div>

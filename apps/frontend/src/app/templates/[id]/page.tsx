@@ -3,6 +3,7 @@ import LoadTemplatesData from "@/components/server/templates/loadTemplatesData"
 import { Suspense } from "react"
 import { prisma } from "@repo/db"
 import type { Metadata } from "next"
+import TemplatesSimiliar from "@/components/client/templates/details/templatesSimiliar"
 
 interface Params {
 	id: string
@@ -27,9 +28,12 @@ export default async function Templates(props: { params: Promise<Params> }) {
 
 	return (
 		<>
-			<Suspense fallback={<TemplatesLoading />}>
-				<LoadTemplatesData params={id} />
-			</Suspense>
+			<div className="max-w-(--breakpoint-xl) mx-auto w-full">
+				<Suspense fallback={<TemplatesLoading />}>
+					<LoadTemplatesData params={id} />
+					<TemplatesSimiliar />
+				</Suspense>
+			</div>
 		</>
 	)
 }

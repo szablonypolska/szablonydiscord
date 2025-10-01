@@ -1,5 +1,5 @@
 import { ApiPropertyOptional } from '@nestjs/swagger';
-import { IsNumber, IsOptional } from 'class-validator';
+import { IsBoolean, IsNumber, IsOptional, IsString } from 'class-validator';
 
 export class TemplatesDto {
   @ApiPropertyOptional({
@@ -15,4 +15,12 @@ export class TemplatesDto {
   })
   @IsOptional()
   pageSize: string;
+
+  @ApiPropertyOptional({
+    description: 'If true, return detail about templates',
+    example: true,
+  })
+  @IsOptional()
+  @IsString()
+  templateDetail: string;
 }

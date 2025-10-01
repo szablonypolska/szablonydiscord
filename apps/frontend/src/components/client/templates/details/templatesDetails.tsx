@@ -10,7 +10,7 @@ import { Download, Eye, Plus, Bot, Volume2, Users } from "lucide-react"
 import { Tooltip } from "@heroui/react"
 import { TemplatesUserCreator } from "./templatesCreator"
 import TemplatesPopup from "./templatesPopup"
-import { useState } from "react"
+import { useEffect, useRef, useState } from "react"
 
 interface Props {
 	data: DiscordTemplate
@@ -19,6 +19,18 @@ interface Props {
 
 export default function TemplatesDetails({ data, base }: Props) {
 	const [popup, setPopup] = useState<boolean>(false)
+	const [showMore, setShowMore] = useState<boolean>(false)
+	const [expanded, setExpanded] = useState<boolean>(false)
+	const checkWidth = useRef<HTMLParagraphElement>(null)
+
+	useEffect(() => {
+		if (checkWidth.current) {
+			if (checkWidth.current.scrollWidth > checkWidth.current.clientWidth) {
+				setExpanded(true)
+			}
+		}
+	}, [base.description])
+
 	const templateInfo = {
 		link: base.link,
 		templateId: base.templateId,
@@ -49,8 +61,8 @@ export default function TemplatesDetails({ data, base }: Props) {
 	return (
 		<>
 			<TemplatesPopup popup={popup} setPopup={setPopup} templateInfo={templateInfo} />
-			<motion.main className="flex flex-col items-center my-32" initial="hidden" animate="visible" variants={containerVariants}>
-				<motion.section className="bg-alt-background-color w-280 max-xl:w-11/12 p-8 rounded-xl border border-border-color max-lg:p-5" variants={containerVariants}>
+			<motion.main className="flex flex-col items-center mt-32 lg:mx-20 max-lg:mx-5  " initial="hidden" animate="visible" variants={containerVariants}>
+				<motion.section className="bg-alt-background-color w-full   p-8 rounded-xl border border-border-color max-lg:p-5" variants={containerVariants}>
 					<header>
 						<div className="flex items-center justify-between">
 							<div className="flex items-center gap-4 w-full">
@@ -74,7 +86,18 @@ export default function TemplatesDetails({ data, base }: Props) {
 								</Tooltip>
 							</div>
 						</div>
-						<p className="text-text-color text-lg md:w-9/12 max-md:w-full">{base.description}</p>
+
+						<div className="flex gap-2 items-center md:w-8/12">
+							<p className={`text-text-color text-lg ${showMore ? "" : "truncate"}`} ref={checkWidth}>
+								{base.description}
+							</p>
+
+							{expanded && (
+								<button className="text-gray-200 cursor-pointer" onClick={() => setShowMore(!showMore)}>
+									{showMore ? "Mniej" : "Więcej"}
+								</button>
+							)}
+						</div>
 						<div className="max-sm:flex hidden mt-3 gap-2">
 							<span className="px-4 py-1 bg-border-color  text-sm rounded-full w-full  text-center">{base.categories}</span>
 						</div>
@@ -105,13 +128,13 @@ export default function TemplatesDetails({ data, base }: Props) {
 					</section>
 
 					<section className="flex items-center gap-3 mt-10 max-sm:flex-col max-sm:w-full max-sm:mt-5">
-						<Button className="flex items-center bg-primary-color px-8 h-12 rounded-xl max-sm:w-full cursor-pointer" onPress={() => setPopup(true)}>
-							<Plus />
+						<Button className="flex items-center bg-primary-color px-8 h-12 rounded-xl max-sm:w-full cursor-pointer max-sm:text-sm" onPress={() => setPopup(true)}>
+							<Plus className="max-sm:w-5 max-sm:h-5" />
 							Użyj szablonu
 						</Button>
 
-						<Link href={`/preview/${base.slugUrl}`} className="max-sm:w-full flex gap-3 items-center bg-advice-bot px-8 h-12 rounded-xl max-sm:w-full cursor-pointer">
-							<Bot />
+						<Link href={`/preview/${base.slugUrl}`} className="max-sm:w-full flex gap-3 items-center justify-center  bg-advice-bot px-8 h-12 rounded-xl max-sm:w-full cursor-pointer max-sm:text-sm">
+							<Bot className="max-sm:w-5 max-sm:h-5" />
 							Przejdź do podglądu szablonu
 						</Link>
 					</section>

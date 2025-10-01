@@ -7,10 +7,13 @@ export interface Template {
   dateCreateSystem: Date;
   title: string;
   description?: string;
-  usageCount: number;
   clickButtonUse?: number;
   authorId: string;
   addingUserId: string;
+  usageCount: number;
+  rolesCount: number;
+  categoriesCount: number;
+  channelsCount: number;
 }
 
 export interface SearchResult extends Template {

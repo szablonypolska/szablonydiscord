@@ -30,7 +30,7 @@ export default async function ApiSettings(props: { params: Promise<TypeProps> })
 
 	return (
 		<>
-			<div className="p-10  max-xl:p-5">
+			<div className="">
 				<ApiSettingsLimit params={id} />
 				<ApiSettingsNotifications params={id} />
 			</div>

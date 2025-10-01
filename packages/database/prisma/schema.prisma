@@ -39,3 +39,10 @@ enum RolesPossible {
   SUPPORT
   PREMIUM
 }
+
+enum ProtectionType {
+  BASIC
+  PREMIUM
+  ADVANCED
+  OTHER
+}

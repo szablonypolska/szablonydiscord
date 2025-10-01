@@ -6,6 +6,7 @@ import { Shield, Infinity, Mail, Package, Clock } from "lucide-react"
 import { useCallback, useEffect, useState } from "react"
 import { motion } from "framer-motion"
 import ShoppingCartRemoveItem from "./button/ShoppingCartRemoveItem"
+import clsx from "clsx"
 
 export default function ShoppingCartItem() {
 	const { cart, item, setItem, promoCode, getPrice } = useCartContext()
@@ -96,15 +97,15 @@ export default function ShoppingCartItem() {
 									<div className={`flex items-center gap-5 mr-5 ${isUnavailable && "z-[100]"}`}>
 										<div className="flex flex-col">
 											{viewDiscount && <p className="font-semibold text-[10px] text-text-color line-through">{amountPln.toFixed(2)} zł</p>}
-											<p className={`font-semibold text-sm ${isUnavailable && "line-through"} ${viewDiscount && "text-primary-color"}`}>{viewDiscount ? promoPln : amountPln.toFixed(2)} zł</p>
+											<p className={clsx("font-semibold text-sm", isUnavailable && "line-through", viewDiscount && "text-primary-color")}>{viewDiscount ? promoPln : amountPln.toFixed(2)} zł</p>
 										</div>
 										<ShoppingCartRemoveItem itemId={offer.id} item={item} setItem={setItem} isUnavailable={isUnavailable} />
 									</div>
 								</div>
-								{!isUnavailable && offer.deliveryMethod === "EMAIL" && (
+								{!isUnavailable && (
 									<div className="flex items-center gap-2 border-x-2 border-b-2 border-border-color rounded-b-lg p-2 px-3">
 										<Mail className="w-3.5 h-3.5 text-primary-color" />
-										<p className="text-xs text-text-color">Produkt zostanie dostarczony na twojego maila.</p>
+										<p className="text-xs text-text-color">{offer.deliveryMethod === "EMAIL" ? "Produkt zostanie dostarczony na twojego maila." : "Produkt zostanie dodany do konta automatycznie"}</p>
 									</div>
 								)}
 							</motion.div>
