@@ -71,8 +71,8 @@ export const authOptions: AuthOptions = {
 					where: { userId: profile.id },
 					data: {
 						register: true,
-						dateCreateAccount: new Date(),
 						settings: { create: {} },
+						limits: { create: {} },
 					},
 				})
 			}
@@ -86,8 +86,8 @@ export const authOptions: AuthOptions = {
 						slugUrl: profile.username,
 						avatar: profile.avatar,
 						register: true,
-						dateCreateAccount: new Date(),
 						settings: { create: {} },
+						limits: { create: {} },
 					},
 				})
 			}

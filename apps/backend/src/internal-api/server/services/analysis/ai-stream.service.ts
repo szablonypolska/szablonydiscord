@@ -1,10 +1,14 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from '@repo/shared';
 import { prompt } from '../../instructions/ai-prompt.json';
+import { promptEdit } from '../../instructions/ai-prompt-edit.json';
 import { BuilderEmitterService } from '../emitter/builder-emitter.service';
 import { google } from '@ai-sdk/google';
 import { streamText } from 'ai';
+import { Builder } from '../../interfaces/builder.interface';
+import { Template } from 'src/interfaces/template.interface';
 
+@Injectable()
 export class AiStreamService {
   constructor(
     private prisma: PrismaService,
@@ -13,7 +17,7 @@ export class AiStreamService {
 
   async stream(
     description: string,
-    sessionId: string,
+    data: Builder,
     decorationChannel: string,
     decorationCategory: string,
     id: number,
@@ -22,15 +26,29 @@ export class AiStreamService {
     let batchNumber: number = 0;
     let batchedText: string[] = [];
     let generatedText: string[] = [];
+    let templateCode: string = '';
     const BATCH_SIZE = 100;
     const BATCH_STEP = 20;
 
     try {
-      const { textStream } = await streamText({
+      if (data.sourceTemplate) {
+        const templates: Template =
+          await this.prisma.client.templates.findUnique({
+            where: { slugUrl: data.sourceTemplate },
+          });
+        templateCode = templates.code || '';
+      }
+
+      const selectPrompt = data.sourceTemplate
+        ? `Edytuj istniejący szablon zgodnie z poniższym opisem użytkownika. Opis użytkownika (NAJWYŻSZY PIORYTET): ${description}, kod szablonu do edycji: ${templateCode} 
+      Standardowy prompt (niższy priorytet, stosuj tylko gdy nie koliduje z OPISEM UŻYTKOWNIKA): ${promptEdit}`
+        : `### Wybrana przedziałka dla kanałów: ${decorationChannel}, dla kategorii ${decorationCategory} ### OPIS UŻYTKOWNIKA (NAJWYŻSZY PRIORYTET, ważniejsze od instrukcji): ${description}
+      ### STANDARDOWY PROMPT (niższy priorytet, stosuj tylko gdy nie koliduje z OPISEM UŻYTKOWNIKA): ${prompt}`;
+
+      const { textStream } = streamText({
         model: google('gemini-2.5-flash'),
 
-        prompt: `### Wybrana przedziałka dla kanałów: ${decorationChannel}, dla kategorii ${decorationCategory} ### OPIS UŻYTKOWNIKA (NAJWYŻSZY PRIORYTET, ważniejsze od instrukcji): ${description}
-      ### STANDARDOWY PROMPT (niższy priorytet, stosuj tylko gdy nie koliduje z OPISEM UŻYTKOWNIKA): ${prompt}`,
+        prompt: selectPrompt,
       });
 
       for await (const text of textStream) {
@@ -46,7 +64,11 @@ export class AiStreamService {
 
         if (sendWebsocket >= BATCH_SIZE && batchNumber >= BATCH_STEP) {
           const payload = { id, code: batchedText.join('') };
-          this.builderEmitter.builderEmit(sessionId, payload, 'code_updated');
+          this.builderEmitter.builderEmit(
+            data.sessionId,
+            payload,
+            'code_updated',
+          );
 
           batchNumber = 0;
           batchedText.length = 0;
@@ -54,7 +76,11 @@ export class AiStreamService {
 
         if (sendWebsocket <= BATCH_SIZE && batchNumber <= BATCH_STEP) {
           const payload = { id, code: chunk };
-          this.builderEmitter.builderEmit(sessionId, payload, 'code_updated');
+          this.builderEmitter.builderEmit(
+            data.sessionId,
+            payload,
+            'code_updated',
+          );
         }
       }
 
@@ -67,9 +93,10 @@ export class AiStreamService {
       console.log(err);
 
       await this.prisma.client.builder.update({
-        where: { sessionId },
-        data: { code: generatedText.join('') },
+        where: { sessionId: data.sessionId },
+        data: { code: JSON.stringify(generatedText.join('')) },
       });
+      throw err;
     }
   }
 }

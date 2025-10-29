@@ -1,6 +1,5 @@
 import { Dispatch, SetStateAction } from "react"
 import { Builder } from "@/components/interfaces/builder/common"
-import { de } from "date-fns/locale"
 
 interface Payload {
 	title: string

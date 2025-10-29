@@ -1,4 +1,4 @@
-import { IsNotEmpty, IsString } from 'class-validator';
+import { IsNotEmpty, IsOptional, IsString } from 'class-validator';
 
 export class GenerateServerSchemaDto {
   @IsNotEmpty()
@@ -16,4 +16,8 @@ export class GenerateServerSchemaDto {
   @IsNotEmpty()
   @IsString()
   decorationCategory: string;
+
+  @IsOptional()
+  @IsString()
+  sourceTemplate: string | null;
 }

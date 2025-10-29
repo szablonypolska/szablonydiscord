@@ -24,7 +24,7 @@ export default function StatisticsProfile({ data }: Props) {
 					<Calendar className="text-primary-color" />
 					<div className="">
 						<p className="text-sm text-silver-color">Data dołączenia</p>
-						<p className="text-sm font-medium">{data.dateCreateAccount ? formatData(data.dateCreateAccount) : "Nie zarejestrowany"}</p>
+						<p className="text-sm font-medium">{data.createdAt ? formatData(data.createdAt) : "Nie zarejestrowany"}</p>
 					</div>
 				</div>
 				<div className="w-full h-px bg-border-color my-4"></div>

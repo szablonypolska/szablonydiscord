@@ -1,6 +1,14 @@
+"use client"
+
 import { Flame, Calendar, Clock, CircleGauge } from "lucide-react"
+import { useDashboardContext } from "@/context/DashboardContext"
 
 export function AccountBuilderLimit() {
+	const { user } = useDashboardContext()
+
+	const percentUsage = Math.round((user.limits.builderAiUsage / user.limits.builderAiLimit) * 100)
+	const percentUsageMonthly = Math.round((user.limits.builderAiUsageMonthly / user.limits.builderAiLimitMonthly) * 100)
+
 	return (
 		<div className="border border-border-color rounded-lg w-[30rem] max-md:w-full ">
 			<div className="flex items-center justify-between p-5">
@@ -16,14 +24,16 @@ export function AccountBuilderLimit() {
 							<Flame className="text-primary-color w-4.5 h-4.5" />
 							<p className="text-sm font-semibold">Dzisiejszy użycia</p>
 						</div>
-						<p className="text-sm text-primary-color">10 pozostało</p>
+						<p className="text-sm text-primary-color">{user.limits.builderAiLimit - user.limits.builderAiUsage} pozostało</p>
 					</div>
 					<div className="flex items-center justify-between mt-4 mb-1.5">
-						<p className="text-xs text-text-color">90 / 100</p>
-						<span className="text-xs text-primary-color">30%</span>
+						<p className="text-xs text-text-color">
+							{user.limits.builderAiUsage} / {user.limits.builderAiLimit}
+						</p>
+						<span className="text-xs text-primary-color">{percentUsage}%</span>
 					</div>
 					<div className="w-full h-2 rounded-lg bg-box-color-dashboard rounded-lg">
-						<div className="h-2 rounded-lg bg-primary-color w-1/4"></div>
+						<div className="h-2 rounded-lg bg-primary-color" style={{ width: `${percentUsage}%` }}></div>
 					</div>
 				</div>
 				<div className="mt-7">
@@ -32,14 +42,16 @@ export function AccountBuilderLimit() {
 							<Calendar className="text-primary-color w-4.5 h-4.5" />
 							<p className="text-sm font-semibold">Miesięczne użycia</p>
 						</div>
-						<p className="text-sm text-primary-color">10 pozostało</p>
+						<p className="text-sm text-primary-color">{user.limits.builderAiLimitMonthly - user.limits.builderAiUsageMonthly} pozostało</p>
 					</div>
 					<div className="flex items-center justify-between mt-4 mb-1.5">
-						<p className="text-xs text-text-color">90 / 100</p>
-						<span className="text-xs text-primary-color">30%</span>
+						<p className="text-xs text-text-color">
+							{user.limits.builderAiUsageMonthly} / {user.limits.builderAiLimitMonthly}
+						</p>
+						<span className="text-xs text-primary-color">{percentUsageMonthly}%</span>
 					</div>
 					<div className="w-full h-2 rounded-lg bg-box-color-dashboard rounded-lg">
-						<div className="h-2 rounded-lg bg-primary-color w-1/4"></div>
+						<div className="h-2 rounded-lg bg-primary-color" style={{ width: `${percentUsageMonthly}%` }}></div>
 					</div>
 				</div>
 				<div className="bg-primary-color/10 border border-primary-color/80 p-4 py-5 rounded-lg mt-7">

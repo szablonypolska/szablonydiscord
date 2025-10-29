@@ -7,6 +7,7 @@ export interface Template {
   updatedAt: Date;
   title: string;
   description?: string;
+  code: string | null;
   clickButtonUse?: number;
   authorId: string;
   addingUserId: string;

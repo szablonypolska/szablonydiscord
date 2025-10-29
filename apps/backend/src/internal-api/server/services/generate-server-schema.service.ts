@@ -5,6 +5,8 @@ import ShortUniqueId from 'short-unique-id';
 import { DiscordAiGeneratorService } from './analysis/analysis.service';
 import { Builder } from '../interfaces/builder.interface';
 import { BuilderStageType } from '@prisma/client';
+import { template } from 'handlebars';
+import { User } from '../../../interfaces/user.interface';
 
 @Injectable()
 export class GenerateServerSchema {
@@ -17,25 +19,52 @@ export class GenerateServerSchema {
 
   async generate(data: GenerateServerSchemaDto) {
     try {
+      const user: User | null = await this.prisma.client.user.findUnique({
+        where: { userId: data.userId },
+        include: { limits: true },
+      });
+
+      if (!user)
+        throw new Error({ ok: false, message: 'User not found' }.toString());
+
+      if (
+        user.limits.builderAiUsage >= user.limits.builderAiLimit ||
+        user.limits.builderAiUsageMonthly >= user.limits.builderAiLimitMonthly
+      ) {
+        throw new Error(
+          { ok: false, message: 'AI Builder limit reached' }.toString(),
+        );
+      }
+
       const types = Object.values(BuilderStageType);
-      const create: Builder = await this.prisma.client.builder.create({
-        data: {
-          sessionId: this.uid.rnd(),
-          userId: data.userId,
-          builderProcess: {
-            create: {
-              stages: {
-                create: types.map((type) => ({ type })),
+      const [, create] = await this.prisma.client.$transaction([
+        this.prisma.client.limits.update({
+          where: { userId: user.userId },
+          data: {
+            builderAiUsage: { increment: 1 },
+            builderAiUsageMonthly: { increment: 1 },
+          },
+        }),
+        this.prisma.client.builder.create({
+          data: {
+            sessionId: this.uid.rnd(),
+            userId: data.userId,
+            sourceTemplate: data.sourceTemplate || null,
+            builderProcess: {
+              create: {
+                stages: {
+                  create: types.map((type) => ({ type })),
+                },
               },
             },
           },
-        },
-        include: {
-          builderProcess: {
-            include: { stages: true },
+          include: {
+            builderProcess: {
+              include: { stages: true },
+            },
           },
-        },
-      });
+        }),
+      ]);
 
       this.createServer.generate(
         data.description,

@@ -3,7 +3,7 @@
 import { BorderTrail } from "@/components/ui/border-trail"
 import builderCreateTemplate from "@/lib/builder/createTemplate"
 import { Button } from "@nextui-org/button"
-import { Bot, Loader2, Settings, Sparkles, LayoutTemplate, PenLine } from "lucide-react"
+import { Bot, Loader2, Settings, Sparkles, PenLine } from "lucide-react"
 import { useSession } from "next-auth/react"
 import { useState } from "react"
 import { useRouter } from "next/navigation"
@@ -14,7 +14,7 @@ import { motion } from "framer-motion"
 import { Decoration } from "@/components/interfaces/builder/common"
 import { Template } from "@/components/interfaces/templates/common"
 
-export default function MainContentInput({ decorationChannel, decorationCategory, edit }: { decorationChannel: Decoration[]; decorationCategory: Decoration[]; edit: Template | null }) {
+export default function MainContentInput({ decorationChannel, decorationCategory, sourceTemplate }: { decorationChannel: Decoration[]; decorationCategory: Decoration[]; sourceTemplate: Template | null }) {
 	const [text, setText] = useState<string>("")
 	const [loader, setLoader] = useState<boolean>(false)
 	const [settings, setSettings] = useState<boolean>(false)
@@ -28,7 +28,7 @@ export default function MainContentInput({ decorationChannel, decorationCategory
 		if (!text) return
 		try {
 			setLoader(true)
-			const data = await builderCreateTemplate(session?.user.id || "", text, currentChannelDecoration, currentCategoryDecoration)
+			const data = await builderCreateTemplate(session?.user.id || "", text, currentChannelDecoration, currentCategoryDecoration, sourceTemplate ? sourceTemplate.slugUrl : null)
 
 			console.log(data)
 
@@ -51,12 +51,12 @@ export default function MainContentInput({ decorationChannel, decorationCategory
 					<BorderTrail className="bg-alt-border-color" size={120} />
 					<div className="flex items-center gap-3">
 						<div className="relative flex items-center justify-center w-12 h-12 rounded-xl bg-primary-color shrink-0">
-							{edit ? <PenLine /> : <Bot />}
+							{sourceTemplate ? <PenLine /> : <Bot />}
 							<div className="absolute -bottom-0 -right-1 bg-green-500 w-3 h-3 rounded-full outline-solid outline-black"></div>
 						</div>
 						<div className="">
-							<h2 className="font-medium">{edit ? "AI Template Editor" : "AI Builder Assistant"}</h2>
-							<p className="text-sm text-text-color">{edit ? "Opisz zmiany które chcesz wprowadzić do szablonu" : "Opisz najdokładniej jak możesz serwer discord a ja go stworze!"}</p>
+							<h2 className="font-medium">{sourceTemplate ? "AI Template Editor" : "AI Builder Assistant"}</h2>
+							<p className="text-sm text-text-color">{sourceTemplate ? "Opisz zmiany które chcesz wprowadzić do szablonu" : "Opisz najdokładniej jak możesz serwer discord a ja go stworze!"}</p>
 						</div>
 					</div>
 					<div className="w-full h-px bg-border-color rounded-xl my-5"></div>

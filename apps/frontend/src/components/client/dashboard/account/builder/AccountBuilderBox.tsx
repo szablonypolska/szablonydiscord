@@ -30,7 +30,7 @@ export function AccountBuilderBox() {
 		return totalRolesAndChannels
 	}, [user.builder])
 
-	let boxes: { title: string; description: string; value: number | string; badge: string }[] = [
+	const boxes: { title: string; description: string; value: number | string; badge: string }[] = [
 		{
 			title: "Łącznie klonów",
 			description: "Wszystkie utworzone buildery AI",

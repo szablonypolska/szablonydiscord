@@ -34,10 +34,9 @@ export class DiscordCreateRolesService {
 
       let createdRole: number = 0;
 
-      this.builderEmitter.builderEmit(
+      this.builderEmitter.inProgressEmit(
         data.sessionId,
-        { id: findIdCreateRolesStage.id, status: 'IN_PROGRESS' },
-        'status_updated',
+        findIdCreateRolesStage.id,
       );
 
       const [, createRoleStage] = await this.prisma.client.$transaction([
@@ -107,13 +106,9 @@ export class DiscordCreateRolesService {
         await new Promise((resolve) => setTimeout(resolve, 1000));
       }
 
-      this.builderEmitter.builderEmit(
+      this.builderEmitter.completeEmit(
         data.sessionId,
-        {
-          id: findIdCreateRolesStage.id,
-          status: 'COMPLETED',
-        },
-        'status_updated',
+        findIdCreateRolesStage.id,
       );
 
       await this.prisma.client.builderStage.update({
@@ -124,14 +119,7 @@ export class DiscordCreateRolesService {
       return this.roleMap;
     } catch (error) {
       console.log(error);
-      this.builderEmitter.builderEmit(
-        data.sessionId,
-        {
-          id: findIdCreateRolesStage.id,
-          status: 'FAILED',
-        },
-        'status_updated',
-      );
+      this.builderEmitter.failedEmit(data.sessionId, findIdCreateRolesStage.id);
 
       await this.prisma.client.builderStage.update({
         where: { id: findIdCreateRolesStage.id },

@@ -15,6 +15,7 @@ import { LocalSharedModule } from 'src/shared/shared.module';
 import { BuilderEmitterService } from './services/emitter/builder-emitter.service';
 import { AiStreamService } from './services/analysis/ai-stream.service';
 import { AnalysisResultSaveAndEmitService } from './services/analysis/save.service';
+import { CreateCategoriesService } from './services/category/create-category.service';
 
 @Module({
   imports: [WebsocketModule, SharedModule, LocalSharedModule],
@@ -31,6 +32,7 @@ import { AnalysisResultSaveAndEmitService } from './services/analysis/save.servi
     BuilderEmitterService,
     AiStreamService,
     AnalysisResultSaveAndEmitService,
+    CreateCategoriesService,
   ],
   controllers: [ServerController],
 })

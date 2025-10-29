@@ -28,6 +28,8 @@ export interface Builder {
 	title?: string | null
 	description?: string | null
 
+	sourceTemplate: string | null
+
 	user: User
 	builderProcess?: BuilderProcess
 	materials?: Materials

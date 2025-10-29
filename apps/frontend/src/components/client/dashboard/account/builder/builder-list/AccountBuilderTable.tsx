@@ -1,6 +1,6 @@
 "use client"
 
-import { AlertCircle, ArrowDown, ArrowRight, ChevronDown, CircleCheck } from "lucide-react"
+import { AlertCircle,  ArrowRight, ChevronDown, CircleCheck } from "lucide-react"
 import { useDashboardContext } from "@/context/DashboardContext"
 import { Builder, BuilderStageType, BuilderProcessStatus } from "@/components/interfaces/builder/common"
 import clsx from "clsx"

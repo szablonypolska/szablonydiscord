@@ -4,7 +4,7 @@ export interface User {
   email?: string;
   username: string;
   avatar?: string;
-  dateCreateAccount?: Date;
+  createdAt: Date;
   register: boolean;
   reports: number;
   warnings: number;
@@ -18,6 +18,7 @@ export interface User {
   permission: string;
   settings: Settings;
   roles: Role[];
+  limits: Limits;
 }
 
 export interface Settings {
@@ -30,4 +31,12 @@ interface Role {
   id: number;
   value: 'ADMIN' | 'USER' | 'SUPPORT' | 'PREMIUM';
   userId: string;
+}
+
+export interface Limits {
+  userId: string;
+  builderAiUsage: number;
+  builderAiLimit: number;
+  builderAiUsageMonthly: number;
+  builderAiLimitMonthly: number;
 }

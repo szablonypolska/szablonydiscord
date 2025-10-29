@@ -31,12 +31,12 @@ export interface Builder {
   title?: string | null;
   description?: string | null;
 
+  sourceTemplate: string | null;
   user: User;
   builderProcess?: BuilderProcess | null;
   materials?: Materials | null;
   metrics?: BuilderMetrics | null;
 }
-
 
 export interface User {
   userId: string;

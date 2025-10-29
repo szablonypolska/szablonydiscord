@@ -16,8 +16,6 @@ export default async function Builder(props: { params: Promise<Params> }) {
 	const params = await props.params
 	const { id } = params
 
-	console.log("Builder ID:", id)
-
 	const [decorationCategory, decorationChannel, template] = await prisma.$transaction([prisma.decorationCategory.findMany({}), prisma.decorationChannel.findMany({}), prisma.templates.findUnique({ where: { slugUrl: id } })])
 
 	if (!template) redirect("/builder")
@@ -39,7 +37,7 @@ export default async function Builder(props: { params: Promise<Params> }) {
 					<div className="absolute -right-32 top-96 bg-primary-color w-28 h-28 blur-[100px]  max-md:right-0 max-md:hidden z-10"></div>
 
 					<MainContentHeader />
-					<MainContentInput decorationChannel={decorationChannel} decorationCategory={decorationCategory} edit={template} />
+					<MainContentInput decorationChannel={decorationChannel} decorationCategory={decorationCategory} sourceTemplate={template} />
 					<MainContentBox />
 				</div>
 			</div>

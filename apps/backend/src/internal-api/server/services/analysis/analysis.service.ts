@@ -40,7 +40,7 @@ export class DiscordAiGeneratorService {
 
       config = await this.stream.stream(
         description,
-        data.sessionId,
+        data,
         decorationChannel,
         decorationCategory,
         findIdAIAnalysis.id,
@@ -65,7 +65,7 @@ export class DiscordAiGeneratorService {
         data: {
           status: 'FAILED',
           finishedAt: new Date(),
-          code: config ? JSON.stringify(config) : null,
+          code: JSON.stringify(config),
         },
       });
     }

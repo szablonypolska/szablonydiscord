@@ -1,15 +1,15 @@
 import { Injectable } from '@nestjs/common';
-import { WebsocketGateway } from 'src/websocket/websocket.gateway';
 import { PrismaService } from '@repo/shared';
 import { Guild, CategoryChannel, Role } from 'discord.js-selfbot-v13';
 import { Builder } from '../../interfaces/builder.interface';
-import {Channels} from "../../interfaces/builder-code.interface";
+import { Channels } from '../../interfaces/builder-code.interface';
+import { BuilderEmitterService } from '../emitter/builder-emitter.service';
 
 @Injectable()
 export class DiscordCreateChannelService {
   constructor(
-    private websocket: WebsocketGateway,
     private prisma: PrismaService,
+    private builderEmitter: BuilderEmitterService,
   ) {}
 
   async createChannels(
@@ -26,12 +26,10 @@ export class DiscordCreateChannelService {
         (stage) => stage.type === 'CHANNELS_CREATE',
       );
 
-      this.websocket.server
-        .to(`sessionId:${data.sessionId}`)
-        .emit('update_channel_status', {
-          sessionId: data.sessionId,
-          status: 'in_progress',
-        });
+      this.builderEmitter.inProgressEmit(
+        data.sessionId,
+        findIdCreateChannelsStage.id,
+      );
 
       const [, createChannelStage] = await this.prisma.client.$transaction([
         this.prisma.client.builderStage.update({
@@ -141,10 +139,9 @@ export class DiscordCreateChannelService {
             GUILD_FORUM: 15,
           };
 
-          this.websocket.server
-            .to(`sessionId:${data.sessionId}`)
-            .emit('update_channel', {
-              sessionId: data.sessionId,
+          this.builderEmitter.builderEmit(
+            data.sessionId,
+            {
               id: channel.id,
               name: channel.name,
               type: channelTypeToNumber[channel.type] || 0,
@@ -152,7 +149,9 @@ export class DiscordCreateChannelService {
               position: channel.position,
               private:
                 channel.permissionOverwrites.cache.size > 0 ? true : false,
-            });
+            },
+            'channels_created',
+          );
 
           await this.prisma.client.channel.create({
             data: {
@@ -175,12 +174,10 @@ export class DiscordCreateChannelService {
         await new Promise((resolve) => setTimeout(resolve, 1000));
       }
 
-      this.websocket.server
-        .to(`sessionId:${data.sessionId}`)
-        .emit('update_channel_status', {
-          sessionId: data.sessionId,
-          status: 'done',
-        });
+      this.builderEmitter.completeEmit(
+        data.sessionId,
+        findIdCreateChannelsStage.id,
+      );
 
       await this.prisma.client.builderStage.update({
         where: { id: findIdCreateChannelsStage.id },
@@ -194,13 +191,8 @@ export class DiscordCreateChannelService {
   }
 
   private async error(data: Builder, id: number) {
-    this.websocket.server
-      .to(`sessionId:${data.sessionId}`)
-      .emit('update_channel_status', {
-        sessionId: data.sessionId,
-        status: 'error',
-        channelError: true,
-      });
+    this.builderEmitter.failedEmit(data.sessionId, id);
+
     await this.prisma.client.builderStage.update({
       where: { id },
       data: { status: 'FAILED', finishedAt: new Date() },

@@ -2,7 +2,6 @@ import BuilderWrapper from "@/components/client/builder/shared/builderWrapper"
 import type { Metadata } from "next"
 import React from "react"
 import { prisma } from "@repo/db"
-import { redirect } from "next/navigation"
 
 export const metadata: Metadata = {
 	title: "Create Next App",

@@ -20,6 +20,7 @@ export default async function Layout({ children }: { children: React.ReactNode }
 		include: {
 			api: true,
 			settings: true,
+			limits: true,
 			notification: {
 				take: 4,
 				orderBy: {

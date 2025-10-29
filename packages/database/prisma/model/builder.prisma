@@ -6,6 +6,9 @@ model Builder {
   title        String?
   description  String?
 
+  sourceTemplate      String?
+  templateSource      Templates? @relation(fields: [sourceTemplate], references: [slugUrl], onDelete: Cascade, onUpdate: Cascade)
+
   user           User            @relation(fields: [userId], references: [userId], onDelete: Cascade, onUpdate: Cascade)
   builderProcess BuilderProcess?
   materials      Materials?
@@ -22,13 +25,13 @@ model Materials {
   builder       Builder @relation(fields: [sessionId], references: [sessionId], onDelete: Cascade, onUpdate: Cascade)
 }
 
-model  BuilderMetrics {
-  id               Int      @id @default(autoincrement())
-  sessionId         String   @unique
-  totalCategories   Int      @default(0)
-  totalChannels     Int      @default(0)
-  totalRoles        Int      @default(0)
-  builder           Builder  @relation(fields: [sessionId], references: [sessionId], onDelete: Cascade, onUpdate: Cascade)
+model BuilderMetrics {
+  id              Int     @id @default(autoincrement())
+  sessionId       String  @unique
+  totalCategories Int     @default(0)
+  totalChannels   Int     @default(0)
+  totalRoles      Int     @default(0)
+  builder         Builder @relation(fields: [sessionId], references: [sessionId], onDelete: Cascade, onUpdate: Cascade)
 }
 
 model BuilderProcess {
@@ -59,14 +62,14 @@ model BuilderStage {
 model CategoryStage {
   id             Int          @id @default(autoincrement())
   builderStageId Int          @unique
-  category       Category[] @relation("CategoryStageCategories")
+  category       Category[]   @relation("CategoryStageCategories")
   builderStage   BuilderStage @relation(fields: [builderStageId], references: [id], onDelete: Cascade, onUpdate: Cascade)
 }
 
 model ChannelStage {
   id             Int          @id @default(autoincrement())
   builderStageId Int          @unique
-  channel        Channel[]
+  channel        Channel[]    @relation("ChannelStageChannels")
   builderStage   BuilderStage @relation(fields: [builderStageId], references: [id], onDelete: Cascade, onUpdate: Cascade)
 }
 
@@ -84,7 +87,7 @@ model Category {
   type          Int           @default(4)
   parentId      String
   position      Int
-  private      Boolean       @default(false)
+  private       Boolean       @default(false)
   categoryStage CategoryStage @relation("CategoryStageCategories", fields: [stageId], references: [id], onDelete: Cascade, onUpdate: Cascade)
 }
 
@@ -93,10 +96,10 @@ model Channel {
   stageId      Int
   name         String
   type         Int          @default(0)
-  parentId     String
+  parentId     String?
   position     Int
-  private     Boolean      @default(false)
-  channelStage ChannelStage @relation(fields: [stageId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  private      Boolean      @default(false)
+  channelStage ChannelStage @relation("ChannelStageChannels", fields: [stageId], references: [id], onDelete: Cascade, onUpdate: Cascade)
 }
 
 model Role {

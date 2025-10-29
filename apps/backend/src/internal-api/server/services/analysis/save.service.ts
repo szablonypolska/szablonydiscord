@@ -23,7 +23,7 @@ export class AnalysisResultSaveAndEmitService {
           id,
           title: config.details.title,
           description: config.details.description,
-          code: config,
+          code: JSON.stringify(config),
           metrics: {
             totalCategories: config.categories.length,
             totalChannels: config.channels.length,
@@ -60,7 +60,7 @@ export class AnalysisResultSaveAndEmitService {
           data: {
             status: 'COMPLETED',
             finishedAt: new Date(),
-            code: config,
+            code: JSON.stringify(config),
           },
         }),
         this.prisma.client.builderMetrics.create({

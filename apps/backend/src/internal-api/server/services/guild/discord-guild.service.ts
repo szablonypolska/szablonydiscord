@@ -25,10 +25,9 @@ export class DiscordGuildService {
         (stage) => stage.type === 'CONFIGURE_SERVER',
       );
 
-      this.builderEmitter.builderEmit(
+      this.builderEmitter.inProgressEmit(
         data.sessionId,
-        { id: findIdConfigureServer.id, status: 'IN_PROGRESS' },
-        'status_updated',
+        findIdConfigureServer.id,
       );
 
       await this.prisma.client.builderStage.update({
@@ -69,10 +68,9 @@ export class DiscordGuildService {
       await this.cleanupDefaultChannels(guild);
       await this.cleanupDefaultRoles(guild);
 
-      this.builderEmitter.builderEmit(
+      this.builderEmitter.completeEmit(
         data.sessionId,
-        { id: findIdConfigureServer.id, status: 'COMPLETED' },
-        'status_updated',
+        findIdConfigureServer.id,
       );
 
       await this.prisma.client.builderStage.update({
@@ -87,11 +85,7 @@ export class DiscordGuildService {
     } catch (error) {
       console.log(error);
 
-      this.builderEmitter.builderEmit(
-        data.sessionId,
-        { id: findIdConfigureServer.id, status: 'FAILED' },
-        'status_updated',
-      );
+      this.builderEmitter.failedEmit(data.sessionId, findIdConfigureServer.id);
 
       await this.prisma.client.builderStage.update({
         where: { id: findIdConfigureServer.id },

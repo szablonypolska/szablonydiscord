@@ -1,5 +1,5 @@
 "use client"
-import React, { useEffect, useRef, useState } from "react"
+import React, { useEffect, useRef } from "react"
 import { FixedSizeList as List, ListChildComponentProps } from "react-window"
 import { useBuilderContext } from "@/context/BuilderContext"
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter"
@@ -13,17 +13,14 @@ import { Code } from "lucide-react"
 export default function PreviewCode() {
 	const { builderData } = useBuilderContext()
 	const codeRef = useRef<string>("")
-	const [update, setUpdate] = useState<number>(0)
 
 	const code = findStage(builderData, BuilderStageType.ANALYSIS)?.code || ""
 
 	useEffect(() => {
 		codeRef.current = code || ""
-		setUpdate(prev => prev + 1)
 	}, [builderData.sessionId, code])
 
-	// eslint-disable-next-line @typescript-eslint/no-unused-vars
-	const lines = React.useMemo(() => (codeRef.current || code).split(/\r?\n/), [update, code])
+	const lines = React.useMemo(() => (codeRef.current || code).split(/\r?\n/), [code])
 
 	const listRef = useRef<List>(null)
 

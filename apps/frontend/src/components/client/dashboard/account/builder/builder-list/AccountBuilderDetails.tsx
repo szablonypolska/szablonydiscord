@@ -1,8 +1,6 @@
 import { Builder, BuilderStageType } from "@/components/interfaces/builder/common"
 import { BatteryCharging } from "lucide-react"
 import { getStageMetadata } from "@/utils/builder/stageMetaData"
-import { BuilderProcessStatus } from "@/components/interfaces/builder/common"
-import { CircleCheck, CircleAlert, Clock } from "lucide-react"
 import clsx from "clsx"
 import { getStatusMetadata } from "@/utils/builder/statusMetaData"
 

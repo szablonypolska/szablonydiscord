@@ -4,15 +4,13 @@ model User {
   email             String?        @unique
   username          String
   avatar            String?
-  dateCreateAccount DateTime?
+  createdAt       DateTime       @default(now())
   register          Boolean        @default(false)
   reports           Int            @default(0)
   warnings          Int            @default(0)
   limitApiKey       Int            @default(2)
   trustScore        Int            @default(100)
   walletBalance     Int            @default(0)
-  builderAiUsage    Int            @default(0)
-  builderAiLimit    Int            @default(3)
   notificationApi   Boolean        @default(false)
   emailVerified     Boolean        @default(false)
   notification      Notification[]
@@ -25,9 +23,22 @@ model User {
   offers            Offer[]
   settings          Settings?
   builder           Builder[]
+  limits            Limits?
 
   addedTemplates  Templates[] @relation("AddedTemplates")
   authorTemplates Templates[] @relation("AuthorTemplates")
+}
+
+model Limits {
+  id              Int     @id @default(autoincrement())
+  userId           String  @unique
+ 
+  builderAiUsage Int     @default(0)
+  builderAiLimit Int     @default(3)
+  builderAiUsageMonthly Int     @default(0)
+  builderAiLimitMonthly Int     @default(80)
+
+  user            User    @relation(fields: [userId], references: [userId], onDelete: Cascade, onUpdate: Cascade)
 }
 
 model Settings {

@@ -16,6 +16,7 @@ model Templates {
   rolesCount      Int                    @default(0)
   categoriesCount Int                    @default(0)
   visitHistory    VisitTemplateHistory[]
+  editings        Builder[]
   author          User?                  @relation("AuthorTemplates", fields: [authorId], references: [userId])
   addingUser      User?                  @relation("AddedTemplates", fields: [addingUserId], references: [userId])
 

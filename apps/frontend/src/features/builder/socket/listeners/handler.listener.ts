@@ -8,6 +8,7 @@ import handleCategoriesCreatedListener from "./status/categories-created"
 import handleAnalysisCompletedListener from "./status/analysis-completed"
 
 export default function handleGenerateListener(socket: Socket, setBuilderData: Dispatch<SetStateAction<Builder>>) {
+	// eslint-disable-next-line @typescript-eslint/no-explicit-any
 	socket.on("builder_update", (type: BuilderWebsocketType, payload: any) => {
 		switch (type) {
 			case "status_updated":

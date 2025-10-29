@@ -28,7 +28,7 @@ export default async function Builder() {
 					<div className="absolute -right-32 top-96 bg-primary-color w-28 h-28 blur-[100px]  max-md:right-0 max-md:hidden z-10"></div>
 
 					<MainContentHeader />
-					<MainContentInput decorationChannel={decorationChannel} decorationCategory={decorationCategory} edit={null} />
+					<MainContentInput decorationChannel={decorationChannel} decorationCategory={decorationCategory} sourceTemplate={null} />
 					<MainContentBox />
 				</div>
 			</div>

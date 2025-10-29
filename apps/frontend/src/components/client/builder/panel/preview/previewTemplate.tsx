@@ -9,7 +9,7 @@ import PreviewVisualization from "./previewVisualization"
 import { PreviewCreator } from "./previewCreator"
 import { motion } from "framer-motion"
 import PopupStatus from "../popup/popupStatus"
-import { BuilderStageType, BuilderStage, Channel, Category, Role } from "@/components/interfaces/builder/common"
+import { BuilderStageType, Channel, Category, Role } from "@/components/interfaces/builder/common"
 import { findStage } from "@/utils/builder/findStage"
 
 export default function PreviewTemplate() {

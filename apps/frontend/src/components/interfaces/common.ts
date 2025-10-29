@@ -39,7 +39,7 @@ export interface UserSettings {
 export interface User {
 	avatar: string
 	username: string
-	dateCreateAccount: Date
+	createdAt: Date
 	slugUrl: string
 	emailVerified: boolean
 	id: number
@@ -55,4 +55,13 @@ export interface User {
 	notification: Notification[]
 	settings: UserSettings
 	builder: Builder[]
+	limits: Limits
+}
+
+export interface Limits {
+	userId: string
+	builderAiUsage: number
+	builderAiLimit: number
+	builderAiUsageMonthly: number
+	builderAiLimitMonthly: number
 }

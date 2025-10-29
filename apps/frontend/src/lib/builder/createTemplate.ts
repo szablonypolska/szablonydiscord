@@ -1,4 +1,4 @@
-export default async function builderCreateTemplate(userId: string, description: string, decorationChannel: string, decorationCategory: string) {
+export default async function builderCreateTemplate(userId: string, description: string, decorationChannel: string, decorationCategory: string, sourceTemplate: string | null = null) {
 	try {
 		const fetchData = await fetch(process.env.NEXT_PUBLIC_INTERNAL_BUILDER_CREATE!, {
 			method: "POST",
@@ -9,7 +9,8 @@ export default async function builderCreateTemplate(userId: string, description:
 				userId,
 				description,
 				decorationChannel,
-				decorationCategory
+				decorationCategory,
+				sourceTemplate,
 			}),
 		})
 
