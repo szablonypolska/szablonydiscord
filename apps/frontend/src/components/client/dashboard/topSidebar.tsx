@@ -6,6 +6,7 @@ import Image from "next/image"
 import { useSession } from "next-auth/react"
 import DiscordUserAvatar from "../../../../public/discordUserAvatar.jpg"
 import { useDashboardContext } from "@/context/DashboardContext"
+import NotificationsBox from "./notifications-ui/notificationsBox"
 
 export default function TopSidebar() {
 	const { data: session } = useSession()
@@ -43,10 +44,12 @@ export default function TopSidebar() {
 						</div>
 					</div>
 					<div className="relative">
-						<Button className="hover:bg-border-color px-2 rounded-lg" onPress={toggleViewNotification}>
+						<Button className="hover:bg-border-color px-2 rounded-lg cursor-pointer" onPress={toggleViewNotification}>
 							<Bell />
 						</Button>
 						{user.notification.length > 0 && <div className="absolute top-1 right-0.5 w-2.5 h-2.5 bg-primary-color rounded-full"></div>}
+
+						<NotificationsBox />
 					</div>
 					<Button className="hover:bg-border-color px-2 rounded-lg cursor-pointer" onPress={() => setSettingsVisible(true)}>
 						<Settings />
@@ -54,12 +57,12 @@ export default function TopSidebar() {
 					<div className="h-3/6 w-0.5 bg-border-color max-lg:hidden"></div>
 					<div className="flex items-center gap-3 pl-2">
 						<div className="relative">
-							<Image src={session?.user.image || DiscordUserAvatar} width={0} height={0} alt="user avatar" className="w-10 h-10 rounded-full" />
-							<div className={`absolute left-7 bottom-0.5 w-2 h-2 ${user.status ? "bg-green-500" : "bg-error-color"} rounded-full outline-solid outline-3 outline-black`}></div>
+							<Image src={session?.user.image || DiscordUserAvatar} width={0} height={0} alt="user avatar" className="w-8 h-8 rounded-full" />
+							<div className={`absolute left-6 bottom-0.5 w-2 h-2 ${user.status ? "bg-green-500" : "bg-error-color"} rounded-full outline-solid outline-3 outline-black`}></div>
 						</div>
-						<div className="flex flex-col">
+						<div className="flex flex-col text-sm">
 							<p>{session?.user.name}</p>
-							<span className="text-sm text-silver-color">{user.status ? "Aktywny" : "Nieaktywny"}</span>
+							<span className="text-xs text-silver-color">{user.status ? "Aktywny" : "Nieaktywny"}</span>
 						</div>
 					</div>
 				</div>

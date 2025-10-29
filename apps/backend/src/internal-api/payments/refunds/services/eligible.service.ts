@@ -22,6 +22,7 @@ export class EligibleService {
             include: { offer: true, protections: true },
           },
           events: { orderBy: { dateCreate: 'desc' }, take: 1 },
+          promoCode: true,
         },
       });
 

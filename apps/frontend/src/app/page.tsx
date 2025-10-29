@@ -6,14 +6,12 @@ import CallToAction from "@/components/client/landing-page/callToAction"
 import EmblaCarousel from "@/components/client/landing-page/opinion/emblaCarousel"
 import Footer from "@/components/client/footer"
 import Statistics from "@/components/client/landing-page/statistics"
-import GlobalToaster from "@/components/client/landing-page/globalToaster"
 
 export default function Home() {
 	return (
 		<>
 			<div className="max-w-(--breakpoint-2xl) mx-auto w-full py-4 p-2">
 				<Navbar />
-				<GlobalToaster />
 				<Image src={decorationElement} alt="dekoracyjny element" className="absolute top-0 left-0 z-10 pointer-events-none"></Image>
 				<HeroSection />
 				<Statistics />

@@ -1,14 +1,20 @@
-export function translateOrderEvents(event: string) {
+export function translateOrderEvents(event: string): { title: string; description: string } {
 	switch (event) {
 		case "NEW":
-			return "Nowe"
+			return { title: "Nowe", description: "Zamówienie zostało złożone" }
 		case "PAID":
-			return "Opłacone"
+			return { title: "Opłacone", description: "Płatność została zrealizowana" }
 		case "COMPLETED":
-			return "Zrealizowane"
+			return { title: "Zrealizowane", description: "Zamówienie wysłane do klienta" }
 		case "CANCELED":
-			return "Anulowane"
+			return { title: "Anulowane", description: "Zamówienie zostało anulowane" }
+		case "REFUND_PENDING":
+			return { title: "Zwrot w toku", description: "Zwrot środków jest w trakcie realizacji" }
+		case "REFUNDED":
+			return { title: "Zwrócone", description: "Zamówienie zostało zwrócone" }
+		case "PARTIALLY_REFUNDED":
+			return { title: "Częściowo zwrócone", description: "Część zamówienia została zwrócona" }
 		default:
-			return event
+			return { title: event, description: event }
 	}
 }

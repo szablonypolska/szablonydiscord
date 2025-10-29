@@ -8,6 +8,7 @@ export default async function SettingsFetcher() {
 	const session = await getServerSession(authOptions)
 
 	try {
+		if (!session) return
 		const data = await getDataSettings(session?.user.id || "")
 
 		return <SettingsWrapper settings={data.settings as UserSettings} />

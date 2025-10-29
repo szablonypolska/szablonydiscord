@@ -6,16 +6,17 @@ import { Send } from "lucide-react"
 import { useSession } from "next-auth/react"
 import { useState } from "react"
 import { TypePerrmision } from "@/components/interfaces/chat/common"
-import { connectSocketBackend } from "@/lib/socket"
+import { useSocketContext } from "@/features/socketContext"
 
 export default function ChatCreateMessage() {
 	const { data: session } = useSession()
 	const [text, setText] = useState<string>("")
 	const { setMessage, chatId } = useChatContext()
-	const socket = connectSocketBackend()
+	const socket = useSocketContext()
 
 	const send = () => {
 		if (!text) return
+		if (!socket) return
 
 		const message = {
 			tempId: crypto.randomUUID(),

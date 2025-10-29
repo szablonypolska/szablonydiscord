@@ -27,7 +27,7 @@ export default async function AsyncSearchTemplate({ params }: Props) {
 
 	if (params.sort === "popularity") templates = await getTemplateBySort(skip, take, "usageCount")
 
-	if (params.sort === "createdAt") templates = await getTemplateBySort(skip, take, "dateCreate")
+	if (params.sort === "createdAt") templates = await getTemplateBySort(skip, take, "createdAt")
 
 	if (params.name) templates = await getTemplateByName(params.name)
 

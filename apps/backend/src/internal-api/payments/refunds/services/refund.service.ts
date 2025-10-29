@@ -7,24 +7,53 @@ import { PrismaService } from '@repo/shared';
 import { RefundDto } from '../dto/refund.dto';
 import { Order, Products } from '../../../../interfaces/order.interface';
 import { selectEligibleProducts } from 'src/common/utils/selectEligibleProducts';
+import { ConfigService } from '@nestjs/config';
+import Stripe from 'stripe';
 
 @Injectable()
 export class RefundService {
-  constructor(private prisma: PrismaService) {}
+  constructor(
+    private prisma: PrismaService,
+    private configService: ConfigService,
+  ) {
+    this.stripe = new Stripe(
+      configService.get<string>('SECRET_API_KEY_STRIPE'),
+    );
+  }
+
+  private stripe: Stripe;
 
   async processRefund(data: RefundDto) {
     try {
       const order: Order | null = await this.prisma.client.order.findUnique({
         where: { id: data.orderId },
         include: {
-          products: { include: { offer: true, protections: true },  },
+          products: { include: { offer: true, protections: true } },
+          promoCode: true,
+          events: { orderBy: { dateCreate: 'desc' }, take: 1 },
         },
       });
       if (!order) {
         throw new NotFoundException({ ok: false, message: 'No order found' });
       }
       if (order.userId !== data.userId) {
-        throw new NotFoundException({ ok: false, message: "This order doesn't belong to you" });
+        throw new NotFoundException({
+          ok: false,
+          message: "This order doesn't belong to you",
+        });
+      }
+
+      const eligibleStatuses = [
+        'PARTIALLY_REFUNDED',
+        'REFUNDED',
+        'REFUND_PENDING',
+      ];
+
+      if (eligibleStatuses.includes(order.events[0].status)) {
+        throw new BadGatewayException({
+          ok: false,
+          message: 'Order is not eligible for refund',
+        });
       }
 
       const protections = order.products.flatMap((p) => p.protections || []);
@@ -63,6 +92,18 @@ export class RefundService {
 
       const priceToRefund = this.calculateFinallPriceToRefund(productToRefound);
 
+      await this.prisma.client.orderEvent.create({
+        data: { orderId: order.id, status: 'REFUND_PENDING' },
+      });
+
+      const test = await this.createRefund(
+        order.paymentIntentId,
+        priceToRefund,
+        productToRefound,
+      );
+
+      console.log(test);
+
       return { ok: true, amount: priceToRefund };
     } catch (err) {
       console.log(err);
@@ -73,11 +114,28 @@ export class RefundService {
   private calculateFinallPriceToRefund(products: Products[]) {
     let total = 0;
     products.forEach((products) => {
-      total += products.priceAfterDiscount || products.price;
+      total += products.refundPrice || 0;
     });
 
-    const fee = total - (total * 25) / 100 - 125;
+    return total;
+  }
 
-    return fee;
+  private async createRefund(
+    orderId: string,
+    amount: number,
+    products: Products[],
+  ) {
+    try {
+      const refund = await this.stripe.refunds.create({
+        amount,
+        payment_intent: orderId,
+        metadata: { products: products.map((p) => p.id).join(', ') },
+        reason: 'requested_by_customer',
+      });
+
+      return refund;
+    } catch (err) {
+      console.log(err);
+    }
   }
 }

@@ -9,6 +9,8 @@ export interface DiscountProduct {
   promoProducts: PromoProducts[];
 }
 
+
+
 interface PromoProducts {
   offerId: string;
 }

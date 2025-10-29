@@ -13,7 +13,7 @@ export default async function LoadTemplates() {
 		prisma.templates.findMany({
 			take: 6,
 			orderBy: {
-				dateCreate: "desc",
+				createdAt: "desc",
 			},
 		}),
 		prisma.templates.findMany({

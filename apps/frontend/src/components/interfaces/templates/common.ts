@@ -1,8 +1,11 @@
 export interface Channel {
 	name: string
 	type: number
-	id: number
-	nsfw: boolean
+	id: string
+	nsfw?: boolean
+	parentId: string
+	position: number
+	private: boolean
 	permission_overwrites?: Permission[]
 }
 
@@ -61,8 +64,8 @@ export interface Template {
 	slugUrl: string
 	link: string
 	categories: string
-	dateCreate: string
-	dateCreateSystem: Date
+	createdAt: Date
+	updatedAt: Date
 	title: string
 	description?: string
 	usageCount: number
@@ -78,5 +81,5 @@ export interface HistoryVisitTemplate {
 	id: number
 	uuid: string
 	slugUrl: string
-	date: Date
+	createdAt: Date
 }

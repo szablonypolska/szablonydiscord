@@ -199,7 +199,7 @@ export function PlaceholdersAndVanishInput({ placeholders, onChange, onSubmit }:
 				<AnimatePresence mode="wait">
 					{!value && (
 						<motion.p initial={{ y: 5, opacity: 0 }} key={`current-placeholder-${currentPlaceholder}`} animate={{ y: 0, opacity: 1 }} exit={{ y: -15, opacity: 0 }} transition={{ duration: 0.3, ease: "linear" }} className="text-sm sm:text-base font-normal text-text-color  pl-12 text-left w-[calc(100%-2rem)] truncate">
-							{placeholders[currentPlaceholder].toLowerCase()}
+							{placeholders[currentPlaceholder] && placeholders[currentPlaceholder].toLowerCase()}
 						</motion.p>
 					)}
 				</AnimatePresence>

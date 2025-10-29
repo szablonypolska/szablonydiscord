@@ -26,7 +26,7 @@ export const ChatProvider = ({ children, userId }: { children: React.ReactNode; 
 
 	useLoadMessage({ chatId, setMessage, userId, setCurrentView, setChatId, currentView, loading, setLoading })
 
-	return <ChatContext.Provider value={{ currentView, setCurrentView, chatId, setChatId, chatList, setChatList, message, setMessage, loading}}>{children}</ChatContext.Provider>
+	return <ChatContext.Provider value={{ currentView, setCurrentView, chatId, setChatId, chatList, setChatList, message, setMessage, loading }}>{children}</ChatContext.Provider>
 }
 
 export function useChatContext() {

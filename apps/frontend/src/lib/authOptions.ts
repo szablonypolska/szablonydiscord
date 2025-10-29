@@ -50,6 +50,7 @@ export const authOptions: AuthOptions = {
 			const passed = isBefore(new Date((token.expiresAt as number) * 1000), new Date())
 
 			if (passed) {
+				console.log("REFRESH TOKEN", token)
 				await refreshAccessTokenDiscord(token)
 			}
 

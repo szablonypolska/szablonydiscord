@@ -5,30 +5,30 @@ enum CategoryOffer {
 }
 
 model Offer {
-  id String @id 
-  title String
-  description String
-  image String
-  benefits String[]
-  recommended Boolean @default(false)
-  price Int @default(0)
-  inStock Int @default(0)
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  userId String?
-  user User? @relation(fields: [userId], references: [userId], onDelete: Cascade)
-  category CategoryOffer @default(OTHER)
+  id             String         @id
+  title          String
+  description    String
+  image          String
+  benefits       String[]
+  recommended    Boolean        @default(false)
+  price          Int            @default(0)
+  inStock        Int            @default(0)
+  createdAt      DateTime       @default(now())
+  updatedAt      DateTime       @updatedAt
+  userId         String?
+  user           User?          @relation(fields: [userId], references: [userId], onDelete: Cascade)
+  category       CategoryOffer  @default(OTHER)
   deliveryMethod DeliveryMethod @default(EMAIL)
-  status StatusOffer @default(ACTIVE)
-  cartItems   CartItem[]
-  promoProducts PromoProduct[]
-  products   OrderProduct[]
+  status         StatusOffer    @default(ACTIVE)
+  cartItems      CartItem[]
+  promoProducts  PromoProduct[]
+  products       OrderProduct[]
 }
 
 model CartItem {
-  id        Int      @id @default(autoincrement())
-  userId    String
-  offerId String 
-  user      User     @relation(fields: [userId], references: [userId], onDelete: Cascade)
+  id      Int    @id @default(autoincrement())
+  userId  String
+  offerId String
+  user    User   @relation(fields: [userId], references: [userId], onDelete: Cascade)
   offer   Offer  @relation(fields: [offerId], references: [id], onDelete: Cascade)
 }

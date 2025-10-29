@@ -26,15 +26,15 @@ export default function SettingsOptionTemplate({ settings }: { settings: UserSet
 			console.log(err)
 			toast.error("Wystąpił błąd podczas zapisywania ustawień")
 		}
-	}, [showStats, monitoring, settings.userId])
+	}, [monitoring, settings.userId, setSettingsData, showStats])
 
 	useEffect(() => {
 		if (isInit) return setIsInit(false)
 		handleSave()
-	}, [showStats, monitoring])
+	}, [showStats, monitoring, handleSave, isInit])
 
 	return (
-		<div className="p-6 w-full">
+		<div className="bg-sidebar-color/80 p-6 w-full">
 			<h3 className="text-lg font-semibold">Szablony</h3>
 			<div className="mt-5 w-full">
 				<div className="flex items-center justify-between w-full">

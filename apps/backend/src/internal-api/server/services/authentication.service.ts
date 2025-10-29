@@ -2,9 +2,11 @@ import { Injectable } from '@nestjs/common';
 import { PrismaService } from '@repo/shared';
 import { Client } from 'discord.js-selfbot-v13';
 import { TokenType } from '../interfaces/token.interface';
-import { ServerCreationConfig } from '../interfaces/server.interface';
 import { DiscordServerCreatorService } from './discord-server-creator.service';
 import { WebsocketGateway } from 'src/websocket/websocket.gateway';
+import { Builder, BuilderProcessStatus } from '../interfaces/builder.interface';
+import { BuilderEmitterService } from './emitter/builder-emitter.service';
+import { BuilderCode } from '../interfaces/builder-code.interface';
 
 @Injectable()
 export class DiscordChooseToken {
@@ -14,13 +16,24 @@ export class DiscordChooseToken {
     private prisma: PrismaService,
     private createServer: DiscordServerCreatorService,
     private websocket: WebsocketGateway,
+    private builderEmitter: BuilderEmitterService,
   ) {}
 
-  async authentication(config: ServerCreationConfig, sessionId: string) {
+  async authentication(config: BuilderCode, data: Builder) {
+    let findIdAuthentication: { id: number } = { id: 0 };
+
     try {
       this.client = new Client();
 
-      await this.updateAuthenticationStatus(sessionId, 'in_progress');
+      findIdAuthentication = data.builderProcess.stages.find(
+        (stage) => stage.type === 'AUTHENTICATION',
+      );
+
+      await this.updateAuthenticationStatus(
+        data.sessionId,
+        BuilderProcessStatus.IN_PROGRESS,
+        findIdAuthentication.id,
+      );
 
       const allTokens: TokenType[] = await this.prisma.client.token.findMany(
         {},
@@ -35,13 +48,13 @@ export class DiscordChooseToken {
             this.client.user.username &&
             this.client.guilds.cache.size < 100
           ) {
-            await this.updateAuthenticationStatus(sessionId, 'done');
-
-            return this.createServer.createServer(
-              token.token,
-              config,
-              sessionId,
+            await this.updateAuthenticationStatus(
+              data.sessionId,
+              BuilderProcessStatus.COMPLETED,
+              findIdAuthentication.id,
             );
+
+            return this.createServer.createServer(token.token, config, data);
           } else {
             await this.prisma.client.token.delete({ where: { id: token.id } });
           }
@@ -56,31 +69,44 @@ export class DiscordChooseToken {
     } catch (error) {
       console.log(error);
 
-      this.websocket.server.emit('update_status_authentication', {
-        sessionId,
-        status: 'error',
-        authenticationError: true,
-      });
+      this.builderEmitter.builderEmit(
+        data.sessionId,
+        { id: findIdAuthentication.id, status: BuilderProcessStatus.FAILED },
+        'status_updated',
+      );
 
-      await this.prisma.client.generateStatus.update({
-        where: { sessionId },
-        data: { authenticationError: true },
+      await this.prisma.client.builderStage.update({
+        where: { id: findIdAuthentication.id },
+        data: { status: 'FAILED', finishedAt: new Date() },
       });
     }
   }
 
   private async updateAuthenticationStatus(
     sessionId: string,
-    status: 'in_progress' | 'done' | 'error',
+    status: BuilderProcessStatus,
+    stageId: number,
   ) {
-    this.websocket.server.emit('update_status_authentication', {
+    this.builderEmitter.builderEmit(
       sessionId,
-      status,
-    });
+      { id: stageId, status },
+      'status_updated',
+    );
 
-    await this.prisma.client.generateStatus.update({
-      where: { sessionId },
-      data: { authenticationStatus: status },
+    await this.prisma.client.builderStage.update({
+      where: {
+        id: stageId,
+      },
+      data: {
+        status,
+        startedAt:
+          status === BuilderProcessStatus.IN_PROGRESS ? new Date() : undefined,
+        finishedAt:
+          status === BuilderProcessStatus.COMPLETED ||
+          status === BuilderProcessStatus.FAILED
+            ? new Date()
+            : undefined,
+      },
     });
   }
 }

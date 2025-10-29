@@ -1,32 +1,32 @@
 enum DiscountType {
-   PERCENTAGE
-   AMOUNT
- }
+  PERCENTAGE
+  AMOUNT
+}
 
- enum DiscountScope {
-    PRODUCT
-    CART
- }
+enum DiscountScope {
+  PRODUCT
+  CART
+}
 
 model PromoCode {
-  id            Int      @id @default(autoincrement())
-  code          String   @unique
-  usageCount    Int      @default(0)
-  maxUsageCount Int      @default(1)
-  discount      Int      @default(0)
-  type         DiscountType @default(PERCENTAGE)
-  scope        DiscountScope @default(CART)
+  id            Int            @id @default(autoincrement())
+  code          String         @unique
+  usageCount    Int            @default(0)
+  maxUsageCount Int            @default(1)
+  discount      Int            @default(0)
+  type          DiscountType   @default(PERCENTAGE)
+  scope         DiscountScope  @default(CART)
   expiredDate   DateTime?
   promoProducts PromoProduct[]
-  order Order[]
+  order         Order[]
 }
 
 model PromoProduct {
-    id          Int      @id @default(autoincrement())
-    offerId String
-    promoId Int
-    offer Offer @relation(fields: [offerId], references: [id], onDelete: Cascade, onUpdate: Cascade)
-    promoCode PromoCode @relation(fields: [promoId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  id        Int       @id @default(autoincrement())
+  offerId   String
+  promoId   Int
+  offer     Offer     @relation(fields: [offerId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  promoCode PromoCode @relation(fields: [promoId], references: [id], onDelete: Cascade, onUpdate: Cascade)
 
-    @@index([offerId, promoId])
+  @@index([offerId, promoId])
 }

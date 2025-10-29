@@ -1,5 +1,6 @@
 import { Offer } from "../offer/common"
 
+
 export interface Order {
 	id: string
 	dateCreate: Date
@@ -7,6 +8,18 @@ export interface Order {
 	paymentIntentId?: string
 	events?: OrderEvent[]
 	products?: Products[]
+	promoCode?: PromoCode
+}
+
+export interface PromoCode {
+	id: number
+	code: string
+	usageCount: number
+	maxUsageCount: number
+	discount: number
+	type: "PERCENTAGE" | "AMOUNT"
+	scope: "PRODUCT" | "CART"
+	expiredDate?: Date
 }
 
 export interface Products {
@@ -14,8 +27,12 @@ export interface Products {
 	offerId: string
 	price: number
 	priceAfterDiscount: number
+	refundPrice?: number
 	orderId: string
 	offer?: Offer
+	refunded?: boolean
+	refundedAmount?: number
+	refunedDate?: Date
 }
 
 export interface OrderEvent {
@@ -31,4 +48,7 @@ export enum OrderStatus {
 	PAID = "PAID",
 	COMPLETED = "COMPLETED",
 	CANCELED = "CANCELED",
+	REFUND_PENDING = "REFUND_PENDING",
+	REFUNDED = "REFUNDED",
+	PARTIALLY_REFUNDED = "PARTIALLY_REFUNDED",
 }

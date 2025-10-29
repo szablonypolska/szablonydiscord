@@ -2,9 +2,9 @@ import Navbar from "@/components/client/navbar"
 import decorationElement from "../../../public/templatesDecoration.svg"
 import Image from "next/image"
 import Footer from "@/components/client/footer"
-import MainContentBox from "@/components/client/builder/mainContentBox"
-import MainContentHeader from "@/components/client/builder/mainContentHeader"
-import MainContentInput from "@/components/client/builder/mainContentInput"
+import MainContentBox from "@/components/client/builder/shared/mainContentBox"
+import MainContentHeader from "@/components/client/builder/shared/mainContentHeader"
+import MainContentInput from "@/components/client/builder/shared/mainContentInput"
 import { prisma } from "@repo/db"
 
 export default async function Builder() {
@@ -28,7 +28,7 @@ export default async function Builder() {
 					<div className="absolute -right-32 top-96 bg-primary-color w-28 h-28 blur-[100px]  max-md:right-0 max-md:hidden z-10"></div>
 
 					<MainContentHeader />
-					<MainContentInput decorationChannel={decorationChannel} decorationCategory={decorationCategory} />
+					<MainContentInput decorationChannel={decorationChannel} decorationCategory={decorationCategory} edit={null} />
 					<MainContentBox />
 				</div>
 			</div>

@@ -7,12 +7,14 @@ import { FinalPrice } from 'src/interfaces/discount.interface';
 import ShortUniqueId from 'short-unique-id';
 import Stripe from 'stripe';
 import { ConfigService } from '@nestjs/config';
+import { NotificationsService } from 'src/notifications/services/notifications.service';
 
 @Injectable()
 export class CreatePaymentsService {
   constructor(
     private readonly prisma: PrismaService,
     private configService: ConfigService,
+    private readonly notification: NotificationsService,
   ) {
     this.stripe = new Stripe(
       configService.get<string>('SECRET_API_KEY_STRIPE'),
@@ -67,6 +69,13 @@ export class CreatePaymentsService {
         create.promoCode,
       );
 
+      this.notification.sendNotification({
+        type: 'SUCCESS',
+        title: `Zlozono zamowienie ${uniqueId}`,
+        description: `Zamowienie ${uniqueId} zostalo pomyslnie utworzone`,
+        userId: create.userId,
+      });
+
       return { ok: true, paymentLink: paymentLink.url };
     } catch (err) {
       console.log(err);
@@ -97,6 +106,8 @@ export class CreatePaymentsService {
     finalProductPrice: FinalPrice,
     promoCode?: string,
   ) {
+    console.log(finalProductPrice.products);
+
     try {
       await this.prisma.client.order.create({
         data: {
@@ -113,11 +124,6 @@ export class CreatePaymentsService {
               offerId: product.id,
               price: product.price,
               priceAfterDiscount: product.priceAfterDiscount,
-              protections: {
-                create: {
-                  type: product.id.toUpperCase(),
-                },
-              },
             })),
           },
         },

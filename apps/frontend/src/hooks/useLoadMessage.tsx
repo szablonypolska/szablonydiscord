@@ -2,7 +2,7 @@
 
 import { TypeView, Message, TypeLoad } from "@/components/interfaces/chat/common"
 import loadMessage from "@/lib/chat/loadMessage"
-import { connectSocketBackend } from "@/lib/socket"
+import { useSocketBackend } from "@/lib/socket"
 import { Dispatch, SetStateAction, useEffect } from "react"
 
 interface Props {
@@ -17,7 +17,7 @@ interface Props {
 }
 
 export default function useLoadMessage({ chatId, setMessage, userId, setCurrentView, setChatId, currentView, setLoading }: Props) {
-	const socket = connectSocketBackend()
+	const socket = useSocketBackend()
 
 	useEffect(() => {
 		const loadData = async () => {
@@ -51,6 +51,8 @@ export default function useLoadMessage({ chatId, setMessage, userId, setCurrentV
 	}, [currentView, setChatId])
 
 	useEffect(() => {
+		if (!socket) return
+
 		socket.on("message:new", newMessage => {
 			setMessage(prev =>
 				prev.map(msg => {

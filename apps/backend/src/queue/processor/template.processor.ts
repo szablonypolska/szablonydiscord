@@ -1,7 +1,6 @@
 import { Processor, WorkerHost } from '@nestjs/bullmq';
 import { Job } from 'bullmq';
-import { PrismaService } from '@repo/shared';
-import { slugify } from 'src/common/utils/slugify';
+import { PrismaService } from '@repo/shared'
 import { generateText } from 'ai';
 import { google } from '@ai-sdk/google';
 import prompt from './instructions/ai-prompt.json';
@@ -11,12 +10,14 @@ import { MailService } from 'src/mail/services/mail.service';
 import { User } from '../../interfaces/user.interface';
 import { CACHE_MANAGER, Cache } from '@nestjs/cache-manager';
 import { Inject } from '@nestjs/common';
+import { NotificationsService } from 'src/notifications/services/notifications.service';
 
 @Processor('addTemplateQueue', { concurrency: 1 })
 export class TemplateConsumer extends WorkerHost {
   constructor(
     private readonly prisma: PrismaService,
     private readonly mailService: MailService,
+    private readonly notification: NotificationsService,
     @Inject(CACHE_MANAGER) private cacheManager: Cache,
   ) {
     super();
@@ -82,6 +83,13 @@ export class TemplateConsumer extends WorkerHost {
         templateId,
         slugUrl,
       );
+
+      this.notification.sendNotification({
+        type: 'SUCCESS',
+        title: 'Szablon dodany',
+        description: `Szablon ${slugUrl} został pomyślnie dodany`,
+        userId: addingUserId,
+      });
 
       await this.cacheManager.del(`reserve:${templateData.code}`);
 

@@ -24,35 +24,36 @@ model User {
   roles             Roles[]
   offers            Offer[]
   settings          Settings?
+  builder           Builder[]
 
   addedTemplates  Templates[] @relation("AddedTemplates")
   authorTemplates Templates[] @relation("AuthorTemplates")
 }
 
 model Settings {
-  id                Int      @id @default(autoincrement())
-  userId            String   @unique
-  templatesDetail Boolean  @default(false)
-  monitoring       Boolean  @default(false)
-  user              User     @relation(fields: [userId], references: [userId], onDelete: Cascade, onUpdate: Cascade)
+  id              Int     @id @default(autoincrement())
+  userId          String  @unique
+  templatesDetail Boolean @default(false)
+  monitoring      Boolean @default(false)
+  user            User    @relation(fields: [userId], references: [userId], onDelete: Cascade, onUpdate: Cascade)
 }
 
 model Roles {
-  id    Int    @id @default(autoincrement())
-  value RolesPossible @default(USER)
+  id     Int           @id @default(autoincrement())
+  value  RolesPossible @default(USER)
   userId String
-  user   User   @relation(fields: [userId], references: [userId], onDelete: Cascade, onUpdate: Cascade)
+  user   User          @relation(fields: [userId], references: [userId], onDelete: Cascade, onUpdate: Cascade)
 
   @@index([userId, value])
 }
 
-
 model Notification {
-  id          Int      @id @default(autoincrement())
-  type        String
+  id          Int              @id @default(autoincrement())
+  type        NotificationType
   title       String
   description String
-  dateAdd     DateTime @default(now())
+  createdAt   DateTime         @default(now())
+  isRead      Boolean          @default(false)
   userId      String
-  user        User     @relation(fields: [userId], references: [userId], onDelete: Cascade, onUpdate: Cascade)
+  user        User             @relation(fields: [userId], references: [userId], onDelete: Cascade, onUpdate: Cascade)
 }

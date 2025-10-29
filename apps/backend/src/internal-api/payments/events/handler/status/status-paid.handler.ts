@@ -14,6 +14,8 @@ export class StatusPaidHandler {
   @OnEvent('order_paid', { async: true, promisify: true })
   async handleBasic(payload: { orderId: string; paymentIntentId: string }) {
     try {
+      console.log('PAYLOAD', payload);
+
       const getOrder = await this.prisma.client.order.findUnique({
         where: { id: payload.orderId },
         include: { products: { include: { offer: true } } },
@@ -50,8 +52,8 @@ export class StatusPaidHandler {
         }),
         this.prisma.client.protection.createMany({
           data: getOrder.products.map((product: Products) => ({
-            orderId: getOrder.id,
             type: product.offer.id.toUpperCase(),
+            orderProductId: product.id,
           })),
         }),
         this.prisma.client.orderEvent.create({

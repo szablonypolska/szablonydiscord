@@ -11,6 +11,7 @@ import clsx from "clsx"
 import { AnimatePresence } from "framer-motion"
 import { motion } from "framer-motion"
 import { UserSettings } from "@/components/interfaces/common"
+import SettingsOptionToken from "./option/settingsOptionToken"
 
 export default function SettingsPopup({ settings }: { settings: UserSettings }) {
 	const { settingsViewOption, setSettingsViewOption, settingsVisible, setSettingsVisible } = useDashboardContext()
@@ -58,6 +59,7 @@ export default function SettingsPopup({ settings }: { settings: UserSettings }) 
 						</div>
 						{settingsViewOption === "templates" && <SettingsOptionTemplate settings={settings} />}
 						{settingsViewOption === "account" && <SettingsOptionAccount />}
+						{settingsViewOption === "token" && <SettingsOptionToken />}
 					</motion.div>
 				</>
 			)}

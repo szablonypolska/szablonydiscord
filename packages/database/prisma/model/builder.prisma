@@ -1,0 +1,108 @@
+model Builder {
+  sessionId    String  @unique
+  templateCode String?
+  templateUrl  String?
+  userId       String
+  title        String?
+  description  String?
+
+  user           User            @relation(fields: [userId], references: [userId], onDelete: Cascade, onUpdate: Cascade)
+  builderProcess BuilderProcess?
+  materials      Materials?
+  metrics        BuilderMetrics?
+}
+
+model Materials {
+  id            Int     @id @default(autoincrement())
+  sessionId     String  @unique
+  rules         String
+  tariff        String
+  privacyPolicy String
+  faq           String
+  builder       Builder @relation(fields: [sessionId], references: [sessionId], onDelete: Cascade, onUpdate: Cascade)
+}
+
+model  BuilderMetrics {
+  id               Int      @id @default(autoincrement())
+  sessionId         String   @unique
+  totalCategories   Int      @default(0)
+  totalChannels     Int      @default(0)
+  totalRoles        Int      @default(0)
+  builder           Builder  @relation(fields: [sessionId], references: [sessionId], onDelete: Cascade, onUpdate: Cascade)
+}
+
+model BuilderProcess {
+  id            Int                  @id @default(autoincrement())
+  sessionId     String               @unique
+  builder       Builder              @relation(fields: [sessionId], references: [sessionId], onDelete: Cascade, onUpdate: Cascade)
+  overallStatus BuilderProcessStatus @default(IN_PROGRESS)
+  startedAt     DateTime             @default(now())
+  finishedAt    DateTime?
+  stages        BuilderStage[]
+}
+
+model BuilderStage {
+  id             Int                  @id @default(autoincrement())
+  processId      Int
+  type           BuilderStageType
+  status         BuilderProcessStatus @default(WAITING)
+  hasError       Boolean              @default(false)
+  code           String               @default("")
+  startedAt      DateTime?
+  finishedAt     DateTime?
+  category       CategoryStage?
+  channel        ChannelStage?
+  role           RoleStage?
+  builderProcess BuilderProcess       @relation(fields: [processId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+}
+
+model CategoryStage {
+  id             Int          @id @default(autoincrement())
+  builderStageId Int          @unique
+  category       Category[] @relation("CategoryStageCategories")
+  builderStage   BuilderStage @relation(fields: [builderStageId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+}
+
+model ChannelStage {
+  id             Int          @id @default(autoincrement())
+  builderStageId Int          @unique
+  channel        Channel[]
+  builderStage   BuilderStage @relation(fields: [builderStageId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+}
+
+model RoleStage {
+  id             Int          @id @default(autoincrement())
+  builderStageId Int          @unique
+  role           Role[]
+  builderStage   BuilderStage @relation(fields: [builderStageId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+}
+
+model Category {
+  id            String        @id
+  stageId       Int
+  name          String
+  type          Int           @default(4)
+  parentId      String
+  position      Int
+  private      Boolean       @default(false)
+  categoryStage CategoryStage @relation("CategoryStageCategories", fields: [stageId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+}
+
+model Channel {
+  id           String       @id
+  stageId      Int
+  name         String
+  type         Int          @default(0)
+  parentId     String
+  position     Int
+  private     Boolean      @default(false)
+  channelStage ChannelStage @relation(fields: [stageId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+}
+
+model Role {
+  id        Int       @id @default(autoincrement())
+  stageId   Int
+  name      String
+  color     String
+  roleStage RoleStage @relation(fields: [stageId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+}

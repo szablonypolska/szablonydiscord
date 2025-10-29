@@ -1,4 +1,5 @@
 import { Template } from "./templates/common"
+import { Builder } from "@/components/interfaces/builder/common"
 
 interface ApiKey {
 	id: number
@@ -20,11 +21,12 @@ interface ApiKey {
 
 export interface Notification {
 	id: number
-	type: "error" | "success" | "warning"
+	type: "ERROR" | "SUCCESS" | "WARNING"
 	title: string
 	description: string
 	userId: string
-	dateAdd: string
+	createdAt: string
+	isRead: boolean
 }
 
 export interface UserSettings {
@@ -52,4 +54,5 @@ export interface User {
 	authorTemplates: Template[]
 	notification: Notification[]
 	settings: UserSettings
+	builder: Builder[]
 }

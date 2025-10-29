@@ -1,9 +1,10 @@
 "use client"
 
 import { io, Socket } from "socket.io-client"
+import { useSession } from "next-auth/react"
+import { useEffect, useState } from "react"
 
 let socket: Socket | null
-let socketBackend: Socket | null
 
 export const connectSocket = (): Socket => {
 	if (!socket) {
@@ -23,20 +24,31 @@ export const connectSocket = (): Socket => {
 	return socket
 }
 
-export const connectSocketBackend = (): Socket => {
-	if (!socketBackend) {
-		socketBackend = io("http://localhost:3006", {
-			reconnectionDelayMax: 1000,
-		})
+export const useSocketBackend = (): Socket | null => {
+	const { data: session, status } = useSession()
+	const [socket, setSocket] = useState<Socket | null>(null)
 
-		socketBackend.on("connect", () => {
-			console.log("Połączono z websocketem")
-		})
+	useEffect(() => {
+		if (status === "authenticated") {
+			const socketBackend = io("http://localhost:3006", {
+				auth: {
+					userId: session?.user?.id || "",
+				},
+				reconnectionDelayMax: 1000,
+			})
 
-		socketBackend.on("disconnect", () => {
-			console.log("Rozłączono z websocketem")
-		})
-	}
+			socketBackend.on("connect", () => {
+				console.log("Połączono z websocketem")
+				setSocket(socketBackend)
+			})
 
-	return socketBackend
+			socketBackend.on("disconnect", () => {
+				console.log("Rozłączono z websocketem")
+			})
+
+			setSocket(socketBackend)
+		}
+	}, [session, status])
+
+	return socket
 }

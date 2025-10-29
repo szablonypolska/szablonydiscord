@@ -3,8 +3,8 @@ export interface Template {
   templateId: string;
   link: string;
   categories: string;
-  dateCreate: string;
-  dateCreateSystem: Date;
+  createdAt: Date;
+  updatedAt: Date;
   title: string;
   description?: string;
   clickButtonUse?: number;

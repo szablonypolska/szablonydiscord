@@ -10,7 +10,7 @@ import { formatDate } from "date-fns"
 export default function SuccessOrderBox({ order }: { order: Order }) {
 	console.log("zwraca", order)
 
-	const theRestInTheEmail = order.products && order.products.length > 3 ? order.products.length - 3 : 0
+	const theRestInTheEmail = order && order.products && order.products.length > 3 ? order.products.length - 3 : 0
 	const count =
 		order.products &&
 		order.products.reduce((acc, product) => {

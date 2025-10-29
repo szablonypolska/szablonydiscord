@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
 import { SharedModule } from '@repo/shared';
-import { NotificationsService } from './notifications.service';
+import { NotificationsService } from './services/notifications.service';
 import { WebsocketModule } from 'src/websocket/websocket.module';
 
 @Module({

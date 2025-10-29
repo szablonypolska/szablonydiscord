@@ -2,8 +2,8 @@
 import React, { createContext, useContext, useEffect, useState } from "react"
 import { User } from "@/components/interfaces/common"
 import useWindowSize from "@/hooks/useWindowSize"
-import useSocketListener from "@/hooks/useSocketListener"
 import { SettingsViewOptionType } from "@/types/settings"
+import useDashboardSocket from "@/features/dashboard/hook/useDashboardSocket"
 
 interface DashboardContextType {
 	toggleView: () => void
@@ -30,7 +30,9 @@ export const DashboardProvider = ({ children, user: initialUser }: { children: R
 	const [settingsViewOption, setSettingsViewOption] = useState<SettingsViewOptionType>("account")
 	const { width } = useWindowSize()
 
-	useSocketListener({ user, setUser, setNumberPeopleOnline })
+	console.log(user)
+
+	useDashboardSocket({ user, setUser, setNumberPeopleOnline })
 
 	useEffect(() => {
 		if (width && width <= 1024) {

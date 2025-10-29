@@ -13,13 +13,14 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-
-
 enum OrderStatus {
   NEW
   PAID
   COMPLETED
   CANCELED
+  REFUND_PENDING
+  REFUNDED
+  PARTIALLY_REFUNDED
 }
 
 enum DeliveryMethod {
@@ -45,4 +46,26 @@ enum ProtectionType {
   PREMIUM
   ADVANCED
   OTHER
+}
+
+enum NotificationType {
+  SUCCESS
+  ERROR
+  WARNING
+}
+
+enum BuilderProcessStatus {
+  WAITING
+  IN_PROGRESS
+  COMPLETED
+  FAILED
+}
+
+enum BuilderStageType {
+  ANALYSIS
+  AUTHENTICATION
+  CONFIGURE_SERVER
+  ROLES_CREATE
+  CHANNELS_CREATE
+  CATEGORIES_CREATE
 }

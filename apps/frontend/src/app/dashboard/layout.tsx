@@ -6,7 +6,6 @@ import { getServerSession } from "next-auth/next"
 import { authOptions } from "../../lib/authOptions"
 import { prisma } from "@repo/db"
 import { redirect } from "next/navigation"
-import NotificationsSidebar from "@/components/client/dashboard/notifications-ui/notificationsSidebar"
 import SettingsPopup from "@/components/client/dashboard/settings/settingsPopup"
 
 export default async function Layout({ children }: { children: React.ReactNode }) {
@@ -24,25 +23,56 @@ export default async function Layout({ children }: { children: React.ReactNode }
 			notification: {
 				take: 4,
 				orderBy: {
-					dateAdd: "desc",
+					createdAt: "desc",
+				},
+			},
+			builder: {
+				take: 5,
+				include: {
+					builderProcess: {
+						include: {
+							stages: {
+								include: {
+									channel: {
+										include: {
+											channel: true,
+										},
+									},
+									category: {
+										include: {
+											category: true,
+										},
+									},
+									role: {
+										include: {
+											role: true,
+										},
+									},
+								},
+							},
+						},
+					},
 				},
 			},
 		},
 	})
 
+	if (!user) {
+		redirect("/login")
+	}
+
 	return (
 		<DashboardProvider user={user}>
-			<NotificationsSidebar />
 			<SettingsPopup settings={user.settings} />
 
 			<div className="flex w-full h-screen ">
-				<div className="shrink-0">
+				<div className="shrink-0 transition-all duration-300">
 					<Sidebar />
 				</div>
 
-				<div className="flex flex-col w-full ">
+				<div className="flex flex-col flex-1 ">
 					<TopSidebar />
-					<div className="scrollbar scrollbar-thumb-alt-border-color scrollbar-track-border-color overflow-y-auto p-10">{children}</div>
+					<div className="scrollbar scrollbar-thumb-alt-border-color scrollbar-track-border-color overflow-y-auto p-10 min-w-0">{children}</div>
 				</div>
 			</div>
 		</DashboardProvider>

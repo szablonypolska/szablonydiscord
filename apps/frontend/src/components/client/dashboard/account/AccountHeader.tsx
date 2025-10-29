@@ -19,6 +19,11 @@ export function AccountHeader() {
 			route: "/dashboard/account/order",
 		},
 		{
+			label: "Builder",
+			value: "builder",
+			route: "/dashboard/account/builder",
+		},
+		{
 			label: "Subskrybcje",
 			value: "subscriptions",
 			route: "/dashboard/account/subscriptions",

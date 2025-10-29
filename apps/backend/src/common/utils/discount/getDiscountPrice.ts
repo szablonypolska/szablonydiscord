@@ -7,18 +7,12 @@ import {
 import { discountHelper } from './discountHelper';
 import { BadRequestException } from '@nestjs/common';
 
-let finalProductPrice: FinalPrice = {
-  id: '',
-  price: 0,
-  priceAfterDiscount: 0,
-  products: [],
-};
-
 const calculateFinalPrice = (
   price: number,
   title: string,
   checkCode: DiscountProduct,
   productIsPromo: boolean,
+  finalProductPrice: FinalPrice,
   offerId?: string,
 ) => {
   const promoPrice = discountHelper(price, checkCode);
@@ -40,7 +34,10 @@ const calculateFinalPrice = (
   ];
 };
 
-const calculateFinalWithautDiscount = (products: Offer[]) => {
+const calculateFinalWithautDiscount = (
+  products: Offer[],
+  finalProductPrice: FinalPrice,
+) => {
   products.forEach((product) => {
     finalProductPrice.price += product.price;
     finalProductPrice.products = [
@@ -61,9 +58,16 @@ export const getDiscountPrice = async (
   promoCode: string,
   products: Offer[],
 ) => {
-  finalProductPrice = { id: '', price: 0, priceAfterDiscount: 0, products: [] };
+  const finalProductPrice: FinalPrice = {
+    id: '',
+    price: 0,
+    priceAfterDiscount: 0,
+    products: [],
+  };
+
   try {
-    if (!promoCode) return calculateFinalWithautDiscount(products);
+    if (!promoCode)
+      return calculateFinalWithautDiscount(products, finalProductPrice);
 
     const checkCode: DiscountProduct = await prisma.promoCode.findUnique({
       where: { code: promoCode },
@@ -78,7 +82,7 @@ export const getDiscountPrice = async (
         message: 'Promo code not found',
       });
 
-    if (checkCode.usageCount > checkCode.maxUsageCount)
+    if (checkCode.usageCount >= checkCode.maxUsageCount)
       throw new BadRequestException({
         ok: false,
         message: 'Promo code usage limit reached',
@@ -86,7 +90,14 @@ export const getDiscountPrice = async (
 
     if (checkCode.scope === 'CART') {
       products.forEach((product) => {
-        calculateFinalPrice(product.price, product.title, checkCode, false);
+        calculateFinalPrice(
+          product.price,
+          product.title,
+          checkCode,
+          false,
+          finalProductPrice,
+          product.id,
+        );
       });
       const promoPrice = discountHelper(finalProductPrice.price, checkCode);
 
@@ -95,28 +106,30 @@ export const getDiscountPrice = async (
       return finalProductPrice;
     }
 
-    products.forEach((products) => {
+    products.forEach((product) => {
       const promoProducts = checkCode.promoProducts.some(
-        (item) => item.offerId === products.id,
+        (item) => item.offerId === product.id,
       );
 
       if (!promoProducts) {
         calculateFinalPrice(
-          products.price,
-          products.title,
+          product.price,
+          product.title,
           checkCode,
           false,
-          products.id,
+          finalProductPrice,
+          product.id,
         );
         return finalProductPrice;
       }
 
       calculateFinalPrice(
-        products.price,
-        products.title,
+        product.price,
+        product.title,
         checkCode,
         true,
-        products.id,
+        finalProductPrice,
+        product.id,
       );
     });
 

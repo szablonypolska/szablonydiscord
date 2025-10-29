@@ -7,7 +7,7 @@ import { PrismaService } from '@repo/shared';
 import { BodyData } from '../interfaces/create.interface';
 import { v4 as uuidv4 } from 'uuid';
 import ShortUniqueId from 'short-unique-id';
-import { NotificationsService } from 'src/notifications/notifications.service';
+import { NotificationsService } from 'src/notifications/services/notifications.service';
 
 @Injectable()
 export class CreateApiKeysService {
@@ -18,7 +18,6 @@ export class CreateApiKeysService {
   private uid = new ShortUniqueId({ length: 15 });
 
   async createApi(createApiBody: BodyData): Promise<object> {
-
     try {
       const checkUserIsExists = await this.prisma.client.user.findUnique({
         where: { userId: createApiBody.userId },
@@ -44,7 +43,7 @@ export class CreateApiKeysService {
       });
 
       this.notification.sendNotification({
-        type: 'success',
+        type: 'SUCCESS',
         title: 'Klucz API został stworzony',
         description: `Nowy ApiKey "${createApiBody.name}" został pomyślnie utworzony`,
         userId: createApiBody.userId,

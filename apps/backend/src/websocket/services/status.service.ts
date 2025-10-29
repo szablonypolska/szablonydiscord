@@ -19,7 +19,9 @@ export class OnlineService {
       if (!checkUserIsOnline)
         this.arrayOnlinePeople = [...this.arrayOnlinePeople, userId];
 
-      this.websocket.server.emit('online', {
+      console.log('User connected:', userId);
+
+      this.websocket.server.to(userId).emit('online', {
         userId: userId,
         numberOnline: this.arrayOnlinePeople.length,
       });
@@ -38,7 +40,7 @@ export class OnlineService {
 
       this.arrayOnlinePeople = deleteUserOffline;
 
-      this.websocket.server.emit('offline', {
+      this.websocket.server.to(userId).emit('offline', {
         userId: userId,
         numberOnline: this.arrayOnlinePeople.length,
       });

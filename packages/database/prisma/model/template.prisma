@@ -1,41 +1,39 @@
 model Templates {
-  templateId     String                 @id @unique
-  link           String                 @unique
-  slugUrl        String                 @unique
-  categories     String
-  dateCreate     DateTime               @default(now())
-  title          String
-  sourceServerId String?
-  description    String?
-  authorId       String?
-  addingUserId   String?
-  code           String?
-  usageCount     Int                    @default(0)
-  channelsCount  Int                    @default(0)
-  rolesCount     Int                    @default(0)
+  templateId      String                 @id @unique
+  link            String                 @unique
+  slugUrl         String                 @unique
+  categories      String
+  createdAt       DateTime               @default(now())
+  updatedAt       DateTime               @updatedAt
+  title           String
+  sourceServerId  String?
+  description     String?
+  authorId        String?
+  addingUserId    String?
+  code            String?
+  usageCount      Int                    @default(0)
+  channelsCount   Int                    @default(0)
+  rolesCount      Int                    @default(0)
   categoriesCount Int                    @default(0)
-  visitHistory   VisitTemplateHistory[]
-  author         User?                  @relation("AuthorTemplates", fields: [authorId], references: [userId])
-  addingUser     User?                  @relation("AddedTemplates", fields: [addingUserId], references: [userId])
+  visitHistory    VisitTemplateHistory[]
+  author          User?                  @relation("AuthorTemplates", fields: [authorId], references: [userId])
+  addingUser      User?                  @relation("AddedTemplates", fields: [addingUserId], references: [userId])
 
   @@index([usageCount])
-  @@index([dateCreate])
+  @@index([createdAt])
   @@index([authorId])
   @@index([addingUserId])
 }
 
-
-
 model VisitTemplateHistory {
-  id      Int       @id @default(autoincrement())
-  uuid    String
-  slugUrl String
-  date    DateTime  @default(now())
-  url     Templates @relation(fields: [slugUrl], references: [slugUrl], onDelete: Cascade, onUpdate: Cascade)
+  id        Int       @id @default(autoincrement())
+  uuid      String
+  slugUrl   String
+  createdAt DateTime  @default(now())
+  url       Templates @relation(fields: [slugUrl], references: [slugUrl], onDelete: Cascade, onUpdate: Cascade)
 
   @@index([slugUrl])
 }
-
 
 model ReserveTemplate {
   id       Int     @id @default(autoincrement())

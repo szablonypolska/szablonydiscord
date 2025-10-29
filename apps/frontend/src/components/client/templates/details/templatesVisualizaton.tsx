@@ -7,11 +7,8 @@ import { cn } from "@/lib/utils"
 import { Button as ButtonCopy } from "@/components/ui/button"
 import { Check, Copy } from "lucide-react"
 import { useState } from "react"
-import { ChevronDown } from "lucide-react"
-import { ChannelPermission } from "../../icons/channelPermissions"
-import { ChannelIcon } from "../../icons/channel"
-import { VoiceChannelIcon } from "../../icons/voiceChannel"
-import { NsfwIcon } from "../../icons/nsfwIcon"
+import SelectedIconChannel from "@/utils/visualization/selectedIconChannel"
+import { channelStyle } from "@/utils/visualization/channelStyle"
 
 interface Type {
 	filtredChannel: Channel[]
@@ -20,19 +17,6 @@ interface Type {
 
 export default function TemplatesVisuzalization({ filtredChannel, filtredRoles }: Type) {
 	const [copied, setCopied] = useState<boolean>(false)
-	const channelStyles: { [key: number]: string } = {
-		0: "flex items-center gap-1 pl-4 my-1  font-medium text-channel-color text-lg w-96 max-md:w-full  hover:bg-border-color truncate rounded-lg", // Tekstowy
-		2: "flex items-center gap-1 pl-4 my-1 text-channel-color text-lg  w-96 max-md:w-full hover:bg-border-color truncate rounded-lg", // Głosowy
-		4: "flex items-center gap-1 font-bold text-lg mt-2  text-text-color hover:text-white w-96 max-md:w-full", // Kategoria
-	}
-
-	const channelIcons: { [key: number]: React.ReactNode } = {
-		0: <ChannelIcon />,
-		2: <VoiceChannelIcon />,
-		4: <ChevronDown className="text-channel-color w-4 h-4 mr-0.5" />,
-		5: <ChannelPermission />,
-		7: <NsfwIcon />,
-	}
 
 	const copyLink = (hex: string) => {
 		navigator.clipboard.writeText(hex)
@@ -48,20 +32,6 @@ export default function TemplatesVisuzalization({ filtredChannel, filtredRoles }
 		}
 	}
 
-	const icon = (el: Channel) => {
-		if (el.type === 0 && el.permission_overwrites && el.permission_overwrites.length === 0 && !el.nsfw) {
-			return channelIcons[0]
-		} else if (el.type === 0 && el.nsfw) {
-			return <NsfwIcon />
-		} else if (el.type === 0 && el.permission_overwrites && el.permission_overwrites.length > 0 && !el.nsfw) {
-			return channelIcons[5]
-		} else if (el.type === 4) {
-			return channelIcons[4]
-		} else {
-			return channelIcons[2]
-		}
-	}
-
 	return (
 		<>
 			<section className="items-center mt-5">
@@ -70,8 +40,8 @@ export default function TemplatesVisuzalization({ filtredChannel, filtredRoles }
 						{filtredChannel.map((el: Channel) => (
 							<div className={`flex items-center w-96 max-md:w-full ${el.type !== 4 && "hover:bg-border-color"} truncate rounded-lg group`} key={el.id}>
 								<div className={`flex items-center   ${el.type !== 4 && "hover:bg-border-color"}  rounded-lg group w-full`} key={el.id}>
-									<div className={`w-full ${channelStyles[el.type]}`} key={el.id}>
-										<span className="text-2xl text-channel-color  font-black">{icon(el)}</span>
+									<div className={`w-full ${channelStyle(el.type)}`} key={el.id}>
+										<span className="text-2xl text-channel-color  font-black"> {SelectedIconChannel(el)}</span>
 										<p>{el.name}</p>
 									</div>
 								</div>

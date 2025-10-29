@@ -16,7 +16,7 @@ export default function ErrorWeb({ error, reset }: ErrorProps) {
 	const [visible, setVisible] = useState<boolean>(false)
 	const date = Date.now()
 
-	const errorText = error ? error : "Wystąpił niezidentyfikowany błąd serwera.."
+	const errorText = error && typeof error === "object" ? ((error as Error).message ? `${(error as Error).name}: ${(error as Error).message}` : (error as Error).toString()) : typeof error === "string" ? error.split("\n")[0] : "Wystąpił niezidentyfikowany błąd serwera.."
 
 	return (
 		<div className="flex flex-col justify-center   w-full my-32">
@@ -32,12 +32,7 @@ export default function ErrorWeb({ error, reset }: ErrorProps) {
 				<p className="text-dark-gray">Strona której szukasz mogła zostać przeniesiona lub nie istnieje.</p>
 				<p className="text-dark-gray">Sprawdź czy adres URL jest poprawny lub wróć do strony głównej.</p>
 				<div className=" p-5 bg-border-color rounded-xl  mt-6 relative md:w-140 max-md:w-full">
-					<input
-						type="text"
-						readOnly
-						className="bg-alt-background-color w-full p-3 rounded-xl border border-[#2f2f2f] text-dark-gray pl-10 outline-hidden"
-						value={`https://szablonydiscord.pl${pathname}`}
-					/>
+					<input type="text" readOnly className="bg-alt-background-color w-full p-3 rounded-xl border border-[#2f2f2f] text-dark-gray pl-10 outline-hidden" value={`https://szablonydiscord.pl${pathname}`} />
 					<div className="absolute top-1/2 -translate-y-1/2 pl-3">
 						<TriangleAlert className="text-error-color" size={18} />
 					</div>
@@ -52,13 +47,13 @@ export default function ErrorWeb({ error, reset }: ErrorProps) {
 					)}
 					{!reset && (
 						<Link href={pathname}>
-							<Button className="bg-error-color rounded-xl p-5  h-12">
+							<Button className="bg-error-color rounded-xl p-5  h-12 cursor-pointer">
 								<RefreshCcw />
 								Spróbuj ponownie
 							</Button>
 						</Link>
 					)}
-					<Button className="bg-border-color rounded-xl p-5  h-12" onPress={() => setVisible(!visible)}>
+					<Button className="bg-border-color rounded-xl p-5  h-12 cursor-pointer" onPress={() => setVisible(!visible)}>
 						{visible ? <ChevronUp /> : <ChevronDown />}
 						Pokaż szczegóły
 					</Button>

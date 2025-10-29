@@ -8,6 +8,7 @@ export default async function OrderDashboardPage() {
 
 	const order = await prisma.order.findMany({
 		where: { userId: session?.user.id },
+		orderBy: { dateCreate: "desc" },
 		include: {
 			products: {
 				include: {

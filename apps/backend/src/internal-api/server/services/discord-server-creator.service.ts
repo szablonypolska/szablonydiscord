@@ -1,12 +1,13 @@
-import { DiscordCreateCategoryService } from './discord-category.service';
-import { DiscordCreateChannelService } from './discord-channel.service';
-import { DiscordCreateRolesService } from './discord-roles.service';
-import { DiscordGuildService } from './discord-guild.service';
+import { DiscordCreateCategoryService } from './category/discord-category.service';
+import { DiscordCreateChannelService } from './channel/discord-channel.service';
+import { DiscordCreateRolesService } from './role/discord-roles.service';
+import { DiscordGuildService } from './guild/discord-guild.service';
 import { Injectable } from '@nestjs/common';
 import { WebsocketGateway } from 'src/websocket/websocket.gateway';
 import { PrismaService } from '@repo/shared';
 import { Client } from 'discord.js-selfbot-v13';
-import { ServerCreationConfig } from '../interfaces/server.interface';
+import { Builder } from '../interfaces/builder.interface';
+import { BuilderCode } from '../interfaces/builder-code.interface';
 
 @Injectable()
 export class DiscordServerCreatorService {
@@ -23,8 +24,8 @@ export class DiscordServerCreatorService {
 
   async createServer(
     token: string,
-    config: ServerCreationConfig,
-    sessionId: string,
+    config: BuilderCode,
+    data: Builder,
   ): Promise<string> {
     try {
       this.client = new Client();
@@ -32,20 +33,20 @@ export class DiscordServerCreatorService {
 
       const guild = await this.configureGuild.createGuild(
         this.client,
-        config.serverConfig,
-        sessionId,
+        config,
+        data,
       );
 
       const roleMap = await this.createRole.createRoles(
         guild,
         config.roles,
-        sessionId,
+        data,
       );
 
       const categoryMap = await this.createCategory.createCategories(
         guild,
         config.categories,
-        sessionId,
+        data,
         roleMap,
       );
 
@@ -54,7 +55,7 @@ export class DiscordServerCreatorService {
         config.channels,
         categoryMap,
         roleMap,
-        sessionId,
+        data,
       );
 
       const templates = await guild.createTemplate(
@@ -64,12 +65,14 @@ export class DiscordServerCreatorService {
 
       await this.client.destroy();
 
-      this.websocket.server.emit('update_template', {
-        sessionId,
-        templateCode: templates.code,
-      });
-      await this.prisma.client.generateStatus.update({
-        where: { sessionId },
+      this.websocket.server
+        .to(`sessionId:${data.sessionId}`)
+        .emit('update_template', {
+          sessionId: data.sessionId,
+          templateCode: templates.code,
+        });
+      await this.prisma.client.builder.update({
+        where: { sessionId: data.sessionId },
         data: { templateCode: templates.code },
       });
 

@@ -18,7 +18,7 @@ export class PublishTemplate {
 
   async publishTemplate(data: PublishDto) {
     try {
-      const builderData = await this.prisma.client.generateStatus.findUnique({
+      const builderData = await this.prisma.client.builder.findUnique({
         where: { sessionId: data.id },
       });
 
@@ -36,7 +36,7 @@ export class PublishTemplate {
         data.userId,
       );
 
-      await this.prisma.client.generateStatus.update({
+      await this.prisma.client.builder.update({
         where: { sessionId: data.id },
         data: { templateUrl: create.slugUrl },
       });

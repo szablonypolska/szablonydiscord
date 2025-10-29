@@ -15,7 +15,7 @@ export class TemplatesService {
     try {
       const getTemplates: Template[] =
         await this.prisma.client.templates.findMany({
-          orderBy: { dateCreate: 'desc' },
+          orderBy: { createdAt: 'desc' },
           skip: (pageNumber - 1) * pageSize,
           take: pageSize,
           omit: {
@@ -23,7 +23,7 @@ export class TemplatesService {
             rolesCount: templates.templateDetail === 'true' ? false : true,
             channelsCount: templates.templateDetail === 'true' ? false : true,
             categoriesCount: templates.templateDetail === 'true' ? false : true,
-            dateCreate: templates.templateDetail === 'true' ? false : true,
+            createdAt: templates.templateDetail === 'true' ? false : true,
             authorId: templates.templateDetail === 'true' ? false : true,
             addingUserId: templates.templateDetail === 'true' ? false : true,
           },

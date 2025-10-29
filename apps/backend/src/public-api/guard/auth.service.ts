@@ -7,7 +7,7 @@ import {
 } from '@nestjs/common';
 import { PrismaService } from '@repo/shared';
 import { Api } from '../../interfaces/api.interface';
-import { NotificationsService } from 'src/notifications/notifications.service';
+import { NotificationsService } from 'src/notifications/services/notifications.service';
 
 @Injectable()
 export class AuthService {
@@ -66,21 +66,23 @@ export class AuthService {
     const percentUsageMonthly = (value.monthlyCount / value.monthlyLimit) * 100;
 
     if (value.monthlyCount >= value.monthlyLimit) {
+      if (!value.userId) return;
       this.notification.sendNotification({
-        type: 'error',
+        type: 'ERROR',
         title: 'Miesięczny limit wykorzystany',
         description: `Twoje API "${value.name}" wykorzystało miesięczny limit`,
-        userId: value.userId,
+        userId: value.userId as string,
       });
       return;
     }
 
     if (percentUsageMonthly > 10) {
+      if (!value.userId) return;
       this.notification.sendNotification({
-        type: 'warning',
+        type: 'WARNING',
         title: 'Wykorzystano 75% limitu API!',
         description: `Twoje API "${value.name}" osiągnęło limit 75% użyć na miesiąc!`,
-        userId: value.userId,
+        userId: value.userId as string,
       });
     }
   };

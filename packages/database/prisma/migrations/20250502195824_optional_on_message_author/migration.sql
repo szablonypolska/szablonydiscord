@@ -1,3 +1,0 @@
--- AlterTable
-ALTER TABLE "Message" ALTER COLUMN "author" DROP NOT NULL,
-ALTER COLUMN "authorId" DROP NOT NULL;

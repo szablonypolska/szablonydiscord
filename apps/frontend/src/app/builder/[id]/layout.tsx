@@ -1,7 +1,8 @@
-import BuilderWrapper from "@/components/client/builder/builderWrapper"
+import BuilderWrapper from "@/components/client/builder/shared/builderWrapper"
 import type { Metadata } from "next"
 import React from "react"
 import { prisma } from "@repo/db"
+import { redirect } from "next/navigation"
 
 export const metadata: Metadata = {
 	title: "Create Next App",
@@ -16,10 +17,41 @@ interface LayoutParams {
 export default async function RootLayout({ params, children }: LayoutParams) {
 	const { id } = await params
 
-	const data = await prisma.generateStatus.findUnique({
+	const data = await prisma.builder.findUnique({
 		where: { sessionId: id },
-		include: { roles: true, channel: true, category: true },
+		include: {
+			user: true,
+			builderProcess: {
+				include: {
+					stages: {
+						include: {
+							category: {
+								include: {
+									category: true,
+								},
+							},
+							channel: {
+								include: {
+									channel: true,
+								},
+							},
+							role: {
+								include: {
+									role: true,
+								},
+							},
+						},
+					},
+				},
+			},
+			materials: true,
+			metrics: true,
+		},
 	})
+
+	if (!data) {
+		throw new Error("This session builder does not exist")
+	}
 	return (
 		<>
 			<BuilderWrapper id={id} data={data}>

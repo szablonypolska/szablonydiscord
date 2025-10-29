@@ -3,7 +3,7 @@ import { Button } from "@nextui-org/button"
 
 export default function SettingsOptionAccount() {
 	return (
-		<div className="p-6 w-full">
+		<div className="bg-sidebar-color/80 p-6 w-full">
 			<div className="">
 				<p className="text-lg font-medium">Konto</p>
 				<span className="text-text-color text-sm">Zarządzaj swoimi danymi konta</span>

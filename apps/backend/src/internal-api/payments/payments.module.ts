@@ -9,11 +9,14 @@ import { VerifyPaymentSessionService } from './services/verify-payment-session.s
 import { CreatePromoCodeService } from './services/create-promo-code.service';
 import { RoleModule } from '../guard/role.module';
 import { EventEmitterModule } from '@nestjs/event-emitter';
+import { NotificationsModule } from 'src/notifications/notifications.module';
+
 
 @Module({
   imports: [
     ConfigModule,
     SharedModule,
+    NotificationsModule,
     RoleModule,
     EventEmitterModule.forRoot(),
   ],

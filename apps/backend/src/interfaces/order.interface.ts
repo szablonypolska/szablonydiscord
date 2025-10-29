@@ -1,4 +1,5 @@
 import { Offer } from 'src/interfaces/offer.interface';
+import { DiscountProduct } from './discount.interface';
 
 export interface Order {
   id: string;
@@ -7,6 +8,7 @@ export interface Order {
   paymentIntentId?: string;
   events?: OrderEvent[];
   products?: Products[];
+  promoCode?: DiscountProduct;
 }
 
 export interface Products {
@@ -14,6 +16,7 @@ export interface Products {
   offerId: string;
   price: number;
   priceAfterDiscount: number;
+  refundPrice?: number;
   orderId: string;
   offer?: Offer;
   protections?: Protection[];
@@ -35,6 +38,9 @@ export interface Protection {
   type: 'BASIC' | 'PREMIUM' | 'ADVANCED' | 'OTHER';
   orderProductId: number;
   orderProduct?: Products;
+  refunded?: boolean;
+  refundedAmount?: number;
+  refunedDate?: Date;
 }
 
 export enum OrderStatus {
@@ -42,4 +48,7 @@ export enum OrderStatus {
   PAID = 'PAID',
   COMPLETED = 'COMPLETED',
   CANCELED = 'CANCELED',
+  REFUND_PENDING = 'REFUND_PENDING',
+  REFUNDED = 'REFUNDED',
+  PARTIALLY_REFUNDED = 'PARTIALLY_REFUNDED',
 }
