@@ -81,7 +81,7 @@ export default function SearchTemplate({ templates }: Props) {
 				<div className={`grid ${typeView === "grid" ? "grid-cols-2" : "grid-cols-1"} gap-5 mt-5 max-md:gap-2`}>
 					{templates.templates &&
 						templates.templates.map(el => (
-							<motion.div initial={{ opacity: 0, y: -30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5, ease: "easeOut", delay: 0.2 }} key={el.templateId}>
+							<motion.div initial={{ opacity: 0, y: -30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5, ease: "easeOut", delay: 0.2 }} key={el.id}>
 								<Cards data={el} settingsData={settingsData} />
 							</motion.div>
 						))}

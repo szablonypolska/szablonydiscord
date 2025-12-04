@@ -13,25 +13,23 @@ export const SocketProvider = ({ children }: { children: React.ReactNode }) => {
 	const [socket, setSocket] = useState<Socket | null>(null)
 
 	useEffect(() => {
-		if (status === "authenticated") {
-			const socketBackend = io("http://localhost:3006", {
-				auth: {
-					userId: session?.user?.id || "",
-				},
-				reconnectionDelayMax: 1000,
-			})
+		if (status !== "authenticated") return
 
-			socketBackend.on("connect", () => {
-				console.log("Połączono z websocketem")
-				setSocket(socketBackend)
-			})
+		const socketBackend = io("http://localhost:3006", {
+			auth: {
+				userId: session?.user?.id || "",
+			},
+			reconnectionDelayMax: 1000,
+		})
 
-			socketBackend.on("disconnect", () => {
-				console.log("Rozłączono z websocketem")
-			})
-
+		socketBackend.on("connect", () => {
+			console.log("Połączono z websocketem")
 			setSocket(socketBackend)
-		}
+		})
+
+		socketBackend.on("disconnect", () => {
+			console.log("Rozłączono z websocketem")
+		})
 	}, [session, status])
 
 	return <SocketContext.Provider value={socket}>{children}</SocketContext.Provider>

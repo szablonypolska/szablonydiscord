@@ -13,5 +13,5 @@ export class RefundDto {
   @Transform(({ value }) => (Array.isArray(value) ? value : [value]))
   @IsArray()
   @ArrayNotEmpty()
-  orderProductIds: string[];
+  orderProductIds: number[];
 }

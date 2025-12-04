@@ -15,7 +15,7 @@ interface Type {
 	filtredRoles: Roles[]
 }
 
-export default function TemplatesVisuzalization({ filtredChannel, filtredRoles }: Type) {
+export default function TemplatesVisuzalizationPage({ filtredChannel, filtredRoles }: Type) {
 	const [copied, setCopied] = useState<boolean>(false)
 
 	const copyLink = (hex: string) => {
@@ -34,11 +34,11 @@ export default function TemplatesVisuzalization({ filtredChannel, filtredRoles }
 
 	return (
 		<>
-			<section className="items-center mt-5">
-				<div className="flex gap-5  rounded-xl max-lg:flex-col ">
-					<article className="bg-alt-background-color border border-border-color rounded-xl  p-8 flex-1 flex-grow flex-shrink-0">
+			<section className="mt-5 w-full">
+				<div className="flex gap-5  rounded-xl max-md:flex-col w-full ">
+					<article className="bg-alt-background-color border border-border-color rounded-xl p-8 max-md:min-w-0 max-md:w-full md:w-1/2">
 						{filtredChannel.map((el: Channel) => (
-							<div className={`flex items-center w-96 max-md:w-full ${el.type !== 4 && "hover:bg-border-color"} truncate rounded-lg group`} key={el.id}>
+							<div className={`flex items-center  ${el.type !== 4 && "hover:bg-border-color"} truncate rounded-lg group`} key={el.id}>
 								<div className={`flex items-center   ${el.type !== 4 && "hover:bg-border-color"}  rounded-lg group w-full`} key={el.id}>
 									<div className={`w-full ${channelStyle(el.type)}`} key={el.id}>
 										<span className="text-2xl text-channel-color  font-black"> {SelectedIconChannel(el)}</span>
@@ -59,7 +59,7 @@ export default function TemplatesVisuzalization({ filtredChannel, filtredRoles }
 							</div>
 						))}
 					</article>
-					<article className="bg-alt-background-color border border-border-color rounded-xl  p-8 max-lg:w-full flex-1 flex-shrink-0">
+					<article className="bg-alt-background-color border border-border-color rounded-xl p-8 flex-1 max-lg:w-full max-md:w-full md:w-1/2 ">
 						<div className="flex flex-wrap gap-2">
 							{filtredRoles.map((el: Roles) => {
 								const hexColor = `#${el.color.toString(16).padStart(6, "0")}`

@@ -11,6 +11,7 @@ interface DashboardContextType {
 	showSidebar: boolean
 	notification: boolean
 	user: User
+	setUser: React.Dispatch<React.SetStateAction<User>>
 	numberPeopleOnline: number
 	updateUser: (newUser: User) => void
 	settingsViewOption: SettingsViewOptionType
@@ -29,8 +30,6 @@ export const DashboardProvider = ({ children, user: initialUser }: { children: R
 	const [settingsVisible, setSettingsVisible] = useState<boolean>(false)
 	const [settingsViewOption, setSettingsViewOption] = useState<SettingsViewOptionType>("account")
 	const { width } = useWindowSize()
-
-	console.log(user)
 
 	useDashboardSocket({ user, setUser, setNumberPeopleOnline })
 
@@ -54,7 +53,7 @@ export const DashboardProvider = ({ children, user: initialUser }: { children: R
 		setUser(data)
 	}
 
-	return <DashboardContext.Provider value={{ showSidebar, toggleView, user, updateUser, notification, toggleViewNotification, numberPeopleOnline, settingsViewOption, setSettingsViewOption, settingsVisible, setSettingsVisible }}>{children}</DashboardContext.Provider>
+	return <DashboardContext.Provider value={{ showSidebar, toggleView, user, setUser, updateUser, notification, toggleViewNotification, numberPeopleOnline, settingsViewOption, setSettingsViewOption, settingsVisible, setSettingsVisible }}>{children}</DashboardContext.Provider>
 }
 
 export function useDashboardContext() {

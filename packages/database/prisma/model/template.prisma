@@ -1,11 +1,14 @@
 model Templates {
-  templateId      String                 @id @unique
+  id      String                 @id @unique
   link            String                 @unique
   slugUrl         String                 @unique
-  categories      String
+  categories      TemplateCategory
   createdAt       DateTime               @default(now())
   updatedAt       DateTime               @updatedAt
   title           String
+  familyId        String
+  isLatest        Boolean                @default(true)
+  version         Int                    @default(1)
   sourceServerId  String?
   description     String?
   authorId        String?
@@ -24,13 +27,15 @@ model Templates {
   @@index([createdAt])
   @@index([authorId])
   @@index([addingUserId])
+  @@index([sourceServerId])
+  @@index([familyId])
 }
 
 model VisitTemplateHistory {
   id        Int       @id @default(autoincrement())
   uuid      String
   slugUrl   String
-  createdAt DateTime  @default(now())
+  visitedAt DateTime  @default(now())
   url       Templates @relation(fields: [slugUrl], references: [slugUrl], onDelete: Cascade, onUpdate: Cascade)
 
   @@index([slugUrl])

@@ -15,11 +15,6 @@ model SearchHistory {
   dateSearch DateTime @default(now())
 }
 
-model Token {
-  id    Int    @id @default(autoincrement())
-  token String
-}
-
 model DecorationChannel {
   id    Int    @id @default(autoincrement())
   style String

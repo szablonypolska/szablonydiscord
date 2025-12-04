@@ -1,41 +1,39 @@
 import { prisma } from "@repo/db"
-import TemplatesDetails from "@/components/client/templates/details/templatesDetails"
+import TemplatesDetailsPage from "@/components/client/templates/details/TemplatesDetails"
 import ErrorWeb from "@/components/client/error"
 import { cookies } from "next/headers"
-import { HistoryVisitTemplate } from "@/components/interfaces/templates/common"
+import { VisitHistory } from "@/components/interfaces/templates/common"
 import { notFound } from "next/navigation"
 import redis from "@/lib/redis"
 import { DiscordTemplate } from "@/components/interfaces/templates/common"
 import { differenceInDays } from "date-fns"
+import { Template } from "@/components/interfaces/templates/common"
 
 interface Params {
 	params: string
 }
 
 export default async function LoadTemplatesData({ params }: Params) {
-	let [visitHistory, templatesData] = await prisma.$transaction([
-		prisma.visitTemplateHistory.findMany({ where: { slugUrl: params } }),
-		prisma.templates.findUnique({
+	try {
+		const templatesData: Template | null = await prisma.templates.findUnique({
 			where: {
 				slugUrl: params,
 			},
-			include: { addingUser: { select: { avatar: true, username: true, userId: true } }, author: { select: { avatar: true, username: true, userId: true } } },
-		}),
-	])
+			include: { versions: true, visitHistory: true, addingUser: { select: { avatar: true, username: true, userId: true } }, author: { select: { avatar: true, username: true, userId: true } } },
+		})
 
-	if (!templatesData) notFound()
+		if (!templatesData) notFound()
 
-	try {
 		const cookieStore = await cookies()
 		const sessionId = cookieStore.get("sessionId")
 		const getCacheData = await redis.get(params)
 		let templateDiscordJson = {} as DiscordTemplate
 
-		const searchVisit = visitHistory.some((el: HistoryVisitTemplate) => el.uuid === sessionId?.value)
+		const searchVisit = templatesData.visitHistory.some((el: VisitHistory) => el.uuid === sessionId?.value)
 
 		if (!searchVisit) {
 			const createData = await prisma.visitTemplateHistory.create({ data: { uuid: sessionId?.value, slugUrl: params } })
-			visitHistory = [...visitHistory, createData]
+			templatesData.visitHistory = [...templatesData.visitHistory, createData]
 		}
 
 		const discordTemplateCode = templatesData.link.split("https://discord.new/")[1]
@@ -52,9 +50,7 @@ export default async function LoadTemplatesData({ params }: Params) {
 			await redis.set(params, JSON.stringify({ templateDiscordJson }), "EX", timeLiveTemplate > 5 ? 172800 : 21600)
 		}
 
-		templatesData = { ...templatesData, historyLength: visitHistory.length }
-
-		return <TemplatesDetails data={templateDiscordJson} base={templatesData} />
+		return <TemplatesDetailsPage data={templateDiscordJson} base={templatesData} />
 	} catch (err: unknown) {
 		let message = "Unknown error occurred"
 

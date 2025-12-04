@@ -5,8 +5,11 @@ import { Channel } from "@/components/interfaces/templates/common"
 import Link from "next/link"
 import { ChannelIcon } from "../icons/channel"
 import { VoiceChannelIcon } from "../icons/voiceChannel"
+import { useGlobalContext } from "@/context/GlobalContext"
+import clsx from "clsx"
 
 export default function ChannelList({ dataTemplate, slugUrl }: { dataTemplate: DiscordTemplate; slugUrl: string }) {
+	const { state } = useGlobalContext()
 	const channelStyles: { [key: number]: string } = {
 		0: "flex items-center px-2 my-1.5 mb-2  font-medium text-channel-color    hover:bg-border-color  rounded-lg w-11/12 truncate", // Tekstowy
 		2: "flex items-center  px-2 my-2 text-channel-color    hover:bg-border-color  rounded-lg w-11/12 truncate", // Głosowy
@@ -22,11 +25,11 @@ export default function ChannelList({ dataTemplate, slugUrl }: { dataTemplate: D
 
 	return (
 		<>
-			<div className="flex flex-col bg-alt-background-color h-screen w-full shrink-0 transition-all max-lg:w-0 overflow-hidden">
+			<div className={clsx("flex flex-col bg-alt-background-color lg:h-screen max-lg:h-[calc(100vh-4rem)] w-full lg:flex-shrink-0 transition-all overflow-hidden z-10", !state.viewChannelPreview && "max-lg:hidden ")}>
 				<Link href={`/templates/${slugUrl}`}>
 					<div className="flex items-center justify-between p-3 h-16 border-b border-border-color">
 						<p className="text-lg w-11/12 truncate">{dataTemplate.serialized_source_guild.name}</p>
-						<ChevronDown className="text-gray-300" />
+						<ChevronDown className="text-gray-300 cursor-not-allowed" />
 					</div>
 				</Link>
 				<div className="p-3 w-full scrollbar scrollbar-thumb-alt-border-color scrollbar-track-border-color  overflow-y-auto">
@@ -63,9 +66,9 @@ export default function ChannelList({ dataTemplate, slugUrl }: { dataTemplate: D
 						</div>
 					</div>
 					<div className="flex items-center gap-3">
-						<Mic className="w-5 h-5 text-gray-300 font-semibold" />
-						<Headphones className="w-5 h-5 text-gray-300 font-semibold" />
-						<Settings className="w-5 h-5 text-gray-300 font-semibold" />
+						<Mic className="w-5 h-5 text-gray-300 font-semibold cursor-not-allowed" />
+						<Headphones className="w-5 h-5 text-gray-300 font-semibold cursor-not-allowed" />
+						<Settings className="w-5 h-5 text-gray-300 font-semibold cursor-not-allowed" />
 					</div>
 				</div>
 			</div>

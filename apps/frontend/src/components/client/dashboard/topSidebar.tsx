@@ -11,6 +11,7 @@ import NotificationsBox from "./notifications-ui/notificationsBox"
 export default function TopSidebar() {
 	const { data: session } = useSession()
 	const { user, toggleView, toggleViewNotification, showSidebar, numberPeopleOnline, setSettingsVisible } = useDashboardContext()
+	const isNotAllRead = user.notification.some(n => n.isRead === false)
 
 	return (
 		<>
@@ -47,7 +48,7 @@ export default function TopSidebar() {
 						<Button className="hover:bg-border-color px-2 rounded-lg cursor-pointer" onPress={toggleViewNotification}>
 							<Bell />
 						</Button>
-						{user.notification.length > 0 && <div className="absolute top-1 right-0.5 w-2.5 h-2.5 bg-primary-color rounded-full"></div>}
+						{isNotAllRead && <div className="absolute top-1 right-0.5 w-2.5 h-2.5 bg-primary-color rounded-full"></div>}
 
 						<NotificationsBox />
 					</div>

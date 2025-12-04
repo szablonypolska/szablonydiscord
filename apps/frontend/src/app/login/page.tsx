@@ -1,6 +1,6 @@
 "use client"
 
-import LoginForm from "@/components/client/login/loginForm"
+import LoginForm from "@/components/client/login/LoginInput"
 import LoginInfo from "@/components/client/login/LoginInfo"
 import { Button } from "@nextui-org/button"
 import { signIn } from "next-auth/react"

@@ -42,8 +42,8 @@ export default function OrderTimeline({ events }: { events: OrderEvent[] }) {
 	}
 
 	const steps = [
-		{ label: "Stworzono", subtitle: `${events[0] ? formatData(events[0].dateCreate) : "Brak danych"}`, icon: BadgePlus },
-		{ label: "Opłacone", subtitle: `${events[1] ? formatData(events[1].dateCreate) : ""}`, icon: CreditCard },
+		{ label: "Stworzono", subtitle: `${events[0] ? formatData(events[0].createdAt) : "Brak danych"}`, icon: BadgePlus },
+		{ label: "Opłacone", subtitle: `${events[1] ? formatData(events[1].createdAt) : ""}`, icon: CreditCard },
 		{ label: "Zakończono", subtitle: "", icon: Handshake },
 	]
 

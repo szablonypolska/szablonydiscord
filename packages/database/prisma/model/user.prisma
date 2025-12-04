@@ -4,6 +4,7 @@ model User {
   email             String?        @unique
   username          String
   avatar            String?
+  token             String?
   createdAt       DateTime       @default(now())
   register          Boolean        @default(false)
   reports           Int            @default(0)

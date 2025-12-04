@@ -1,9 +1,8 @@
 import { Offer } from "../offer/common"
 
-
 export interface Order {
 	id: string
-	dateCreate: Date
+	createdAt: Date
 	userId: string
 	paymentIntentId?: string
 	events?: OrderEvent[]
@@ -37,10 +36,9 @@ export interface Products {
 
 export interface OrderEvent {
 	id: number
-	orderCode: string
+	orderId: string
 	status: OrderStatus
-	dateCreate: Date
-	order?: Order
+	createdAt: Date
 }
 
 export enum OrderStatus {

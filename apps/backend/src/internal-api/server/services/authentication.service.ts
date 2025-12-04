@@ -3,10 +3,12 @@ import { PrismaService } from '@repo/shared';
 import { Client } from 'discord.js-selfbot-v13';
 import { TokenType } from '../interfaces/token.interface';
 import { DiscordServerCreatorService } from './discord-server-creator.service';
-import { WebsocketGateway } from 'src/websocket/websocket.gateway';
 import { Builder, BuilderProcessStatus } from '../interfaces/builder.interface';
 import { BuilderEmitterService } from './emitter/builder-emitter.service';
 import { BuilderCode } from '../interfaces/builder-code.interface';
+import { NotificationsService } from 'src/notifications/services/notifications.service';
+import { decrypt } from 'src/common/utils/encrypt/decrypt';
+import { User } from '../../../interfaces/user.interface';
 
 @Injectable()
 export class DiscordChooseToken {
@@ -15,8 +17,8 @@ export class DiscordChooseToken {
   constructor(
     private prisma: PrismaService,
     private createServer: DiscordServerCreatorService,
-    private websocket: WebsocketGateway,
     private builderEmitter: BuilderEmitterService,
+    private notifications: NotificationsService,
   ) {}
 
   async authentication(config: BuilderCode, data: Builder) {
@@ -33,52 +35,38 @@ export class DiscordChooseToken {
         data.sessionId,
         BuilderProcessStatus.IN_PROGRESS,
         findIdAuthentication.id,
+        data.userId,
       );
 
-      const allTokens: TokenType[] = await this.prisma.client.token.findMany(
-        {},
-      );
+      const user: User = await this.prisma.client.user.findUnique({
+        where: { userId: data.userId },
+      });
+      const decryptedToken = decrypt(user.token);
 
-      if (allTokens.length === 0) throw new Error('No token in base');
-
-      for await (const token of allTokens) {
-        try {
-          await this.client.login(token.token);
-          if (
-            this.client.user.username &&
-            this.client.guilds.cache.size < 100
-          ) {
-            await this.updateAuthenticationStatus(
-              data.sessionId,
-              BuilderProcessStatus.COMPLETED,
-              findIdAuthentication.id,
-            );
-
-            return this.createServer.createServer(token.token, config, data);
-          } else {
-            await this.prisma.client.token.delete({ where: { id: token.id } });
-          }
-
-          this.client.destroy();
-        } catch (error) {
-          console.log(error);
-          await this.prisma.client.token.delete({ where: { id: token.id } });
-          this.client.destroy();
+      try {
+        await this.client.login(decryptedToken);
+        if (this.client.user.username && this.client.guilds.cache.size < 100) {
+          await this.updateAuthenticationStatus(
+            data.sessionId,
+            BuilderProcessStatus.COMPLETED,
+            findIdAuthentication.id,
+            data.userId,
+          );
+          return this.createServer.createServer(decryptedToken, config, data);
         }
+      } catch (err) {
+        console.log(err);
+        this.client.destroy();
+        throw new Error('User token invalid');
       }
     } catch (error) {
       console.log(error);
-
-      this.builderEmitter.builderEmit(
+      await this.updateAuthenticationStatus(
         data.sessionId,
-        { id: findIdAuthentication.id, status: BuilderProcessStatus.FAILED },
-        'status_updated',
+        BuilderProcessStatus.FAILED,
+        findIdAuthentication.id,
+        data.userId,
       );
-
-      await this.prisma.client.builderStage.update({
-        where: { id: findIdAuthentication.id },
-        data: { status: 'FAILED', finishedAt: new Date() },
-      });
     }
   }
 
@@ -86,12 +74,17 @@ export class DiscordChooseToken {
     sessionId: string,
     status: BuilderProcessStatus,
     stageId: number,
+    userId: string,
   ) {
     this.builderEmitter.builderEmit(
       sessionId,
       { id: stageId, status },
       'status_updated',
     );
+
+    if (status === BuilderProcessStatus.FAILED) {
+      await this.notifications.sendErrorNotificationBuilder(userId);
+    }
 
     await this.prisma.client.builderStage.update({
       where: {

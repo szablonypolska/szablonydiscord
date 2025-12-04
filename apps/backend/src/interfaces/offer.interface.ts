@@ -7,4 +7,5 @@ export interface Offer {
   createdAt: Date;
   deliveryMethod: 'EMAIL' | 'AUTOMATIC';
   status: 'ACTIVE' | 'INACTIVE' | 'SOLD';
+  category: 'BASIC' | 'PREMIUM' | 'ADVANCED' | 'OTHER';
 }

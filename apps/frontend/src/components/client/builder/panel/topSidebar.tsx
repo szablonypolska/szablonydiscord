@@ -4,9 +4,11 @@ import { useBuilderContext } from "@/context/BuilderContext"
 import clsx from "clsx"
 import { Hash, FileText, Eye, FileCode } from "lucide-react"
 import Link from "next/link"
+import { BuilderStageType, BuilderProcessStatus } from "@prisma/client"
 
 export default function TopSidebarBuilder() {
 	const { builderData, currentPreview, setCurrentPreview } = useBuilderContext()
+	const checkIsAnalysisIsPass = builderData.builderProcess?.stages.find(stage => stage.type === BuilderStageType.ANALYSIS)
 
 	return (
 		<div className="sticky top-0 flex items-center justify-between bg-box-color h-14 border-b border-border-color w-full  max-lg:w-full p-5 z-10">
@@ -29,10 +31,12 @@ export default function TopSidebarBuilder() {
 					<span className=" text-sm">Struktura</span>
 				</button>
 
-				<Link href={`/builder/${builderData.sessionId}/materials`} className="flex items-center gap-2 w-fit py-1 px-2.5 rounded-lg cursor-pointer">
-					<FileText className="w-4 h-4" />
-					<span className=" text-sm">Materiały</span>
-				</Link>
+				{checkIsAnalysisIsPass && checkIsAnalysisIsPass.status === BuilderProcessStatus.COMPLETED && (
+					<Link href={`/builder/${builderData.sessionId}/materials`} className="flex items-center gap-2 w-fit py-1 px-2.5 rounded-lg cursor-pointer">
+						<FileText className="w-4 h-4" />
+						<span className=" text-sm">Materiały</span>
+					</Link>
+				)}
 			</div>
 		</div>
 	)

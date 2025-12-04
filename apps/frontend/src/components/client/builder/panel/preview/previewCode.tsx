@@ -66,7 +66,7 @@ export default function PreviewCode() {
 
 	return (
 		<div className="relative h-full w-full bg-alt-background-color scroll-smooth py-5">
-			{codeRef.current === "" && (
+			{code === "" && (
 				<div className="absolute inset-0 flex items-center justify-center bg-[#1a1a1a]">
 					<div className="text-center space-y-4  scale-110">
 						<div className="w-16 h-16 mx-auto relative">

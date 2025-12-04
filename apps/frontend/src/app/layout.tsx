@@ -7,6 +7,10 @@ import ShoppingCartPopup from "@/components/client/shoppingCart/ShoppingCartPopu
 import { Toaster } from "sonner"
 import { CircleAlert, CircleCheckBig } from "lucide-react"
 import SettingsFetcher from "@/components/client/settings/SettingsFetcher"
+import { User } from "@/components/interfaces/common"
+import { getServerSession } from "next-auth"
+import { authOptions } from "@/lib/authOptions"
+import { prisma } from "@repo/db"
 
 export const dynamic = "force-dynamic"
 
@@ -23,11 +27,59 @@ export const metadata: Metadata = {
 	},
 }
 
-export default function RootLayout({
+export default async function RootLayout({
 	children,
 }: Readonly<{
 	children: React.ReactNode
 }>) {
+	const session = await getServerSession(authOptions)
+	let user: User | null = null
+
+	if (session) {
+		user = await prisma.user.findUnique({
+			where: { userId: session?.user.id },
+			include: {
+				api: true,
+				settings: true,
+				limits: true,
+				notification: {
+					take: 4,
+					orderBy: {
+						createdAt: "desc",
+					},
+				},
+				builder: {
+					take: 5,
+					include: {
+						builderProcess: {
+							include: {
+								stages: {
+									include: {
+										channel: {
+											include: {
+												channel: true,
+											},
+										},
+										category: {
+											include: {
+												category: true,
+											},
+										},
+										role: {
+											include: {
+												role: true,
+											},
+										},
+									},
+								},
+							},
+						},
+					},
+				},
+			},
+		})
+	}
+
 	return (
 		<>
 			<html lang="pl">
@@ -51,7 +103,7 @@ export default function RootLayout({
 							error: <CircleAlert size="24" className="bg-darknes-error-color text-error-color p-1 rounded-lg flex-shrink-0" />,
 						}}
 					/>
-					<SeesionWrapper>
+					<SeesionWrapper initialUser={user}>
 						{" "}
 						<SettingsFetcher />
 						<HandleView />

@@ -22,7 +22,7 @@ export class UpdateIndexService {
 
     const index = new Document<SearchResult, true>({
       document: {
-        id: 'templateId',
+        id: 'id',
         field: ['title', 'description'],
         store: true,
       },
@@ -32,7 +32,7 @@ export class UpdateIndexService {
 
     const indexSuggestions = new Document<SearchResult, true>({
       document: {
-        id: 'templateId',
+        id: 'id',
         field: ['title'],
         store: true,
       },

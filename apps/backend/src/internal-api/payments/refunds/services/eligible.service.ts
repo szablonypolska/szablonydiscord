@@ -8,6 +8,7 @@ import { PrismaService } from '@repo/shared';
 import { Order } from '../../../../interfaces/order.interface';
 import { differenceInDays } from 'date-fns';
 import { selectEligibleProducts } from 'src/common/utils/selectEligibleProducts';
+import { OrderStatus } from '../../../../interfaces/order.interface';
 
 @Injectable()
 export class EligibleService {
@@ -21,7 +22,7 @@ export class EligibleService {
           products: {
             include: { offer: true, protections: true },
           },
-          events: { orderBy: { dateCreate: 'desc' }, take: 1 },
+          events: { orderBy: { createdAt: 'desc' }, take: 1 },
           promoCode: true,
         },
       });
@@ -30,7 +31,10 @@ export class EligibleService {
         throw new NotFoundException({ ok: false, message: 'No order found' });
       }
 
-      if (order.events[0].status !== 'PAID') {
+      if (
+        order.events[0].status !== OrderStatus.PAID &&
+        order.events[0].status !== OrderStatus.PARTIALLY_REFUNDED
+      ) {
         throw new BadGatewayException({
           ok: false,
           refundableProducts: [],
@@ -49,7 +53,7 @@ export class EligibleService {
       const selectedToRefund = selectEligibleProducts(order);
 
       const isExpired =
-        differenceInDays(new Date(), new Date(order.dateCreate)) > 7;
+        differenceInDays(new Date(), new Date(order.createdAt)) > 7;
 
       if (isExpired) {
         throw new BadGatewayException({

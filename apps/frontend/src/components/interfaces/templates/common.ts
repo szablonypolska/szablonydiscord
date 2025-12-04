@@ -1,3 +1,5 @@
+import { User } from "@/components/interfaces/common"
+
 export interface Channel {
 	name: string
 	type: number
@@ -37,11 +39,13 @@ export interface DiscordTemplate {
 	created_at: Date
 }
 
+type TemplateCategoryKey = keyof typeof TemplateCategory
+
 export interface BaseInforamtion {
 	templateId: string
 	title: string
 	description: string
-	categories: string
+	categories: TemplateCategoryKey
 	link: string
 	slugUrl: string
 	historyLength: number
@@ -59,27 +63,53 @@ export interface BaseInforamtion {
 }
 
 export interface Template {
-	id: number
-	templateId: string
-	slugUrl: string
+	id: string
 	link: string
+	slugUrl: string
 	categories: string
 	createdAt: Date
 	updatedAt: Date
 	title: string
+	familyId: string
+	isLatest: boolean
+	version: number
+	sourceServerId?: string
 	description?: string
+	authorId?: string
+	addingUserId?: string
+	code?: string
 	usageCount: number
+	channelCount: number
 	rolesCount: number
 	categoriesCount: number
-	channelsCount: number
-	clickButtonUse?: number
-	authorId: string
-	visitHistory: HistoryVisitTemplate[]
+	visitHistory: VisitHistory[]
+	author: User
+	addingUser: User
 }
 
-export interface HistoryVisitTemplate {
+export interface VisitHistory {
 	id: number
 	uuid: string
 	slugUrl: string
-	createdAt: Date
+	visitedAt: Date
+}
+
+export enum TemplateCategory {
+	ALL = "Wszystkie",
+	ROLEPLAY = "Roleplay",
+	THEMATIC = "Tematyczne",
+	ENGLISH = "Angielskie",
+	SOCIAL = "Społeczny",
+	NSFW = "NSFW",
+	GROUPS_OF_PEOPLE = "Grupy-ludzi",
+	GUILDS = "Gildie",
+	MEMES = "Memy",
+	SCAM = "Scam",
+	ANIME = "Anime",
+	GTA = "GTA",
+	DEV = "Devowe",
+	MINECRAFT = "Minecraft",
+	GAMING = "Gamingowe",
+	ADVERTISING = "Reklamowe",
+	AI = "AI",
 }

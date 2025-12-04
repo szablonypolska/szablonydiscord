@@ -26,4 +26,25 @@ export class NotificationsService {
       throw new InternalServerErrorException('server error');
     }
   }
+
+  async sendErrorNotificationBuilder(userId: string) {
+    try {
+      const data = await this.prisma.client.notification.create({
+        data: {
+          type: 'ERROR',
+          title: 'Wystąpił błąd podczas tworzenia serwera',
+          description:
+            'Niestety podczas tworzenia serwera wystąpił nieoczekiwany błąd. Prosimy spróbować ponownie później.',
+          userId,
+        },
+      });
+
+      this.websocket.server
+        .to(`userId:${userId}`)
+        .emit('notification', { data });
+    } catch (err) {
+      console.log(err);
+      throw new InternalServerErrorException('server error');
+    }
+  }
 }

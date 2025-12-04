@@ -3,7 +3,7 @@ import { DiscountProduct } from './discount.interface';
 
 export interface Order {
   id: string;
-  dateCreate: Date;
+  createdAt: Date;
   userId: string;
   paymentIntentId?: string;
   events?: OrderEvent[];
@@ -16,8 +16,10 @@ export interface Products {
   offerId: string;
   price: number;
   priceAfterDiscount: number;
-  refundPrice?: number;
   orderId: string;
+  refunded: boolean;
+  refundedAmount: number;
+  refunedDate?: Date;
   offer?: Offer;
   protections?: Protection[];
 }
@@ -26,13 +28,13 @@ export interface OrderEvent {
   id: number;
   orderCode: string;
   status: OrderStatus;
-  dateCreate: Date;
+  createdAt: Date;
   order?: Order;
 }
 
 export interface Protection {
   id: string;
-  dateCreate: Date;
+  createdAt: Date;
   idServer?: string;
   name?: string;
   type: 'BASIC' | 'PREMIUM' | 'ADVANCED' | 'OTHER';

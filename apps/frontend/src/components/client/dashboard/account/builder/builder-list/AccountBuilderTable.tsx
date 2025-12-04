@@ -1,97 +1,81 @@
 "use client"
 
-import { AlertCircle,  ArrowRight, ChevronDown, CircleCheck } from "lucide-react"
-import { useDashboardContext } from "@/context/DashboardContext"
-import { Builder, BuilderStageType, BuilderProcessStatus } from "@/components/interfaces/builder/common"
-import clsx from "clsx"
-import { format } from "date-fns/format"
-import { pl } from "date-fns/locale"
-import { AccountBuilderDetails } from "./AccountBuilderDetails"
+import { ArrowRight, ArrowLeft } from "lucide-react"
+import { Builder } from "@/components/interfaces/builder/common"
 import { useState } from "react"
 import React from "react"
+import { cn, Pagination, PaginationItemType, PaginationItemRenderProps } from "@heroui/react"
+import { AccountBuilderTableEmptyState } from "./AcountBuilderTableEmptyState"
+import { AccountBuilderTableBox } from "./AccountBuilderTableBox"
 
-export function AccountBuilderTable() {
-	const { user } = useDashboardContext()
-	const [data, setData] = useState<Builder | null>(null)
+export function AccountBuilderTable({ builder }: { builder?: Builder[] }) {
+	const [currentPage, setCurrentPage] = useState<number>(0)
+	console.log(currentPage)
+	const pageLength = Math.ceil((builder?.length || 0) / 4)
+	// const startIndex = currentPage * 2
+	// const endIndex = startIndex + 4
 
-	console.log(user)
+	const handlePageChange = (newPage: number) => {
+		setCurrentPage(newPage)
+		console.log(newPage)
+	}
+
+	const renderItem = ({ ref, key, value, isActive, onNext, onPrevious, setPage, className }: PaginationItemRenderProps) => {
+		if (value === PaginationItemType.NEXT) {
+			return (
+				<button key={key} className={cn(className, "w-9 h-9 bg-box-color-dashboard border border-border-color rounded-lg")} onClick={onNext}>
+					<ArrowRight size="15" />
+				</button>
+			)
+		}
+
+		if (value === PaginationItemType.PREV) {
+			return (
+				<button key={key} className={cn(className, " w-9 h-9 bg-box-color-dashboard border border-border-color rounded-lg")} onClick={onPrevious}>
+					<ArrowLeft size="15" />
+				</button>
+			)
+		}
+
+		if (value === PaginationItemType.DOTS) {
+			return (
+				<button key={key} className={className}>
+					...
+				</button>
+			)
+		}
+		return (
+			<button key={key} ref={ref} className={cn(className, "bg-box-color-dashboard border border-border-color w-8", isActive && "text-white bg-primary-color rounded-lg")} onClick={() => setPage(value)}>
+				{value}
+			</button>
+		)
+	}
 
 	return (
-		<div className="overflow-x-auto shadow-md sm:rounded-lg bg-box-color border border-border-color w-full flex-1  min-w-0 ">
-			<div className="pb-5 border-b border-border-color  p-5">
-				<p className="text-lg font-medium">Lista stworzonych buildów</p>
-			</div>
-			<table className="w-full  text-sm text-left mt-2 px-96 ">
-				<thead className="text-xs  uppercase text-text-color">
-					<tr>
-						<th scope="col" className="px-2 py-3 text-left w-52 pl-5">
-							Nazwa
-						</th>
-						<th scope="col" className="px-3 py-3">
-							ID sesji
-						</th>
-						<th scope="col" className="px-3 py-3">
-							Utworzony
-						</th>
-						<th scope="col" className="px-5 py-3">
-							Status
-						</th>
-						<th scope="col" className="px-1 py-3 max-lg:hidden">
-							Kanały
-						</th>
-						<th scope="col" className="px-1 py-3 max-lg:hidden">
-							Role
-						</th>
-						<th scope="col" className="px-1 py-3 text-right pr-5">
-							Akcje
-						</th>
-					</tr>
-				</thead>
-				<tbody>
-					{user.builder.map((builder: Builder) => {
-						const stage = builder.builderProcess?.stages.find(stage => stage.type === BuilderStageType.CHANNEL)
-						const hasError = builder.builderProcess?.stages.some(stage => stage.status === BuilderProcessStatus.FAILED)
-						const startedAT = builder.builderProcess?.startedAt ? new Date(builder.builderProcess.startedAt) : new Date()
-						return (
-							<React.Fragment key={builder.sessionId}>
-								<tr className="odd:bg-box-color/50 even:bg-box-color-dashboard border-b border-border-color text-ellipsis cursor-pointer " onClick={() => (data && data.sessionId === builder.sessionId ? setData(null) : setData(builder))}>
-									<th scope="row" className="flex items-center gap-2 py-4 font-medium    pl-5 ">
-										<div className={clsx(" p-1 rounded-lg w-fit", hasError ? "bg-error-color/30" : "bg-primary-dark")}>{hasError ? <AlertCircle className="w-4.5 h-4.5 text-error-color" /> : <CircleCheck className="w-4.5 h-4.5 text-primary-color" />}</div>
-										{builder.title || "Brak danych"}
-									</th>
-									<td className="px-3 py-4 text-gray-300 text-ellipsis ">{builder.sessionId}</td>
-									<td className="px-3 py-4 text-gray-300">{format(startedAT, "dd.MM.yyyy", { locale: pl })}</td>
-									<td className="px-3 py-4">
-										<div className={clsx("flex items-center gap-2 px-2.5 py-1 rounded-full w-fit", hasError ? "bg-error-color/20 text-error-color" : "bg-primary-dark text-primary-color")}>
-											{hasError ? <AlertCircle className="w-4 h-4 text-error-color" /> : <CircleCheck className="w-4 h-4 text-primary-color" />}
-											<p className="font-semibold text-xs">{hasError ? "Przerwane" : "Zakończono"}</p>
-										</div>
-									</td>
-									<td className="px-1 py-4 max-lg:hidden">
-										<div className="bg-sidebar-color p-1 px-3 font-medium rounded-lg w-fit">
-											<p>{stage?.channel?.channel.length || 0}</p>
-										</div>
-									</td>
-									<td className="px-1 py-4 max-lg:hidden">
-										<div className="bg-sidebar-color p-1 px-3 font-medium rounded-lg w-fit">
-											<p>{stage?.role?.role.length || 0}</p>
-										</div>
-									</td>
-									<td className="flex items-center justify-end gap-2 px-1 py-4 pr-5">
-										<button>
-											<ArrowRight className="w-5 h-5 text-text-color" />
-										</button>
-										<button>
-											<ChevronDown className="w-5 h-5 text-text-color" />
-										</button>
-									</td>
-								</tr>
-								{data && data.sessionId === builder.sessionId && <AccountBuilderDetails builder={data} />}
-							</React.Fragment>
-						)
+		<div className="flex flex-col flex-1 max-2xl:w-full">
+			<div className="shadow-md sm:rounded-lg bg-box-color border border-border-color  ">
+				<div className="pb-5 border-b border-border-color p-5">
+					<p className="text-lg font-medium">Lista stworzonych buildów</p>
+				</div>
+
+				<div className="grid grid-cols-8 text-xs uppercase text-text-color px-5 py-3 border-b border-border-color max-md:hidden">
+					<div className="text-left col-span-2">Nazwa</div>
+					<div className="px-2">ID sesji</div>
+					<div className="px-2">Utworzony</div>
+					<div className="px-2">Status</div>
+					<div className="max-lg:hidden px-6">Kanały</div>
+					<div className="max-lg:hidden px-2">Role</div>
+					<div className="text-right">Akcje</div>
+				</div>
+
+				<div className="flex flex-col">
+					{builder?.length === 0 && <AccountBuilderTableEmptyState />}
+					{builder?.map((builder: Builder) => {
+						return <AccountBuilderTableBox key={builder.sessionId} builder={builder} />
 					})}
-				</tbody>
-			</table>
+				</div>
+			</div>
+			<Pagination disableCursorAnimation showControls isDisabled={pageLength == 1} className="flex justify-end mt-5 gap-1 z-10 " initialPage={1} radius="sm" renderItem={renderItem} total={pageLength} variant="light" onChange={handlePageChange} />
 		</div>
 	)
 }

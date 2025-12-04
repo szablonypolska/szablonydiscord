@@ -44,7 +44,7 @@ export default function HeaderTemplates({ lastAddedTemplate }: { lastAddedTempla
 							</div>
 						</div>
 						<Link href={`${`/search?name=${text}`}`} className="max-sm:w-full">
-							<Button className="uppercase bg-primary-color rounded-xl text-sm font-[550] px-6 disabled:opacity-80 max-sm:w-full" disabled={!text}>
+							<Button className="uppercase bg-primary-color rounded-xl text-sm font-[550] px-6 disabled:opacity-80 max-sm:w-full cursor-pointer" disabled={!text}>
 								znajdź
 							</Button>
 						</Link>

@@ -7,7 +7,7 @@ import { useState } from "react"
 import { toast } from "sonner"
 import Link from "next/link"
 import { formatData } from "@/utils/formatedData"
-import updateApiKey from "@/lib/api/updateApiKeyService"
+import updateApiKey from "@/lib/dasboard/api/updateApiKeyService"
 
 interface CreateApiKeyProps {
 	user: User

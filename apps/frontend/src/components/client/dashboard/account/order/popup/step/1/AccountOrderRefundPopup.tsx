@@ -9,10 +9,10 @@ export default function AccountOrderRefundPopup({ eligibleProducts, selectedProd
 		(acc, product) => {
 			return {
 				price: acc.price + product.price,
-				refundPrice: acc.refundPrice + (product.refundPrice || 0),
+				refundedAmount: acc.refundedAmount + (product.refundedAmount || 0),
 			}
 		},
-		{ price: 0, refundPrice: 0 }
+		{ price: 0, refundedAmount: 0 }
 	)
 
 	return (
@@ -39,7 +39,7 @@ export default function AccountOrderRefundPopup({ eligibleProducts, selectedProd
 					<div className="w-full h-[1px] bg-border-color my-3 "></div>
 					<div className="flex items-center justify-between">
 						<p className="text-text-color">Wartość zwrotu (75%):</p>
-						<span className="font-semibold text-primary-color">{(totalAmount.refundPrice / 100).toFixed(2)} zł</span>
+						<span className="font-semibold text-primary-color">{(totalAmount.refundedAmount / 100).toFixed(2)} zł</span>
 					</div>
 				</div>
 			</div>

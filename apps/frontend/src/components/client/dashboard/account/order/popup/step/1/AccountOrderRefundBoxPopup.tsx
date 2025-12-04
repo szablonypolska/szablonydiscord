@@ -21,7 +21,7 @@ export default function AccountOrderRefundBoxPopup({ eligibleProducts, selectedP
 			{eligibleProducts &&
 				eligibleProducts?.map(product => {
 					const price = ((product.priceAfterDiscount || product.price) / 100).toFixed(2)
-					const refundedPrice = ((product.refundPrice || 0) / 100).toFixed(2)
+					const refundedPrice = ((product.refundedAmount || 0) / 100).toFixed(2)
 					return (
 						<div className={clsx("border border-border-color   p-4 rounded-lg cursor-pointer", selectedProducts.includes(product) && "border-primary-color")} onClick={() => selectProduct(product)} key={product.id}>
 							<div className="flex  items-center gap-3">

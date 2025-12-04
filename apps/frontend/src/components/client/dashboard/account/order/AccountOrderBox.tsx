@@ -1,7 +1,7 @@
 "use client"
 
 import { Package, Calendar, Clock, ChevronRight, Shield } from "lucide-react"
-import AccountOrderDetailsOrder from "./details/AccountOrderDetailsOrder"
+import AccountOrderDetailsOrder from "./details/AccountOrderDetails"
 import { Order } from "@/components/interfaces/order/common"
 import { format } from "date-fns/format"
 import { pl } from "date-fns/locale"
@@ -10,19 +10,15 @@ import clsx from "clsx"
 import { useState } from "react"
 
 export default function AccountOrderBox({ order }: { order: Order[] }) {
-	const [orderItem, setOrderItem] = useState<Order | null>(null)
-
-	const selectOrderItem = (orderId: string) => {
-		const selectOrder = order.find(item => item.id === orderId)
-		setOrderItem(selectOrder || null)
-	}
+	const [orders, setOrders] = useState<Order[]>(order)
+	const [selectedItem, setSelectedItem] = useState<string | null>(null)
 
 	return (
 		<>
-			{orderItem && <AccountOrderDetailsOrder order={orderItem} setOrderItem={setOrderItem} />}
+			{selectedItem && <AccountOrderDetailsOrder orders={orders} selectedItem={selectedItem} setSelectedItem={setSelectedItem} setOrders={setOrders} />}
 			<div className="flex flex-col gap-5 p-5">
-				{order.map(orderItem => {
-					const lastStatus = orderItem.events && orderItem.events.sort((a, b) => new Date(b.dateCreate).getTime() - new Date(a.dateCreate).getTime())[0]
+				{orders.map(orderItem => {
+					const lastStatus = orderItem.events && orderItem.events.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())[0]
 					const translatedEvents = translateOrderEvents(lastStatus?.status || "")
 					const priceAllProducts = orderItem.products?.reduce((acc, product) => {
 						const productPrice = product.priceAfterDiscount || product.price
@@ -32,7 +28,7 @@ export default function AccountOrderBox({ order }: { order: Order[] }) {
 					const formatedPrice = ((priceAllProducts || 0) / 100).toFixed(2)
 
 					return (
-						<button className="bg-background p-5 py-7 rounded-lg border border-border-color cursor-pointer transition-[border-color, box-shadow] hover:border-primary-color/50 hover:shadow-md" onClick={() => selectOrderItem(orderItem.id)} key={orderItem.id}>
+						<button className="bg-background p-5 py-7 rounded-lg border border-border-color cursor-pointer transition-[border-color, box-shadow] hover:border-primary-color/50 hover:shadow-md" onClick={() => setSelectedItem(orderItem.id)} key={orderItem.id}>
 							<div className="flex items-center justify-between">
 								<div className="flex items-center gap-3">
 									<div className="flex items-center justify-center bg-border-color h-12 w-12 rounded-lg">
@@ -43,7 +39,7 @@ export default function AccountOrderBox({ order }: { order: Order[] }) {
 										<div className="flex items-center gap-3 mt-1">
 											<div className="flex items-center gap-1.5">
 												<Calendar className="text-primary-color w-3.5 h-3.5" />
-												<span className="text-sm text-text-color/80">{format(orderItem.dateCreate, "d MMMM yyyy", { locale: pl })}</span>
+												<span className="text-sm text-text-color/80">{format(orderItem.createdAt, "d MMMM yyyy", { locale: pl })}</span>
 											</div>
 											<div className="flex items-center gap-1.5">
 												<Package className="text-primary-color w-3.5 h-3.5" />

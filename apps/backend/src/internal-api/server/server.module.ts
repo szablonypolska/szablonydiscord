@@ -16,9 +16,17 @@ import { BuilderEmitterService } from './services/emitter/builder-emitter.servic
 import { AiStreamService } from './services/analysis/ai-stream.service';
 import { AnalysisResultSaveAndEmitService } from './services/analysis/save.service';
 import { CreateCategoriesService } from './services/category/create-category.service';
+import { NotificationsModule } from 'src/notifications/notifications.module';
+import { HttpModule } from '@nestjs/axios';
 
 @Module({
-  imports: [WebsocketModule, SharedModule, LocalSharedModule],
+  imports: [
+    WebsocketModule,
+    SharedModule,
+    LocalSharedModule,
+    NotificationsModule,
+    HttpModule,
+  ],
   providers: [
     GenerateServerSchema,
     DiscordCreateCategoryService,

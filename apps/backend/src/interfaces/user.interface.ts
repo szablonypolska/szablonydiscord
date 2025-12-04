@@ -4,6 +4,7 @@ export interface User {
   email?: string;
   username: string;
   avatar?: string;
+  token?: string;
   createdAt: Date;
   register: boolean;
   reports: number;
@@ -19,6 +20,7 @@ export interface User {
   settings: Settings;
   roles: Role[];
   limits: Limits;
+  notification: Notification[];
 }
 
 export interface Settings {
@@ -39,4 +41,14 @@ export interface Limits {
   builderAiLimit: number;
   builderAiUsageMonthly: number;
   builderAiLimitMonthly: number;
+}
+
+export interface Notification {
+  id: number;
+  type: 'SUCCESS' | 'ERROR' | 'WARNING';
+  title: string;
+  description: string;
+  createdAt: Date;
+  isRead: boolean;
+  userId: string;
 }

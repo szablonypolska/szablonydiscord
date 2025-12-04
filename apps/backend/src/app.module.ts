@@ -21,6 +21,7 @@ import { ShoppingModule } from './internal-api/shopping-cart/shopping.module';
 import { RoleModule } from './internal-api/guard/role.module';
 import { SettingsModule } from './internal-api/settings/settings.module';
 import { RefundModule } from './internal-api/payments/refunds/refund.module';
+import { NotificationsApiModule } from './internal-api/notifications/notifications-api.module';
 
 @Module({
   imports: [
@@ -50,6 +51,7 @@ import { RefundModule } from './internal-api/payments/refunds/refund.module';
     RoleModule,
     SettingsModule,
     RefundModule,
+    NotificationsApiModule,
   ],
 })
 export class AppModule {}

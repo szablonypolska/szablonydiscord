@@ -13,7 +13,7 @@ interface Type {
 	title: string
 	id: number
 	usageCount: number
-	dateCreate: Date
+	createdAt: Date
 	templateId: string
 	waitElement?: number
 }
@@ -98,13 +98,13 @@ export default function ScanTemplateList({ templates, status }: Props) {
 						<p className="font-semibold">({scanTemplate})</p>
 					</div>
 					<div className="flex flex-col gap-3 mt-4">
-						{list.map(element => (
-							<motion.div key={`source1-${element.templateId}` || element.templateId} initial={{ opacity: 0, y: -20 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -50 }} transition={{ duration: 0.5 }} layout className={`flex items-center gap-3 bg-alt-background-color border border-border-color py-3 px-5 rounded-2xl  ${!element.title ? "hidden" : "block"}`}>
+						{list.map((element, index) => (
+							<motion.div key={index} initial={{ opacity: 0, y: -20 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -50 }} transition={{ duration: 0.5 }} layout className={`flex items-center gap-3 bg-alt-background-color border border-border-color py-3 px-5 rounded-2xl  ${!element.title ? "hidden" : "block"}`}>
 								<AnimatePresence>
 									<div className="text-gray-300 w-full">
 										<p className="truncate w-11/12">{element.title}</p>
 										<div className="w-full flex items-center justify-between">
-											<p className="font-semibold">{formatData(element.dateCreate)}</p>
+											<p className="font-semibold">{formatData(element.createdAt)}</p>
 											<p className="font-semibold">{element.usageCount} użyć</p>
 										</div>
 									</div>

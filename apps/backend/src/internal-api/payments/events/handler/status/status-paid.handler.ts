@@ -3,6 +3,7 @@ import { OnEvent } from '@nestjs/event-emitter';
 import { PrismaService } from '@repo/shared';
 import { MailService } from 'src/mail/services/mail.service';
 import { Products } from 'src/interfaces/order.interface';
+import { ProtectionType } from '../../../interfaces/paid.interface';
 
 @Injectable()
 export class StatusPaidHandler {
@@ -45,6 +46,8 @@ export class StatusPaidHandler {
         totalPrice / 100,
       );
 
+      console.log('zwraca', getOrder.products);
+
       await this.prisma.client.$transaction([
         this.prisma.client.order.update({
           where: { id: getOrder.id },
@@ -52,7 +55,7 @@ export class StatusPaidHandler {
         }),
         this.prisma.client.protection.createMany({
           data: getOrder.products.map((product: Products) => ({
-            type: product.offer.id.toUpperCase(),
+            type: product.offer.category.toUpperCase() as ProtectionType,
             orderProductId: product.id,
           })),
         }),

@@ -18,6 +18,7 @@ interface Props {
 export default function Progress({ Icon, title, description, width, active, success, error }: Props) {
 	const animation = useRef<HTMLDivElement>(null)
 	const widthNumber = active ? (error ? 100 : width) : 0
+	console.log("widthNumber", error)
 
 	useEffect(() => {
 		gsap.to(animation.current, {

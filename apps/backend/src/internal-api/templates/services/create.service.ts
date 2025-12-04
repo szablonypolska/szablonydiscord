@@ -13,6 +13,7 @@ export class TemplatesAddService {
     return this.handleTemplate.addTemplate(
       addTemplateDto.id,
       addTemplateDto.addingUserId,
+      addTemplateDto.skipJsonStructure || false,
     );
   }
 }

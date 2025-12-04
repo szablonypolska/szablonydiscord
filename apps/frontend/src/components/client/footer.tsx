@@ -10,15 +10,15 @@ export default function Footer() {
 			<div className="flex flex-col items-center max-w-(--breakpoint-2xl) mx-auto mt-10">
 				<Logo />
 
-				<ul className="flex items-center gap-5 mt-6">
-					<li className=" py-2 px-4 ">Skanowanie</li>
-					<li>
+				<ul className="flex items-center gap-5 mt-6 max-sm:overflow-x-auto max-sm:w-full hide-scrollbar snap-x snap-mandatory">
+					<li className="py-2 px-4 whitespace-nowrap">Skanowanie</li>
+					<li className="whitespace-nowrap">
 						<Link href="https://szablonydiscord.pl/templates">Szablony</Link>
 					</li>
-					<li>
+					<li className="whitespace-nowrap">
 						<Link href="https://szablonydiscord.pl/api/docs">API</Link>
 					</li>
-					<li>
+					<li className="whitespace-nowrap">
 						<Link href="https://szablonydiscord.pl">Home</Link>
 					</li>
 				</ul>
@@ -26,9 +26,9 @@ export default function Footer() {
 				<div className="w-full mt-5 ">
 					<div className="w-full h-0.5 bg-border-color"></div>
 					<div className="flex justify-center gap-5 my-6 max-sm:flex-col max-sm:items-center">
-						<div className="flex items-center gap-2">
+						<div className="flex items-center gap-2 max-sm9w-full">
 							<Mail className="w-5 h-5 text-primary-color" />
-							<p className="text-gray-300">szablonydiscord@gmail.com</p>
+							<p className="text-gray-300  truncate">szablonydiscord@gmail.com</p>
 						</div>
 						<div className="flex items-center gap-2">
 							<MapPin className="w-5 h-5 text-primary-color" />

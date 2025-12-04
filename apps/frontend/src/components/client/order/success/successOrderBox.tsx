@@ -59,7 +59,7 @@ export default function SuccessOrderBox({ order }: { order: Order }) {
 							</div>
 							<div className="flex items-center justify-between">
 								<p className="text-text-color text-sm">Data zakupu:</p>
-								<p className=" text-sm">{formatDate(new Date(order.dateCreate), "dd.MM.yyyy")}</p>
+								<p className=" text-sm">{formatDate(new Date(order.createdAt), "dd.MM.yyyy")}</p>
 							</div>
 							<div className="flex items-center justify-between">
 								<p className="text-text-color text-sm">Metoda płatności:</p>

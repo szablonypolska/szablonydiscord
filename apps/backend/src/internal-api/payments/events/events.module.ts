@@ -5,10 +5,16 @@ import { StatusPaidHandler } from './handler/status/status-paid.handler';
 import { PremiumOfferHandler } from './handler/offers/premium-offer.handle';
 import { MailModule } from 'src/mail/mail.module';
 import { WebsocketModule } from 'src/websocket/websocket.module';
-
+import { RefundUpdatedHandler } from './handler/status/refund.handler';
+import { NotificationsModule } from 'src/notifications/notifications.module';
 
 @Module({
-  imports: [SharedModule, MailModule, WebsocketModule],
-  providers: [BasicOfferHandler, StatusPaidHandler, PremiumOfferHandler],
+  imports: [SharedModule, MailModule, WebsocketModule, NotificationsModule],
+  providers: [
+    BasicOfferHandler,
+    StatusPaidHandler,
+    PremiumOfferHandler,
+    RefundUpdatedHandler,
+  ],
 })
 export class EventsModule {}

@@ -6,7 +6,7 @@ interface Params {
 
 export default async function Preview(props: { params: Promise<Params> }) {
 	const params = await props.params
-	const { id } = await params
+	const { id } = params
 
 	return (
 		<>

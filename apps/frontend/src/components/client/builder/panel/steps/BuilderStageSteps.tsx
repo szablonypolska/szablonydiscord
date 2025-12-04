@@ -31,11 +31,8 @@ export default function BuilderStageSteps() {
 				if (stage.type === BuilderStageType.CATEGORY) {
 					setProgress((stage.category?.category.length || 0 / (builderData.metrics?.totalCategories || 0)) * 100)
 				} else if (stage.type === BuilderStageType.CHANNEL) {
-					console.log("kanaly", stage.channel, builderData.metrics)
 					setProgress((stage.channel?.channel.length || 0 / (builderData.metrics?.totalChannels || 0)) * 100)
 				} else if (stage.type === BuilderStageType.ROLES) {
-					console.log(stage)
-					console.log("role", stage.role?.role.length, builderData.metrics?.totalRoles, (stage.role?.role.length || 0 / (builderData.metrics?.totalRoles || 0)) * 100)
 					setProgress(((stage.role?.role.length || 0) / (builderData.metrics?.totalRoles || 0)) * 100)
 				}
 			}
@@ -56,6 +53,8 @@ export default function BuilderStageSteps() {
 		const to = stage.type === BuilderStageType.CATEGORY ? builderData.metrics?.totalCategories : stage.type === BuilderStageType.CHANNEL ? builderData.metrics?.totalChannels : stage.type === BuilderStageType.ROLES ? builderData.metrics?.totalRoles : 0
 
 		const metadata = getStageMetadata(stage.type, from, to)
+
+		console.log("stage.status", stage.type, stage.status)
 
 		return <Progress Icon={metadata.Icon} title={metadata.title} description={metadata.description} width={stage.status === BuilderProcessStatus.COMPLETED ? 100 : progress} active={stage.status === BuilderProcessStatus.COMPLETED || stage.status === BuilderProcessStatus.IN_PROGRESS} success={progress === 100 || stage.status === BuilderProcessStatus.COMPLETED} error={stage.status === BuilderProcessStatus.FAILED} key={stage.id} />
 	})

@@ -6,7 +6,7 @@ import { CircleAlert } from "lucide-react"
 import { LoaderCircle } from "lucide-react"
 import { User } from "@/components/interfaces/common"
 import { toast } from "sonner"
-import createApiKey from "@/lib/api/createApiKeyService"
+import createApiKey from "@/lib/dasboard/api/createApiKeyService"
 
 interface CreateApiKeyProps {
 	setModal: React.Dispatch<React.SetStateAction<boolean>>
@@ -30,8 +30,6 @@ export function CreateApiKey({ setModal, user, updateUser }: CreateApiKeyProps) 
 				name,
 				requestCount: option,
 			})
-
-			console.log(newApiKey)
 
 			const userUpdate = {
 				...user,
@@ -60,14 +58,7 @@ export function CreateApiKey({ setModal, user, updateUser }: CreateApiKeyProps) 
 				<label htmlFor="name" className="text-sm font-semibold">
 					Nazwa klucza API
 				</label>
-				<input
-					id="name"
-					type="text"
-					value={name}
-					className={`w-full p-2 bg-box-color rounded-lg focus:ring-1 focus:ring-primary-color focus:outline-hidden border mt-1 ${error ? "border-error-color" : "border-border-color"}`}
-					placeholder="np. Production API Key"
-					onChange={e => setName(e.target.value)}
-				/>
+				<input id="name" type="text" value={name} className={`w-full p-2 bg-box-color rounded-lg focus:ring-1 focus:ring-primary-color focus:outline-hidden border mt-1 ${error ? "border-error-color" : "border-border-color"}`} placeholder="np. Production API Key" onChange={e => setName(e.target.value)} />
 				<div className={`${!error && "hidden"} flex items-center gap-1.5 text-error-color`}>
 					<CircleAlert size="15" className="font-bold" />
 					<p className="text-sm">Nazwa musi mieć od 15 do 30 znaków.</p>
@@ -77,11 +68,7 @@ export function CreateApiKey({ setModal, user, updateUser }: CreateApiKeyProps) 
 				<label htmlFor="options" className="text-sm font-semibold">
 					Miesięczny limit requestów
 				</label>
-				<select
-					id="options"
-					className="w-full p-2 bg-box-color rounded-lg focus:ring-2 focus:ring-primary-color focus:outline-hidden border-2 border-border-color mt-1"
-					value={option}
-					onChange={e => setOption(parseInt(e.target.value))}>
+				<select id="options" className="w-full p-2 bg-box-color rounded-lg focus:ring-2 focus:ring-primary-color focus:outline-hidden border-2 border-border-color mt-1" value={option} onChange={e => setOption(parseInt(e.target.value))}>
 					<option value="10000">10,000 requestów/miesiąc</option>
 					<option value="50000">50,000 requestów/miesiąc</option>
 					<option value="100000">100,000 requestów/miesiąc</option>
@@ -106,13 +93,10 @@ export function CreateApiKey({ setModal, user, updateUser }: CreateApiKeyProps) 
 				</div>
 			</div>
 			<div className="flex items-center gap-3 justify-end mt-5">
-				<Button className="hover:bg-border-color px-4 py-1 rounded-lg" onPress={() => setModal(false)}>
+				<Button className="hover:bg-border-color px-4 py-1 rounded-lg cursor-pointer" onPress={() => setModal(false)}>
 					Anuluj
 				</Button>
-				<Button
-					className="flex items-center px-4 py-1 bg-primary-color rounded-lg focus:ring-primary-color disabled:bg-disabled-button"
-					disabled={error || loader}
-					onPress={!error ? handleCreateApiKey : undefined}>
+				<Button className="flex items-center px-4 py-1 bg-primary-color rounded-lg focus:ring-primary-color disabled:bg-disabled-button cursor-pointer" disabled={error || loader} onPress={!error ? handleCreateApiKey : undefined}>
 					{loader && <LoaderCircle className="animate-spin" />}
 					{loader ? "Czekaj" : "Utwórz klucz"}
 				</Button>

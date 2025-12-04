@@ -1,18 +1,72 @@
 "use client"
 
-import { useState } from "react"
+import { Dispatch, useState } from "react"
 import { motion } from "framer-motion"
-import { X, ChevronRight, ChevronLeft } from "lucide-react"
-import { Products } from "@/components/interfaces/order/common"
+import { X, ChevronRight, ChevronLeft, Loader2 } from "lucide-react"
+import { Order, Products, OrderStatus } from "@/components/interfaces/order/common"
 import { AnimatePresence } from "framer-motion"
 import { Button } from "@nextui-org/button"
 import AccountOrderRefundPopup from "./step/1/AccountOrderRefundPopup"
 import clsx from "clsx"
 import AccountOrderRefundPopupAccept from "./step/2/AccountOrderRefundPopupAccept"
+import refundProcess from "@/lib/payments/refundsProcess"
+import { useSession } from "next-auth/react"
 
-export default function AccountOrderRefundPopupController({ eligibleProducts, setViewPopup, viewPopup }: { eligibleProducts: Products[] | null; setViewPopup: (view: boolean) => void; viewPopup: boolean }) {
+interface Props {
+	orderId: string
+	eligibleProducts: Products[] | null
+	setViewPopup: (view: boolean) => void
+	viewPopup: boolean
+	setOrders: Dispatch<React.SetStateAction<Order[]>>
+}
+
+export default function AccountOrderRefundPopupController({ orderId, eligibleProducts, setViewPopup, viewPopup, setOrders }: Props) {
 	const [currentStep, setCurrentStep] = useState<number>(1)
 	const [selectedProducts, setSelectedProducts] = useState<Products[]>([])
+	const [error, setError] = useState<boolean>(false)
+	const [loader, setLoader] = useState<boolean>(false)
+	const { data: session } = useSession()
+
+	const startRefundProcess = async () => {
+		if (!selectedProducts.length) return
+
+		try {
+			setError(false)
+			setLoader(true)
+			const productsId = selectedProducts.map(product => product.id)
+			console.log(session?.user.id || "", orderId, productsId)
+			const data = await refundProcess(session?.user.id || "", orderId, productsId)
+
+			if (!data.ok) return setError(true)
+
+			setOrders(prev =>
+				prev.map(order => {
+					if (order.id === orderId) {
+						return {
+							...order,
+							events: [
+								...(order.events || []),
+								{
+									id: Date.now() + Math.floor(Math.random() * 1000),
+									orderId: orderId,
+									status: OrderStatus.REFUND_PENDING,
+									createdAt: new Date(),
+								},
+							],
+						}
+					}
+					return order
+				})
+			)
+
+			setLoader(false)
+			setViewPopup(false)
+		} catch (err) {
+			setError(true)
+			setLoader(false)
+			console.log(err)
+		}
+	}
 
 	return (
 		<AnimatePresence>
@@ -49,6 +103,7 @@ export default function AccountOrderRefundPopupController({ eligibleProducts, se
 							</div>
 						</div>
 						{currentStep === 1 ? <AccountOrderRefundPopup eligibleProducts={eligibleProducts} selectedProducts={selectedProducts} setSelectedProducts={setSelectedProducts} /> : <AccountOrderRefundPopupAccept selectedProducts={selectedProducts} />}
+						{error && <p className="text-center text-sm text-red-500 mb-3">Wystąpił błąd podczas przetwarzania zwrotu. Spróbuj ponownie później.</p>}
 						<div className="flex items-center gap-3 px-5 pb-5">
 							<Button className="w-1/2 bg-box-color border border-border-color rounded-lg h-12 cursor-pointer" onPress={() => (currentStep === 1 ? setViewPopup(false) : setCurrentStep(1))}>
 								{currentStep === 1 ? (
@@ -59,15 +114,15 @@ export default function AccountOrderRefundPopupController({ eligibleProducts, se
 									</>
 								)}
 							</Button>
-							<Button className={clsx("w-1/2 bg-box-color border border-border-color rounded-lg h-12 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed", currentStep === 2 && "bg-primary-dark")} disabled={selectedProducts.length === 0} onPress={() => (currentStep === 1 ? setCurrentStep(2) : null)}>
-								{currentStep === 1 ? (
-									<>
-										Dalej <ChevronRight className="w-4 h-4" />
-									</>
-								) : (
-									<span>Potwierdź zwrot</span>
-								)}
-							</Button>
+							{currentStep === 2 ? (
+								<Button className="w-1/2 bg-box-color border border-border-color rounded-lg h-12 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed bg-primary-dark" disabled={loader} onPress={startRefundProcess}>
+									{loader ? <Loader2 className="animate-spin" /> : <span>Potwierdź zwrot</span>}
+								</Button>
+							) : (
+								<Button className="w-1/2 bg-box-color border border-border-color rounded-lg h-12 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed" disabled={selectedProducts.length === 0} onPress={() => setCurrentStep(2)}>
+									Dalej <ChevronRight className="w-4 h-4" />
+								</Button>
+							)}
 						</div>
 					</motion.div>
 				</>

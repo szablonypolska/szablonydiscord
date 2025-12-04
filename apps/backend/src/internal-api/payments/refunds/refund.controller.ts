@@ -4,12 +4,14 @@ import { EligibleDto } from './dto/eligible.dto';
 import { ValidationPipe } from '@nestjs/common';
 import { RefundService } from './services/refund.service';
 import { RefundDto } from './dto/refund.dto';
+import { TestService } from './services/test.service';
 
 @Controller('api/payments/refunds')
 export class RefundController {
   constructor(
     private readonly eligibleService: EligibleService,
     private readonly refundService: RefundService,
+    private readonly testService: TestService,
   ) {}
 
   @Get('/:orderId/eligible')
@@ -24,5 +26,10 @@ export class RefundController {
   @HttpCode(200)
   processRefund(@Body() data: RefundDto) {
     return this.refundService.processRefund(data);
+  }
+
+  @Get('/test')
+  getTestData() {
+    return this.testService.getTestData();
   }
 }

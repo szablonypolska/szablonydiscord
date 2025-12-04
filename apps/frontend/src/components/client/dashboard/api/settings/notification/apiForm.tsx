@@ -3,7 +3,7 @@ import { TypeState } from "../../../../../interfaces/api/common"
 import { Button } from "@nextui-org/button"
 import { CircleAlert } from "lucide-react"
 import ApiSettingsNotificationVariables from "./apiVariables"
-import testNotification from "@/lib/api/settings/testNotificationDiscord"
+import testNotification from "@/lib/dasboard/api/settings/testNotificationDiscord"
 import { toast } from "sonner"
 import { useDashboardContext } from "@/context/DashboardContext"
 

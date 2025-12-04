@@ -16,7 +16,7 @@ import clsx from "clsx"
 
 export default function OfferList({ offers }: { offers: Offer[] }) {
 	const { data: session } = useSession()
-	const { setCart } = useCartContext()
+	const { setCart, cart } = useCartContext()
 	const [offer, setOffer] = useState<null | Offer>(null)
 	const [loader, setLoader] = useState<{ load: boolean; id: string }>({ load: false, id: "" })
 	const [selectedOffer, setSelectedOffer] = useState<OfferCategory | "ALL">("ALL")
@@ -57,6 +57,7 @@ export default function OfferList({ offers }: { offers: Offer[] }) {
 					{offers &&
 						offers.map((offer, index) => {
 							const visible = selectedOffer === "ALL" || offer.category === selectedOffer
+							const checkIsInCart = cart?.some(item => item === offer.id)
 							return (
 								<motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ type: "spring", stiffness: 100, damping: 12, delay: index * 0.2 }} className={clsx("bg-box-color border rounded-lg border-border-color", offer.recommended && "border-primary-color", !visible && "hidden")} key={offer.id}>
 									<div className="relative overflow-hidden">
@@ -96,7 +97,7 @@ export default function OfferList({ offers }: { offers: Offer[] }) {
 													<button className="bg-border-color rounded-lg py-2 px-2.5 cursor-pointer h-10 " onClick={() => setOffer(offer)}>
 														<Eye className="w-5" />
 													</button>
-													<button className="flex items-center gap-0.5 bg-primary-color py-2 px-3 rounded-lg cursor-pointer h-10 disabled:opacity-50 disabled:cursor-not-allowed" onClick={() => safeProductToCart(offer.id)} disabled={loader.load}>
+													<button className="flex items-center gap-0.5 bg-primary-color py-2 px-3 rounded-lg cursor-pointer h-10 disabled:opacity-50 disabled:cursor-not-allowed" onClick={() => safeProductToCart(offer.id)} disabled={loader.load || checkIsInCart}>
 														{loader.load && loader.id === offer.id ? <Loader2 className="w-6 h-6 animate-spin" /> : <ShoppingCart className="w-5" />}
 														{loader.id !== offer.id && <span className="ml-2">Kup</span>}
 													</button>

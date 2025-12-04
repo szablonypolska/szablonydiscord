@@ -163,6 +163,7 @@ export class DiscordCreateChannelService {
               position: channel.position,
               private:
                 channel.permissionOverwrites.cache.size > 0 ? true : false,
+                
             },
           });
         } catch (error) {

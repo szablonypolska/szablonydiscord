@@ -10,7 +10,7 @@ import { useState } from "react"
 import { BuilderProcessStatus } from "@/components/interfaces/builder/common"
 
 export default function SidebarFooter() {
-	const { builderData, setBuilderData, setPopup } = useBuilderContext()
+	const { builderData, setBuilderData } = useBuilderContext()
 	const [loader, setLoader] = useState<boolean>(false)
 	const { data: session } = useSession()
 
@@ -21,17 +21,20 @@ export default function SidebarFooter() {
 			setLoader(true)
 			const data = await builderPublishApi(builderData.sessionId, session?.user.id || "")
 
-			setBuilderData(prev => ({
-				...prev,
-				templateUrl: data.id,
-			}))
-
-			setLoader(false)
-			setPopup({ position: data.position, waitingInQueue: data.waitingInQueue })
+			if (data.ok) {
+				setBuilderData(prev => ({
+					...prev,
+					templateUrl: data.slugUrl,
+				}))
+				setLoader(false)
+			}
 		} catch (err) {
 			console.log(err)
+			setLoader(false)
 		}
 	}
+
+	console.log("builderData in sidebar footer", builderData)
 
 	return (
 		<div className="">
@@ -42,12 +45,7 @@ export default function SidebarFooter() {
 					<p className="text-error-color text-sm mt-0.5">Wystąpił błąd podczas generowania, spróbuj ponownie później.</p>
 				</div>
 			)}
-			{!builderData.templateCode && !hasError && (
-				<div className="flex items-center gap-3 rounded-lg ">
-					<Loader2 className="animate-spin w-5 h-5 text-primary-color" />
-					<p className="text-sm text-text-color">Trwa generowanie szablonu</p>
-				</div>
-			)}
+
 			{builderData.templateCode && !builderData.templateUrl && (
 				<Button className="w-full rounded-xl bg-border-color opacity-90 hover:opacity-100 disabled:opacity-80 cursor-pointer" onPress={publishTemplate} disabled={loader}>
 					{!loader && (

@@ -1,14 +1,12 @@
 "use client"
 
 import { BuilderStageType } from "@/components/interfaces/builder/common"
-import { useDashboardContext } from "@/context/DashboardContext"
 import { useMemo } from "react"
+import { Builder } from "@/components/interfaces/builder/common"
 
-export function AccountBuilderBox() {
-	const { user } = useDashboardContext()
-
+export function AccountBuilderBox({ builder }: { builder?: Builder[] }) {
 	const calculateData = useMemo(() => {
-		const totalRolesAndChannels = user.builder.reduce(
+		const totalRolesAndChannels = builder?.reduce(
 			(acc, builder) => {
 				const stages = builder.builderProcess?.stages || []
 
@@ -25,33 +23,33 @@ export function AccountBuilderBox() {
 				return acc
 			},
 			{ roles: 0, channels: 0, failedRate: 0 }
-		)
+		) || { roles: 0, channels: 0, failedRate: 0 }
 
 		return totalRolesAndChannels
-	}, [user.builder])
+	}, [builder])
 
 	const boxes: { title: string; description: string; value: number | string; badge: string }[] = [
 		{
 			title: "Łącznie klonów",
 			description: "Wszystkie utworzone buildery AI",
-			value: user.builder.length,
+			value: builder?.length || 0,
 			badge: "Wszystkie",
 		},
 		{
 			title: "Wskaźnik sukcesu",
-			description: `${calculateData.failedRate} nieudanych, ${user.builder.length - calculateData.failedRate} udanych`,
-			value: user.builder.length > 0 ? `${Math.round(((user.builder.length - calculateData.failedRate) / user.builder.length) * 100)}%` : "0%",
+			description: `${calculateData.failedRate} nieudanych, ${(builder?.length || 0) - calculateData.failedRate} udanych`,
+			value: (builder?.length || 0) > 0 ? `${Math.round((((builder?.length || 0) - calculateData.failedRate) / (builder?.length || 1)) * 100)}%` : "0%",
 			badge: "Wskaźnik",
 		},
 		{
 			title: "Utworzone role",
-			description: `Średnio na jeden build przypada ${Math.round(calculateData.roles / user.builder.length)} ról`,
+			description: `Średnio na jeden build przypada ${Math.round(calculateData.roles / (builder?.length || 0)) || 0} ról`,
 			value: calculateData.roles,
 			badge: "Wszystkie",
 		},
 		{
-			title: "Łącznie klonów",
-			description: `Średnio na jeden build przypada ${Math.round(calculateData.channels / user.builder.length)} kanałów`,
+			title: "Utworzone kanały",
+			description: `Średnio na jeden build przypada ${Math.round(calculateData.channels / (builder?.length || 0)) || 0} kanałów`,
 			value: calculateData.channels,
 			badge: "Wszystkie",
 		},

@@ -3,7 +3,7 @@ import { Products } from "@/components/interfaces/order/common"
 
 export default function AccountOrderRefundPopupAccept({ selectedProducts }: { selectedProducts: Products[] }) {
 	const totalAmount = selectedProducts.reduce((acc, product) => {
-		acc += product.refundPrice || product.priceAfterDiscount || product.price
+		acc += product.refundedAmount || product.priceAfterDiscount || product.price
 		return acc
 	}, 0)
 	const formattedTotalAmount = (totalAmount / 100).toFixed(2)
@@ -24,7 +24,7 @@ export default function AccountOrderRefundPopupAccept({ selectedProducts }: { se
 				</div>
 				<div className="flex flex-col gap-3 mt-3 w-full">
 					{selectedProducts.map(product => {
-						const productPrice = ((product.refundPrice || product.priceAfterDiscount || product.price) / 100).toFixed(2)
+						const productPrice = ((product.refundedAmount || product.priceAfterDiscount || product.price) / 100).toFixed(2)
 
 						return (
 							<div className="flex items-center justify-between bg-background p-3 rounded-lg border border-border-color w-full" key={product.id}>

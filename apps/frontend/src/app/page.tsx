@@ -6,8 +6,16 @@ import CallToAction from "@/components/client/landing-page/callToAction"
 import EmblaCarousel from "@/components/client/landing-page/opinion/emblaCarousel"
 import Footer from "@/components/client/footer"
 import Statistics from "@/components/client/landing-page/statistics"
+import { LatestTemplatesSection } from "@/components/client/landing-page/newTemplates/LatestTemplatesSection"
+import { prisma } from "@repo/db"
+import { Template } from "@/components/interfaces/templates/common"
 
-export default function Home() {
+export default async function Home() {
+	const templates: Template[] = await prisma.templates.findMany({
+		orderBy: { createdAt: "desc" },
+		take: 20,
+	})
+
 	return (
 		<>
 			<div className="max-w-(--breakpoint-2xl) mx-auto w-full py-4 p-2">
@@ -15,6 +23,8 @@ export default function Home() {
 				<Image src={decorationElement} alt="dekoracyjny element" className="absolute top-0 left-0 z-10 pointer-events-none"></Image>
 				<HeroSection />
 				<Statistics />
+				<LatestTemplatesSection templates={templates} />
+
 				<EmblaCarousel slides={[1, 2, 3, 4, 5, 6, 7, 8, 9]} />
 				<CallToAction />
 			</div>

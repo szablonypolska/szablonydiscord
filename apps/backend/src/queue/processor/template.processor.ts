@@ -1,6 +1,6 @@
 import { Processor, WorkerHost } from '@nestjs/bullmq';
 import { Job } from 'bullmq';
-import { PrismaService } from '@repo/shared'
+import { PrismaService } from '@repo/shared';
 import { generateText } from 'ai';
 import { google } from '@ai-sdk/google';
 import prompt from './instructions/ai-prompt.json';
@@ -11,6 +11,7 @@ import { User } from '../../interfaces/user.interface';
 import { CACHE_MANAGER, Cache } from '@nestjs/cache-manager';
 import { Inject } from '@nestjs/common';
 import { NotificationsService } from 'src/notifications/services/notifications.service';
+import { Template, TemplateCategory } from 'src/interfaces/template.interface';
 
 @Processor('addTemplateQueue', { concurrency: 1 })
 export class TemplateConsumer extends WorkerHost {
@@ -24,13 +25,21 @@ export class TemplateConsumer extends WorkerHost {
   }
 
   async process(job: Job): Promise<any> {
-    const { templateId, slugUrl, templateData, addingUserId, addingUserEmail } =
-      job.data;
+    const {
+      id,
+      slugUrl,
+      templateData,
+      addingUserId,
+      addingUserEmail,
+      skipJsonStructure,
+    } = job.data;
 
     try {
       let user: User | null = await this.prisma.client.user.findUnique({
         where: { userId: templateData.creator.id },
       });
+
+      console.log('USER', user);
 
       if (!user) {
         user = await this.prisma.client.user.create({
@@ -43,13 +52,13 @@ export class TemplateConsumer extends WorkerHost {
         });
       }
 
-      const promptGenerate = await generateText({
-        model: google('gemini-2.5-flash'),
+      // const promptGenerate = await generateText({
+      //   model: google('gemini-2.5-flash'),
 
-        prompt: `${prompt.prompt}, oto nazwa tego szablonu ${templateData.name}, oto kanały i kategorie ${JSON.stringify(templateData.serialized_source_guild.channels)}, role ${JSON.stringify(templateData.serialized_source_guild.roles)}, `,
-      });
+      //   prompt: `${prompt.prompt}, oto nazwa tego szablonu ${templateData.name}, oto kanały i kategorie ${JSON.stringify(templateData.serialized_source_guild.channels)}, role ${JSON.stringify(templateData.serialized_source_guild.roles)}, pominac strukture json: ${skipJsonStructure} `,
+      // });
 
-      const category = this.determinateCategory(promptGenerate.text);
+      // const category = this.determinateCategory(promptGenerate.text);
 
       const categoriesCount =
         templateData.serialized_source_guild.channels.reduce((acc, channel) => {
@@ -57,15 +66,25 @@ export class TemplateConsumer extends WorkerHost {
           return acc;
         }, 0);
 
+      const familyData = await this.checkIsTemplateHaveFamily(
+        templateData.description,
+        id,
+      );
+
+      console.log('FAMILY DATA', familyData);
+
       await this.prisma.client.templates.create({
         data: {
-          templateId,
-          categories: category.category,
+          id,
+          categories: TemplateCategory.ALL,
           link: `https://discord.new/${templateData.code}`,
           slugUrl,
           title: templateData.name,
-          description: category.description,
-          code: category.code,
+          description: 'Wszystkie',
+          code: '{}',
+          familyId: familyData.familyId,
+          isLatest: true,
+          version: familyData.version,
           sourceServerId: templateData.description,
           authorId: templateData.creator.id,
           addingUserId,
@@ -80,7 +99,7 @@ export class TemplateConsumer extends WorkerHost {
 
       await this.mailService.sendTemplateAddedEmail(
         addingUserEmail,
-        templateId,
+        id,
         slugUrl,
       );
 
@@ -100,27 +119,54 @@ export class TemplateConsumer extends WorkerHost {
     }
   }
 
-  private determinateCategory(text: string) {
+  // private determinateCategory(text: string) {
+  //   try {
+  //     const [firstCategory, description, json] = text
+  //       .split('<>')
+  //       .map((el) => el.trim());
+
+  //     const firstCategoryVaild = categoriesTemplate.includes(firstCategory);
+
+  //     const categories = [firstCategory];
+
+  //     const details: DetailsTemplates = {
+  //       category: categories.join(','),
+  //       description: description ? description : 'Brak opisu szablonu',
+  //       code: JSON.stringify(json),
+  //     };
+
+  //     if (!firstCategoryVaild) {
+  //       details.category = 'Wszystkie';
+  //       return details;
+  //     }
+  //     if (firstCategoryVaild) return details;
+  //   } catch (err) {
+  //     console.log(err);
+  //     throw err;
+  //   }
+  // }
+
+  private async checkIsTemplateHaveFamily(
+    sourceServerId: string,
+    id: string,
+  ): Promise<{ familyId: string; version: number }> {
     try {
-      const [firstCategory, description, json] = text
-        .split('<>')
-        .map((el) => el.trim());
+      const family: Template | null =
+        await this.prisma.client.templates.findFirst({
+          where: { sourceServerId },
+          orderBy: { version: 'desc' },
+        });
 
-      const firstCategoryVaild = categoriesTemplate.includes(firstCategory);
+      console.log('FAMILY', family);
 
-      const categories = [firstCategory];
+      if (!family) return { familyId: id, version: 1 };
 
-      const details: DetailsTemplates = {
-        category: categories.join(','),
-        description: description ? description : 'Brak opisu szablonu',
-        code: JSON.stringify(json),
-      };
+      await this.prisma.client.templates.update({
+        where: { id: family.id },
+        data: { isLatest: false },
+      });
 
-      if (!firstCategoryVaild) {
-        details.category = 'Wszystkie';
-        return details;
-      }
-      if (firstCategoryVaild) return details;
+      return { familyId: family.familyId, version: family.version + 1 };
     } catch (err) {
       console.log(err);
       throw err;

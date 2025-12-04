@@ -1,11 +1,9 @@
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { GenerateServerSchemaDto } from '../dto/generate-server-schema.dto';
 import { PrismaService } from '@repo/shared';
 import ShortUniqueId from 'short-unique-id';
 import { DiscordAiGeneratorService } from './analysis/analysis.service';
-import { Builder } from '../interfaces/builder.interface';
 import { BuilderStageType } from '@prisma/client';
-import { template } from 'handlebars';
 import { User } from '../../../interfaces/user.interface';
 
 @Injectable()
@@ -25,15 +23,16 @@ export class GenerateServerSchema {
       });
 
       if (!user)
-        throw new Error({ ok: false, message: 'User not found' }.toString());
+        throw new BadRequestException({ ok: false, message: 'User not found' });
 
       if (
         user.limits.builderAiUsage >= user.limits.builderAiLimit ||
         user.limits.builderAiUsageMonthly >= user.limits.builderAiLimitMonthly
       ) {
-        throw new Error(
-          { ok: false, message: 'AI Builder limit reached' }.toString(),
-        );
+        throw new BadRequestException({
+          ok: false,
+          message: 'AI Builder limit reached',
+        });
       }
 
       const types = Object.values(BuilderStageType);
@@ -76,6 +75,7 @@ export class GenerateServerSchema {
       return { id: create.sessionId };
     } catch (err) {
       console.log(err);
+      throw err;
     }
   }
 }

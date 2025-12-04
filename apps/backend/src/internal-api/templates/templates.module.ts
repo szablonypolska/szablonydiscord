@@ -11,6 +11,7 @@ import { SuggestService } from './services/suggest.service';
 import { QueueModule } from '../../queue/queue.module';
 import { LocalSharedModule } from 'src/shared/shared.module';
 import { TemplatesSimiliarService } from './services/similiar.service';
+import { TemplateFamilyService } from './services/family.service';
 
 @Module({
   imports: [
@@ -28,6 +29,7 @@ import { TemplatesSimiliarService } from './services/similiar.service';
     SearchService,
     VerifyTemplateService,
     SuggestService,
+    TemplateFamilyService,
   ],
   controllers: [TemplateController],
 })

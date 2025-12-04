@@ -1,6 +1,6 @@
 model Order {
   id              String         @id @unique
-  dateCreate      DateTime       @default(now())
+  createdAt      DateTime       @default(now())
   userId          String
   paymentIntentId String?
   promoCodeId     String?
@@ -30,7 +30,7 @@ model OrderEvent {
   id         Int         @id @default(autoincrement())
   orderId    String
   status     OrderStatus @default(NEW)
-  dateCreate DateTime    @default(now())
+  createdAt DateTime    @default(now())
   order      Order       @relation(fields: [orderId], references: [id], onDelete: Cascade, onUpdate: Cascade)
 
   @@index([orderId])
@@ -38,7 +38,7 @@ model OrderEvent {
 
 model Protection {
   id             String         @id @default(uuid())
-  dateCreate     DateTime       @default(now())
+  createdAt     DateTime       @default(now())
   idServer       String?
   name           String?
   type           ProtectionType

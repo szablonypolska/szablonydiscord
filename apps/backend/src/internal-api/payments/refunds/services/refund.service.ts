@@ -9,12 +9,14 @@ import { Order, Products } from '../../../../interfaces/order.interface';
 import { selectEligibleProducts } from 'src/common/utils/selectEligibleProducts';
 import { ConfigService } from '@nestjs/config';
 import Stripe from 'stripe';
+import { NotificationsService } from 'src/notifications/services/notifications.service';
 
 @Injectable()
 export class RefundService {
   constructor(
     private prisma: PrismaService,
     private configService: ConfigService,
+    private notification: NotificationsService,
   ) {
     this.stripe = new Stripe(
       configService.get<string>('SECRET_API_KEY_STRIPE'),
@@ -30,7 +32,7 @@ export class RefundService {
         include: {
           products: { include: { offer: true, protections: true } },
           promoCode: true,
-          events: { orderBy: { dateCreate: 'desc' }, take: 1 },
+          events: { orderBy: { createdAt: 'desc' }, take: 1 },
         },
       });
       if (!order) {
@@ -43,11 +45,7 @@ export class RefundService {
         });
       }
 
-      const eligibleStatuses = [
-        'PARTIALLY_REFUNDED',
-        'REFUNDED',
-        'REFUND_PENDING',
-      ];
+      const eligibleStatuses = ['REFUNDED', 'REFUND_PENDING'];
 
       if (eligibleStatuses.includes(order.events[0].status)) {
         throw new BadGatewayException({
@@ -69,12 +67,16 @@ export class RefundService {
       const productToRefound = selectedToRefund
         .map((product) => {
           const selectProduct = data.orderProductIds.filter(
-            (id) => id === product.offerId,
+            (id) => id === product.id,
           );
 
           return selectProduct.length > 0 ? product : null;
         })
         .filter((p) => p !== null);
+
+      console.log(productToRefound, 'productToRefound');
+      console.log(data.orderProductIds, 'data.orderProductIds');
+      console.log(selectedToRefund, 'selectedToRefund');
 
       if (selectedToRefund.length === 0) {
         throw new BadGatewayException({
@@ -96,13 +98,19 @@ export class RefundService {
         data: { orderId: order.id, status: 'REFUND_PENDING' },
       });
 
-      const test = await this.createRefund(
+      await this.createRefund(
         order.paymentIntentId,
         priceToRefund,
         productToRefound,
+        order.id,
       );
 
-      console.log(test);
+      this.notification.sendNotification({
+        type: 'SUCCESS',
+        title: 'Zwrot  przyjęty',
+        description: `Twój zwrot pieniędzy za zamówienie ${order.id} został przyjęty i jest w trakcie realizacji.`,
+        userId: '541526393641500675',
+      });
 
       return { ok: true, amount: priceToRefund };
     } catch (err) {
@@ -114,22 +122,25 @@ export class RefundService {
   private calculateFinallPriceToRefund(products: Products[]) {
     let total = 0;
     products.forEach((products) => {
-      total += products.refundPrice || 0;
+      total += products.refundedAmount || 0;
     });
 
     return total;
   }
 
   private async createRefund(
-    orderId: string,
+    orderPaymentIntentId: string,
     amount: number,
     products: Products[],
+    orderId: string,
   ) {
     try {
+      console.log('Creating refund in Stripe...', amount, products.length);
+
       const refund = await this.stripe.refunds.create({
         amount,
-        payment_intent: orderId,
-        metadata: { products: products.map((p) => p.id).join(', ') },
+        payment_intent: orderPaymentIntentId,
+        metadata: { products: products.map((p) => p.id).join(', '), orderId },
         reason: 'requested_by_customer',
       });
 

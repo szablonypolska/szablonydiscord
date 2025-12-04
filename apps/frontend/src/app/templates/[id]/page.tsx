@@ -1,4 +1,4 @@
-import TemplatesLoading from "@/components/client/templates/details/templatesLoading"
+import TemplatesLoading from "@/components/client/templates/details/TemplatesLoading"
 import LoadTemplatesData from "@/components/server/templates/loadTemplatesData"
 import { Suspense } from "react"
 import { prisma } from "@repo/db"
@@ -23,7 +23,7 @@ export async function generateMetadata({ params }: { params: Promise<Params> }):
 
 export default async function Templates(props: { params: Promise<Params> }) {
 	const params = await props.params
-	const { id } = await params
+	const { id } = params
 
 	return (
 		<>

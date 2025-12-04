@@ -53,25 +53,27 @@ export function TemplatesUserCreator({ author, addingUser }: PropsCreator) {
 								</div>
 							</div>
 						</Link>
-						<div className="w-full h-[1px] bg-border-color my-2"></div>
-						<Link href={`/profile/${addingUser.userId}`}>
-							<div className="">
-								<p className="text-xs text-text-color">Osoba dodająca</p>
-								{!addingUser.userId && <p className="text-sm font-semibold">Brak danych</p>}
-								{addingUser.userId && (
-									<div className="flex items-center gap-2 mt-2">
-										<div className="relative flex items-center justify-center w-11 h-11">
-											<Image src={`${addingUser.avatar ? `https://cdn.discordapp.com/avatars/${addingUser.userId}/${addingUser.avatar}.jpg` : discordUserAvatar.src}`} width={0} height={0} alt="discord user avatar" className="w-9 h-9 rounded-full" />
-											<div className="absolute inset-0 border-2 border-advice-bot rounded-full"></div>
+						{addingUser && <div className="w-full h-[1px] bg-border-color my-2"></div>}
+						{addingUser && addingUser.userId && (
+							<Link href={`/profile/${addingUser.userId}`}>
+								<div className="">
+									<p className="text-xs text-text-color">Osoba dodająca</p>
+									{!addingUser.userId && <p className="text-sm font-semibold">Brak danych</p>}
+									{addingUser.userId && (
+										<div className="flex items-center gap-2 mt-2">
+											<div className="relative flex items-center justify-center w-11 h-11">
+												<Image src={`${addingUser.avatar ? `https://cdn.discordapp.com/avatars/${addingUser.userId}/${addingUser.avatar}.jpg` : discordUserAvatar.src}`} width={0} height={0} alt="discord user avatar" className="w-9 h-9 rounded-full" />
+												<div className="absolute inset-0 border-2 border-advice-bot rounded-full"></div>
+											</div>
+											<div className="flex flex-col">
+												<p className="font-medium">{addingUser.username}</p>
+												<span className="text-xs text-text-color">ID: {addingUser.userId}</span>
+											</div>
 										</div>
-										<div className="flex flex-col">
-											<p className="font-medium">{addingUser.username}</p>
-											<span className="text-xs text-text-color">ID: {addingUser.userId}</span>
-										</div>
-									</div>
-								)}
-							</div>
-						</Link>
+									)}
+								</div>
+							</Link>
+						)}
 					</motion.div>
 				)}
 			</AnimatePresence>

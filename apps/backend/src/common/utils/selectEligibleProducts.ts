@@ -21,34 +21,36 @@ export const selectEligibleProducts = (order: Order) => {
     0,
   );
 
-  const totalPriceAfterDiscount = selectedToRefund.map((product) => {
+  const checkIsRefunded = selectedToRefund.filter((p) => !p.refunded);
+
+  const totalPriceAfterDiscount = checkIsRefunded.map((product) => {
     if (order.promoCode && order.promoCode.scope === 'CART') {
       const totalDiscountValue = totalPrice * (order.promoCode.discount / 100);
       const productDiscount = totalDiscountValue * (product.price / totalPrice);
-      const refundPrice = product.price - productDiscount;
-      const refundPriceInZloty =
+      const refundedAmount = product.price - productDiscount;
+      const refundedAmountInZloty =
         (product.price / totalPrice) * order.promoCode.discount;
 
       return {
         ...product,
-        refundPrice:
+        refundedAmount:
           order.promoCode.type === 'PERCENTAGE'
-            ? Math.round(refundPrice)
-            : Math.round(product.price - refundPriceInZloty),
+            ? Math.round(refundedAmount)
+            : Math.round(product.price - refundedAmountInZloty),
       };
     }
     return {
       ...product,
-      refundPrice: product.priceAfterDiscount || product.price,
+      refundedAmount: product.priceAfterDiscount || product.price,
     };
   });
 
   const priceAfterCommission = totalPriceAfterDiscount.map((product) => {
-    const priceAfterCommission = product.refundPrice * (1 - 0.25) - 125;
+    const priceAfterCommission = product.refundedAmount * (1 - 0.25) - 125;
 
     return {
       ...product,
-      refundPrice: Math.round(priceAfterCommission),
+      refundedAmount: Math.round(priceAfterCommission),
     };
   });
 

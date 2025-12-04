@@ -2,23 +2,26 @@
 
 import { motion } from "framer-motion"
 import { Button } from "@nextui-org/button"
-import { DiscordTemplate, BaseInforamtion } from "../../../interfaces/templates/common"
-import TemplatesVisuzalization from "./templatesVisualizaton"
+import { DiscordTemplate, TemplateCategory } from "../../../interfaces/templates/common"
+import TemplatesVisuzalization from "./TemplatesVisualizaton"
 import Link from "next/link"
 import { Roles } from "@/components/interfaces/templates/common"
 import { Download, Eye, Plus, Bot, Volume2, Users } from "lucide-react"
 import { Tooltip } from "@heroui/react"
-import { TemplatesUserCreator } from "./templatesCreator"
-import TemplatesPopup from "./templatesPopup"
+import { TemplatesUserCreator } from "./TemplatesCreator"
+import TemplatesPopupUse from "./popup/TemplatesPopup"
 import { useEffect, useRef, useState } from "react"
+import TemplatesVersion from "./popup/version/TemplatesVersion"
+import { Template } from "@/components/interfaces/templates/common"
 
 interface Props {
 	data: DiscordTemplate
-	base: BaseInforamtion
+	base: Template
 }
 
-export default function TemplatesDetails({ data, base }: Props) {
+export default function TemplatesDetailsPage({ data, base }: Props) {
 	const [popup, setPopup] = useState<boolean>(false)
+	const [versionPopup, setVersionPopup] = useState<boolean>(false)
 	const [showMore, setShowMore] = useState<boolean>(false)
 	const [expanded, setExpanded] = useState<boolean>(false)
 	const checkWidth = useRef<HTMLParagraphElement>(null)
@@ -33,8 +36,9 @@ export default function TemplatesDetails({ data, base }: Props) {
 
 	const templateInfo = {
 		link: base.link,
-		templateId: base.templateId,
+		id: base.id,
 		code: base.code,
+		slugUrl: base.slugUrl,
 	}
 
 	const numbers = data.serialized_source_guild.channels.reduce(
@@ -60,22 +64,24 @@ export default function TemplatesDetails({ data, base }: Props) {
 
 	return (
 		<>
-			<TemplatesPopup popup={popup} setPopup={setPopup} templateInfo={templateInfo} />
-			<motion.main className="flex flex-col items-center mt-32 lg:mx-20 max-lg:mx-5  " initial="hidden" animate="visible" variants={containerVariants}>
+			<TemplatesVersion familyId={base.familyId} versionPopup={versionPopup} setVersionPopup={setVersionPopup} />
+			<TemplatesPopupUse popup={popup} setPopup={setPopup} templateInfo={templateInfo} />
+			<motion.main className="flex flex-col items-center mt-32 lg:mx-20 max-lg:mx-5 max-md:mx-1  " initial="hidden" animate="visible" variants={containerVariants}>
 				<motion.section className="bg-alt-background-color w-full   p-8 rounded-xl border border-border-color max-lg:p-5" variants={containerVariants}>
 					<header>
 						<div className="flex items-center justify-between">
 							<div className="flex items-center gap-4 w-full">
 								<h1 className="text-2xl max-w-120 truncate max-lg:max-w-96">{base.title}</h1>
 								<div className="flex gap-1 max-sm:hidden">
-									<span className="px-4 py-1 bg-border-color w-fit text-sm rounded-full">{base.categories}</span>
+									<span className="px-4 py-1 bg-border-color w-fit text-sm rounded-full">{TemplateCategory[base.categories as keyof typeof TemplateCategory]}</span>
 								</div>
 							</div>
+							<button onClick={() => setVersionPopup(true)}>Otworz historie</button>
 							<div className="flex items-center gap-2">
 								<Tooltip content="Odsłony szablonu" className="p-1 px-3 bg-border-color rounded-xl" delay={300}>
 									<div className="flex items-center gap-1 px-3 py-1 bg-border-color w-fit rounded-xl max-md:hidden">
 										<Eye className="font-black" />
-										<p className="text-2xl ml-0.2">{base.historyLength}</p>
+										<p className="text-2xl ml-0.2">{base.visitHistory.length}</p>
 									</div>
 								</Tooltip>
 								<Tooltip content="Użycia szablonu" className="p-1 px-3 bg-border-color rounded-xl" delay={300}>
@@ -133,7 +139,7 @@ export default function TemplatesDetails({ data, base }: Props) {
 							Użyj szablonu
 						</Button>
 
-						<Link href={`/preview/${base.slugUrl}`} className="max-sm:w-full flex gap-3 items-center justify-center  bg-advice-bot px-8 h-12 rounded-xl max-sm:w-full cursor-pointer max-sm:text-sm">
+						<Link href={`/preview/${base.slugUrl}`} className="max-sm:w-full flex gap-3 items-center justify-center  bg-advice-bot px-8 h-12 rounded-xl cursor-pointer max-sm:text-sm">
 							<Bot className="max-sm:w-5 max-sm:h-5" />
 							Przejdź do podglądu szablonu
 						</Link>

@@ -8,7 +8,6 @@ import ShortUniqueId from 'short-unique-id';
 import { PrismaService } from '@repo/shared';
 import { HttpService } from '@nestjs/axios';
 import { lastValueFrom } from 'rxjs';
-import { differenceInDays } from 'date-fns';
 import { InjectQueue } from '@nestjs/bullmq';
 import { Queue } from 'bullmq';
 import { Template } from '../../interfaces/template.interface';
@@ -29,6 +28,7 @@ export class TemplatesCoreService {
   async addTemplate(
     id: string,
     addingUserId: string,
+    skipJsonStructure: boolean,
   ): Promise<{
     message: string;
     id: string;
@@ -70,12 +70,7 @@ export class TemplatesCoreService {
         fetchTemplates.data.source_guild_id,
       );
 
-      await this.checkTemplateExists(
-        fetchTemplates.data.created_at,
-        templates,
-        id,
-        fetchTemplates.data.name,
-      );
+      await this.checkTemplateIsRepeat(templates, id);
 
       if (roles.length < 2 && channels.length < 2) {
         throw new BadRequestException('does not meet the requirements');
@@ -85,11 +80,12 @@ export class TemplatesCoreService {
       const job = await this.templatesQueue.add(
         'addTemplate',
         {
-          templateId: templateId,
+          id: templateId,
           slugUrl: slugUrl,
           templateData: fetchTemplates.data,
           addingUserId: user.userId,
           addingUserEmail: user.email,
+          skipJsonStructure,
         },
         {
           attempts: 2,
@@ -121,30 +117,14 @@ export class TemplatesCoreService {
     }
   }
 
-  private async checkTemplateExists(
-    created_at: Date,
-    templates: Template[],
-    id: string,
-    name: string,
-  ) {
+  private async checkTemplateIsRepeat(templates: Template[], id: string) {
     try {
-      const differenceDays = differenceInDays(new Date(), new Date(created_at));
-
       const templateRepeat = templates.find(
         (repeat: Template) => repeat.link === `https://discord.new/${id}`,
-      );
-      const templateRepeatName = templates.find(
-        (repeat: Template) => repeat.title === name,
       );
 
       if (templateRepeat) {
         throw new ConflictException('Template already exists');
-      }
-
-      if (differenceDays <= 30) {
-        if (templateRepeatName) {
-          throw new ConflictException('Template already exists');
-        }
       }
     } catch (err) {
       throw err;

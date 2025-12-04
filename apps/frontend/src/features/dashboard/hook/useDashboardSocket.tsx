@@ -2,7 +2,6 @@
 
 import { useEffect } from "react"
 import handleApiKeyListener from "../socket/apikey.listener"
-import handleNotificationListener from "../socket/notification.listener"
 import { User } from "@/components/interfaces/common"
 import { Dispatch, SetStateAction } from "react"
 import { useSocketContext } from "@/features/socketContext"
@@ -16,7 +15,6 @@ export default function useDashboardSocket({ user, setUser, setNumberPeopleOnlin
 
 		const onConnect = () => {
 			handleApiKeyListener(socket, user, setUser)
-			handleNotificationListener(socket, user, setUser)
 			handleStatusListener(socket, user, setUser, setNumberPeopleOnline)
 		}
 
